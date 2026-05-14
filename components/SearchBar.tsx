@@ -7,9 +7,11 @@ import { tools } from "../data/tools";
 export default function SearchBar() {
   const [query, setQuery] = useState("");
 
-  const filteredTools = tools.filter((tool) =>
-    tool.title.toLowerCase().includes(query.toLowerCase())
-  );
+  const filteredTools = tools.filter((tool) => {
+  const searchText = `${tool.title} ${tool.description} ${tool.category}`.toLowerCase();
+
+  return searchText.includes(query.toLowerCase());
+  });
 
   return (
     <div className="relative mt-8 max-w-xl">

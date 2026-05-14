@@ -1,7 +1,8 @@
 import Navbar from "../components/Navbar";
 import ToolCard from "../components/ToolCard";
-import { tools } from "../data/tools";
 import SearchBar from "../components/SearchBar";
+
+import { tools } from "../data/tools";
 import { categories } from "../data/categories";
 
 export const metadata = {
@@ -26,23 +27,31 @@ export default function Home() {
           tasks.
         </p>
 
-      <SearchBar />
+        <SearchBar />
 
-      {categories.map((category) => {
-  const slug = category
-    ?.toLowerCase()
-    .replaceAll(" ", "-");
+        <div className="mt-10">
+          <p className="mb-4 text-sm font-semibold uppercase tracking-wide text-zinc-400">
+            Browse by category
+          </p>
 
-  return (
-    <a
-      key={category}
-      href={`/categories/${slug}`}
-      className="rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm font-semibold text-zinc-700 transition hover:border-zinc-400"
-    >
-      {category}
-    </a>
-  );
-})}
+          <div className="flex flex-wrap gap-3">
+            {categories.map((category) => {
+              const slug = category
+                ?.toLowerCase()
+                .replaceAll(" ", "-");
+
+              return (
+                <a
+                  key={category}
+                  href={`/categories/${slug}`}
+                  className="rounded-full border border-zinc-200 bg-white px-5 py-3 text-sm font-semibold text-zinc-700 shadow-sm transition hover:border-zinc-400 hover:bg-zinc-50"
+                >
+                  {category}
+                </a>
+              );
+            })}
+          </div>
+        </div>
 
         <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {tools.map((tool) => (
