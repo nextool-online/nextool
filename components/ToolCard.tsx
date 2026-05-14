@@ -4,12 +4,14 @@ type ToolCardProps = {
   title: string;
   description: string;
   href?: string;
+  category?: string;
 };
 
 export default function ToolCard({
   title,
   description,
   href,
+  category,
 }: ToolCardProps) {
   if (!href) {
     return (
@@ -25,6 +27,12 @@ export default function ToolCard({
       href={href}
       className="rounded-2xl border border-zinc-200 bg-white p-6 transition hover:border-zinc-400 hover:shadow-md"
     >
+      {category && (
+        <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-zinc-400">
+          {category}
+        </p>
+      )}
+
       <h3 className="text-xl font-bold">{title}</h3>
       <p className="mt-2 text-zinc-600">{description}</p>
     </Link>

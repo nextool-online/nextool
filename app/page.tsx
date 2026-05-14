@@ -2,6 +2,7 @@ import Navbar from "../components/Navbar";
 import ToolCard from "../components/ToolCard";
 import { tools } from "../data/tools";
 import SearchBar from "../components/SearchBar";
+import { categories } from "../data/categories";
 
 export const metadata = {
   title: "Nextool - Fast Online Tools and Calculators",
@@ -27,6 +28,22 @@ export default function Home() {
 
       <SearchBar />
 
+      {categories.map((category) => {
+  const slug = category
+    ?.toLowerCase()
+    .replaceAll(" ", "-");
+
+  return (
+    <a
+      key={category}
+      href={`/categories/${slug}`}
+      className="rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm font-semibold text-zinc-700 transition hover:border-zinc-400"
+    >
+      {category}
+    </a>
+  );
+})}
+
         <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {tools.map((tool) => (
             <ToolCard
@@ -34,6 +51,7 @@ export default function Home() {
               title={tool.title}
               description={tool.description}
               href={tool.href}
+              category={tool.category}
             />
           ))}
         </div>

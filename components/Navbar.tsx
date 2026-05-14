@@ -1,12 +1,28 @@
+import Link from "next/link";
+import { categories } from "../data/categories";
+
 export default function Navbar() {
   return (
     <nav className="flex items-center justify-between border-b border-zinc-200 px-6 py-4">
-      <h2 className="text-2xl font-bold">Nextool</h2>
+      <Link href="/" className="text-2xl font-bold">
+        Nextool
+      </Link>
 
-      <div className="flex gap-6 text-sm">
-        <a href="#">Tools</a>
-        <a href="#">Calculators</a>
-        <a href="#">Generators</a>
+      <div className="flex gap-6 text-sm font-medium">
+        {categories.map((category) => {
+          const slug = category
+            ?.toLowerCase()
+            .replaceAll(" ", "-");
+
+          return (
+            <Link
+              key={category}
+              href={`/categories/${slug}`}
+            >
+              {category}
+            </Link>
+          );
+        })}
       </div>
     </nav>
   );
