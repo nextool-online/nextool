@@ -1,18 +1,21 @@
 import Navbar from "../components/layout/Navbar";
 import SearchBar from "../components/ui/SearchBar";
 import ToolCard from "../components/ui/ToolCard";
-import { tools } from "../data/tools";
+
 import { categories } from "../data/categories";
 import { getCategorySlug } from "../data/routes";
+import { getText } from "../data/i18n";
+import { tools } from "../data/tools";
 
 export const metadata = {
   title: "Nextool - Fast Online Tools and Calculators",
-
   description:
     "Simple, fast and free online tools, calculators and utilities.",
 };
 
 export default function Home() {
+  const language = "en";
+
   return (
     <main className="min-h-screen bg-zinc-50">
       <Navbar />
@@ -54,10 +57,10 @@ export default function Home() {
         <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {tools.map((tool) => (
             <ToolCard
-              key={tool.href}
-              title={tool.title}
-              description={tool.description}
-              href={tool.href}
+              key={tool.id}
+              title={getText(tool.title, language)}
+              description={getText(tool.description, language)}
+              href={`/tools/${getText(tool.slug, language)}`}
               category={tool.category}
             />
           ))}

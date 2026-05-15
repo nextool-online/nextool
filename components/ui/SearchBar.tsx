@@ -2,15 +2,22 @@
 
 import { useState } from "react";
 import Link from "next/link";
+
 import { tools } from "../../data/tools";
+import { getText } from "../../data/i18n";
 
 export default function SearchBar() {
   const [query, setQuery] = useState("");
+  const language = "en";
 
   const filteredTools = tools.filter((tool) => {
-  const searchText = `${tool.title} ${tool.description} ${tool.category}`.toLowerCase();
+    const title = getText(tool.title, language);
+    const description = getText(tool.description, language);
+    const slug = getText(tool.slug, language);
 
-  return searchText.includes(query.toLowerCase());
+    const searchText = `${title} ${description} ${tool.category} ${slug}`.toLowerCase();
+
+    return searchText.includes(query.toLowerCase());
   });
 
   return (
@@ -26,20 +33,24 @@ export default function SearchBar() {
       {query && (
         <div className="absolute z-10 mt-2 w-full overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-lg">
           {filteredTools.length > 0 ? (
-            filteredTools.map((tool) => (
-              <Link
-                key={tool.href}
-                href={tool.href}
-                className="block border-b border-zinc-100 px-5 py-4 transition last:border-b-0 hover:bg-zinc-50"
-              >
-                <p className="font-semibold">{tool.title}</p>
-                <p className="text-sm text-zinc-500">{tool.description}</p>
-              </Link>
-            ))
+            filteredTools.map((tool) => {
+              const title = getText(tool.title, language);
+              const description = getText(tool.description, language);
+              const slug = getText(tool.slug, language);
+
+              return (
+                <Link
+                  key={tool.id}
+                  href={`/tools/${slug}`}
+                  className="block border-b border-zinc-100 px-5 py-4 transition last:border-b-0 hover:bg-zinc-50"
+                >
+                  <p className="font-semibold">{title}</p>
+                  <p className="text-sm text-zinc-500">{description}</p>
+                </Link>
+              );
+            })
           ) : (
-            <p className="px-5 py-4 text-sm text-zinc-500">
-              No tools found.
-            </p>
+            <p className="px-5 py-4 text-sm text-zinc-500">No tools found.</p>
           )}
         </div>
       )}
