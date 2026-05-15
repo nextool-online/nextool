@@ -31,7 +31,7 @@ export default async function HomePage({ params }: HomePageProps) {
           {getText(dictionary.homepageDescription, lang)}
         </p>
 
-        <SearchBar />
+        <SearchBar lang={lang} />
 
         <div className="mt-10">
           <p className="mb-4 text-sm font-semibold uppercase tracking-wide text-zinc-400">

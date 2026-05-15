@@ -29,7 +29,7 @@ export default function Home() {
           {getText(dictionary.homepageDescription, language)}
         </p>
 
-        <SearchBar />
+        <SearchBar lang={language} />
 
         <div className="mt-10">
           <p className="mb-4 text-sm font-semibold uppercase tracking-wide text-zinc-400">

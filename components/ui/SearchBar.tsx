@@ -5,15 +5,21 @@ import Link from "next/link";
 
 import { tools } from "../../data/tools";
 import { getText } from "../../data/i18n";
+import { dictionary } from "../../data/dictionary";
 
-export default function SearchBar() {
+import type { LanguageCode } from "../../data/languages";
+
+type SearchBarProps = {
+  lang: LanguageCode;
+};
+
+export default function SearchBar({ lang }: SearchBarProps) {
   const [query, setQuery] = useState("");
-  const language = "en";
 
   const filteredTools = tools.filter((tool) => {
-    const title = getText(tool.title, language);
-    const description = getText(tool.description, language);
-    const slug = getText(tool.slug, language);
+    const title = getText(tool.title, lang);
+    const description = getText(tool.description, lang);
+    const slug = getText(tool.slug, lang);
 
     const searchText = `${title} ${description} ${tool.category} ${slug}`.toLowerCase();
 
@@ -26,7 +32,7 @@ export default function SearchBar() {
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        placeholder="Search tools..."
+        placeholder={getText(dictionary.searchPlaceholder, lang)}
         className="w-full rounded-2xl border border-zinc-300 bg-white px-5 py-4 text-base font-medium outline-none transition focus:border-zinc-900"
       />
 
@@ -34,14 +40,14 @@ export default function SearchBar() {
         <div className="absolute z-10 mt-2 w-full overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-lg">
           {filteredTools.length > 0 ? (
             filteredTools.map((tool) => {
-              const title = getText(tool.title, language);
-              const description = getText(tool.description, language);
-              const slug = getText(tool.slug, language);
+              const title = getText(tool.title, lang);
+              const description = getText(tool.description, lang);
+              const slug = getText(tool.slug, lang);
 
               return (
                 <Link
                   key={tool.id}
-                  href={`/tools/${slug}`}
+                  href={`/${lang}/tools/${slug}`}
                   className="block border-b border-zinc-100 px-5 py-4 transition last:border-b-0 hover:bg-zinc-50"
                 >
                   <p className="font-semibold">{title}</p>
@@ -50,7 +56,9 @@ export default function SearchBar() {
               );
             })
           ) : (
-            <p className="px-5 py-4 text-sm text-zinc-500">No tools found.</p>
+            <p className="px-5 py-4 text-sm text-zinc-500">
+              No tools found.
+            </p>
           )}
         </div>
       )}
