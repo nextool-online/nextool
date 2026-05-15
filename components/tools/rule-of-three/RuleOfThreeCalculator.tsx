@@ -2,8 +2,15 @@
 
 import { useMemo, useState } from "react";
 import ToolBox from "../../ui/ToolBox";
+import type { LanguageCode } from "../../../data/languages";
 
-export default function RuleOfThreeCalculator() {
+type RuleOfThreeCalculatorProps = {
+  lang: LanguageCode;
+};
+
+export default function RuleOfThreeCalculator({
+  lang: _lang,
+}: RuleOfThreeCalculatorProps) {
   const [a, setA] = useState("");
   const [b, setB] = useState("");
   const [c, setC] = useState("");
@@ -38,6 +45,7 @@ export default function RuleOfThreeCalculator() {
     <ToolBox>
       <div className="mb-5">
         <h2 className="text-xl font-bold md:text-2xl">Simple proportion</h2>
+
         <p className="mt-2 text-sm text-zinc-600">
           Enter A, B and C. X appears automatically.
         </p>

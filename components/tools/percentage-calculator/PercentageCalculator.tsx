@@ -2,8 +2,15 @@
 
 import { useMemo, useState } from "react";
 import ToolBox from "../../ui/ToolBox";
+import type { LanguageCode } from "../../../data/languages";
 
-export default function PercentageCalculator() {
+type PercentageCalculatorProps = {
+  lang: LanguageCode;
+};
+
+export default function PercentageCalculator({
+  lang: _lang,
+}: PercentageCalculatorProps) {
   const [percentage, setPercentage] = useState("");
   const [value, setValue] = useState("");
   const [copied, setCopied] = useState(false);
@@ -33,6 +40,7 @@ export default function PercentageCalculator() {
     <ToolBox>
       <div className="mb-5">
         <h2 className="text-xl font-bold md:text-2xl">Calculate percentage</h2>
+
         <p className="mt-2 text-sm text-zinc-600">
           Find what a percentage represents from a given value.
         </p>

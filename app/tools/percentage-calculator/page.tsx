@@ -13,7 +13,7 @@ export default function PercentageCalculatorPage() {
       title="Percentage Calculator"
       description="Calculate percentages quickly and easily."
     >
-      <PercentageCalculator />
+      <PercentageCalculator lang="en" />
 
       <article className="mt-10 space-y-5 text-base leading-7 text-zinc-700 md:mt-12 md:space-y-6 md:leading-8">
         <h2 className="text-2xl font-bold text-zinc-950">
