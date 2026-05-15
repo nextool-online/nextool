@@ -1,20 +1,22 @@
-import Navbar from "../components/layout/Navbar";
-import SearchBar from "../components/ui/SearchBar";
-import ToolCard from "../components/ui/ToolCard";
+import Navbar from "../../components/layout/Navbar";
+import SearchBar from "../../components/ui/SearchBar";
+import ToolCard from "../../components/ui/ToolCard";
 
-import { categories } from "../data/categories";
-import { getText } from "../data/i18n";
-import { tools } from "../data/tools";
-import { dictionary } from "../data/dictionary";
+import { categories } from "../../data/categories";
+import { getText } from "../../data/i18n";
+import { tools } from "../../data/tools";
+import { dictionary } from "../../data/dictionary";
 
-export const metadata = {
-  title: "Nextool - Fast Online Tools and Calculators",
-  description:
-    "Simple, fast and free online tools, calculators and utilities.",
+import type { LanguageCode } from "../../data/languages";
+
+type HomePageProps = {
+  params: Promise<{
+    lang: LanguageCode;
+  }>;
 };
 
-export default function Home() {
-  const language = "en";
+export default async function HomePage({ params }: HomePageProps) {
+  const { lang } = await params;
 
   return (
     <main className="min-h-screen bg-zinc-50">
@@ -22,28 +24,28 @@ export default function Home() {
 
       <section className="mx-auto max-w-6xl px-6 py-16">
         <h1 className="text-5xl font-bold tracking-tight">
-          {getText(dictionary.homepageTitle, language)}
+          {getText(dictionary.homepageTitle, lang)}
         </h1>
 
         <p className="mt-6 max-w-2xl text-lg text-zinc-600">
-          {getText(dictionary.homepageDescription, language)}
+          {getText(dictionary.homepageDescription, lang)}
         </p>
 
         <SearchBar />
 
         <div className="mt-10">
           <p className="mb-4 text-sm font-semibold uppercase tracking-wide text-zinc-400">
-            {getText(dictionary.browseByCategory, language)}
+            {getText(dictionary.browseByCategory, lang)}
           </p>
 
           <div className="flex flex-wrap gap-3">
             {categories.map((category) => (
               <a
                 key={category.id}
-                href={`/categories/${category.id}`}
+                href={`/${lang}/categories/${category.id}`}
                 className="rounded-full border border-zinc-200 bg-white px-5 py-3 text-sm font-semibold text-zinc-700 shadow-sm transition hover:border-zinc-400 hover:bg-zinc-50"
               >
-                {getText(category.name, language)}
+                {getText(category.name, lang)}
               </a>
             ))}
           </div>
@@ -53,9 +55,9 @@ export default function Home() {
           {tools.map((tool) => (
             <ToolCard
               key={tool.id}
-              title={getText(tool.title, language)}
-              description={getText(tool.description, language)}
-              href={`/tools/${getText(tool.slug, language)}`}
+              title={getText(tool.title, lang)}
+              description={getText(tool.description, lang)}
+              href={`/${lang}/tools/${getText(tool.slug, lang)}`}
               category={tool.category}
             />
           ))}

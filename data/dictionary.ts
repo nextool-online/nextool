@@ -1,0 +1,61 @@
+import type { LanguageCode } from "./languages";
+
+type Translation = Record<LanguageCode, string>;
+
+export const dictionary = {
+  homepageTitle: {
+    en: "Fast online tools and calculators",
+    it: "Strumenti e calcolatrici online veloci",
+    pt: "Ferramentas e calculadoras online rápidas",
+    es: "Herramientas y calculadoras online rápidas",
+    fr: "Outils et calculatrices en ligne rapides",
+    de: "Schnelle Online-Tools und Rechner",
+    ro: "Instrumente și calculatoare online rapide",
+    pl: "Szybkie narzędzia i kalkulatory online",
+    nl: "Snelle online tools en calculators",
+    tr: "Hızlı çevrimiçi araçlar ve hesaplayıcılar",
+    ar: "أدوات وآلات حاسبة سريعة عبر الإنترنت",
+  } satisfies Translation,
+
+  homepageDescription: {
+    en: "Simple, fast and free utilities for developers, students and everyday tasks.",
+    it: "Utility semplici, veloci e gratuite per sviluppatori, studenti e attività quotidiane.",
+    pt: "Utilitários simples, rápidos e gratuitos para desenvolvedores, estudantes e tarefas diárias.",
+    es: "Utilidades simples, rápidas y gratuitas para desarrolladores, estudiantes y tareas diarias.",
+    fr: "Utilitaires simples, rapides et gratuits pour développeurs, étudiants et tâches quotidiennes.",
+    de: "Einfache, schnelle und kostenlose Tools für Entwickler, Studenten und den Alltag.",
+    ro: "Instrumente simple, rapide și gratuite pentru dezvoltatori, studenți și activități zilnice.",
+    pl: "Proste, szybkie i darmowe narzędzia dla programistów, studentów i codziennych zadań.",
+    nl: "Eenvoudige, snelle en gratis tools voor ontwikkelaars, studenten en dagelijkse taken.",
+    tr: "Geliştiriciler, öğrenciler ve günlük işler için basit, hızlı ve ücretsiz araçlar.",
+    ar: "أدوات بسيطة وسريعة ومجانية للمطورين والطلاب والمهام اليومية.",
+  } satisfies Translation,
+
+  searchPlaceholder: {
+    en: "Search tools...",
+    it: "Cerca strumenti...",
+    pt: "Buscar ferramentas...",
+    es: "Buscar herramientas...",
+    fr: "Rechercher des outils...",
+    de: "Tools suchen...",
+    ro: "Caută instrumente...",
+    pl: "Szukaj narzędzi...",
+    nl: "Zoek tools...",
+    tr: "Araç ara...",
+    ar: "ابحث عن الأدوات...",
+  } satisfies Translation,
+
+  browseByCategory: {
+    en: "Browse by category",
+    it: "Sfoglia per categoria",
+    pt: "Navegar por categoria",
+    es: "Explorar por categoría",
+    fr: "Parcourir par catégorie",
+    de: "Nach Kategorie durchsuchen",
+    ro: "Răsfoiește după categorie",
+    pl: "Przeglądaj według kategorii",
+    nl: "Bladeren per categorie",
+    tr: "Kategoriye göre göz at",
+    ar: "تصفح حسب الفئة",
+  } satisfies Translation,
+};
