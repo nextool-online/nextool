@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { tools } from "../data/tools";
+import { tools } from "../../data/tools";
 
 export default function SearchBar() {
   const [query, setQuery] = useState("");

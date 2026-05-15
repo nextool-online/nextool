@@ -1,5 +1,5 @@
-import ToolPageLayout from "../../../components/ToolPageLayout";
-import PercentageCalculator from "../../../components/PercentageCalculator";
+import ToolPageLayout from "../../../components/layout/ToolPageLayout";
+import PercentageCalculator from "../../../components/tools/percentage-calculator/PercentageCalculator";
 
 export const metadata = {
   title: "Percentage Calculator - Nextool",

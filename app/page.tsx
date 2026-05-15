@@ -1,6 +1,6 @@
-import Navbar from "../components/Navbar";
-import ToolCard from "../components/ToolCard";
-import SearchBar from "../components/SearchBar";
+import Navbar from "../components/layout/Navbar";
+import SearchBar from "../components/ui/SearchBar";
+import ToolCard from "../components/ui/ToolCard";
 
 import { tools } from "../data/tools";
 import { categories } from "../data/categories";

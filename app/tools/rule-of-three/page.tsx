@@ -1,5 +1,5 @@
-import ToolPageLayout from "../../../components/ToolPageLayout";
-import RuleOfThreeCalculator from "../../../components/RuleOfThreeCalculator";
+import ToolPageLayout from "../../../components/layout/ToolPageLayout";
+import RuleOfThreeCalculator from "../../../components/tools/rule-of-three/RuleOfThreeCalculator";
 
 export const metadata = {
   title: "Rule of Three Calculator - Nextool",

@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import ToolBox from "./ToolBox";
+import ToolBox from "../../ui/ToolBox";
 
 export default function RuleOfThreeCalculator() {
   const [a, setA] = useState("");

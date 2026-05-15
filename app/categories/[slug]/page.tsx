@@ -1,5 +1,5 @@
-import ToolCard from "../../../components/ToolCard";
-import ToolPageLayout from "../../../components/ToolPageLayout";
+import ToolPageLayout from "../../../components/layout/ToolPageLayout";
+import ToolCard from "../../../components/ui/ToolCard";
 import { tools } from "../../../data/tools";
 
 type CategoryPageProps = {
