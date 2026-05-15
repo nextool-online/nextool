@@ -1,9 +1,9 @@
 import Navbar from "../components/layout/Navbar";
 import SearchBar from "../components/ui/SearchBar";
 import ToolCard from "../components/ui/ToolCard";
-
 import { tools } from "../data/tools";
 import { categories } from "../data/categories";
+import { getCategorySlug } from "../data/routes";
 
 export const metadata = {
   title: "Nextool - Fast Online Tools and Calculators",
@@ -36,9 +36,7 @@ export default function Home() {
 
           <div className="flex flex-wrap gap-3">
             {categories.map((category) => {
-              const slug = category
-                ?.toLowerCase()
-                .replaceAll(" ", "-");
+              const slug = getCategorySlug(category || "");
 
               return (
                 <a

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { categories } from "../../data/categories";
+import { getCategorySlug } from "../../data/routes";
 
 export default function Navbar() {
   return (
@@ -10,9 +11,7 @@ export default function Navbar() {
 
       <div className="flex gap-6 text-sm font-medium">
         {categories.map((category) => {
-          const slug = category
-            ?.toLowerCase()
-            .replaceAll(" ", "-");
+          const slug = getCategorySlug(category || "");
 
           return (
             <Link
