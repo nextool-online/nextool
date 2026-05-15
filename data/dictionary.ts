@@ -58,4 +58,18 @@ export const dictionary = {
     tr: "Kategoriye göre göz at",
     ar: "تصفح حسب الفئة",
   } satisfies Translation,
+
+  calculatorLabel: {
+  en: "Calculator",
+  it: "Calcolatore",
+  pt: "Calculadora",
+  es: "Calculadora",
+  fr: "Calculatrice",
+  de: "Rechner",
+  ro: "Calculator",
+  pl: "Kalkulator",
+  nl: "Calculator",
+  tr: "Hesaplayıcı",
+  ar: "حاسبة",
+} satisfies Translation,
 };
