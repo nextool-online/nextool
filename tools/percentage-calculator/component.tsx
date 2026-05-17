@@ -3,8 +3,9 @@
 import { useMemo, useState } from "react";
 
 import ToolBox from "../../components/ui/ToolBox";
-import { getText } from "../../data/i18n";
 import { dictionary } from "../../data/dictionary";
+import { getText } from "../../data/i18n";
+
 import { percentageCalculatorContent } from "./content";
 
 import type { ToolComponentProps } from "../types";
@@ -76,7 +77,7 @@ export default function PercentageCalculator({ lang }: ToolComponentProps) {
         <div className="min-w-0 flex-1 truncate p-3 text-center text-base font-bold md:p-4 md:text-lg">
           {result || (
             <span className="text-zinc-400">
-              getText(dictionary.resultLabel, lang)
+              {getText(dictionary.resultLabel, lang)}
             </span>
           )}
         </div>

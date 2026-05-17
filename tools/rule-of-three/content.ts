@@ -156,19 +156,5 @@ export const ruleOfThreeContent = {
       tr: "gibi",
       ar: "كما",
     },
-
-    copy: {
-      en: "Copy result",
-      it: "Copia risultato",
-      pt: "Copiar resultado",
-      es: "Copiar resultado",
-      fr: "Copier le résultat",
-      de: "Ergebnis kopieren",
-      ro: "Copiază rezultatul",
-      pl: "Kopiuj wynik",
-      nl: "Resultaat kopiëren",
-      tr: "Sonucu kopyala",
-      ar: "نسخ النتيجة",
-    },
   },
 };

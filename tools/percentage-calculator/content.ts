@@ -88,13 +88,5 @@ export const percentageCalculatorContent = {
     value: {
       en: "Value",
     },
-
-    result: {
-      en: "Result",
-    },
-
-    copy: {
-      en: "Copy result",
-    },
   },
 };
