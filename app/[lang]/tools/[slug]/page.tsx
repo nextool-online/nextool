@@ -1,11 +1,9 @@
 import { notFound } from "next/navigation";
 
 import ToolPageLayout from "../../../../components/layout/ToolPageLayout";
-import RuleOfThreeCalculator from "../../../../components/tools/rule-of-three/RuleOfThreeCalculator";
-import PercentageCalculator from "../../../../components/tools/percentage-calculator/PercentageCalculator";
 
-import { tools } from "../../../../data/tools";
 import { getText } from "../../../../data/i18n";
+import { tools } from "../../../../tools/registry";
 
 import type { LanguageCode } from "../../../../data/languages";
 
@@ -16,14 +14,22 @@ type ToolPageProps = {
   }>;
 };
 
-type CalculatorProps = {
-  lang: LanguageCode;
-};
+export async function generateMetadata({ params }: ToolPageProps) {
+  const { lang, slug } = await params;
 
-const toolComponents: Record<string, React.ComponentType<CalculatorProps>> = {
-  "rule-of-three": RuleOfThreeCalculator,
-  "percentage-calculator": PercentageCalculator,
-};
+  const tool = tools.find((tool) => getText(tool.slug, lang) === slug);
+
+  if (!tool) {
+    return {
+      title: "Tool not found - Nextool",
+    };
+  }
+
+  return {
+    title: getText(tool.seo.title, lang),
+    description: getText(tool.seo.description, lang),
+  };
+}
 
 export default async function ToolPage({ params }: ToolPageProps) {
   const { lang, slug } = await params;
@@ -34,11 +40,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
     notFound();
   }
 
-  const Calculator = toolComponents[tool.id];
-
-  if (!Calculator) {
-    notFound();
-  }
+  const Calculator = tool.component;
 
   return (
     <ToolPageLayout
@@ -48,13 +50,16 @@ export default async function ToolPage({ params }: ToolPageProps) {
     >
       <Calculator lang={lang} />
 
-      <article className="mt-10 space-y-5 text-base leading-7 text-zinc-700 md:mt-12 md:space-y-6 md:leading-8">
-        <h2 className="text-2xl font-bold text-zinc-950">About this tool</h2>
+      <article className="mt-10 space-y-6 text-base leading-7 text-zinc-700 md:mt-12 md:leading-8">
+        {tool.article.map((section) => (
+          <section key={getText(section.heading, lang)}>
+            <h2 className="text-2xl font-bold text-zinc-950">
+              {getText(section.heading, lang)}
+            </h2>
 
-        <p>
-          This tool helps you complete quick calculations directly in your
-          browser. It is fast, simple and free to use.
-        </p>
+            <p className="mt-3">{getText(section.body, lang)}</p>
+          </section>
+        ))}
       </article>
     </ToolPageLayout>
   );
