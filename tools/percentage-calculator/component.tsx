@@ -3,15 +3,17 @@
 import { useMemo, useState } from "react";
 
 import ToolBox from "../../components/ui/ToolBox";
+import { getText } from "../../data/i18n";
+import { percentageCalculatorContent } from "./content";
 
 import type { ToolComponentProps } from "../types";
 
-export default function PercentageCalculator({
-  lang: _lang,
-}: ToolComponentProps) {
+export default function PercentageCalculator({ lang }: ToolComponentProps) {
   const [percentage, setPercentage] = useState("");
   const [value, setValue] = useState("");
   const [copied, setCopied] = useState(false);
+
+  const ui = percentageCalculatorContent.ui;
 
   const result = useMemo(() => {
     const p = Number(percentage);
@@ -41,11 +43,11 @@ export default function PercentageCalculator({
     <ToolBox>
       <div className="mb-5">
         <h2 className="text-xl font-bold md:text-2xl">
-          Calculate percentage
+          {getText(ui.heading, lang)}
         </h2>
 
         <p className="mt-2 text-sm text-zinc-600">
-          Find what a percentage represents from a given value.
+          {getText(ui.helper, lang)}
         </p>
       </div>
 
@@ -54,7 +56,7 @@ export default function PercentageCalculator({
           type="number"
           value={percentage}
           onChange={(e) => setPercentage(e.target.value)}
-          placeholder="Percentage"
+          placeholder={getText(ui.percentage, lang)}
           className="min-w-0 rounded-xl border border-zinc-300 bg-white p-3 text-center text-base font-semibold outline-none transition focus:border-zinc-900 md:p-4 md:text-lg"
         />
 
@@ -64,21 +66,25 @@ export default function PercentageCalculator({
           type="number"
           value={value}
           onChange={(e) => setValue(e.target.value)}
-          placeholder="Value"
+          placeholder={getText(ui.value, lang)}
           className="min-w-0 rounded-xl border border-zinc-300 bg-white p-3 text-center text-base font-semibold outline-none transition focus:border-zinc-900 md:p-4 md:text-lg"
         />
       </div>
 
       <div className="mt-4 flex items-center overflow-hidden rounded-xl border border-zinc-300 bg-zinc-100">
         <div className="min-w-0 flex-1 truncate p-3 text-center text-base font-bold md:p-4 md:text-lg">
-          {result || <span className="text-zinc-400">Result</span>}
+          {result || (
+            <span className="text-zinc-400">
+              {getText(ui.result, lang)}
+            </span>
+          )}
         </div>
 
         <button
           type="button"
           onClick={copyResult}
           disabled={!result}
-          aria-label="Copy result"
+          aria-label={getText(ui.copy, lang)}
           className="border-l border-zinc-300 px-3 py-3 text-sm font-semibold text-zinc-600 transition hover:bg-zinc-200 disabled:opacity-40 md:px-4 md:py-4"
         >
           {copied ? "✓" : "⧉"}
