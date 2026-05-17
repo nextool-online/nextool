@@ -2,7 +2,7 @@ import ToolPageLayout from "../../../../components/layout/ToolPageLayout";
 import ToolCard from "../../../../components/ui/ToolCard";
 
 import { categories } from "../../../../data/categories";
-import { tools } from "../../../../data/tools";
+import { tools } from "../../../../tools/registry";
 import { getText } from "../../../../data/i18n";
 
 import type { LanguageCode } from "../../../../data/languages";

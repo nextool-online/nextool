@@ -4,7 +4,7 @@ import ToolCard from "../../components/ui/ToolCard";
 
 import { categories } from "../../data/categories";
 import { getText } from "../../data/i18n";
-import { tools } from "../../data/tools";
+import { tools } from "../../tools/registry";
 import { dictionary } from "../../data/dictionary";
 
 import type { LanguageCode } from "../../data/languages";

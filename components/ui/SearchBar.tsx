@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 
-import { tools } from "../../data/tools";
+import { tools } from "../../tools/registry";
 import { getText } from "../../data/i18n";
 import { dictionary } from "../../data/dictionary";
 

@@ -1,7 +1,7 @@
 import ToolPageLayout from "../../../components/layout/ToolPageLayout";
 import ToolCard from "../../../components/ui/ToolCard";
 
-import { tools } from "../../../data/tools";
+import { tools } from "../../../tools/registry";
 import { getText } from "../../../data/i18n";
 
 type CategoryPageProps = {
