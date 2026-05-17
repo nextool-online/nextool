@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 
 import ToolBox from "../../components/ui/ToolBox";
 import { getText } from "../../data/i18n";
+import { dictionary } from "../../data/dictionary";
 import { ruleOfThreeContent } from "./content";
 
 import type { ToolComponentProps } from "../types";
@@ -98,7 +99,7 @@ export default function RuleOfThreeCalculator({ lang }: ToolComponentProps) {
               type="button"
               onClick={copyResult}
               disabled={!result}
-              aria-label={getText(ui.copy, lang)}
+              aria-label={getText(dictionary.copyResult, lang)}
               className="border-l border-zinc-300 px-3 py-3 text-sm font-semibold text-zinc-600 transition hover:bg-zinc-200 disabled:opacity-40 md:px-4 md:py-4"
             >
               {copied ? "✓" : "⧉"}
