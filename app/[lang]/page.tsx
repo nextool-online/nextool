@@ -19,6 +19,30 @@ export function generateStaticParams() {
     lang: language.code,
   }));
 }
+export async function generateMetadata({
+  params,
+}: HomePageProps) {
+  const { lang } = await params;
+
+  const canonicalUrl = `https://nextool.online/${lang}`;
+
+  const languageUrls = Object.fromEntries(
+    languages.map((language) => [
+      language.code,
+      `https://nextool.online/${language.code}`,
+    ])
+  );
+
+  return {
+    title: getText(dictionary.homepageTitle, lang),
+    description: getText(dictionary.homepageDescription, lang),
+
+    alternates: {
+      canonical: canonicalUrl,
+      languages: languageUrls,
+    },
+  };
+}
 export default async function HomePage({ params }: HomePageProps) {
   const { lang } = await params;
 
