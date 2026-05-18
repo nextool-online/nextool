@@ -69,10 +69,14 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     notFound();
   }
 
+  const categoryTools = tools.filter(
+    (tool) =>
+      tool.category === category.id &&
+      (!tool.availableLanguages || tool.availableLanguages.includes(lang))
+  );
+
   const categoryTitle = getText(category.title, lang);
   const categoryDescription = getText(category.description, lang);
-
-  const filteredTools = tools.filter((tool) => tool.category === category.id);
 
   const collectionPageJsonLd = {
     "@context": "https://schema.org",
@@ -85,7 +89,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   const itemListJsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    itemListElement: filteredTools.map((tool, index) => ({
+    itemListElement: categoryTools.map((tool, index) => ({
       "@type": "ListItem",
       position: index + 1,
       name: getText(tool.title, lang),
@@ -110,7 +114,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       />
 
       <div className="grid gap-6 md:grid-cols-2">
-        {filteredTools.map((tool) => (
+        {categoryTools.map((tool) => (
           <ToolCard
             key={tool.id}
             title={getText(tool.title, lang)}

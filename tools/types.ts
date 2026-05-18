@@ -1,11 +1,7 @@
 import type { ComponentType } from "react";
-
 import type { LanguageCode } from "../data/languages";
 
-export type Translation = {
-  en: string;
-  [key: string]: string;
-};
+export type Translation = Partial<Record<LanguageCode, string>>;
 
 export type ToolComponentProps = {
   lang: LanguageCode;
@@ -16,10 +12,19 @@ export type ToolArticleSection = {
   body: Translation;
 };
 
+export type ToolSeo = {
+  title: Translation;
+  description: Translation;
+};
+
+export type ToolUi = Record<string, Translation>;
+
 export type ToolDefinition = {
   id: string;
 
   category: string;
+
+  availableLanguages?: LanguageCode[];
 
   slug: Translation;
 
@@ -27,12 +32,11 @@ export type ToolDefinition = {
 
   description: Translation;
 
-  seo: {
-    title: Translation;
-    description: Translation;
-  };
+  seo: ToolSeo;
 
   article: ToolArticleSection[];
+
+  ui: ToolUi;
 
   component: ComponentType<ToolComponentProps>;
 };

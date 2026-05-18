@@ -25,7 +25,9 @@ export function generateStaticParams() {
   }));
 }
 
-export async function generateMetadata({ params }: HomePageProps) {
+export async function generateMetadata({
+  params,
+}: HomePageProps) {
   const { lang } = await params;
 
   const canonicalUrl = `${baseUrl}/${lang}`;
@@ -39,7 +41,11 @@ export async function generateMetadata({ params }: HomePageProps) {
 
   return {
     title: getText(dictionary.homepageTitle, lang),
-    description: getText(dictionary.homepageDescription, lang),
+
+    description: getText(
+      dictionary.homepageDescription,
+      lang
+    ),
 
     alternates: {
       canonical: canonicalUrl,
@@ -48,28 +54,51 @@ export async function generateMetadata({ params }: HomePageProps) {
   };
 }
 
-export default async function HomePage({ params }: HomePageProps) {
+export default async function HomePage({
+  params,
+}: HomePageProps) {
   const { lang } = await params;
+
+  const localizedTools = tools.filter(
+    (tool) =>
+      !tool.availableLanguages ||
+      tool.availableLanguages.includes(lang)
+  );
 
   const pageUrl = `${baseUrl}/${lang}`;
 
   const websiteJsonLd = {
     "@context": "https://schema.org",
     "@type": "WebSite",
+
     name: "Nextool",
+
     url: pageUrl,
-    description: getText(dictionary.homepageDescription, lang),
+
+    description: getText(
+      dictionary.homepageDescription,
+      lang
+    ),
   };
 
   const itemListJsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    itemListElement: tools.map((tool, index) => ({
-      "@type": "ListItem",
-      position: index + 1,
-      name: getText(tool.title, lang),
-      url: `${baseUrl}/${lang}/tools/${getText(tool.slug, lang)}`,
-    })),
+
+    itemListElement: localizedTools.map(
+      (tool, index) => ({
+        "@type": "ListItem",
+
+        position: index + 1,
+
+        name: getText(tool.title, lang),
+
+        url: `${baseUrl}/${lang}/tools/${getText(
+          tool.slug,
+          lang
+        )}`,
+      })
+    ),
   };
 
   return (
@@ -77,14 +106,18 @@ export default async function HomePage({ params }: HomePageProps) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(websiteJsonLd),
+          __html: JSON.stringify(
+            websiteJsonLd
+          ),
         }}
       />
 
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(itemListJsonLd),
+          __html: JSON.stringify(
+            itemListJsonLd
+          ),
         }}
       />
 
@@ -92,18 +125,27 @@ export default async function HomePage({ params }: HomePageProps) {
 
       <section className="mx-auto max-w-6xl px-6 py-16">
         <h1 className="text-5xl font-bold tracking-tight">
-          {getText(dictionary.homepageTitle, lang)}
+          {getText(
+            dictionary.homepageTitle,
+            lang
+          )}
         </h1>
 
         <p className="mt-6 max-w-2xl text-lg text-zinc-600">
-          {getText(dictionary.homepageDescription, lang)}
+          {getText(
+            dictionary.homepageDescription,
+            lang
+          )}
         </p>
 
         <SearchBar lang={lang} />
 
         <div className="mt-10">
           <p className="mb-4 text-sm font-semibold uppercase tracking-wide text-zinc-400">
-            {getText(dictionary.browseByCategory, lang)}
+            {getText(
+              dictionary.browseByCategory,
+              lang
+            )}
           </p>
 
           <div className="flex flex-wrap gap-3">
@@ -120,12 +162,21 @@ export default async function HomePage({ params }: HomePageProps) {
         </div>
 
         <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {tools.map((tool) => (
+          {localizedTools.map((tool) => (
             <ToolCard
               key={tool.id}
-              title={getText(tool.title, lang)}
-              description={getText(tool.description, lang)}
-              href={`/${lang}/tools/${getText(tool.slug, lang)}`}
+              title={getText(
+                tool.title,
+                lang
+              )}
+              description={getText(
+                tool.description,
+                lang
+              )}
+              href={`/${lang}/tools/${getText(
+                tool.slug,
+                lang
+              )}`}
               category={tool.category}
             />
           ))}

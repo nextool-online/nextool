@@ -3,9 +3,10 @@
 import { useState } from "react";
 import Link from "next/link";
 
-import { tools } from "../../tools/registry";
-import { getText } from "../../data/i18n";
 import { dictionary } from "../../data/dictionary";
+import { getText } from "../../data/i18n";
+
+import { tools } from "../../tools/registry";
 
 import type { LanguageCode } from "../../data/languages";
 
@@ -16,7 +17,13 @@ type SearchBarProps = {
 export default function SearchBar({ lang }: SearchBarProps) {
   const [query, setQuery] = useState("");
 
-  const filteredTools = tools.filter((tool) => {
+  const localizedTools = tools.filter(
+    (tool) =>
+      !tool.availableLanguages ||
+      tool.availableLanguages.includes(lang)
+  );
+
+  const filteredTools = localizedTools.filter((tool) => {
     const title = getText(tool.title, lang);
     const description = getText(tool.description, lang);
     const slug = getText(tool.slug, lang);
@@ -31,7 +38,7 @@ export default function SearchBar({ lang }: SearchBarProps) {
       <input
         type="text"
         value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        onChange={(event) => setQuery(event.target.value)}
         placeholder={getText(dictionary.searchPlaceholder, lang)}
         className="w-full rounded-2xl border border-zinc-300 bg-white px-5 py-4 text-base font-medium outline-none transition focus:border-zinc-900"
       />

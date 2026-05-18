@@ -1,9 +1,9 @@
 import type { MetadataRoute } from "next";
 
 import { categories } from "../data/categories";
-import { languages } from "../data/languages";
-import { tools } from "../tools/registry";
+import { languages, type LanguageCode } from "../data/languages";
 import { getText } from "../data/i18n";
+import { tools } from "../tools/registry";
 
 const baseUrl = "https://nextool.online";
 
@@ -24,14 +24,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }))
   );
 
-  const toolUrls = tools.flatMap((tool) =>
-    Object.entries(tool.slug).map(([language, slug]) => ({
-      url: `${baseUrl}/${language}/tools/${slug}`,
+  const toolUrls = tools.flatMap((tool) => {
+    const availableLanguages: LanguageCode[] =
+      tool.availableLanguages || languages.map((language) => language.code);
+
+    return availableLanguages.map((language) => ({
+      url: `${baseUrl}/${language}/tools/${getText(tool.slug, language)}`,
       lastModified: new Date(),
       changeFrequency: "monthly" as const,
       priority: 0.9,
-    }))
-  );
+    }));
+  });
 
   return [...homepageUrls, ...categoryUrls, ...toolUrls];
 }

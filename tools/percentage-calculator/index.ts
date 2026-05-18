@@ -1,15 +1,28 @@
 import PercentageCalculator from "./component";
 import { percentageCalculatorContent } from "./content";
 
-export const percentageCalculatorTool = {
+import type { ToolDefinition } from "../types";
+
+export const percentageCalculatorTool: ToolDefinition = {
   id: "percentage-calculator",
+
   category: "calculators",
 
-  slug: percentageCalculatorContent.slug,
-  title: percentageCalculatorContent.title,
-  description: percentageCalculatorContent.description,
-  seo: percentageCalculatorContent.seo,
-  article: percentageCalculatorContent.article,
+  availableLanguages: [
+    "en",
+    "it",
+    "pt",
+    "es",
+    "fr",
+    "de",
+    "ro",
+    "pl",
+    "nl",
+    "tr",
+    "ar",
+  ],
+
+  ...percentageCalculatorContent,
 
   component: PercentageCalculator,
 };

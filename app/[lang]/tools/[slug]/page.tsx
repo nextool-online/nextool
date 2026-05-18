@@ -17,18 +17,26 @@ type ToolPageProps = {
 const baseUrl = "https://nextool.online";
 
 export function generateStaticParams() {
-  return tools.flatMap((tool) =>
-    Object.entries(tool.slug).map(([lang, slug]) => ({
+  return tools.flatMap((tool) => {
+    const languages =
+      tool.availableLanguages ||
+      Object.keys(tool.slug);
+
+    return languages.map((lang) => ({
       lang,
-      slug,
-    }))
-  );
+      slug: getText(tool.slug, lang as LanguageCode),
+    }));
+  });
 }
 
 export async function generateMetadata({ params }: ToolPageProps) {
   const { lang, slug } = await params;
 
-  const tool = tools.find((tool) => getText(tool.slug, lang) === slug);
+  const tool = tools.find(
+    (tool) =>
+      tool.availableLanguages?.includes(lang) &&
+      getText(tool.slug, lang) === slug
+  );
 
   if (!tool) {
     return {
@@ -38,10 +46,17 @@ export async function generateMetadata({ params }: ToolPageProps) {
 
   const canonicalUrl = `${baseUrl}/${lang}/tools/${slug}`;
 
+  const alternateLanguages =
+    tool.availableLanguages ||
+    Object.keys(tool.slug);
+
   const languages = Object.fromEntries(
-    Object.entries(tool.slug).map(([language, localizedSlug]) => [
+    alternateLanguages.map((language) => [
       language,
-      `${baseUrl}/${language}/tools/${localizedSlug}`,
+      `${baseUrl}/${language}/tools/${getText(
+        tool.slug,
+        language as LanguageCode
+      )}`,
     ])
   );
 
@@ -59,15 +74,22 @@ export async function generateMetadata({ params }: ToolPageProps) {
 export default async function ToolPage({ params }: ToolPageProps) {
   const { lang, slug } = await params;
 
-  const tool = tools.find((tool) => getText(tool.slug, lang) === slug);
+  const tool = tools.find(
+    (tool) =>
+      tool.availableLanguages?.includes(lang) &&
+      getText(tool.slug, lang) === slug
+  );
 
   if (!tool) {
     notFound();
   }
 
   const Calculator = tool.component;
+
   const pageUrl = `${baseUrl}/${lang}/tools/${slug}`;
+
   const toolName = getText(tool.title, lang);
+
   const toolDescription = getText(tool.description, lang);
 
   const softwareApplicationJsonLd = {
@@ -78,6 +100,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
     url: pageUrl,
     applicationCategory: "UtilitiesApplication",
     operatingSystem: "Any",
+
     offers: {
       "@type": "Offer",
       price: "0",
@@ -90,9 +113,11 @@ export default async function ToolPage({ params }: ToolPageProps) {
       ? {
           "@context": "https://schema.org",
           "@type": "FAQPage",
+
           mainEntity: tool.article.map((section) => ({
             "@type": "Question",
             name: getText(section.heading, lang),
+
             acceptedAnswer: {
               "@type": "Answer",
               text: getText(section.body, lang),
@@ -102,11 +127,17 @@ export default async function ToolPage({ params }: ToolPageProps) {
       : null;
 
   return (
-    <ToolPageLayout title={toolName} description={toolDescription} lang={lang}>
+    <ToolPageLayout
+      title={toolName}
+      description={toolDescription}
+      lang={lang}
+    >
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(softwareApplicationJsonLd),
+          __html: JSON.stringify(
+            softwareApplicationJsonLd
+          ),
         }}
       />
 
@@ -123,12 +154,16 @@ export default async function ToolPage({ params }: ToolPageProps) {
 
       <article className="mt-10 space-y-6 text-base leading-7 text-zinc-700 md:mt-12 md:leading-8">
         {tool.article.map((section) => (
-          <section key={getText(section.heading, lang)}>
+          <section
+            key={getText(section.heading, lang)}
+          >
             <h2 className="text-2xl font-bold text-zinc-950">
               {getText(section.heading, lang)}
             </h2>
 
-            <p className="mt-3">{getText(section.body, lang)}</p>
+            <p className="mt-3">
+              {getText(section.body, lang)}
+            </p>
           </section>
         ))}
       </article>

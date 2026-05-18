@@ -1,15 +1,28 @@
 import RuleOfThreeCalculator from "./component";
 import { ruleOfThreeContent } from "./content";
 
-export const ruleOfThreeTool = {
+import type { ToolDefinition } from "../types";
+
+export const ruleOfThreeTool: ToolDefinition = {
   id: "rule-of-three",
+
   category: "calculators",
 
-  slug: ruleOfThreeContent.slug,
-  title: ruleOfThreeContent.title,
-  description: ruleOfThreeContent.description,
-  seo: ruleOfThreeContent.seo,
-  article: ruleOfThreeContent.article,
+  availableLanguages: [
+    "en",
+    "it",
+    "pt",
+    "es",
+    "fr",
+    "de",
+    "ro",
+    "pl",
+    "nl",
+    "tr",
+    "ar",
+  ],
+
+  ...ruleOfThreeContent,
 
   component: RuleOfThreeCalculator,
 };
