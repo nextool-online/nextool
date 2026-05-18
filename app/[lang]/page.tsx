@@ -1,7 +1,7 @@
 import Navbar from "../../components/layout/Navbar";
 import SearchBar from "../../components/ui/SearchBar";
 import ToolCard from "../../components/ui/ToolCard";
-
+import { languages } from "../../data/languages";
 import { categories } from "../../data/categories";
 import { getText } from "../../data/i18n";
 import { tools } from "../../tools/registry";
@@ -14,7 +14,11 @@ type HomePageProps = {
     lang: LanguageCode;
   }>;
 };
-
+export function generateStaticParams() {
+  return languages.map((language) => ({
+    lang: language.code,
+  }));
+}
 export default async function HomePage({ params }: HomePageProps) {
   const { lang } = await params;
 
