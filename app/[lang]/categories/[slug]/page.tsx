@@ -18,6 +18,8 @@ type CategoryPageProps = {
   }>;
 };
 
+const baseUrl = "https://nextool.online";
+
 export function generateStaticParams() {
   return languagesList.flatMap((language) =>
     categories.map((category) => ({
@@ -38,20 +40,20 @@ export async function generateMetadata({ params }: CategoryPageProps) {
     };
   }
 
-    const canonicalUrl = `https://nextool.online/${lang}/categories/${slug}`;
+  const canonicalUrl = `${baseUrl}/${lang}/categories/${slug}`;
 
-    const languages = Object.fromEntries(
+  const languages = Object.fromEntries(
     languagesList.map((language) => [
       language.code,
-      `https://nextool.online/${language.code}/categories/${slug}`,
+      `${baseUrl}/${language.code}/categories/${slug}`,
     ])
   );
 
-     return {
-      title: getText(category.seo.title, lang),
-      description: getText(category.seo.description, lang),
+  return {
+    title: getText(category.seo.title, lang),
+    description: getText(category.seo.description, lang),
 
-      alternates: {
+    alternates: {
       canonical: canonicalUrl,
       languages,
     },
@@ -67,14 +69,46 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     notFound();
   }
 
+  const categoryTitle = getText(category.title, lang);
+  const categoryDescription = getText(category.description, lang);
+
   const filteredTools = tools.filter((tool) => tool.category === category.id);
 
+  const collectionPageJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: categoryTitle,
+    description: categoryDescription,
+    url: `${baseUrl}/${lang}/categories/${slug}`,
+  };
+
+  const itemListJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    itemListElement: filteredTools.map((tool, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: getText(tool.title, lang),
+      url: `${baseUrl}/${lang}/tools/${getText(tool.slug, lang)}`,
+    })),
+  };
+
   return (
-    <ToolPageLayout
-      title={getText(category.title, lang)}
-      description={getText(category.description, lang)}
-      lang={lang}
-    >
+    <ToolPageLayout title={categoryTitle} description={categoryDescription} lang={lang}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(collectionPageJsonLd),
+        }}
+      />
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(itemListJsonLd),
+        }}
+      />
+
       <div className="grid gap-6 md:grid-cols-2">
         {filteredTools.map((tool) => (
           <ToolCard
