@@ -1,11 +1,13 @@
 import Navbar from "../../components/layout/Navbar";
 import SearchBar from "../../components/ui/SearchBar";
 import ToolCard from "../../components/ui/ToolCard";
-import { languages } from "../../data/languages";
+
 import { categories } from "../../data/categories";
-import { getText } from "../../data/i18n";
-import { tools } from "../../tools/registry";
 import { dictionary } from "../../data/dictionary";
+import { getText } from "../../data/i18n";
+import { languages } from "../../data/languages";
+
+import { tools } from "../../tools/registry";
 
 import type { LanguageCode } from "../../data/languages";
 
@@ -14,22 +16,24 @@ type HomePageProps = {
     lang: LanguageCode;
   }>;
 };
+
+const baseUrl = "https://nextool.online";
+
 export function generateStaticParams() {
   return languages.map((language) => ({
     lang: language.code,
   }));
 }
-export async function generateMetadata({
-  params,
-}: HomePageProps) {
+
+export async function generateMetadata({ params }: HomePageProps) {
   const { lang } = await params;
 
-  const canonicalUrl = `https://nextool.online/${lang}`;
+  const canonicalUrl = `${baseUrl}/${lang}`;
 
   const languageUrls = Object.fromEntries(
     languages.map((language) => [
       language.code,
-      `https://nextool.online/${language.code}`,
+      `${baseUrl}/${language.code}`,
     ])
   );
 
@@ -43,12 +47,48 @@ export async function generateMetadata({
     },
   };
 }
+
 export default async function HomePage({ params }: HomePageProps) {
   const { lang } = await params;
 
+  const pageUrl = `${baseUrl}/${lang}`;
+
+  const websiteJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Nextool",
+    url: pageUrl,
+    description: getText(dictionary.homepageDescription, lang),
+  };
+
+  const itemListJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    itemListElement: tools.map((tool, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: getText(tool.title, lang),
+      url: `${baseUrl}/${lang}/tools/${getText(tool.slug, lang)}`,
+    })),
+  };
+
   return (
     <main className="min-h-screen bg-zinc-50">
-      <Navbar />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(websiteJsonLd),
+        }}
+      />
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(itemListJsonLd),
+        }}
+      />
+
+      <Navbar lang={lang} />
 
       <section className="mx-auto max-w-6xl px-6 py-16">
         <h1 className="text-5xl font-bold tracking-tight">
