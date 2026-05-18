@@ -1,9 +1,13 @@
+import { notFound } from "next/navigation";
+
 import ToolPageLayout from "../../../../components/layout/ToolPageLayout";
 import ToolCard from "../../../../components/ui/ToolCard";
 
 import { categories } from "../../../../data/categories";
-import { tools } from "../../../../tools/registry";
 import { getText } from "../../../../data/i18n";
+import { languages } from "../../../../data/languages";
+
+import { tools } from "../../../../tools/registry";
 
 import type { LanguageCode } from "../../../../data/languages";
 
@@ -14,17 +18,48 @@ type CategoryPageProps = {
   }>;
 };
 
+export function generateStaticParams() {
+  return languages.flatMap((language) =>
+    categories.map((category) => ({
+      lang: language.code,
+      slug: category.id,
+    }))
+  );
+}
+
+export async function generateMetadata({ params }: CategoryPageProps) {
+  const { lang, slug } = await params;
+
+  const category = categories.find((item) => item.id === slug);
+
+  if (!category) {
+    return {
+      title: "Category not found - Nextool",
+    };
+  }
+
+  return {
+    title: getText(category.seo.title, lang),
+    description: getText(category.seo.description, lang),
+  };
+}
+
 export default async function CategoryPage({ params }: CategoryPageProps) {
   const { lang, slug } = await params;
 
-  const category = categories.find((category) => category.id === slug);
+  const category = categories.find((item) => item.id === slug);
 
-  const filteredTools = tools.filter((tool) => tool.category === slug);
+  if (!category) {
+    notFound();
+  }
+
+  const filteredTools = tools.filter((tool) => tool.category === category.id);
 
   return (
     <ToolPageLayout
-      title={category ? getText(category.name, lang) : slug}
-      description={`Browse ${category ? getText(category.name, lang) : slug}.`}
+      title={getText(category.title, lang)}
+      description={getText(category.description, lang)}
+      lang={lang}
     >
       <div className="grid gap-6 md:grid-cols-2">
         {filteredTools.map((tool) => (
@@ -33,7 +68,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
             title={getText(tool.title, lang)}
             description={getText(tool.description, lang)}
             href={`/${lang}/tools/${getText(tool.slug, lang)}`}
-            category={tool.category}
+            category={getText(category.name, lang)}
           />
         ))}
       </div>
