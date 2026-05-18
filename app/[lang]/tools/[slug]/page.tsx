@@ -32,9 +32,23 @@ export async function generateMetadata({ params }: ToolPageProps) {
     };
   }
 
+  const canonicalUrl = `https://nextool.online/${lang}/tools/${slug}`;
+
+  const languages = Object.fromEntries(
+    Object.entries(tool.slug).map(([language, localizedSlug]) => [
+      language,
+      `https://nextool.online/${language}/tools/${localizedSlug}`,
+    ])
+  );
+
   return {
     title: getText(tool.seo.title, lang),
     description: getText(tool.seo.description, lang),
+
+    alternates: {
+      canonical: canonicalUrl,
+      languages,
+    },
   };
 }
 

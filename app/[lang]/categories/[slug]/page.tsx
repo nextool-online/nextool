@@ -5,7 +5,7 @@ import ToolCard from "../../../../components/ui/ToolCard";
 
 import { categories } from "../../../../data/categories";
 import { getText } from "../../../../data/i18n";
-import { languages } from "../../../../data/languages";
+import { languages as languagesList } from "../../../../data/languages";
 
 import { tools } from "../../../../tools/registry";
 
@@ -19,7 +19,7 @@ type CategoryPageProps = {
 };
 
 export function generateStaticParams() {
-  return languages.flatMap((language) =>
+  return languagesList.flatMap((language) =>
     categories.map((category) => ({
       lang: language.code,
       slug: category.id,
@@ -38,9 +38,23 @@ export async function generateMetadata({ params }: CategoryPageProps) {
     };
   }
 
-  return {
-    title: getText(category.seo.title, lang),
-    description: getText(category.seo.description, lang),
+    const canonicalUrl = `https://nextool.online/${lang}/categories/${slug}`;
+
+    const languages = Object.fromEntries(
+    languagesList.map((language) => [
+      language.code,
+      `https://nextool.online/${language.code}/categories/${slug}`,
+    ])
+  );
+
+     return {
+      title: getText(category.seo.title, lang),
+      description: getText(category.seo.description, lang),
+
+      alternates: {
+      canonical: canonicalUrl,
+      languages,
+    },
   };
 }
 
