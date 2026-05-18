@@ -13,7 +13,14 @@ type ToolPageProps = {
     slug: string;
   }>;
 };
-
+export function generateStaticParams() {
+  return tools.flatMap((tool) =>
+    Object.entries(tool.slug).map(([lang, slug]) => ({
+      lang,
+      slug,
+    }))
+  );
+}
 export async function generateMetadata({ params }: ToolPageProps) {
   const { lang, slug } = await params;
 
