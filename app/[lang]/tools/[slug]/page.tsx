@@ -13,6 +13,9 @@ type ToolPageProps = {
     slug: string;
   }>;
 };
+
+const baseUrl = "https://nextool.online";
+
 export function generateStaticParams() {
   return tools.flatMap((tool) =>
     Object.entries(tool.slug).map(([lang, slug]) => ({
@@ -21,6 +24,7 @@ export function generateStaticParams() {
     }))
   );
 }
+
 export async function generateMetadata({ params }: ToolPageProps) {
   const { lang, slug } = await params;
 
@@ -32,12 +36,12 @@ export async function generateMetadata({ params }: ToolPageProps) {
     };
   }
 
-  const canonicalUrl = `https://nextool.online/${lang}/tools/${slug}`;
+  const canonicalUrl = `${baseUrl}/${lang}/tools/${slug}`;
 
   const languages = Object.fromEntries(
     Object.entries(tool.slug).map(([language, localizedSlug]) => [
       language,
-      `https://nextool.online/${language}/tools/${localizedSlug}`,
+      `${baseUrl}/${language}/tools/${localizedSlug}`,
     ])
   );
 
@@ -62,13 +66,59 @@ export default async function ToolPage({ params }: ToolPageProps) {
   }
 
   const Calculator = tool.component;
+  const pageUrl = `${baseUrl}/${lang}/tools/${slug}`;
+  const toolName = getText(tool.title, lang);
+  const toolDescription = getText(tool.description, lang);
+
+  const softwareApplicationJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: toolName,
+    description: toolDescription,
+    url: pageUrl,
+    applicationCategory: "UtilitiesApplication",
+    operatingSystem: "Any",
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
+    },
+  };
+
+  const faqJsonLd =
+    tool.article.length > 0
+      ? {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: tool.article.map((section) => ({
+            "@type": "Question",
+            name: getText(section.heading, lang),
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: getText(section.body, lang),
+            },
+          })),
+        }
+      : null;
 
   return (
-    <ToolPageLayout
-      title={getText(tool.title, lang)}
-      description={getText(tool.description, lang)}
-      lang={lang}
-    >
+    <ToolPageLayout title={toolName} description={toolDescription} lang={lang}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(softwareApplicationJsonLd),
+        }}
+      />
+
+      {faqJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(faqJsonLd),
+          }}
+        />
+      )}
+
       <Calculator lang={lang} />
 
       <article className="mt-10 space-y-6 text-base leading-7 text-zinc-700 md:mt-12 md:leading-8">
