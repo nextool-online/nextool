@@ -3,8 +3,13 @@
 import { useMemo, useState } from "react";
 
 import ToolBox from "../../components/ui/ToolBox";
-import { getText } from "../../data/i18n";
+import ToolInput from "../../components/toolkit/ToolInput";
+import ToolResult from "../../components/toolkit/ToolResult";
+import ToolSection from "../../components/toolkit/ToolSection";
+
 import { dictionary } from "../../data/dictionary";
+import { getText } from "../../data/i18n";
+
 import { ruleOfThreeContent } from "./content";
 
 import type { ToolComponentProps } from "../types";
@@ -44,69 +49,53 @@ export default function RuleOfThreeCalculator({ lang }: ToolComponentProps) {
 
   return (
     <ToolBox>
-      <div className="mb-5">
-        <h2 className="text-xl font-bold md:text-2xl">
-          {getText(ui.heading, lang)}
-        </h2>
+      <ToolSection
+        title={getText(ui.heading, lang)}
+        description={getText(ui.helper, lang)}
+      >
+        <div className="space-y-4">
+          <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 md:gap-4">
+            <ToolInput
+              type="number"
+              value={a}
+              onChange={(event) => setA(event.target.value)}
+              placeholder={getText(ui.valueA, lang)}
+            />
 
-        <p className="mt-2 text-sm text-zinc-600">
-          {getText(ui.helper, lang)}
-        </p>
-      </div>
+            <span className="text-sm font-bold text-zinc-400">→</span>
 
-      <div className="space-y-4">
-        <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 md:gap-4">
-          <input
-            type="number"
-            value={a}
-            onChange={(e) => setA(e.target.value)}
-            placeholder={getText(ui.valueA, lang)}
-            className="min-w-0 rounded-xl border border-zinc-300 bg-white p-3 text-center text-base font-semibold outline-none transition focus:border-zinc-900 md:p-4 md:text-lg"
-          />
+            <ToolInput
+              type="number"
+              value={b}
+              onChange={(event) => setB(event.target.value)}
+              placeholder={getText(ui.valueB, lang)}
+            />
+          </div>
 
-          <span className="text-sm font-bold text-zinc-400">→</span>
+          <div className="text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
+            {getText(ui.as, lang)}
+          </div>
 
-          <input
-            type="number"
-            value={b}
-            onChange={(e) => setB(e.target.value)}
-            placeholder={getText(ui.valueB, lang)}
-            className="min-w-0 rounded-xl border border-zinc-300 bg-white p-3 text-center text-base font-semibold outline-none transition focus:border-zinc-900 md:p-4 md:text-lg"
-          />
-        </div>
+          <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 md:gap-4">
+            <ToolInput
+              type="number"
+              value={c}
+              onChange={(event) => setC(event.target.value)}
+              placeholder={getText(ui.valueC, lang)}
+            />
 
-        <div className="text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
-          {getText(ui.as, lang)}
-        </div>
+            <span className="text-sm font-bold text-zinc-400">→</span>
 
-        <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 md:gap-4">
-          <input
-            type="number"
-            value={c}
-            onChange={(e) => setC(e.target.value)}
-            placeholder={getText(ui.valueC, lang)}
-            className="min-w-0 rounded-xl border border-zinc-300 bg-white p-3 text-center text-base font-semibold outline-none transition focus:border-zinc-900 md:p-4 md:text-lg"
-          />
-
-          <span className="text-sm font-bold text-zinc-400">→</span>
-
-          <div className="flex min-w-0 items-center overflow-hidden rounded-xl border border-zinc-300 bg-zinc-100">
-            <div className="min-w-0 flex-1 truncate p-3 text-center text-base font-bold md:p-4 md:text-lg">
-              {result || <span className="text-zinc-400">X</span>}
-            </div>
-
-            <button
-              type="button"
-              onClick={copyResult}
-              disabled={!result}
-              aria-label={getText(dictionary.copyResult, lang)}
-              className="border-l border-zinc-300 px-3 py-3 text-sm font-semibold text-zinc-600 transition hover:bg-zinc-200 disabled:opacity-40 md:px-4 md:py-4"
-            >
-              {copied ? "✓" : "⧉"}
-            </button>
+            <ToolResult
+              value={result}
+              placeholder="X"
+              onCopy={copyResult}
+              copied={copied}
+              copyLabel={getText(dictionary.copyResult, lang)}
+            />
           </div>
         </div>
-      </div>
+      </ToolSection>
     </ToolBox>
   );
 }

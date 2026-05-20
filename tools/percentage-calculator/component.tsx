@@ -3,6 +3,10 @@
 import { useMemo, useState } from "react";
 
 import ToolBox from "../../components/ui/ToolBox";
+import ToolInput from "../../components/toolkit/ToolInput";
+import ToolResult from "../../components/toolkit/ToolResult";
+import ToolSection from "../../components/toolkit/ToolSection";
+
 import { dictionary } from "../../data/dictionary";
 import { getText } from "../../data/i18n";
 
@@ -43,55 +47,38 @@ export default function PercentageCalculator({ lang }: ToolComponentProps) {
 
   return (
     <ToolBox>
-      <div className="mb-5">
-        <h2 className="text-xl font-bold md:text-2xl">
-          {getText(ui.heading, lang)}
-        </h2>
+      <ToolSection
+        title={getText(ui.heading, lang)}
+        description={getText(ui.helper, lang)}
+      >
+        <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 md:gap-4">
+          <ToolInput
+            type="number"
+            value={percentage}
+            onChange={(event) => setPercentage(event.target.value)}
+            placeholder={getText(ui.percentage, lang)}
+          />
 
-        <p className="mt-2 text-sm text-zinc-600">
-          {getText(ui.helper, lang)}
-        </p>
-      </div>
+          <span className="text-sm font-bold text-zinc-400">%</span>
 
-      <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 md:gap-4">
-        <input
-          type="number"
-          value={percentage}
-          onChange={(e) => setPercentage(e.target.value)}
-          placeholder={getText(ui.percentage, lang)}
-          className="min-w-0 rounded-xl border border-zinc-300 bg-white p-3 text-center text-base font-semibold outline-none transition focus:border-zinc-900 md:p-4 md:text-lg"
-        />
-
-        <span className="text-sm font-bold text-zinc-400">%</span>
-
-        <input
-          type="number"
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          placeholder={getText(ui.value, lang)}
-          className="min-w-0 rounded-xl border border-zinc-300 bg-white p-3 text-center text-base font-semibold outline-none transition focus:border-zinc-900 md:p-4 md:text-lg"
-        />
-      </div>
-
-      <div className="mt-4 flex items-center overflow-hidden rounded-xl border border-zinc-300 bg-zinc-100">
-        <div className="min-w-0 flex-1 truncate p-3 text-center text-base font-bold md:p-4 md:text-lg">
-          {result || (
-            <span className="text-zinc-400">
-              {getText(dictionary.resultLabel, lang)}
-            </span>
-          )}
+          <ToolInput
+            type="number"
+            value={value}
+            onChange={(event) => setValue(event.target.value)}
+            placeholder={getText(ui.value, lang)}
+          />
         </div>
 
-        <button
-          type="button"
-          onClick={copyResult}
-          disabled={!result}
-          aria-label={getText(dictionary.copyResult, lang)}
-          className="border-l border-zinc-300 px-3 py-3 text-sm font-semibold text-zinc-600 transition hover:bg-zinc-200 disabled:opacity-40 md:px-4 md:py-4"
-        >
-          {copied ? "✓" : "⧉"}
-        </button>
-      </div>
+        <div className="mt-4">
+          <ToolResult
+            value={result}
+            placeholder={getText(dictionary.resultLabel, lang)}
+            onCopy={copyResult}
+            copied={copied}
+            copyLabel={getText(dictionary.copyResult, lang)}
+          />
+        </div>
+      </ToolSection>
     </ToolBox>
   );
 }
