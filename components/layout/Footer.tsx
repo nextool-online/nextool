@@ -21,7 +21,7 @@ export default function Footer({ lang }: FooterProps) {
           </p>
         </div>
 
-        <div className="grid gap-6 text-sm md:grid-cols-2">
+        <div className="grid gap-6 text-sm md:grid-cols-3">
           <div>
             <p className="font-semibold text-zinc-950">Pages</p>
 
@@ -29,11 +29,40 @@ export default function Footer({ lang }: FooterProps) {
               <Link href={`/${lang}`} className="hover:text-zinc-950">
                 Home
               </Link>
-              <Link href={`/${lang}/categories/calculators`} className="hover:text-zinc-950">
+
+              <Link
+                href={`/${lang}/categories/calculators`}
+                className="hover:text-zinc-950"
+              >
                 Calculators
               </Link>
-              <Link href={`/${lang}/categories/developer-tools`} className="hover:text-zinc-950">
+
+              <Link
+                href={`/${lang}/categories/developer-tools`}
+                className="hover:text-zinc-950"
+              >
                 Developer Tools
+              </Link>
+            </div>
+          </div>
+
+          <div>
+            <p className="font-semibold text-zinc-950">Legal</p>
+
+            <div className="mt-3 grid gap-2 text-zinc-600">
+              <Link href={`/${lang}/privacy`} className="hover:text-zinc-950">
+                Privacy Policy
+              </Link>
+
+              <Link href={`/${lang}/terms`} className="hover:text-zinc-950">
+                Terms
+              </Link>
+
+              <Link
+                href={`/${lang}/disclaimer`}
+                className="hover:text-zinc-950"
+              >
+                Disclaimer
               </Link>
             </div>
           </div>
