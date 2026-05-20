@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: ToolsPageProps) {
   );
 
   return {
-    title: `All tools - Nextool`,
+    title: `${getText(dictionary.allToolsTitle, lang)} - Nextool`,
     description: getText(dictionary.homepageDescription, lang),
 
     alternates: {
@@ -76,7 +76,9 @@ export default async function ToolsPage({ params }: ToolsPageProps) {
       <Navbar lang={lang} />
 
       <section className="mx-auto max-w-6xl px-6 py-16">
-        <h1 className="text-5xl font-bold tracking-tight">All tools</h1>
+        <h1 className="text-5xl font-bold tracking-tight">  
+        {getText(dictionary.allToolsTitle, lang)}
+        </h1>
 
         <p className="mt-6 max-w-2xl text-lg text-zinc-600">
           {getText(dictionary.homepageDescription, lang)}

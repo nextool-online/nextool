@@ -72,6 +72,7 @@ export const dictionary = {
   tr: "Hesaplayıcı",
   ar: "حاسبة",
 } satisfies Translation,
+
 copyResult: {
   en: "Copy result",
   it: "Copia risultato",
@@ -85,6 +86,7 @@ copyResult: {
   tr: "Sonucu kopyala",
   ar: "نسخ النتيجة",
 } satisfies Translation,
+
 relatedTools: {
   en: "Related tools",
   it: "Strumenti correlati",
@@ -98,6 +100,7 @@ relatedTools: {
   tr: "İlgili araçlar",
   ar: "أدوات ذات صلة",
 } satisfies Translation,
+
 homeLabel: {
   en: "Home",
   it: "Home",
@@ -111,6 +114,7 @@ homeLabel: {
   tr: "Ana sayfa",
   ar: "الرئيسية",
 } satisfies Translation,
+
 resultLabel: {
   en: "Result",
   it: "Risultato",
@@ -123,5 +127,19 @@ resultLabel: {
   nl: "Resultaat",
   tr: "Sonuç",
   ar: "النتيجة",
+} satisfies Translation,
+
+allToolsTitle: {
+  en: "All tools",
+  it: "Tutti gli strumenti",
+  pt: "Todas as ferramentas",
+  es: "Todas las herramientas",
+  fr: "Tous les outils",
+  de: "Alle Tools",
+  ro: "Toate instrumentele",
+  pl: "Wszystkie narzędzia",
+  nl: "Alle tools",
+  tr: "Tüm araçlar",
+  ar: "كل الأدوات",
 } satisfies Translation,
 };
