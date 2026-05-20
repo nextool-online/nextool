@@ -1,11 +1,13 @@
 import type { MetadataRoute } from "next";
 
 import { categories } from "../data/categories";
-import { languages, type LanguageCode } from "../data/languages";
 import { getText } from "../data/i18n";
+import { languages, type LanguageCode } from "../data/languages";
 import { tools } from "../tools/registry";
 
 const baseUrl = "https://nextool.online";
+
+const legalPages = ["privacy", "terms", "disclaimer"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const homepageUrls = languages.map((language) => ({
@@ -14,6 +16,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     changeFrequency: "weekly" as const,
     priority: 1,
   }));
+
+  const legalUrls = languages.flatMap((language) =>
+    legalPages.map((page) => ({
+      url: `${baseUrl}/${language.code}/${page}`,
+      lastModified: new Date(),
+      changeFrequency: "yearly" as const,
+      priority: 0.3,
+    }))
+  );
 
   const categoryUrls = languages.flatMap((language) =>
     categories.map((category) => ({
@@ -36,5 +47,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }));
   });
 
-  return [...homepageUrls, ...categoryUrls, ...toolUrls];
+  return [...homepageUrls, ...legalUrls, ...categoryUrls, ...toolUrls];
 }

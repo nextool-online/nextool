@@ -1,6 +1,8 @@
 import Footer from "../../../components/layout/Footer";
 import Navbar from "../../../components/layout/Navbar";
 
+import { languages } from "../../../data/languages";
+
 import type { LanguageCode } from "../../../data/languages";
 
 type PrivacyPageProps = {
@@ -9,10 +11,34 @@ type PrivacyPageProps = {
   }>;
 };
 
-export const metadata = {
-  title: "Privacy Policy - Nextool",
-  description: "Privacy policy for Nextool.",
-};
+const baseUrl = "https://nextool.online";
+
+export function generateStaticParams() {
+  return languages.map((language) => ({
+    lang: language.code,
+  }));
+}
+
+export async function generateMetadata({ params }: PrivacyPageProps) {
+  const { lang } = await params;
+
+  const languageUrls = Object.fromEntries(
+    languages.map((language) => [
+      language.code,
+      `${baseUrl}/${language.code}/privacy`,
+    ])
+  );
+
+  return {
+    title: "Privacy Policy - Nextool",
+    description: "Privacy policy for Nextool.",
+
+    alternates: {
+      canonical: `${baseUrl}/${lang}/privacy`,
+      languages: languageUrls,
+    },
+  };
+}
 
 export default async function PrivacyPage({ params }: PrivacyPageProps) {
   const { lang } = await params;

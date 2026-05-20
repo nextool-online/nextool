@@ -1,6 +1,8 @@
 import Footer from "../../../components/layout/Footer";
 import Navbar from "../../../components/layout/Navbar";
 
+import { languages } from "../../../data/languages";
+
 import type { LanguageCode } from "../../../data/languages";
 
 type DisclaimerPageProps = {
@@ -9,10 +11,34 @@ type DisclaimerPageProps = {
   }>;
 };
 
-export const metadata = {
-  title: "Disclaimer - Nextool",
-  description: "Disclaimer for Nextool tools and calculators.",
-};
+const baseUrl = "https://nextool.online";
+
+export function generateStaticParams() {
+  return languages.map((language) => ({
+    lang: language.code,
+  }));
+}
+
+export async function generateMetadata({ params }: DisclaimerPageProps) {
+  const { lang } = await params;
+
+  const languageUrls = Object.fromEntries(
+    languages.map((language) => [
+      language.code,
+      `${baseUrl}/${language.code}/disclaimer`,
+    ])
+  );
+
+  return {
+    title: "Disclaimer - Nextool",
+    description: "Disclaimer for Nextool tools and calculators.",
+
+    alternates: {
+      canonical: `${baseUrl}/${lang}/disclaimer`,
+      languages: languageUrls,
+    },
+  };
+}
 
 export default async function DisclaimerPage({ params }: DisclaimerPageProps) {
   const { lang } = await params;

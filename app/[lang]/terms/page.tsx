@@ -1,6 +1,8 @@
 import Footer from "../../../components/layout/Footer";
 import Navbar from "../../../components/layout/Navbar";
 
+import { languages } from "../../../data/languages";
+
 import type { LanguageCode } from "../../../data/languages";
 
 type TermsPageProps = {
@@ -9,10 +11,34 @@ type TermsPageProps = {
   }>;
 };
 
-export const metadata = {
-  title: "Terms of Use - Nextool",
-  description: "Terms of use for Nextool.",
-};
+const baseUrl = "https://nextool.online";
+
+export function generateStaticParams() {
+  return languages.map((language) => ({
+    lang: language.code,
+  }));
+}
+
+export async function generateMetadata({ params }: TermsPageProps) {
+  const { lang } = await params;
+
+  const languageUrls = Object.fromEntries(
+    languages.map((language) => [
+      language.code,
+      `${baseUrl}/${language.code}/terms`,
+    ])
+  );
+
+  return {
+    title: "Terms of Use - Nextool",
+    description: "Terms of use for Nextool.",
+
+    alternates: {
+      canonical: `${baseUrl}/${lang}/terms`,
+      languages: languageUrls,
+    },
+  };
+}
 
 export default async function TermsPage({ params }: TermsPageProps) {
   const { lang } = await params;
