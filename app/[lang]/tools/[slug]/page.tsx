@@ -122,7 +122,12 @@ export default async function ToolPage({ params }: ToolPageProps) {
   const toolDescription = getText(tool.description, lang);
   const categoryName = category ? getText(category.name, lang) : tool.category;
   const relatedTools = getRelatedTools(tool, lang);
-
+  const languageUrls = Object.fromEntries(
+  getAvailableLanguages(tool).map((language) => [
+    language,
+    `/${language}/tools/${getText(tool.slug, language as LanguageCode)}`,
+   ])
+   );
   const breadcrumbs = [
     {
       label: getText(dictionary.homeLabel, lang),
@@ -200,7 +205,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
       : null;
 
   return (
-    <ToolPageLayout title={toolName} description={toolDescription} lang={lang}>
+    <ToolPageLayout  title={toolName}  description={toolDescription}  lang={lang}  languageUrls={languageUrls}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

@@ -121,9 +121,14 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       url: `${baseUrl}/${lang}/tools/${getText(tool.slug, lang)}`,
     })),
   };
-
+  const languageUrls = Object.fromEntries(
+  languagesList.map((language) => [
+    language.code,
+    `/${language.code}/categories/${slug}`,
+   ])
+   );
   return (
-    <ToolPageLayout title={categoryTitle} description={categoryDescription} lang={lang}>
+    <ToolPageLayout title={categoryTitle} description={categoryDescription} lang={lang} languageUrls={languageUrls}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
