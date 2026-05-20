@@ -11,12 +11,14 @@ type NavbarProps = {
 
 export default function Navbar({ lang = "en" }: NavbarProps) {
   return (
-    <nav className="flex items-center justify-between border-b border-zinc-200 px-6 py-4">
+    <nav className="flex items-center justify-between border-b border-zinc-200 bg-white px-6 py-4">
       <Link href={`/${lang}`} className="text-2xl font-bold">
         Nextool
       </Link>
 
       <div className="flex gap-6 text-sm font-medium">
+        <Link href={`/${lang}/tools`}>Tools</Link>
+
         {categories.map((category) => (
           <Link key={category.id} href={`/${lang}/categories/${category.id}`}>
             {getText(category.name, lang)}

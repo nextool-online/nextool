@@ -24,7 +24,9 @@ export default function Footer({ lang }: FooterProps) {
         <div className="grid gap-6 text-sm md:grid-cols-3">
           <div>
             <p className="font-semibold text-zinc-950">Pages</p>
-
+              <Link href={`/${lang}/tools`} className="hover:text-zinc-950">
+                Tools
+              </Link>
             <div className="mt-3 grid gap-2 text-zinc-600">
               <Link href={`/${lang}`} className="hover:text-zinc-950">
                 Home

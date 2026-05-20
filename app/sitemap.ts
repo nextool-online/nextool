@@ -17,6 +17,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 1,
   }));
 
+  const toolsIndexUrls = languages.map((language) => ({
+    url: `${baseUrl}/${language.code}/tools`,
+    lastModified: new Date(),
+    changeFrequency: "weekly" as const,
+    priority: 0.85,
+  }));
+
   const legalUrls = languages.flatMap((language) =>
     legalPages.map((page) => ({
       url: `${baseUrl}/${language.code}/${page}`,
@@ -47,5 +54,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }));
   });
 
-  return [...homepageUrls, ...legalUrls, ...categoryUrls, ...toolUrls];
+  return [...homepageUrls, ...toolsIndexUrls, ...legalUrls, ...categoryUrls, ...toolUrls,];
 }
