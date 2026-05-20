@@ -1,9 +1,11 @@
 import { notFound } from "next/navigation";
 
-import ToolPageLayout from "../../../../components/layout/ToolPageLayout";
+import Breadcrumbs from "../../../../components/ui/Breadcrumbs";
 import ToolCard from "../../../../components/ui/ToolCard";
+import ToolPageLayout from "../../../../components/layout/ToolPageLayout";
 
 import { categories } from "../../../../data/categories";
+import { dictionary } from "../../../../data/dictionary";
 import { getText } from "../../../../data/i18n";
 import { languages as languagesList } from "../../../../data/languages";
 
@@ -78,6 +80,29 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   const categoryTitle = getText(category.title, lang);
   const categoryDescription = getText(category.description, lang);
 
+  const breadcrumbs = [
+    {
+      label: getText(dictionary.homeLabel, lang),
+      href: `/${lang}`,
+    },
+    {
+      label: categoryTitle,
+    },
+  ];
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: breadcrumbs.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.label,
+      item: item.href
+        ? `${baseUrl}${item.href}`
+        : `${baseUrl}/${lang}/categories/${slug}`,
+    })),
+  };
+
   const collectionPageJsonLd = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
@@ -102,6 +127,13 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbJsonLd),
+        }}
+      />
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
           __html: JSON.stringify(collectionPageJsonLd),
         }}
       />
@@ -112,6 +144,8 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           __html: JSON.stringify(itemListJsonLd),
         }}
       />
+
+      <Breadcrumbs items={breadcrumbs} />
 
       <div className="grid gap-6 md:grid-cols-2">
         {categoryTools.map((tool) => (
