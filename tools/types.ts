@@ -26,6 +26,8 @@ export type ToolDefinition = {
 
   availableLanguages?: LanguageCode[];
 
+  relatedTools?: string[];
+
   slug: Translation;
 
   title: Translation;

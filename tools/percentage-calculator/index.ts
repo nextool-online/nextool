@@ -22,6 +22,8 @@ export const percentageCalculatorTool: ToolDefinition = {
     "ar",
   ],
 
+  relatedTools: ["rule-of-three"],
+
   ...percentageCalculatorContent,
 
   component: PercentageCalculator,

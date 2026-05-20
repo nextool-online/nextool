@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 
 import ToolPageLayout from "../../../../components/layout/ToolPageLayout";
+import ToolCard from "../../../../components/ui/ToolCard";
 
 import { getText } from "../../../../data/i18n";
 import { tools } from "../../../../tools/registry";
@@ -16,11 +17,46 @@ type ToolPageProps = {
 
 const baseUrl = "https://nextool.online";
 
+function getAvailableLanguages(tool: (typeof tools)[number]) {
+  return tool.availableLanguages || Object.keys(tool.slug);
+}
+
+function isToolAvailableForLanguage(
+  tool: (typeof tools)[number],
+  lang: LanguageCode
+) {
+  return getAvailableLanguages(tool).includes(lang);
+}
+
+function getRelatedTools(
+  currentTool: (typeof tools)[number],
+  lang: LanguageCode
+) {
+  const manualRelatedTools = currentTool.relatedTools
+    ?.map((relatedToolId) =>
+      tools.find((tool) => tool.id === relatedToolId)
+    )
+    .filter(Boolean) as typeof tools;
+
+  const fallbackRelatedTools = tools.filter(
+    (tool) =>
+      tool.id !== currentTool.id &&
+      tool.category === currentTool.category
+  );
+
+  const candidates =
+    manualRelatedTools.length > 0
+      ? manualRelatedTools
+      : fallbackRelatedTools;
+
+  return candidates.filter((tool) =>
+    isToolAvailableForLanguage(tool, lang)
+  );
+}
+
 export function generateStaticParams() {
   return tools.flatMap((tool) => {
-    const languages =
-      tool.availableLanguages ||
-      Object.keys(tool.slug);
+    const languages = getAvailableLanguages(tool);
 
     return languages.map((lang) => ({
       lang,
@@ -34,7 +70,7 @@ export async function generateMetadata({ params }: ToolPageProps) {
 
   const tool = tools.find(
     (tool) =>
-      tool.availableLanguages?.includes(lang) &&
+      isToolAvailableForLanguage(tool, lang) &&
       getText(tool.slug, lang) === slug
   );
 
@@ -46,12 +82,8 @@ export async function generateMetadata({ params }: ToolPageProps) {
 
   const canonicalUrl = `${baseUrl}/${lang}/tools/${slug}`;
 
-  const alternateLanguages =
-    tool.availableLanguages ||
-    Object.keys(tool.slug);
-
   const languages = Object.fromEntries(
-    alternateLanguages.map((language) => [
+    getAvailableLanguages(tool).map((language) => [
       language,
       `${baseUrl}/${language}/tools/${getText(
         tool.slug,
@@ -76,7 +108,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
 
   const tool = tools.find(
     (tool) =>
-      tool.availableLanguages?.includes(lang) &&
+      isToolAvailableForLanguage(tool, lang) &&
       getText(tool.slug, lang) === slug
   );
 
@@ -87,10 +119,9 @@ export default async function ToolPage({ params }: ToolPageProps) {
   const Calculator = tool.component;
 
   const pageUrl = `${baseUrl}/${lang}/tools/${slug}`;
-
   const toolName = getText(tool.title, lang);
-
   const toolDescription = getText(tool.description, lang);
+  const relatedTools = getRelatedTools(tool, lang);
 
   const softwareApplicationJsonLd = {
     "@context": "https://schema.org",
@@ -126,6 +157,25 @@ export default async function ToolPage({ params }: ToolPageProps) {
         }
       : null;
 
+  const relatedToolsJsonLd =
+    relatedTools.length > 0
+      ? {
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          itemListElement: relatedTools.map(
+            (relatedTool, index) => ({
+              "@type": "ListItem",
+              position: index + 1,
+              name: getText(relatedTool.title, lang),
+              url: `${baseUrl}/${lang}/tools/${getText(
+                relatedTool.slug,
+                lang
+              )}`,
+            })
+          ),
+        }
+      : null;
+
   return (
     <ToolPageLayout
       title={toolName}
@@ -135,9 +185,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            softwareApplicationJsonLd
-          ),
+          __html: JSON.stringify(softwareApplicationJsonLd),
         }}
       />
 
@@ -150,23 +198,54 @@ export default async function ToolPage({ params }: ToolPageProps) {
         />
       )}
 
+      {relatedToolsJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(relatedToolsJsonLd),
+          }}
+        />
+      )}
+
       <Calculator lang={lang} />
 
       <article className="mt-10 space-y-6 text-base leading-7 text-zinc-700 md:mt-12 md:leading-8">
         {tool.article.map((section) => (
-          <section
-            key={getText(section.heading, lang)}
-          >
+          <section key={getText(section.heading, lang)}>
             <h2 className="text-2xl font-bold text-zinc-950">
               {getText(section.heading, lang)}
             </h2>
 
-            <p className="mt-3">
-              {getText(section.body, lang)}
-            </p>
+            <p className="mt-3">{getText(section.body, lang)}</p>
           </section>
         ))}
       </article>
+
+      {relatedTools.length > 0 && (
+        <section className="mt-12">
+          <h2 className="text-2xl font-bold text-zinc-950">
+            Related tools
+          </h2>
+
+          <div className="mt-5 grid gap-6 md:grid-cols-2">
+            {relatedTools.map((relatedTool) => (
+              <ToolCard
+                key={relatedTool.id}
+                title={getText(relatedTool.title, lang)}
+                description={getText(
+                  relatedTool.description,
+                  lang
+                )}
+                href={`/${lang}/tools/${getText(
+                  relatedTool.slug,
+                  lang
+                )}`}
+                category={relatedTool.category}
+              />
+            ))}
+          </div>
+        </section>
+      )}
     </ToolPageLayout>
   );
 }

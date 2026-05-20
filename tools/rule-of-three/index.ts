@@ -22,6 +22,8 @@ export const ruleOfThreeTool: ToolDefinition = {
     "ar",
   ],
 
+  relatedTools: ["percentage-calculator"],
+
   ...ruleOfThreeContent,
 
   component: RuleOfThreeCalculator,
