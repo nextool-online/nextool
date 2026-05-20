@@ -6,7 +6,7 @@ import { categories } from "../../data/categories";
 import { dictionary } from "../../data/dictionary";
 import { getText } from "../../data/i18n";
 import { languages } from "../../data/languages";
-
+import Footer from "../../components/layout/Footer";
 import { tools } from "../../tools/registry";
 
 import type { LanguageCode } from "../../data/languages";
@@ -182,6 +182,7 @@ export default async function HomePage({
           ))}
         </div>
       </section>
+      <Footer lang={lang} />
     </main>
   );
 }

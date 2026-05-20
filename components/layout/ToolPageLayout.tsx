@@ -1,7 +1,8 @@
+import Footer from "./Footer";
 import Navbar from "./Navbar";
 
-import { getText } from "../../data/i18n";
 import { dictionary } from "../../data/dictionary";
+import { getText } from "../../data/i18n";
 
 import type { LanguageCode } from "../../data/languages";
 
@@ -39,6 +40,8 @@ export default function ToolPageLayout({
 
         {children}
       </section>
+
+      <Footer lang={lang} />
     </main>
   );
 }
