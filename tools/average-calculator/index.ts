@@ -10,9 +10,25 @@ export const averageCalculatorTool: ToolDefinition = {
 
   featured: true,
 
+  popular: true,
+
+  difficulty: "basic",
+
   availableLanguages: ["en"],
 
-  relatedTools: ["percentage-calculator"],
+  tags: [
+    "average",
+    "mean",
+    "statistics",
+    "math",
+    "calculator",
+    "numbers",
+  ],
+
+  relatedTools: [
+    "percentage-calculator",
+    "rule-of-three",
+  ],
 
   ...averageCalculatorContent,
 

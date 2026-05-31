@@ -10,9 +10,26 @@ export const ageCalculatorTool: ToolDefinition = {
 
   featured: true,
 
+  popular: true,
+
+  difficulty: "basic",
+
   availableLanguages: ["en"],
 
-  relatedTools: ["bmi-calculator", "percentage-calculator"],
+  tags: [
+    "age",
+    "birth date",
+    "date calculator",
+    "years",
+    "months",
+    "days",
+    "calculator",
+  ],
+
+  relatedTools: [
+    "bmi-calculator",
+    "percentage-calculator",
+  ],
 
   ...ageCalculatorContent,
 

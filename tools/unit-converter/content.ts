@@ -8,36 +8,84 @@ export const unitConverterContent = {
   },
 
   description: {
-    en: "Convert common length and weight units instantly.",
+    en: "Convert length and weight units instantly.",
   },
 
   seo: {
     title: {
-      en: "Unit Converter - Free Online Conversion Tool",
+      en: "Unit Converter - Measurement Conversion Tool",
     },
 
     description: {
-      en: "Use this free unit converter to convert common length and weight units quickly and easily.",
+      en: "Convert length and weight measurements quickly and accurately using this free online unit converter.",
     },
   },
 
   article: [
     {
       heading: {
-        en: "What is a unit converter?",
+        en: "Understanding unit conversions",
       },
 
       body: {
-        en: "A unit converter is a tool that changes a value from one unit of measurement to another, such as meters to feet or kilograms to pounds.",
+        en: "Unit conversion is the process of changing a measurement from one unit to another while preserving the same quantity. Common examples include converting meters to feet and kilograms to pounds.",
       },
     },
     {
       heading: {
-        en: "How does this unit converter work?",
+        en: "Why unit conversions matter",
       },
 
       body: {
-        en: "Choose a measurement type, enter a value, select the original unit and the target unit, and the converter will calculate the equivalent value.",
+        en: "Conversions are essential in science, engineering, travel, construction, fitness and international trade where different measurement systems are used.",
+      },
+    },
+    {
+      heading: {
+        en: "Using a unit converter effectively",
+      },
+
+      body: {
+        en: "Select the measurement category, enter a value and choose the source and destination units. The result is calculated instantly.",
+      },
+    },
+  ],
+
+  faq: [
+    {
+      question: {
+        en: "What units can I convert?",
+      },
+
+      answer: {
+        en: "This converter currently supports common length and weight units.",
+      },
+    },
+    {
+      question: {
+        en: "Are conversions accurate?",
+      },
+
+      answer: {
+        en: "Yes. The calculator uses standard conversion factors commonly accepted worldwide.",
+      },
+    },
+    {
+      question: {
+        en: "Can I convert metric and imperial units?",
+      },
+
+      answer: {
+        en: "Yes. The converter supports conversions between metric and imperial systems.",
+      },
+    },
+    {
+      question: {
+        en: "Why are different measurement systems used?",
+      },
+
+      answer: {
+        en: "Different regions adopted different standards historically, with metric and imperial being the most common systems today.",
       },
     },
   ],

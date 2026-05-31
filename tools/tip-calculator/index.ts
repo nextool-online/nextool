@@ -10,9 +10,25 @@ export const tipCalculatorTool: ToolDefinition = {
 
   featured: true,
 
+  popular: true,
+
+  difficulty: "basic",
+
   availableLanguages: ["en"],
 
-  relatedTools: ["percentage-calculator"],
+  tags: [
+    "tip",
+    "gratuity",
+    "restaurant",
+    "bill",
+    "calculator",
+    "percentage",
+  ],
+
+  relatedTools: [
+    "percentage-calculator",
+    "discount-calculator",
+  ],
 
   ...tipCalculatorContent,
 

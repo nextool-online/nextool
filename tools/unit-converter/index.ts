@@ -10,9 +10,25 @@ export const unitConverterTool: ToolDefinition = {
 
   featured: true,
 
+  popular: true,
+
+  difficulty: "basic",
+
   availableLanguages: ["en"],
 
-  relatedTools: ["bmi-calculator", "age-calculator"],
+  tags: [
+    "unit converter",
+    "conversion",
+    "length",
+    "weight",
+    "measurement",
+    "calculator",
+  ],
+
+  relatedTools: [
+    "bmi-calculator",
+    "speed-converter",
+  ],
 
   ...unitConverterContent,
 

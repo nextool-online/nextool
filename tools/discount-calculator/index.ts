@@ -10,7 +10,20 @@ export const discountCalculatorTool: ToolDefinition = {
 
   featured: true,
 
+  popular: true,
+
+  difficulty: "basic",
+
   availableLanguages: ["en"],
+
+  tags: [
+    "discount",
+    "sale",
+    "shopping",
+    "price",
+    "savings",
+    "calculator",
+  ],
 
   relatedTools: [
     "percentage-calculator",

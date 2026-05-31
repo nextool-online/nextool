@@ -10,9 +10,26 @@ export const dataSizeConverterTool: ToolDefinition = {
 
   featured: true,
 
+  popular: true,
+
+  difficulty: "basic",
+
   availableLanguages: ["en"],
 
-  relatedTools: ["percentage-calculator"],
+  tags: [
+    "data size",
+    "storage",
+    "kb",
+    "mb",
+    "gb",
+    "tb",
+    "converter",
+  ],
+
+  relatedTools: [
+    "unit-converter",
+    "speed-converter",
+  ],
 
   ...dataSizeConverterContent,
 

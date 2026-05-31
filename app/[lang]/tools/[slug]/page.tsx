@@ -10,6 +10,7 @@ import { getText } from "../../../../data/i18n";
 import { tools } from "../../../../tools/registry";
 
 import type { LanguageCode } from "../../../../data/languages";
+import type { ToolDefinition } from "../../../../tools/types";
 
 type ToolPageProps = {
   params: Promise<{
@@ -20,29 +21,28 @@ type ToolPageProps = {
 
 const baseUrl = "https://nextool.online";
 
-function getAvailableLanguages(tool: (typeof tools)[number]) {
-  return tool.availableLanguages || Object.keys(tool.slug);
+function getAvailableLanguages(tool: ToolDefinition): LanguageCode[] {
+  return tool.availableLanguages || (Object.keys(tool.slug) as LanguageCode[]);
 }
 
 function isToolAvailableForLanguage(
-  tool: (typeof tools)[number],
+  tool: ToolDefinition,
   lang: LanguageCode
 ) {
   return getAvailableLanguages(tool).includes(lang);
 }
 
-function getRelatedTools(
-  currentTool: (typeof tools)[number],
-  lang: LanguageCode
-) {
-  const manualRelatedTools = currentTool.relatedTools
-    ?.map((relatedToolId) => tools.find((tool) => tool.id === relatedToolId))
-    .filter(Boolean) as typeof tools;
+function getRelatedTools(currentTool: ToolDefinition, lang: LanguageCode) {
+  const manualRelatedTools =
+    currentTool.relatedTools
+      ?.map((relatedToolId: string) =>
+        tools.find((tool) => tool.id === relatedToolId)
+      )
+      .filter((tool): tool is ToolDefinition => Boolean(tool)) || [];
 
   const fallbackRelatedTools = tools.filter(
     (tool) =>
-      tool.id !== currentTool.id &&
-      tool.category === currentTool.category
+      tool.id !== currentTool.id && tool.category === currentTool.category
   );
 
   const candidates =
@@ -53,11 +53,11 @@ function getRelatedTools(
 
 export function generateStaticParams() {
   return tools.flatMap((tool) => {
-    const languages = getAvailableLanguages(tool);
+    const availableLanguages = getAvailableLanguages(tool);
 
-    return languages.map((lang) => ({
-      lang,
-      slug: getText(tool.slug, lang as LanguageCode),
+    return availableLanguages.map((language) => ({
+      lang: language,
+      slug: getText(tool.slug, language),
     }));
   });
 }
@@ -82,10 +82,7 @@ export async function generateMetadata({ params }: ToolPageProps) {
   const languages = Object.fromEntries(
     getAvailableLanguages(tool).map((language) => [
       language,
-      `${baseUrl}/${language}/tools/${getText(
-        tool.slug,
-        language as LanguageCode
-      )}`,
+      `${baseUrl}/${language}/tools/${getText(tool.slug, language)}`,
     ])
   );
 
@@ -122,12 +119,14 @@ export default async function ToolPage({ params }: ToolPageProps) {
   const toolDescription = getText(tool.description, lang);
   const categoryName = category ? getText(category.name, lang) : tool.category;
   const relatedTools = getRelatedTools(tool, lang);
+
   const languageUrls = Object.fromEntries(
-  getAvailableLanguages(tool).map((language) => [
-    language,
-    `/${language}/tools/${getText(tool.slug, language as LanguageCode)}`,
-   ])
-   );
+    getAvailableLanguages(tool).map((language) => [
+      language,
+      `/${language}/tools/${getText(tool.slug, language)}`,
+    ])
+  );
+
   const breadcrumbs = [
     {
       label: getText(dictionary.homeLabel, lang),
@@ -172,19 +171,21 @@ export default async function ToolPage({ params }: ToolPageProps) {
   const faqJsonLd =
     tool.faq && tool.faq.length > 0
       ? {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
 
-        mainEntity: tool.faq.map((item) => ({
-          "@type": "Question",
-          name: getText(item.question, lang),
+           mainEntity: tool.faq.map(
+           (item: NonNullable<typeof tool.faq>[number]) => ({
+            "@type": "Question",
 
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: getText(item.answer, lang),
-          },
-        })),
-      }
+            name: getText(item.question, lang),
+
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: getText(item.answer, lang),
+            },
+        } )),
+        }
       : null;
 
   const relatedToolsJsonLd =
@@ -205,7 +206,12 @@ export default async function ToolPage({ params }: ToolPageProps) {
       : null;
 
   return (
-    <ToolPageLayout  title={toolName}  description={toolDescription}  lang={lang}  languageUrls={languageUrls}>
+    <ToolPageLayout
+      title={toolName}
+      description={toolDescription}
+      lang={lang}
+      languageUrls={languageUrls}
+    >
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -243,7 +249,8 @@ export default async function ToolPage({ params }: ToolPageProps) {
       <Calculator lang={lang} />
 
       <article className="mt-10 space-y-6 text-base leading-7 text-zinc-700 md:mt-12 md:leading-8">
-        {tool.article.map((section) => (
+        {tool.article.map(
+         (section: (typeof tool.article)[number]) => (
           <section key={getText(section.heading, lang)}>
             <h2 className="text-2xl font-bold text-zinc-950">
               {getText(section.heading, lang)}
@@ -251,33 +258,36 @@ export default async function ToolPage({ params }: ToolPageProps) {
 
             <p className="mt-3">{getText(section.body, lang)}</p>
           </section>
-        ))}
+         )
+        )}
       </article>
 
       {tool.faq && tool.faq.length > 0 && (
-       <section className="mt-12">
-       <h2 className="text-2xl font-bold text-zinc-950">
-         {getText(dictionary.faqTitle, lang)}
-       </h2>
+        <section className="mt-12">
+          <h2 className="text-2xl font-bold text-zinc-950">
+            {getText(dictionary.faqTitle, lang)}
+          </h2>
 
-       <div className="mt-6 space-y-4">
-         {tool.faq.map((item) => (
-         <div
-          key={getText(item.question, lang)}
-          className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm"
-         >
-          <h3 className="font-semibold text-zinc-950">
-            {getText(item.question, lang)}
-          </h3>
+          <div className="mt-6 space-y-4">
+            {tool.faq.map(
+             (item: NonNullable<typeof tool.faq>[number]) => (
+              <div
+                key={getText(item.question, lang)}
+                className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm"
+              >
+                <h3 className="font-semibold text-zinc-950">
+                  {getText(item.question, lang)}
+                </h3>
 
-          <p className="mt-2 text-sm leading-6 text-zinc-600">
-            {getText(item.answer, lang)}
-          </p>
-        </div>
-        ))}
-       </div>
-       </section>
-       )}
+                <p className="mt-2 text-sm leading-6 text-zinc-600">
+                  {getText(item.answer, lang)}
+                </p>
+              </div>
+              )
+            )}
+          </div>
+        </section>
+      )}
 
       {relatedTools.length > 0 && (
         <section className="mt-12">

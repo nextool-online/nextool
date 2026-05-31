@@ -10,9 +10,25 @@ export const speedConverterTool: ToolDefinition = {
 
   featured: true,
 
+  popular: true,
+
+  difficulty: "basic",
+
   availableLanguages: ["en"],
 
-  relatedTools: ["percentage-calculator"],
+  tags: [
+    "speed",
+    "converter",
+    "kmh",
+    "mph",
+    "knots",
+    "meters per second",
+  ],
+
+  relatedTools: [
+    "unit-converter",
+    "data-size-converter",
+  ],
 
   ...speedConverterContent,
 

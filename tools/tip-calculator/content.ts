@@ -8,36 +8,84 @@ export const tipCalculatorContent = {
   },
 
   description: {
-    en: "Calculate tip amount and total bill instantly.",
+    en: "Calculate tips, gratuities and total bill amounts instantly.",
   },
 
   seo: {
     title: {
-      en: "Tip Calculator - Calculate Gratuity Online",
+      en: "Tip Calculator - Gratuity Calculator Online",
     },
 
     description: {
-      en: "Use this free tip calculator to calculate gratuity and total bill amount quickly.",
+      en: "Calculate tip amounts and total restaurant bills quickly using this free online tip calculator.",
     },
   },
 
   article: [
     {
       heading: {
-        en: "What is a tip calculator?",
+        en: "Understanding gratuities",
       },
 
       body: {
-        en: "A tip calculator helps determine how much gratuity to leave based on the bill amount and tip percentage.",
+        en: "A gratuity, commonly called a tip, is an additional amount paid to service workers in recognition of good service. Tipping customs vary between countries and industries.",
       },
     },
     {
       heading: {
-        en: "How does it work?",
+        en: "How tip calculations work",
       },
 
       body: {
-        en: "Enter the bill amount and tip percentage. The calculator will show the tip amount and final total.",
+        en: "The tip amount is calculated as a percentage of the bill. The final total is the original bill plus the gratuity amount.",
+      },
+    },
+    {
+      heading: {
+        en: "Common tipping percentages",
+      },
+
+      body: {
+        en: "Many restaurants use tipping percentages between 10% and 20%, although local customs and service quality may influence the amount.",
+      },
+    },
+  ],
+
+  faq: [
+    {
+      question: {
+        en: "How much should I tip?",
+      },
+
+      answer: {
+        en: "Tipping customs vary by country, but many restaurants commonly receive between 10% and 20% of the bill amount.",
+      },
+    },
+    {
+      question: {
+        en: "Can I calculate tips for large groups?",
+      },
+
+      answer: {
+        en: "Yes. Enter the total bill amount and desired tip percentage to calculate the gratuity.",
+      },
+    },
+    {
+      question: {
+        en: "Does the calculator include taxes?",
+      },
+
+      answer: {
+        en: "The calculator uses the bill amount you provide. Whether taxes are included depends on the amount entered.",
+      },
+    },
+    {
+      question: {
+        en: "Can I use custom tip percentages?",
+      },
+
+      answer: {
+        en: "Yes. You can enter any percentage you prefer.",
       },
     },
   ],

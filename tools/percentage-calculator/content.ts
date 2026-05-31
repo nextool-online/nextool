@@ -130,8 +130,78 @@ export const percentageCalculatorContent = {
         ar: "لحساب نسبة مئوية من قيمة معينة، اقسم النسبة على 100 ثم اضرب الناتج في القيمة.",
       },
     },
-  ],
+    {
+      heading: {
+       en: "Common percentage use cases",
+       it: "Utilizzi comuni delle percentuali",
+       pt: "Usos comuns de porcentagens",
+       es: "Usos comunes de porcentajes",
+       fr: "Utilisations courantes des pourcentages",
+       de: "Häufige Anwendungen von Prozenten",
+       ro: "Utilizări comune ale procentelor",
+       pl: "Typowe zastosowania procentów",
+       nl: "Veelvoorkomende toepassingen van percentages",
+       tr: "Yüzdelerin yaygın kullanım alanları",
+       ar: "الاستخدامات الشائعة للنسب المئوية",
+       },
 
+      body: {
+       en: "Percentages are used in finance, discounts, taxes, statistics, education and everyday comparisons.",
+       it: "Le percentuali sono utilizzate nella finanza, negli sconti, nelle tasse, nelle statistiche e nei confronti quotidiani.",
+       pt: "As porcentagens são usadas em finanças, descontos, impostos, estatísticas e comparações do dia a dia.",
+       es: "Los porcentajes se utilizan en finanzas, descuentos, impuestos, estadísticas y comparaciones cotidianas.",
+       fr: "Les pourcentages sont utilisés dans la finance, les remises, les taxes, les statistiques et les comparaisons quotidiennes.",
+       de: "Prozentsätze werden in Finanzen, Rabatten, Steuern, Statistiken und alltäglichen Vergleichen verwendet.",
+       ro: "Procentele sunt utilizate în finanțe, reduceri, taxe, statistici și comparații de zi cu zi.",
+       pl: "Procenty są używane w finansach, rabatach, podatkach, statystyce i codziennych porównaniach.",
+       nl: "Percentages worden gebruikt in financiën, kortingen, belastingen, statistieken en dagelijkse vergelijkingen.",
+       tr: "Yüzdeler finans, indirimler, vergiler, istatistikler ve günlük karşılaştırmalarda kullanılır.",
+       ar: "تُستخدم النسب المئوية في التمويل والخصومات والضرائب والإحصاءات والمقارنات اليومية.",
+       },
+    }
+   ],
+  
+  faq: [
+   {
+    question: {
+      en: "What is a percentage?",
+    },
+
+    answer: {
+      en: "A percentage expresses a value as a fraction of 100.",
+    },
+   },
+
+   {
+    question: {
+      en: "How do I calculate a percentage of a number?",
+    },
+
+    answer: {
+      en: "Divide the percentage by 100 and multiply the result by the number.",
+    },
+   },
+
+   {
+    question: {
+      en: "Can I use this calculator for discounts?",
+    },
+
+    answer: {
+      en: "Yes. Percentage calculations are commonly used to calculate discounts and price reductions.",
+    },
+   },
+
+   {
+    question: {
+      en: "Where are percentages used?",
+    },
+
+    answer: {
+      en: "Percentages are used in finance, education, statistics, taxes and everyday calculations.",
+    },
+   },
+    ],
   ui: {
     heading: {
       en: "Calculate percentage",

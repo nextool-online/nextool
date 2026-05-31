@@ -7,7 +7,12 @@ export const ruleOfThreeTool: ToolDefinition = {
   id: "rule-of-three",
 
   category: "calculators",
+
   featured: true,
+
+  popular: true,
+
+  difficulty: "basic",
 
   availableLanguages: [
     "en",
@@ -23,7 +28,19 @@ export const ruleOfThreeTool: ToolDefinition = {
     "ar",
   ],
 
-  relatedTools: ["percentage-calculator"],
+  tags: [
+    "rule of three",
+    "proportion",
+    "ratio",
+    "math",
+    "calculator",
+    "percentage",
+  ],
+
+  relatedTools: [
+    "percentage-calculator",
+    "percentage-increase-calculator",
+  ],
 
   ...ruleOfThreeContent,
 

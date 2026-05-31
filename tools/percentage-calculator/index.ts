@@ -7,7 +7,12 @@ export const percentageCalculatorTool: ToolDefinition = {
   id: "percentage-calculator",
 
   category: "calculators",
+
   featured: true,
+
+  popular: true,
+
+  difficulty: "basic",
 
   availableLanguages: [
     "en",
@@ -23,7 +28,20 @@ export const percentageCalculatorTool: ToolDefinition = {
     "ar",
   ],
 
-  relatedTools: ["rule-of-three"],
+  tags: [
+    "percentage",
+    "percent",
+    "math",
+    "calculator",
+    "discount",
+    "finance",
+  ],
+
+  relatedTools: [
+    "rule-of-three",
+    "discount-calculator",
+    "percentage-increase-calculator",
+  ],
 
   ...percentageCalculatorContent,
 

@@ -10,9 +10,25 @@ export const bmiCalculatorTool: ToolDefinition = {
 
   featured: true,
 
+  popular: true,
+
+  difficulty: "basic",
+
   availableLanguages: ["en"],
 
-  relatedTools: ["age-calculator", "unit-converter"],
+  tags: [
+    "bmi",
+    "body mass index",
+    "health",
+    "weight",
+    "fitness",
+    "calculator",
+  ],
+
+  relatedTools: [
+    "age-calculator",
+    "unit-converter",
+  ],
 
   ...bmiCalculatorContent,
 

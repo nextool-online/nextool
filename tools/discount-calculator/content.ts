@@ -8,36 +8,84 @@ export const discountCalculatorContent = {
   },
 
   description: {
-    en: "Calculate the final price after a discount.",
+    en: "Calculate discounted prices and savings instantly.",
   },
 
   seo: {
     title: {
-      en: "Discount Calculator - Calculate Sale Price Online",
+      en: "Discount Calculator - Sale Price Calculator",
     },
 
     description: {
-      en: "Use this free discount calculator to calculate the final price and savings after applying a discount percentage.",
+      en: "Calculate the final price after a discount and see exactly how much money you save.",
     },
   },
 
   article: [
     {
       heading: {
-        en: "What is a discount calculator?",
+        en: "Understanding discounts",
       },
 
       body: {
-        en: "A discount calculator helps you find the final price of a product after applying a percentage discount.",
+        en: "A discount reduces the original price of a product or service by a specific percentage. Discounts are commonly used during sales, promotions and special offers.",
       },
     },
     {
       heading: {
-        en: "How does the discount calculation work?",
+        en: "How savings are calculated",
       },
 
       body: {
-        en: "The discount amount is calculated by multiplying the original price by the discount percentage. The final price is the original price minus the discount amount.",
+        en: "The savings amount is calculated by multiplying the original price by the discount percentage. The result is then subtracted from the original price to determine the final cost.",
+      },
+    },
+    {
+      heading: {
+        en: "Comparing offers effectively",
+      },
+
+      body: {
+        en: "A discount calculator helps compare multiple promotions quickly and ensures that you understand the real value of a discount before making a purchase.",
+      },
+    },
+  ],
+
+  faq: [
+    {
+      question: {
+        en: "How do I calculate a discount percentage?",
+      },
+
+      answer: {
+        en: "Multiply the original price by the discount percentage and divide by 100. Subtract the result from the original price.",
+      },
+    },
+    {
+      question: {
+        en: "Can this calculator be used for sales tax calculations?",
+      },
+
+      answer: {
+        en: "No. This calculator focuses only on discount calculations. Taxes must be calculated separately.",
+      },
+    },
+    {
+      question: {
+        en: "What happens if I enter a 100% discount?",
+      },
+
+      answer: {
+        en: "The final price becomes zero because the entire original amount is discounted.",
+      },
+    },
+    {
+      question: {
+        en: "Can I compare multiple discounts?",
+      },
+
+      answer: {
+        en: "Yes. Simply enter different percentages to compare the impact of various discount offers.",
       },
     },
   ],

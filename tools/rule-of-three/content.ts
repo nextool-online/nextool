@@ -129,8 +129,79 @@ export const ruleOfThreeContent = {
         tr: "A, B'ye karşılık geliyor ve C, X'e karşılık geliyorsa, X; B ile C çarpılıp sonucun A'ya bölünmesiyle hesaplanır.",
         ar: "إذا كانت A تقابل B و C تقابل X، فإن X تُحسب بضرب B في C ثم قسمة الناتج على A.",
       },
+      },
+     {
+       heading: {
+        en: "Common rule of three examples",
+        it: "Esempi comuni di regola del tre",
+        pt: "Exemplos comuns de regra de três",
+        es: "Ejemplos comunes de regla de tres",
+        fr: "Exemples courants de règle de trois",
+        de: "Häufige Dreisatz-Beispiele",
+        ro: "Exemple comune ale regulii de trei",
+        pl: "Typowe przykłady reguły trzech",
+        nl: "Veelvoorkomende voorbeelden van de regel van drie",
+        tr: "Üç kuralının yaygın örnekleri",
+        ar: "أمثلة شائعة على قاعدة الثلاثة",
+  },
+
+       body: {
+        en: "The rule of three is commonly used for shopping, recipes, fuel consumption, business calculations, unit conversions and many everyday proportional problems.",
+        it: "La regola del tre viene comunemente utilizzata per acquisti, ricette, consumi, calcoli aziendali e conversioni.",
+        pt: "A regra de três é muito utilizada em compras, receitas, consumo de combustível, negócios e conversões.",
+        es: "La regla de tres se utiliza frecuentemente en compras, recetas, consumo de combustible y conversiones.",
+        fr: "La règle de trois est couramment utilisée pour les achats, les recettes, la consommation et les conversions.",
+        de: "Der Dreisatz wird häufig für Einkäufe, Rezepte, Verbrauchsberechnungen und Umrechnungen verwendet.",
+        ro: "Regula de trei este utilizată frecvent pentru cumpărături, rețete, consum și conversii.",
+        pl: "Reguła trzech jest często używana podczas zakupów, w przepisach, obliczeniach zużycia i konwersjach.",
+        nl: "De regel van drie wordt vaak gebruikt bij winkelen, recepten, verbruik en omrekeningen.",
+        tr: "Üç kuralı alışveriş, tarifler, tüketim hesapları ve dönüşümlerde yaygın olarak kullanılır.",
+        ar: "تُستخدم قاعدة الثلاثة بشكل شائع في التسوق والوصفات والاستهلاك والتحويلات.",
     },
+   },
   ],
+
+  faq: [
+  {
+    question: {
+      en: "What is the rule of three used for?",
+    },
+
+    answer: {
+      en: "The rule of three is used to solve proportional problems when three values are known and one value is unknown.",
+    },
+  },
+
+  {
+    question: {
+      en: "Can I use the rule of three for percentages?",
+    },
+
+    answer: {
+      en: "Yes. Percentage calculations are one of the most common applications of the rule of three.",
+    },
+  },
+
+  {
+    question: {
+      en: "Is the rule of three useful in everyday life?",
+    },
+
+    answer: {
+      en: "Yes. It is frequently used for shopping, recipes, fuel consumption and business calculations.",
+    },
+  },
+
+  {
+    question: {
+      en: "What happens if value A is zero?",
+    },
+
+    answer: {
+      en: "The calculation cannot be performed because division by zero is mathematically undefined.",
+    },
+  },
+],
 
   ui: {
     heading: {

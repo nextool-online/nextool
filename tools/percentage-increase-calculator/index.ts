@@ -10,7 +10,20 @@ export const percentageIncreaseCalculatorTool: ToolDefinition = {
 
   featured: true,
 
+  popular: true,
+
+  difficulty: "basic",
+
   availableLanguages: ["en"],
+
+  tags: [
+    "percentage increase",
+    "growth",
+    "percentage change",
+    "calculator",
+    "finance",
+    "business",
+  ],
 
   relatedTools: [
     "percentage-calculator",
