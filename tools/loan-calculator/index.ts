@@ -7,12 +7,27 @@ export const loanCalculatorTool: ToolDefinition = {
   id: "loan-calculator",
 
   category: "calculators",
-  
+
   featured: true,
+
+  popular: true,
+
+  difficulty: "intermediate",
 
   availableLanguages: ["en"],
 
-  relatedTools: ["percentage-calculator"],
+  tags: [
+    "loan",
+    "finance",
+    "interest",
+    "mortgage",
+    "calculator",
+  ],
+
+  relatedTools: [
+    "percentage-calculator",
+    "discount-calculator",
+  ],
 
   ...loanCalculatorContent,
 

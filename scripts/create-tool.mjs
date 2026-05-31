@@ -41,6 +41,7 @@ const componentName = `${pascalName}Tool`;
 const contentName = `${camelName}Content`;
 const definitionName = `${camelName}Tool`;
 const title = toTitle(toolId);
+const lowerTitle = title.toLowerCase();
 
 fs.mkdirSync(toolDir, { recursive: true });
 
@@ -56,7 +57,7 @@ fs.writeFileSync(
   },
 
   description: {
-    en: "Use this free online tool quickly and easily.",
+    en: "Use this free ${lowerTitle} quickly and easily.",
   },
 
   seo: {
@@ -65,18 +66,75 @@ fs.writeFileSync(
     },
 
     description: {
-      en: "Use this free ${title.toLowerCase()} online tool quickly and easily.",
+      en: "Use this free ${lowerTitle} online tool to complete your calculation quickly and easily.",
     },
   },
 
   article: [
     {
       heading: {
-        en: "What is this tool?",
+        en: "Understanding ${lowerTitle}",
       },
 
       body: {
-        en: "This tool helps you complete a specific task directly in your browser.",
+        en: "This tool helps you complete a specific calculation or conversion directly in your browser.",
+      },
+    },
+    {
+      heading: {
+        en: "How to use this tool",
+      },
+
+      body: {
+        en: "Enter the required values, review the result and adjust the inputs if you want to compare different scenarios.",
+      },
+    },
+    {
+      heading: {
+        en: "Common use cases",
+      },
+
+      body: {
+        en: "You can use this tool for quick checks, everyday calculations, study, work or personal planning.",
+      },
+    },
+  ],
+
+  faq: [
+    {
+      question: {
+        en: "Is this ${lowerTitle} free to use?",
+      },
+
+      answer: {
+        en: "Yes. This tool is free to use directly in your browser.",
+      },
+    },
+    {
+      question: {
+        en: "Do I need to create an account?",
+      },
+
+      answer: {
+        en: "No. You can use this tool without registration.",
+      },
+    },
+    {
+      question: {
+        en: "Are the results calculated instantly?",
+      },
+
+      answer: {
+        en: "Yes. Results update directly in the browser as you enter or change values.",
+      },
+    },
+    {
+      question: {
+        en: "Can I use this tool on mobile?",
+      },
+
+      answer: {
+        en: "Yes. The tool is designed to work on desktop, tablet and mobile devices.",
       },
     },
   ],
@@ -99,6 +157,8 @@ fs.writeFileSync(
   `"use client";
 
 import ToolBox from "../../components/ui/ToolBox";
+import ToolSection from "../../components/toolkit/ToolSection";
+
 import { getText } from "../../data/i18n";
 
 import { ${contentName} } from "./content";
@@ -110,19 +170,14 @@ export default function ${componentName}({ lang }: ToolComponentProps) {
 
   return (
     <ToolBox>
-      <div className="mb-5">
-        <h2 className="text-xl font-bold md:text-2xl">
-          {getText(ui.heading, lang)}
-        </h2>
-
-        <p className="mt-2 text-sm text-zinc-600">
-          {getText(ui.helper, lang)}
-        </p>
-      </div>
-
-      <div className="rounded-xl border border-dashed border-zinc-300 bg-zinc-50 p-6 text-sm text-zinc-500">
-        Build the tool UI here.
-      </div>
+      <ToolSection
+        title={getText(ui.heading, lang)}
+        description={getText(ui.helper, lang)}
+      >
+        <div className="rounded-xl border border-dashed border-zinc-300 bg-zinc-50 p-6 text-sm text-zinc-500">
+          Build the tool UI here.
+        </div>
+      </ToolSection>
     </ToolBox>
   );
 }
@@ -141,7 +196,22 @@ export const ${definitionName}: ToolDefinition = {
 
   category: "calculators",
 
+  featured: false,
+
+  popular: false,
+
+  isNew: true,
+
+  difficulty: "basic",
+
   availableLanguages: ["en"],
+
+  relatedTools: [],
+
+  tags: [
+    "calculator",
+    "online tool",
+  ],
 
   ...${contentName},
 
@@ -158,4 +228,12 @@ console.log(`import { ${definitionName} } from "./${toolId}";`);
 console.log("");
 console.log("Then add this item to the tools array:");
 console.log(definitionName);
+console.log("");
+console.log("Quality checklist:");
+console.log("- Replace generic article text with tool-specific content");
+console.log("- Replace generic FAQ with tool-specific FAQ");
+console.log("- Add correct relatedTools");
+console.log("- Add useful tags");
+console.log("- Set featured/popular only when appropriate");
+console.log("- Build the real component UI");
 console.log("");

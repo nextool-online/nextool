@@ -170,21 +170,21 @@ export default async function ToolPage({ params }: ToolPageProps) {
   };
 
   const faqJsonLd =
-    tool.article.length > 0
+    tool.faq && tool.faq.length > 0
       ? {
-          "@context": "https://schema.org",
-          "@type": "FAQPage",
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
 
-          mainEntity: tool.article.map((section) => ({
-            "@type": "Question",
-            name: getText(section.heading, lang),
+        mainEntity: tool.faq.map((item) => ({
+          "@type": "Question",
+          name: getText(item.question, lang),
 
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: getText(section.body, lang),
-            },
-          })),
-        }
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: getText(item.answer, lang),
+          },
+        })),
+      }
       : null;
 
   const relatedToolsJsonLd =
@@ -253,6 +253,31 @@ export default async function ToolPage({ params }: ToolPageProps) {
           </section>
         ))}
       </article>
+
+      {tool.faq && tool.faq.length > 0 && (
+       <section className="mt-12">
+       <h2 className="text-2xl font-bold text-zinc-950">
+         {getText(dictionary.faqTitle, lang)}
+       </h2>
+
+       <div className="mt-6 space-y-4">
+         {tool.faq.map((item) => (
+         <div
+          key={getText(item.question, lang)}
+          className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm"
+         >
+          <h3 className="font-semibold text-zinc-950">
+            {getText(item.question, lang)}
+          </h3>
+
+          <p className="mt-2 text-sm leading-6 text-zinc-600">
+            {getText(item.answer, lang)}
+          </p>
+        </div>
+        ))}
+       </div>
+       </section>
+       )}
 
       {relatedTools.length > 0 && (
         <section className="mt-12">

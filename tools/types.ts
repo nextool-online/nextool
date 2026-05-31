@@ -12,6 +12,11 @@ export type ToolArticleSection = {
   body: Translation;
 };
 
+export type ToolFaqItem = {
+  question: Translation;
+  answer: Translation;
+};
+
 export type ToolSeo = {
   title: Translation;
   description: Translation;
@@ -26,9 +31,17 @@ export type ToolDefinition = {
 
   featured?: boolean;
 
+  popular?: boolean;
+
+  isNew?: boolean;
+
+  difficulty?: "basic" | "intermediate" | "advanced";
+
   availableLanguages?: LanguageCode[];
 
   relatedTools?: string[];
+
+  tags?: string[];
 
   slug: Translation;
 
@@ -39,6 +52,8 @@ export type ToolDefinition = {
   seo: ToolSeo;
 
   article: ToolArticleSection[];
+
+  faq?: ToolFaqItem[];
 
   ui: ToolUi;
 

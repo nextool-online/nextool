@@ -101,6 +101,20 @@ relatedTools: {
   ar: "أدوات ذات صلة",
 } satisfies Translation,
 
+faqTitle: {
+  en: "Frequently Asked Questions",
+  it: "Domande frequenti",
+  pt: "Perguntas frequentes",
+  es: "Preguntas frecuentes",
+  fr: "Questions fréquentes",
+  de: "Häufig gestellte Fragen",
+  ro: "Întrebări frecvente",
+  pl: "Najczęściej zadawane pytania",
+  nl: "Veelgestelde vragen",
+  tr: "Sık sorulan sorular",
+  ar: "الأسئلة الشائعة",
+} satisfies Translation,
+
 homeLabel: {
   en: "Home",
   it: "Home",

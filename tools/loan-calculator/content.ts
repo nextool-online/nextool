@@ -8,7 +8,7 @@ export const loanCalculatorContent = {
   },
 
   description: {
-    en: "Calculate monthly loan payments instantly.",
+    en: "Calculate monthly loan payments, total repayment and interest costs.",
   },
 
   seo: {
@@ -17,27 +17,75 @@ export const loanCalculatorContent = {
     },
 
     description: {
-      en: "Calculate monthly payments, total repayment and total interest for a loan.",
+      en: "Free online loan calculator. Calculate monthly payments, total repayment amount and total interest.",
     },
   },
 
   article: [
+  {
+    heading: {
+      en: "Understanding loan payments",
+    },
+
+    body: {
+      en: "Loan payments are usually made every month and include both principal and interest. The principal is the amount borrowed, while interest is the cost charged by the lender.",
+    },
+   },
+   {
+    heading: {
+      en: "How interest affects the total cost",
+    },
+
+    body: {
+      en: "A higher interest rate increases both the monthly payment and the total amount paid over the life of the loan. A longer repayment term can reduce the monthly payment, but it often increases the total interest paid.",
+    },
+   },
+   {
+    heading: {
+      en: "Using the calculator effectively",
+    },
+
+    body: {
+      en: "Try different loan amounts, interest rates and repayment periods to compare scenarios before choosing a financing option.",
+    },
+      },
+       ],
+
+  faq: [
     {
-      heading: {
-        en: "What is a loan calculator?",
+      question: {
+        en: "How accurate is this loan calculator?",
       },
 
-      body: {
-        en: "A loan calculator estimates monthly payments, total repayment and interest costs for a loan.",
+      answer: {
+        en: "This calculator uses the standard amortization formula and provides a good estimate for most fixed-rate loans.",
       },
     },
     {
-      heading: {
-        en: "How does loan amortization work?",
+      question: {
+        en: "Does this calculator work for mortgages?",
       },
 
-      body: {
-        en: "Each payment includes both principal and interest. Over time, the interest portion decreases while the principal portion increases.",
+      answer: {
+        en: "Yes. It can be used for mortgages, personal loans, car loans and other fixed-rate financing scenarios.",
+      },
+    },
+    {
+      question: {
+        en: "What interest rate should I enter?",
+      },
+
+      answer: {
+        en: "Enter the annual interest rate offered by your lender.",
+      },
+    },
+    {
+      question: {
+        en: "Why is the total payment higher than the loan amount?",
+      },
+
+      answer: {
+        en: "Because the total payment includes both the original borrowed amount and all accumulated interest.",
       },
     },
   ],
@@ -48,7 +96,7 @@ export const loanCalculatorContent = {
     },
 
     helper: {
-      en: "Enter loan amount, annual interest rate and loan term.",
+      en: "Enter loan amount, annual interest rate and repayment period.",
     },
 
     amount: {
