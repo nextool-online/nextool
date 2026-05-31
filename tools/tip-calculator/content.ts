@@ -8,27 +8,36 @@ export const tipCalculatorContent = {
   },
 
   description: {
-    en: "Use this free online tool quickly and easily.",
+    en: "Calculate tip amount and total bill instantly.",
   },
 
   seo: {
     title: {
-      en: "Tip Calculator - Free Online Tool",
+      en: "Tip Calculator - Calculate Gratuity Online",
     },
 
     description: {
-      en: "Use this free tip calculator online tool quickly and easily.",
+      en: "Use this free tip calculator to calculate gratuity and total bill amount quickly.",
     },
   },
 
   article: [
     {
       heading: {
-        en: "What is this tool?",
+        en: "What is a tip calculator?",
       },
 
       body: {
-        en: "This tool helps you complete a specific task directly in your browser.",
+        en: "A tip calculator helps determine how much gratuity to leave based on the bill amount and tip percentage.",
+      },
+    },
+    {
+      heading: {
+        en: "How does it work?",
+      },
+
+      body: {
+        en: "Enter the bill amount and tip percentage. The calculator will show the tip amount and final total.",
       },
     },
   ],
@@ -39,7 +48,23 @@ export const tipCalculatorContent = {
     },
 
     helper: {
-      en: "Enter the values and get the result instantly.",
+      en: "Enter the bill amount and desired tip percentage.",
+    },
+
+    billAmount: {
+      en: "Bill amount",
+    },
+
+    tipPercentage: {
+      en: "Tip %",
+    },
+
+    tipAmount: {
+      en: "Tip amount",
+    },
+
+    totalAmount: {
+      en: "Total amount",
     },
   },
 };

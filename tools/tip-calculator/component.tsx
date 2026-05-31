@@ -1,30 +1,98 @@
 "use client";
 
+import { useMemo, useState } from "react";
+
 import ToolBox from "../../components/ui/ToolBox";
+import ToolInput from "../../components/toolkit/ToolInput";
+import ToolResult from "../../components/toolkit/ToolResult";
+import ToolSection from "../../components/toolkit/ToolSection";
+
 import { getText } from "../../data/i18n";
 
 import { tipCalculatorContent } from "./content";
 
 import type { ToolComponentProps } from "../types";
 
-export default function TipCalculatorTool({ lang }: ToolComponentProps) {
+export default function TipCalculatorTool({
+  lang,
+}: ToolComponentProps) {
   const ui = tipCalculatorContent.ui;
+
+  const [billAmount, setBillAmount] = useState("");
+  const [tipPercentage, setTipPercentage] = useState("15");
+
+  const result = useMemo(() => {
+    const bill = Number(billAmount);
+    const tip = Number(tipPercentage);
+
+    if (!bill || tip < 0) {
+      return {
+        tipAmount: "",
+        totalAmount: "",
+      };
+    }
+
+    const tipAmount = (bill * tip) / 100;
+    const totalAmount = bill + tipAmount;
+
+    return {
+      tipAmount: tipAmount.toFixed(2),
+      totalAmount: totalAmount.toFixed(2),
+    };
+  }, [billAmount, tipPercentage]);
 
   return (
     <ToolBox>
-      <div className="mb-5">
-        <h2 className="text-xl font-bold md:text-2xl">
-          {getText(ui.heading, lang)}
-        </h2>
+      <ToolSection
+        title={getText(ui.heading, lang)}
+        description={getText(ui.helper, lang)}
+      >
+        <div className="space-y-5">
+          <div className="grid gap-3 md:grid-cols-2">
+            <ToolInput
+              type="number"
+              value={billAmount}
+              onChange={(event) =>
+                setBillAmount(event.target.value)
+              }
+              placeholder={getText(ui.billAmount, lang)}
+            />
 
-        <p className="mt-2 text-sm text-zinc-600">
-          {getText(ui.helper, lang)}
-        </p>
-      </div>
+            <ToolInput
+              type="number"
+              value={tipPercentage}
+              onChange={(event) =>
+                setTipPercentage(event.target.value)
+              }
+              placeholder={getText(ui.tipPercentage, lang)}
+            />
+          </div>
 
-      <div className="rounded-xl border border-dashed border-zinc-300 bg-zinc-50 p-6 text-sm text-zinc-500">
-        Build the tool UI here.
-      </div>
+          <div className="grid gap-3 md:grid-cols-2">
+            <div>
+              <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
+                {getText(ui.tipAmount, lang)}
+              </p>
+
+              <ToolResult
+                value={result.tipAmount}
+                placeholder="0.00"
+              />
+            </div>
+
+            <div>
+              <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
+                {getText(ui.totalAmount, lang)}
+              </p>
+
+              <ToolResult
+                value={result.totalAmount}
+                placeholder="0.00"
+              />
+            </div>
+          </div>
+        </div>
+      </ToolSection>
     </ToolBox>
   );
 }
