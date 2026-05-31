@@ -5,6 +5,11 @@ import { percentageCalculatorTool } from "./percentage-calculator";
 import { percentageIncreaseCalculatorTool } from "./percentage-increase-calculator";
 import { ruleOfThreeTool } from "./rule-of-three";
 import { unitConverterTool } from "./unit-converter";
+import { averageCalculatorTool } from "./average-calculator";
+import { dataSizeConverterTool } from "./data-size-converter";
+import { loanCalculatorTool } from "./loan-calculator";
+import { speedConverterTool } from "./speed-converter";
+import { tipCalculatorTool } from "./tip-calculator";
 
 export const tools = [
   percentageCalculatorTool,
@@ -14,4 +19,9 @@ export const tools = [
   discountCalculatorTool,
   percentageIncreaseCalculatorTool,
   unitConverterTool,
+  averageCalculatorTool,
+  dataSizeConverterTool,
+  loanCalculatorTool,
+  speedConverterTool,
+  tipCalculatorTool,
 ];
