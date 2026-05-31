@@ -8,27 +8,36 @@ export const dataSizeConverterContent = {
   },
 
   description: {
-    en: "Use this free online tool quickly and easily.",
+    en: "Convert digital storage units instantly.",
   },
 
   seo: {
     title: {
-      en: "Data Size Converter - Free Online Tool",
+      en: "Data Size Converter - KB MB GB TB Converter",
     },
 
     description: {
-      en: "Use this free data size converter online tool quickly and easily.",
+      en: "Convert between KB, MB, GB, TB and PB using this free online data size converter.",
     },
   },
 
   article: [
     {
       heading: {
-        en: "What is this tool?",
+        en: "What is a data size converter?",
       },
 
       body: {
-        en: "This tool helps you complete a specific task directly in your browser.",
+        en: "A data size converter converts digital storage units such as kilobytes, megabytes, gigabytes and terabytes.",
+      },
+    },
+    {
+      heading: {
+        en: "When should you use it?",
+      },
+
+      body: {
+        en: "Use it whenever you need to compare file sizes, storage capacities or bandwidth measurements.",
       },
     },
   ],
@@ -39,7 +48,23 @@ export const dataSizeConverterContent = {
     },
 
     helper: {
-      en: "Enter the values and get the result instantly.",
+      en: "Enter a value and choose the units.",
+    },
+
+    value: {
+      en: "Value",
+    },
+
+    from: {
+      en: "From",
+    },
+
+    to: {
+      en: "To",
+    },
+
+    result: {
+      en: "Result",
     },
   },
 };
