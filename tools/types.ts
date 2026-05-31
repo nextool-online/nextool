@@ -24,6 +24,8 @@ export type ToolDefinition = {
 
   category: string;
 
+  featured?: boolean;
+
   availableLanguages?: LanguageCode[];
 
   relatedTools?: string[];

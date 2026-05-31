@@ -7,6 +7,7 @@ export const ruleOfThreeTool: ToolDefinition = {
   id: "rule-of-three",
 
   category: "calculators",
+  featured: true,
 
   availableLanguages: [
     "en",

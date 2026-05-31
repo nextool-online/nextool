@@ -7,6 +7,7 @@ export const percentageCalculatorTool: ToolDefinition = {
   id: "percentage-calculator",
 
   category: "calculators",
+  featured: true,
 
   availableLanguages: [
     "en",
