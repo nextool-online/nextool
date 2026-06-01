@@ -28,7 +28,10 @@ export default function SearchBar({ lang }: SearchBarProps) {
     const description = getText(tool.description, lang);
     const slug = getText(tool.slug, lang);
 
-    const searchText = `${title} ${description} ${tool.category} ${slug}`.toLowerCase();
+    const tags = tool.tags?.join(" ") ?? "";
+
+    const searchText =
+     `${title} ${description} ${tool.category} ${slug} ${tags}`.toLowerCase();
 
     return searchText.includes(query.toLowerCase());
   });
