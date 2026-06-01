@@ -64,7 +64,7 @@ export default async function HomePage({ params }: HomePageProps) {
     (tool) =>
       !tool.availableLanguages || tool.availableLanguages.includes(lang)
   );
-
+  
   const pageUrl = `${baseUrl}/${lang}`;
 
   const websiteJsonLd = {
@@ -158,24 +158,23 @@ export default async function HomePage({ params }: HomePageProps) {
               {getText(dictionary.viewAllTools, lang)}
             </Link>
           </div>
-
-          <div className="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {localizedFeaturedTools.map((tool) => (
-              <ToolCard
+        </div>
+        <div className="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {localizedFeaturedTools.map((tool) => (
+          <ToolCard
                 key={tool.id}
                 title={getText(tool.title, lang)}
                 description={getText(tool.description, lang)}
                 href={`/${lang}/tools/${getText(tool.slug, lang)}`}
                 category={tool.category}
-              />
+                 />
             ))}
-          </div>
-        </div>
+         </div>
 
         <div className="mt-16">
-          <h2 className="text-3xl font-bold tracking-tight">
-            {getText(dictionary.popularCategoriesTitle, lang)}
-          </h2>
+            <h2 className="text-3xl font-bold tracking-tight">
+                {getText(dictionary.popularCategoriesTitle, lang)}
+            </h2>
 
           <div className="mt-6 grid gap-4 md:grid-cols-2">
             {categories.map((category) => (
