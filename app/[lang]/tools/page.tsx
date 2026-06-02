@@ -52,6 +52,10 @@ export default async function ToolsPage({ params }: ToolsPageProps) {
     (tool) =>
       !tool.availableLanguages || tool.availableLanguages.includes(lang)
   );
+  
+  console.log(
+  localizedTools.map((tool) => tool.id)
+);
 
   const itemListJsonLd = {
     "@context": "https://schema.org",
