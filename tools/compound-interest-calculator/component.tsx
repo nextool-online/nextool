@@ -22,10 +22,10 @@ export default function CompoundInterestCalculatorTool({
 }: ToolComponentProps) {
   const ui = compoundInterestCalculatorContent.ui;
 
-  const [initialInvestment, setInitialInvestment] = useState("1000");
-  const [monthlyContribution, setMonthlyContribution] = useState("100");
-  const [interestRate, setInterestRate] = useState("8");
-  const [years, setYears] = useState("10");
+  const [initialInvestment, setInitialInvestment] = useState("");
+  const [monthlyContribution, setMonthlyContribution] = useState("");
+  const [interestRate, setInterestRate] = useState("");
+  const [years, setYears] = useState("");
 
   const results = useMemo(() => {
     const initialInvestmentValue = Number(initialInvestment);
@@ -34,12 +34,11 @@ export default function CompoundInterestCalculatorTool({
     const yearsValue = Number(years);
 
     if (
-      Number.isNaN(initialInvestmentValue) ||
-      Number.isNaN(monthlyContributionValue) ||
-      Number.isNaN(interestRateValue) ||
-      Number.isNaN(yearsValue) ||
-      yearsValue <= 0
-    ) {
+      !initialInvestment ||
+      !monthlyContribution ||
+      !interestRate ||
+      !years
+   ) {
       return {
         finalBalance: "",
         contributions: "",
