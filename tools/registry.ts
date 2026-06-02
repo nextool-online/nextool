@@ -10,6 +10,7 @@ import { dataSizeConverterTool } from "./data-size-converter";
 import { loanCalculatorTool } from "./loan-calculator";
 import { speedConverterTool } from "./speed-converter";
 import { tipCalculatorTool } from "./tip-calculator";
+import { compoundInterestCalculatorTool } from "./compound-interest-calculator";
 
 export const tools = [
   percentageCalculatorTool,
@@ -24,4 +25,5 @@ export const tools = [
   loanCalculatorTool,
   speedConverterTool,
   tipCalculatorTool,
+  compoundInterestCalculatorTool,
 ];
