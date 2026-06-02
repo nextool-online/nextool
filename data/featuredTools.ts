@@ -1,10 +1,12 @@
 import { tools } from "../tools/registry";
 
 const featuredIds = [
-  "percentage-calculator",
-  "rule-of-three",
+  
+  
   "loan-calculator",
-  "bmi-calculator",
+  "compound-interest-calculator",
+  "savings-calculator",
+  "percentage-calculator",
   "age-calculator",
   "unit-converter",
 ];
