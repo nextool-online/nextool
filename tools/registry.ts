@@ -11,6 +11,7 @@ import { loanCalculatorTool } from "./loan-calculator";
 import { speedConverterTool } from "./speed-converter";
 import { tipCalculatorTool } from "./tip-calculator";
 import { compoundInterestCalculatorTool } from "./compound-interest-calculator";
+import { savingsCalculatorTool } from "./savings-calculator";
 
 export const tools = [
   percentageCalculatorTool,
@@ -26,4 +27,5 @@ export const tools = [
   speedConverterTool,
   tipCalculatorTool,
   compoundInterestCalculatorTool,
+  savingsCalculatorTool,
 ];
