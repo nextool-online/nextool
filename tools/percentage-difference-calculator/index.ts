@@ -1,0 +1,35 @@
+import PercentageDifferenceCalculatorTool from "./component";
+import { percentageDifferenceCalculatorContent } from "./content";
+
+import type { ToolDefinition } from "../types";
+
+export const percentageDifferenceCalculatorTool: ToolDefinition = {
+  id: "percentage-difference-calculator",
+
+  category: "calculators",
+
+  featured: false,
+
+  popular: true,
+
+  isNew: true,
+
+  difficulty: "basic",
+
+  availableLanguages: ["en"],
+
+  relatedTools: ["percentage-calculator",
+  "percentage-increase-calculator",],
+
+  tags: [
+  "percentage",
+  "difference",
+  "comparison",
+  "math",
+  "calculator",
+  ],
+
+  ...percentageDifferenceCalculatorContent,
+
+  component: PercentageDifferenceCalculatorTool,
+};

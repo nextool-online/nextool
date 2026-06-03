@@ -65,6 +65,8 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: ToolPageProps) {
   const { lang, slug } = await params;
 
+  
+
   const tool = tools.find(
     (tool) =>
       isToolAvailableForLanguage(tool, lang) &&

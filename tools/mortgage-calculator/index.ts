@@ -35,4 +35,3 @@ export const mortgageCalculatorTool: ToolDefinition = {
   component: MortgageCalculatorTool,
   
 };
-console.log("MORTGAGE LOADED");

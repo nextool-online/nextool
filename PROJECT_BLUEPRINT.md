@@ -102,9 +102,17 @@ id
 
 category
 
+featured
+
+popular
+
+difficulty
+
 availableLanguages
 
 relatedTools
+
+tags
 
 slug
 
@@ -115,6 +123,8 @@ description
 seo
 
 article
+
+faq
 
 ui
 
@@ -184,6 +194,31 @@ Content:
 
 content.ts
 
+---
+## Content Standard
+
+Every tool must contain:
+
+- 3 article sections
+- 4 FAQ items
+- Related tools
+- Tags
+- Difficulty level
+
+Article content explains.
+
+FAQ content answers questions.
+
+Article and FAQ must never duplicate each other.
+---
+# Structured Data
+
+Every tool page should generate:
+
+- Breadcrumb Schema
+- SoftwareApplication Schema
+- FAQ Schema
+- Related Tools Schema
 ---
 
 # Scaling Strategy
