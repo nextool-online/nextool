@@ -16,6 +16,13 @@ import { mortgageCalculatorTool } from "./mortgage-calculator";
 import { percentageDifferenceCalculatorTool } from "./percentage-difference-calculator";
 import { roiCalculatorTool } from "./roi-calculator";
 import { inflationCalculatorTool } from "./inflation-calculator";
+import { investmentCalculatorTool } from "./investment-calculator";
+import { retirementCalculatorTool } from "./retirement-calculator";
+import { breakEvenCalculatorTool } from "./break-even-calculator";
+import { calorieCalculatorTool } from "./calorie-calculator";
+import { bmrCalculatorTool } from "./bmr-calculator";
+import { waterIntakeCalculatorTool } from "./water-intake-calculator";
+import { bodyFatCalculatorTool } from "./body-fat-calculator";
 
 export const tools = [
   percentageCalculatorTool,
@@ -36,5 +43,12 @@ export const tools = [
   percentageDifferenceCalculatorTool,
   roiCalculatorTool,
   inflationCalculatorTool,
+  investmentCalculatorTool,
+  retirementCalculatorTool,
+  breakEvenCalculatorTool,
+  calorieCalculatorTool,
+  bmrCalculatorTool,
+  waterIntakeCalculatorTool,
+  bodyFatCalculatorTool,
 
 ];
