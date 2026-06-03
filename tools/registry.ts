@@ -14,6 +14,8 @@ import { compoundInterestCalculatorTool } from "./compound-interest-calculator";
 import { savingsCalculatorTool } from "./savings-calculator";
 import { mortgageCalculatorTool } from "./mortgage-calculator";
 import { percentageDifferenceCalculatorTool } from "./percentage-difference-calculator";
+import { roiCalculatorTool } from "./roi-calculator";
+import { inflationCalculatorTool } from "./inflation-calculator";
 
 export const tools = [
   percentageCalculatorTool,
@@ -32,5 +34,7 @@ export const tools = [
   savingsCalculatorTool,
   mortgageCalculatorTool,
   percentageDifferenceCalculatorTool,
+  roiCalculatorTool,
+  inflationCalculatorTool,
 
 ];
