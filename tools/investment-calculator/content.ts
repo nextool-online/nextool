@@ -90,6 +90,16 @@ export const investmentCalculatorContent = {
     },
   ],
 
+  formula: {
+  expression: {
+    en: "FV = P(1+r)^n + PMT[((1+r)^n - 1)/r]",
+  },
+
+  explanation: {
+    en: "<strong>FV</strong> = Future Value<br/><strong>P</strong> = Initial Investment<br/><strong>PMT</strong> = Monthly Contribution<br/><strong>r</strong> = Periodic Interest Rate<br/><strong>n</strong> = Number of Compounding Periods",
+  },
+},
+
   ui: {
     heading: {
       en: "Investment Calculator",

@@ -90,6 +90,16 @@ export const roiCalculatorContent = {
     },
   ],
 
+  formula: {
+  expression: {
+    en: "ROI = [(Gain - Cost) / Cost] × 100",
+  },
+
+  explanation: {
+    en: "<strong>ROI</strong> = Return on Investment (%)<br/><strong>Gain</strong> = Final Value of Investment<br/><strong>Cost</strong> = Initial Investment Cost",
+  },
+},
+
   ui: {
     heading: {
       en: "ROI Calculator",

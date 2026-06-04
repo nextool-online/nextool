@@ -90,6 +90,16 @@ export const mortgageCalculatorContent = {
     },
   ],
 
+  formula: {
+  expression: {
+    en: "M = P × [r(1+r)^n] / [(1+r)^n − 1]",
+  },
+
+  explanation: {
+    en: "<strong>M</strong> = Monthly Payment<br/><strong>P</strong> = Loan Amount<br/><strong>r</strong> = Monthly Interest Rate<br/><strong>n</strong> = Total Number of Payments",
+  },
+},
+
   ui: {
     heading: {
       en: "Mortgage Calculator",
