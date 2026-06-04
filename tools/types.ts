@@ -22,6 +22,11 @@ export type ToolSeo = {
   description: Translation;
 };
 
+export type ToolFormula = {
+  expression: Translation;
+  explanation?: Translation;
+};
+
 export type ToolUi = Record<string, Translation>;
 
 export type ToolDefinition = {
@@ -55,7 +60,11 @@ export type ToolDefinition = {
 
   faq?: ToolFaqItem[];
 
+  formula?: ToolFormula;
+
   ui: ToolUi;
+
+  
 
   component: ComponentType<ToolComponentProps>;
 };

@@ -250,6 +250,29 @@ export default async function ToolPage({ params }: ToolPageProps) {
 
       <Calculator lang={lang} />
 
+      {tool.formula && (
+       <section className="mt-10 rounded-2xl border border-zinc-200 bg-zinc-50 p-6">
+        <h2 className="text-2xl font-bold text-zinc-950">
+          Formula
+        </h2>
+
+        <div className="mt-4 overflow-x-auto rounded-xl bg-white p-4">
+          <code className="text-lg font-bold font-mono text-zinc-900">
+            {getText(tool.formula.expression, lang)}
+          </code>
+        </div>
+
+        {tool.formula.explanation && (
+         <div className="mt-4 text-zinc-600" dangerouslySetInnerHTML={{ __html: getText(
+          tool.formula.explanation,
+          lang
+        ),
+     }}
+    />
+        )}
+     </section>
+   )}
+
       <article className="mt-10 space-y-6 text-base leading-7 text-zinc-700 md:mt-12 md:leading-8">
         {tool.article.map(
          (section: (typeof tool.article)[number]) => (

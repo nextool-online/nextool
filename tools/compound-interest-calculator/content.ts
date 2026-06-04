@@ -89,6 +89,16 @@ export const compoundInterestCalculatorContent = {
       },
     },
   ],
+  
+  formula: {
+  expression: {
+    en: "FV = P(1 + r)^n",
+    },
+
+     explanation: {
+      en: "<strong>FV</strong> = Future Value<br/><strong>P</strong> = Initial Investment<br/><strong>r</strong> = Annual Interest Rate<br/><strong>n</strong> = Number of Compounding Periods",
+    },
+   },
 
   ui: {
     heading: {
