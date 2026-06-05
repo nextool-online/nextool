@@ -19,8 +19,10 @@ export const roiCalculatorTool: ToolDefinition = {
   availableLanguages: ["en"],
 
   relatedTools: [
-    "loan-calculator",
-    "compound-interest-calculator",
+  "investment-calculator",
+  "compound-interest-calculator",
+  "break-even-calculator",
+  "retirement-calculator",
   ],
 
   tags: [

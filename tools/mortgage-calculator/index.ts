@@ -17,8 +17,10 @@ export const mortgageCalculatorTool: ToolDefinition = {
   difficulty: "intermediate",
 
    relatedTools: [
-    "loan-calculator",
-    "compound-interest-calculator",
+  "loan-calculator",
+  "investment-calculator",
+  "roi-calculator",
+  "break-even-calculator",
   ],
 
   

@@ -19,8 +19,10 @@ export const retirementCalculatorTool: ToolDefinition = {
   availableLanguages: ["en"],
 
   relatedTools: [
-    "investment-calculator",
-    "compound-interest-calculator",
+  "compound-interest-calculator",
+  "investment-calculator",
+  "savings-calculator",
+  "roi-calculator",
   ],
 
   tags: [

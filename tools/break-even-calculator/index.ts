@@ -19,8 +19,10 @@ export const breakEvenCalculatorTool: ToolDefinition = {
   availableLanguages: ["en"],
 
   relatedTools: [
-    "roi-calculator",
-    "loan-calculator",
+  "roi-calculator",
+  "loan-calculator",
+  "mortgage-calculator",
+  "investment-calculator",
   ],
 
   tags: [

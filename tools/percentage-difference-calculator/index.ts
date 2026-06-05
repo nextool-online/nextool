@@ -18,8 +18,12 @@ export const percentageDifferenceCalculatorTool: ToolDefinition = {
 
   availableLanguages: ["en"],
 
-  relatedTools: ["percentage-calculator",
-  "percentage-increase-calculator",],
+  relatedTools: [
+  "percentage-calculator",
+  "percentage-increase-calculator",
+  "average-calculator",
+  "rule-of-three",
+  ],
 
   tags: [
   "percentage",

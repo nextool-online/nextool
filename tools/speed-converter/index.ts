@@ -26,8 +26,8 @@ export const speedConverterTool: ToolDefinition = {
   ],
 
   relatedTools: [
-    "unit-converter",
-    "data-size-converter",
+  "unit-converter",
+  "data-size-converter",
   ],
 
   ...speedConverterContent,

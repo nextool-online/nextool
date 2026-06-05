@@ -13,82 +13,207 @@ export const loanCalculatorContent = {
 
   seo: {
     title: {
-      en: "Loan Calculator - Monthly Payment Calculator",
-    },
+  en: "Loan Calculator - Monthly Loan Payment & Interest Calculator",
+},
 
     description: {
-      en: "Free online loan calculator. Calculate monthly payments, total repayment amount and total interest.",
-    },
+  en: "Calculate monthly loan payments, total repayment costs and interest charges with this free online loan calculator.",
+},
   },
 
   article: [
   {
     heading: {
-      en: "Understanding loan payments",
+      en: "What Is a Loan Calculator?",
     },
 
     body: {
-      en: "Loan payments are usually made every month and include both principal and interest. The principal is the amount borrowed, while interest is the cost charged by the lender.",
+      en: "A loan calculator estimates monthly payments, total repayment costs and total interest for a loan based on the amount borrowed, interest rate and repayment term.",
     },
-   },
-   {
+  },
+
+  {
     heading: {
-      en: "How interest affects the total cost",
+      en: "How Loan Payments Work",
     },
 
     body: {
-      en: "A higher interest rate increases both the monthly payment and the total amount paid over the life of the loan. A longer repayment term can reduce the monthly payment, but it often increases the total interest paid.",
+      en: "Most loans are repaid through fixed monthly installments that include both principal and interest.",
     },
-   },
-   {
+  },
+
+  {
     heading: {
-      en: "Using the calculator effectively",
+      en: "Understanding Principal and Interest",
     },
 
     body: {
-      en: "Try different loan amounts, interest rates and repayment periods to compare scenarios before choosing a financing option.",
+      en: "The principal is the amount borrowed, while interest represents the cost of borrowing money from a lender.",
     },
-      },
-       ],
+  },
+
+  {
+    heading: {
+      en: "How Interest Rates Affect Loans",
+    },
+
+    body: {
+      en: "Higher interest rates increase monthly payments and total borrowing costs over the life of the loan.",
+    },
+  },
+
+  {
+    heading: {
+      en: "Practical Example",
+    },
+
+    body: {
+      en: "A $20,000 loan with a 6% annual interest rate repaid over 60 months will have a different monthly payment than the same loan repaid over 36 months.",
+    },
+  },
+
+  {
+    heading: {
+      en: "Short-Term vs Long-Term Loans",
+    },
+
+    body: {
+      en: "Shorter repayment terms generally result in higher monthly payments but lower total interest costs.",
+    },
+  },
+
+  {
+    heading: {
+      en: "Common Types of Loans",
+    },
+
+    body: {
+      en: "Loan calculators can be used for personal loans, auto loans, student loans, business loans and many other financing options.",
+    },
+  },
+
+  {
+    heading: {
+      en: "Using This Loan Calculator",
+    },
+
+    body: {
+      en: "Enter the loan amount, annual interest rate and repayment period to estimate monthly payments and total loan costs.",
+    },
+  },
+],
 
   faq: [
-    {
-      question: {
-        en: "How accurate is this loan calculator?",
-      },
-
-      answer: {
-        en: "This calculator uses the standard amortization formula and provides a good estimate for most fixed-rate loans.",
-      },
+  {
+    question: {
+      en: "How accurate is this loan calculator?",
     },
-    {
-      question: {
-        en: "Does this calculator work for mortgages?",
-      },
 
-      answer: {
-        en: "Yes. It can be used for mortgages, personal loans, car loans and other fixed-rate financing scenarios.",
-      },
+    answer: {
+      en: "It uses the standard amortization formula and provides reliable estimates for most fixed-rate loans.",
     },
-    {
-      question: {
-        en: "What interest rate should I enter?",
-      },
+  },
 
-      answer: {
-        en: "Enter the annual interest rate offered by your lender.",
-      },
+  {
+    question: {
+      en: "Does this calculator work for mortgages?",
     },
-    {
-      question: {
-        en: "Why is the total payment higher than the loan amount?",
-      },
 
-      answer: {
-        en: "Because the total payment includes both the original borrowed amount and all accumulated interest.",
-      },
+    answer: {
+      en: "Yes. It can be used for mortgages and many other fixed-rate loans.",
     },
-  ],
+  },
+
+  {
+    question: {
+      en: "What interest rate should I enter?",
+    },
+
+    answer: {
+      en: "Use the annual interest rate offered by your lender.",
+    },
+  },
+
+  {
+    question: {
+      en: "Why is the total payment higher than the loan amount?",
+    },
+
+    answer: {
+      en: "Because total repayment includes both principal and accumulated interest.",
+    },
+  },
+
+  {
+    question: {
+      en: "Can I compare different loan terms?",
+    },
+
+    answer: {
+      en: "Yes. Changing the repayment period helps compare monthly payments and total costs.",
+    },
+  },
+
+  {
+    question: {
+      en: "What is loan amortization?",
+    },
+
+    answer: {
+      en: "Amortization is the process of gradually paying off a loan through scheduled payments.",
+    },
+  },
+
+  {
+    question: {
+      en: "Do shorter loans save money?",
+    },
+
+    answer: {
+      en: "In many cases, yes. Shorter loan terms often result in lower total interest costs.",
+    },
+  },
+
+  {
+    question: {
+      en: "Can I use this for car loans?",
+    },
+
+    answer: {
+      en: "Yes. The calculator works for car loans, personal loans and many other financing products.",
+    },
+  },
+
+  {
+    question: {
+      en: "Can I use this for business loans?",
+    },
+
+    answer: {
+      en: "Yes. It can provide estimates for many common business financing scenarios.",
+    },
+  },
+
+  {
+    question: {
+      en: "Is this loan calculator free?",
+    },
+
+    answer: {
+      en: "Yes. You can use this loan calculator for free directly in your browser.",
+    },
+  },
+],
+
+  formula: {
+  expression: {
+    en: "M = P × [r(1+r)^n] / [(1+r)^n − 1]",
+  },
+
+  explanation: {
+    en: "<strong>M</strong> = Monthly Payment<br/><strong>P</strong> = Loan Amount<br/><strong>r</strong> = Monthly Interest Rate<br/><strong>n</strong> = Total Number of Payments",
+  },
+},
 
   ui: {
     heading: {

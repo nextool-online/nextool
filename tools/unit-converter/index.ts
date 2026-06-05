@@ -26,8 +26,8 @@ export const unitConverterTool: ToolDefinition = {
   ],
 
   relatedTools: [
-    "bmi-calculator",
-    "speed-converter",
+  "data-size-converter",
+  "speed-converter",
   ],
 
   ...unitConverterContent,

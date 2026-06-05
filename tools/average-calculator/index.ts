@@ -26,8 +26,10 @@ export const averageCalculatorTool: ToolDefinition = {
   ],
 
   relatedTools: [
-    "percentage-calculator",
-    "rule-of-three",
+  "percentage-difference-calculator",
+  "percentage-calculator",
+  "rule-of-three",
+  "age-calculator",
   ],
 
   ...averageCalculatorContent,

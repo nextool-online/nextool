@@ -19,8 +19,10 @@ export const inflationCalculatorTool: ToolDefinition = {
   availableLanguages: ["en"],
 
   relatedTools: [
-    "savings-calculator",
-    "roi-calculator",
+  "investment-calculator",
+  "compound-interest-calculator",
+  "retirement-calculator",
+  "savings-calculator",
   ],
 
   tags: [

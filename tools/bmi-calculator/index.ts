@@ -26,8 +26,10 @@ export const bmiCalculatorTool: ToolDefinition = {
   ],
 
   relatedTools: [
-    "age-calculator",
-    "unit-converter",
+  "calorie-calculator",
+  "bmr-calculator",
+  "body-fat-calculator",
+  "water-intake-calculator",
   ],
 
   ...bmiCalculatorContent,

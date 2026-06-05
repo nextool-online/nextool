@@ -25,8 +25,10 @@ export const compoundInterestCalculatorTool: ToolDefinition = {
   ],
 
   relatedTools: [
-    "loan-calculator",
-    "percentage-calculator",
+  "investment-calculator",
+  "retirement-calculator",
+  "savings-calculator",
+  "roi-calculator",
   ],
 
   ...compoundInterestCalculatorContent,

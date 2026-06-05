@@ -26,8 +26,10 @@ export const tipCalculatorTool: ToolDefinition = {
   ],
 
   relatedTools: [
-    "percentage-calculator",
-    "discount-calculator",
+  "discount-calculator",
+  "percentage-calculator",
+  "percentage-increase-calculator",
+  "average-calculator",
   ],
 
   ...tipCalculatorContent,

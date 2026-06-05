@@ -27,8 +27,9 @@ export const ageCalculatorTool: ToolDefinition = {
   ],
 
   relatedTools: [
-    "bmi-calculator",
-    "percentage-calculator",
+  "average-calculator",
+  "bmi-calculator",
+  "calorie-calculator",
   ],
 
   ...ageCalculatorContent,

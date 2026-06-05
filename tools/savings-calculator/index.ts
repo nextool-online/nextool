@@ -30,7 +30,9 @@ export const savingsCalculatorTool: ToolDefinition = {
 
   relatedTools: [
   "compound-interest-calculator",
-  "loan-calculator",
+  "investment-calculator",
+  "retirement-calculator",
+  "roi-calculator",
   ],
 
   ...savingsCalculatorContent,

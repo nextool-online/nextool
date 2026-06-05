@@ -25,8 +25,10 @@ export const loanCalculatorTool: ToolDefinition = {
   ],
 
   relatedTools: [
-    "percentage-calculator",
-    "discount-calculator",
+  "mortgage-calculator",
+  "compound-interest-calculator",
+  "investment-calculator",
+  "roi-calculator",
   ],
 
   ...loanCalculatorContent,

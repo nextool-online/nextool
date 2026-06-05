@@ -19,8 +19,10 @@ export const bmrCalculatorTool: ToolDefinition = {
   availableLanguages: ["en"],
 
   relatedTools: [
-    "calorie-calculator",
-    "bmi-calculator",
+  "bmi-calculator",
+  "calorie-calculator",
+  "body-fat-calculator",
+  "water-intake-calculator",
   ],
 
   tags: [

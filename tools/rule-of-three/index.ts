@@ -38,8 +38,10 @@ export const ruleOfThreeTool: ToolDefinition = {
   ],
 
   relatedTools: [
-    "percentage-calculator",
-    "percentage-increase-calculator",
+  "percentage-calculator",
+  "percentage-increase-calculator",
+  "discount-calculator",
+  "average-calculator",
   ],
 
   ...ruleOfThreeContent,
