@@ -8,127 +8,183 @@
 
 ## Reescrever títulos SEO
 
-Status: Pendente
+Status: Concluído ✅
 
-Problema:
-Muitas ferramentas ainda usam títulos genéricos.
+Resultado:
 
-Exemplo atual:
-
-Investment Calculator - Free Online Tool
-
-Melhor:
-
-Investment Calculator - Compound Interest & Future Value Estimator
-
-Objetivo:
-Melhorar CTR nos resultados de busca.
+- títulos específicos por ferramenta
+- foco em intenção de busca
+- melhoria de CTR potencial
 
 ---
 
 ## Reescrever meta descriptions
 
-Status: Pendente
+Status: Concluído ✅
 
-Problema:
-Muitas descrições ainda usam texto genérico.
+Resultado:
 
-Objetivo:
-Criar descrições específicas para cada ferramenta.
-
-Exemplo:
-
-Estimate investment growth, future value and returns with this free investment calculator.
+- descrições específicas
+- melhor alinhamento com buscas reais
+- maior potencial de CTR
 
 ---
 
 ## Expandir artigos
 
-Status: Pendente
+Status: Concluído ✅
 
-Problema:
-Os artigos atuais são muito curtos.
+Resultado:
 
-Meta:
-
-- mínimo 500 palavras
-- ideal 800 a 1500 palavras
-
-Adicionar:
-
-- explicações
-- fórmulas
-- exemplos
-- FAQs reais
-- casos de uso
+- 6 a 8 seções por ferramenta
+- conteúdo SEO V2
+- exemplos práticos
+- explicações mais completas
+- melhor cobertura semântica
 
 ---
 
 ## Adicionar fórmulas aos artigos
 
-Status: Pendente
+Status: Concluído ✅
 
-Exemplos:
+Resultado:
 
-Compound Interest
-
-FV = P(1+r)^n + PMT(((1+r)^n -1)/r)
-
-Mortgage
-
-M = P × [r(1+r)^n] / [(1+r)^n−1]
-
-ROI
-
-ROI = (Gain - Cost) / Cost × 100
-
-Objetivo:
-Capturar buscas relacionadas a fórmulas.
+- fórmulas adicionadas
+- explicação das variáveis
+- bloco visual padronizado
+- tabelas de referência em conversores
 
 ---
 
 ## Melhorar links internos
 
-Status: Pendente
+Status: Concluído ✅
 
-Exemplo:
+Resultado:
 
-Mortgage Calculator
-↓
-Loan Calculator
-↓
-Compound Interest Calculator
+- relatedTools implementado
+- clusters criados
 
-Objetivo:
-Distribuir autoridade interna.
+Clusters:
+
+- Finance
+- Health
+- Math
+- Converters
+
+Objetivo alcançado:
+
+- melhor distribuição de autoridade interna
+- aumento de páginas por sessão
+- reforço de contexto temático
 
 ---
 
 # PRIORIDADE 2 — INTERNACIONALIZAÇÃO
 
-## Traduzir todas as ferramentas para Italiano
+## Simplificar idiomas ativos
 
-Status: Pendente
+Status: Planejado
+
+Objetivo:
+
+Manter inicialmente apenas:
+
+- EN
+- PT
+- IT
+- ES
+
+Remover temporariamente:
+
+- FR
+- DE
+- RO
+- PL
+- NL
+- TR
+- AR
 
 Motivo:
 
-- mercado menos competitivo
-- experiência pessoal na Itália
-- maior chance de ranquear rapidamente
+Reduzir complexidade operacional e focar nos idiomas prioritários.
+
+---
+
+## Melhorar seletor de idioma
+
+Status: Planejado
+
+Problema:
+
+Lista atual ocupa espaço excessivo e gera distração.
+
+Objetivo:
+
+Substituir por dropdown compacto.
+
+Exemplo:
+
+🌐 English ▼
+
+---
+
+## Definir arquitetura multilíngue
+
+Status: Planejado
+
+Avaliar estrutura:
+
+tools/
+  bmi-calculator/
+    content.en.ts
+    content.pt.ts
+    content.it.ts
+    content.es.ts
+
+Objetivos:
+
+- arquivos menores
+- manutenção mais simples
+- traduções independentes
+- facilidade para IA e tradutores
+
+---
+
+## Traduzir todas as ferramentas para Italiano
+
+Status: Planejado
 
 Meta:
 
 25 ferramentas em Italiano.
 
+Motivo:
+
+- mercado menos competitivo
+- experiência pessoal na Itália
+- potencial de ranqueamento rápido
+
 ---
 
 ## Traduzir todas as ferramentas para Português
 
-Status: Pendente
+Status: Planejado
 
 Meta:
 
 25 ferramentas em Português.
+
+---
+
+## Traduzir todas as ferramentas para Espanhol
+
+Status: Planejado
+
+Meta:
+
+25 ferramentas em Espanhol.
 
 ---
 
@@ -143,6 +199,7 @@ Exemplos:
 /pt/calculadora-financiamento
 
 Objetivo:
+
 Melhor SEO local.
 
 ---
@@ -211,6 +268,7 @@ Itália:
 Status: Pendente
 
 Problema:
+
 Em alguns aparelhos o ponto decimal é difícil de inserir.
 
 Investigar soluções.
@@ -221,17 +279,18 @@ Investigar soluções.
 
 Status: Em andamento
 
-Criado em:
+Já utilizado em:
 
-Calorie Calculator
+- Calorie Calculator
 
 Aplicar também em:
 
-- Body Fat
-- BMR
+- Body Fat Calculator
+- BMR Calculator
 - futuras ferramentas
 
 Objetivo:
+
 Reduzir erros do usuário.
 
 ---
@@ -240,11 +299,22 @@ Reduzir erros do usuário.
 
 Status: Futuro
 
-Adicionar botão de cópia.
-
 Exemplo:
 
 [ Copy Result ]
+
+---
+
+## Melhor exibição de resultados
+
+Status: Futuro
+
+Melhorar:
+
+- números grandes
+- resultados monetários
+- alinhamento visual
+- legibilidade
 
 ---
 
@@ -279,12 +349,22 @@ Status: Futuro
 
 Aplicar em:
 
-- Investment
-- Retirement
-- Compound Interest
-- Savings
+- Investment Calculator
+- Retirement Calculator
+- Compound Interest Calculator
+- Savings Calculator
 
 Mostrar evolução ao longo do tempo.
+
+---
+
+## Revisar Language Switcher
+
+Status: Planejado
+
+Objetivo:
+
+Transformar lista atual em componente mais limpo e compacto.
 
 ---
 
@@ -305,6 +385,7 @@ Ferramentas:
 - Hash Generator
 
 Objetivo:
+
 Atrair público técnico.
 
 ---
@@ -335,6 +416,20 @@ Ferramentas:
 
 ---
 
+## SEO Tools
+
+Status: Planejado
+
+Ferramentas:
+
+- Meta Tag Generator
+- Open Graph Generator
+- Robots.txt Generator
+- Sitemap Validator
+- Slug Generator
+
+---
+
 # PRIORIDADE 6 — INFRAESTRUTURA
 
 ## Revisar Sitemap
@@ -355,7 +450,12 @@ Status: Futuro
 
 Status: Futuro
 
-Adicionar dados estruturados mais ricos.
+Melhorar:
+
+- FAQ
+- HowTo
+- Dataset
+- WebApplication
 
 ---
 
@@ -368,6 +468,30 @@ Analisar:
 - LCP
 - CLS
 - INP
+
+---
+
+## Deploy Final Vercel
+
+Status: Planejado
+
+---
+
+## Conectar domínio nextool.online
+
+Status: Planejado
+
+---
+
+## Search Console
+
+Status: Planejado
+
+---
+
+## Bing Webmaster Tools
+
+Status: Planejado
 
 ---
 
@@ -395,7 +519,7 @@ Analisar:
 
 ✓ GitHub configurado
 
-✓ Vercel configurado
+✓ Estrutura base criada
 
 ---
 
@@ -407,9 +531,19 @@ Analisar:
 
 ✓ ToolSelect criado
 
-✓ Cluster Finance iniciado
+✓ SEO V2 implementado
 
-✓ Cluster Health iniciado
+✓ Fórmulas implementadas
+
+✓ FAQs expandidas
+
+✓ Artigos expandidos
+
+✓ Internal Linking implementado
+
+✓ Clusters criados
+
+✓ GitHub Backup atualizado
 
 ---
 
@@ -417,12 +551,46 @@ Analisar:
 
 Objetivo:
 
+Infraestrutura multilíngue consolidada
+
+✓ EN
+
+✓ PT preparado
+
+✓ IT preparado
+
+✓ ES preparado
+
+✓ seletor de idioma revisado
+
+✓ arquitetura de conteúdo definida
+
+---
+
+## Marco Futuro
+
+Objetivo:
+
 25 ferramentas
 
 ×
 
-3 idiomas
+4 idiomas
 
 =
 
-75 páginas indexáveis
+100 páginas indexáveis
+
+---
+
+## Visão de Longo Prazo
+
+Objetivo:
+
+Transformar o Nextool em uma plataforma internacional de ferramentas online com:
+
+- múltiplos idiomas
+- SEO escalável
+- clusters temáticos
+- monetização via anúncios
+- futura expansão para ferramentas técnicas e profissionais
