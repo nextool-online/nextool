@@ -13,82 +13,207 @@ export const waterIntakeCalculatorContent = {
 
   seo: {
     title: {
-      en: "Water Intake Calculator - Daily Hydration Calculator",
-    },
+  en: "Water Intake Calculator - Daily Water & Hydration Calculator",
+},
 
     description: {
-      en: "Free water intake calculator. Estimate how much water you should drink daily based on weight and activity.",
-    },
+  en: "Calculate daily water intake, hydration needs and recommended water consumption based on weight and activity level.",
+},
   },
 
   article: [
-    {
-      heading: {
-        en: "Why hydration matters",
-      },
-
-      body: {
-        en: "Proper hydration supports energy levels, physical performance, temperature regulation and overall health.",
-      },
+  {
+    heading: {
+      en: "Why Hydration Is Important",
     },
-    {
-      heading: {
-        en: "How water needs are estimated",
-      },
 
-      body: {
-        en: "This calculator estimates daily water intake using body weight and additional hydration needs from exercise.",
-      },
+    body: {
+      en: "Water is essential for regulating body temperature, transporting nutrients, supporting digestion and maintaining overall health.",
     },
-    {
-      heading: {
-        en: "Using this calculator",
-      },
+  },
 
-      body: {
-        en: "Enter your body weight and average daily exercise time to estimate your hydration needs.",
-      },
+  {
+    heading: {
+      en: "How Much Water Should You Drink?",
     },
-  ],
+
+    body: {
+      en: "Daily water requirements vary depending on body weight, activity level, climate and overall health conditions.",
+    },
+  },
+
+  {
+    heading: {
+      en: "How This Calculator Works",
+    },
+
+    body: {
+      en: "This calculator estimates hydration needs using body weight and additional water requirements created by physical activity.",
+    },
+  },
+
+  {
+    heading: {
+      en: "Why Activity Level Matters",
+    },
+
+    body: {
+      en: "Exercise increases fluid loss through sweat, which raises daily hydration requirements.",
+    },
+  },
+
+  {
+    heading: {
+      en: "Signs of Dehydration",
+    },
+
+    body: {
+      en: "Common signs of dehydration include thirst, fatigue, headaches, dizziness, dry mouth and reduced physical performance.",
+    },
+  },
+
+  {
+    heading: {
+      en: "Practical Example",
+    },
+
+    body: {
+      en: "A person weighing 70 kg may require approximately 2.4 to 2.8 liters of water per day depending on activity level and climate.",
+    },
+  },
+
+  {
+    heading: {
+      en: "Hydration and Physical Performance",
+    },
+
+    body: {
+      en: "Proper hydration supports endurance, muscle function and recovery during exercise and daily activities.",
+    },
+  },
+
+  {
+    heading: {
+      en: "Using This Water Intake Calculator",
+    },
+
+    body: {
+      en: "Enter your body weight and average daily exercise duration to estimate your recommended daily water intake.",
+    },
+  },
+],
 
   faq: [
-    {
-      question: {
-        en: "How much water should I drink daily?",
-      },
-
-      answer: {
-        en: "Water needs vary by body size, activity level and climate. This calculator provides an estimate.",
-      },
+  {
+    question: {
+      en: "How much water should I drink each day?",
     },
-    {
-      question: {
-        en: "Does exercise increase water needs?",
-      },
 
-      answer: {
-        en: "Yes. Physical activity increases fluid loss through sweat and raises hydration requirements.",
-      },
+    answer: {
+      en: "Daily water needs vary by body size, activity level and environment. This calculator provides an estimate.",
     },
-    {
-      question: {
-        en: "Are coffee and tea included?",
-      },
+  },
 
-      answer: {
-        en: "This calculator focuses on total hydration needs and does not distinguish beverage sources.",
-      },
+  {
+    question: {
+      en: "Does exercise increase water needs?",
     },
-    {
-      question: {
-        en: "Is this suitable for athletes?",
-      },
 
-      answer: {
-        en: "Athletes may require additional hydration beyond these estimates depending on training intensity.",
-      },
+    answer: {
+      en: "Yes. Physical activity increases fluid loss through sweat and raises hydration requirements.",
     },
-  ],
+  },
+
+  {
+    question: {
+      en: "Can I drink too much water?",
+    },
+
+    answer: {
+      en: "Yes. Excessive water consumption can lead to electrolyte imbalances in rare situations.",
+    },
+  },
+
+  {
+    question: {
+      en: "Do coffee and tea count toward hydration?",
+    },
+
+    answer: {
+      en: "Yes. Most beverages contribute to total daily fluid intake.",
+    },
+  },
+
+  {
+    question: {
+      en: "Do athletes need more water?",
+    },
+
+    answer: {
+      en: "Yes. Athletes often require significantly more fluids due to intense training and sweat loss.",
+    },
+  },
+
+  {
+    question: {
+      en: "Does hot weather affect hydration needs?",
+    },
+
+    answer: {
+      en: "Yes. Higher temperatures generally increase fluid requirements.",
+    },
+  },
+
+  {
+    question: {
+      en: "Can dehydration affect performance?",
+    },
+
+    answer: {
+      en: "Yes. Even mild dehydration can negatively impact concentration, energy levels and physical performance.",
+    },
+  },
+
+  {
+    question: {
+      en: "Should children use the same water recommendations?",
+    },
+
+    answer: {
+      en: "Children have different hydration needs based on age, size and activity level.",
+    },
+  },
+
+  {
+    question: {
+      en: "Can hydration help with weight management?",
+    },
+
+    answer: {
+      en: "Proper hydration may support appetite regulation and overall healthy lifestyle habits.",
+    },
+  },
+
+  {
+    question: {
+      en: "Is this water intake calculator free?",
+    },
+
+    answer: {
+      en: "Yes. You can use this water intake calculator for free directly in your browser.",
+    },
+  },
+],
+
+  formula: {
+  expression: {
+    en: "Water Intake (ml) = Weight (kg) × 35",
+  },
+
+  explanation: {
+    en: "<strong>Weight</strong> = Body Weight in Kilograms<br/><strong>35</strong> = Recommended Daily Water Intake per Kilogram<br/><strong>Water Intake</strong> = Estimated Daily Hydration Need",
+  },
+},
 
   ui: {
     heading: {

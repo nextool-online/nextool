@@ -13,82 +13,207 @@ export const bmiCalculatorContent = {
 
   seo: {
     title: {
-      en: "BMI Calculator - Body Mass Index Calculator",
+     en: "BMI Calculator - Body Mass Index & Weight Category Calculator",
     },
 
     description: {
-      en: "Calculate your BMI using your height and weight. Understand BMI categories and evaluate your weight status.",
+      en: "Calculate your BMI, understand weight categories and evaluate body weight status using this free BMI calculator.",
     },
   },
 
   article: [
-    {
-      heading: {
-        en: "Understanding Body Mass Index",
-      },
-
-      body: {
-        en: "Body Mass Index, commonly known as BMI, is a simple measurement that compares weight and height. It is widely used as a screening tool to estimate whether a person's weight falls within a healthy range.",
-      },
+  {
+    heading: {
+      en: "What Is BMI?",
     },
-    {
-      heading: {
-        en: "BMI categories explained",
-      },
 
-      body: {
-        en: "Adults are generally classified as underweight, normal weight, overweight or obese based on their BMI value. These categories help identify potential health risks associated with body weight.",
-      },
+    body: {
+      en: "Body Mass Index (BMI) is a simple measurement that compares weight and height. It is widely used to estimate whether a person falls within a healthy weight range.",
     },
-    {
-      heading: {
-        en: "Limitations of BMI",
-      },
+  },
 
-      body: {
-        en: "BMI does not directly measure body fat. Athletes and people with high muscle mass may have a high BMI despite having a healthy body composition. BMI should be considered a screening tool rather than a medical diagnosis.",
-      },
+  {
+    heading: {
+      en: "How BMI Is Calculated",
     },
-  ],
+
+    body: {
+      en: "BMI is calculated by dividing body weight in kilograms by height in meters squared. The resulting value is used to classify weight status.",
+    },
+  },
+
+  {
+    heading: {
+      en: "BMI Categories Explained",
+    },
+
+    body: {
+      en: "Adults are generally classified as underweight, normal weight, overweight or obese based on their BMI value. These categories help assess potential health risks.",
+    },
+  },
+
+  {
+    heading: {
+      en: "Why BMI Matters",
+    },
+
+    body: {
+      en: "BMI is commonly used by healthcare professionals as a quick screening tool to identify possible weight-related health concerns.",
+    },
+  },
+
+  {
+    heading: {
+      en: "Practical BMI Example",
+    },
+
+    body: {
+      en: "A person weighing 70 kg with a height of 1.75 meters has a BMI of approximately 22.9, which falls within the normal weight category.",
+    },
+  },
+
+  {
+    heading: {
+      en: "Limitations of BMI",
+    },
+
+    body: {
+      en: "BMI does not directly measure body fat. Athletes and individuals with high muscle mass may have elevated BMI values despite having healthy body composition.",
+    },
+  },
+
+  {
+    heading: {
+      en: "BMI and Overall Health",
+    },
+
+    body: {
+      en: "BMI should be considered alongside other health indicators such as waist circumference, body fat percentage, physical activity and medical history.",
+    },
+  },
+
+  {
+    heading: {
+      en: "Using This BMI Calculator",
+    },
+
+    body: {
+      en: "Enter your weight and height to instantly calculate your BMI and identify your weight category.",
+    },
+  },
+],
 
   faq: [
-    {
-      question: {
-        en: "What is a healthy BMI?",
+  {
+    question: {
+      en: "What is a healthy BMI?",
+    },
+
+    answer: {
+      en: "For most adults, a BMI between 18.5 and 24.9 is generally considered healthy.",
+    },
+  },
+
+  {
+    question: {
+      en: "What BMI is considered overweight?",
+    },
+
+    answer: {
+      en: "A BMI between 25 and 29.9 is generally classified as overweight.",
+    },
+  },
+
+  {
+    question: {
+      en: "What BMI is considered obese?",
+    },
+
+    answer: {
+      en: "A BMI of 30 or higher is generally classified as obese.",
+    },
+  },
+
+  {
+    question: {
+      en: "Does BMI measure body fat?",
+    },
+
+    answer: {
+      en: "No. BMI estimates weight relative to height but does not directly measure body fat percentage.",
+    },
+  },
+
+  {
+    question: {
+      en: "Can athletes have a high BMI?",
+    },
+
+    answer: {
+      en: "Yes. Athletes often have higher BMI values because muscle weighs more than fat.",
+    },
+  },
+
+  {
+    question: {
+      en: "Is BMI accurate for everyone?",
+    },
+
+    answer: {
+      en: "BMI is useful for most adults but may not accurately reflect body composition in athletes, older adults or certain medical conditions.",
+    },
+  },
+
+  {
+    question: {
+      en: "Can BMI predict health risks?",
+    },
+
+    answer: {
+      en: "BMI can indicate potential risk factors but should not be used as a standalone measure of health.",
+    },
+  },
+
+  {
+    question: {
+      en: "Should children use BMI calculators?",
+    },
+
+    answer: {
+      en: "Children and teenagers use different BMI interpretations based on age and sex.",
+    },
+  },
+
+  {
+    question: {
+      en: "Can I improve my BMI?",
+    },
+
+    answer: {
+      en: "Healthy nutrition, regular exercise and long-term lifestyle changes can help improve BMI values.",
+    },
+  },
+
+  {
+    question: {
+      en: "Is this BMI calculator free?",
+    },
+
+    answer: {
+      en: "Yes. You can use this BMI calculator for free directly in your browser.",
+    },
+  },
+],
+
+  formula: {
+      expression: {
+       en: "BMI = Weight (kg) / Height² (m²)",
       },
 
-      answer: {
-        en: "For most adults, a BMI between 18.5 and 24.9 is generally considered healthy.",
+       explanation: {
+        en: "<strong>Weight</strong> = Body Weight in Kilograms<br/><strong>Height</strong> = Height in Meters<br/><strong>BMI</strong> = Body Mass Index",
       },
     },
-    {
-      question: {
-        en: "Does BMI measure body fat?",
-      },
-
-      answer: {
-        en: "No. BMI estimates weight relative to height but does not directly measure body fat percentage.",
-      },
-    },
-    {
-      question: {
-        en: "Can athletes have a high BMI?",
-      },
-
-      answer: {
-        en: "Yes. People with significant muscle mass may have a higher BMI without having excess body fat.",
-      },
-    },
-    {
-      question: {
-        en: "Should BMI be used as a medical diagnosis?",
-      },
-
-      answer: {
-        en: "No. BMI is a screening tool and should be considered alongside other health indicators and professional medical advice.",
-      },
-    },
-  ],
 
   ui: {
     heading: {
