@@ -1,5 +1,5 @@
 import BmiCalculatorTool from "./component";
-import { bmiCalculatorContent } from "./content";
+import { bmiCalculatorContent } from "./content.en";
 
 import type { ToolDefinition } from "../types";
 
