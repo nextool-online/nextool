@@ -19,13 +19,7 @@ export const ruleOfThreeTool: ToolDefinition = {
     "it",
     "pt",
     "es",
-    "fr",
-    "de",
-    "ro",
-    "pl",
-    "nl",
-    "tr",
-    "ar",
+    
   ],
 
   tags: [

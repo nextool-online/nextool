@@ -8,13 +8,7 @@ export const dictionary = {
     it: "Strumenti e calcolatrici online veloci",
     pt: "Ferramentas e calculadoras online rápidas",
     es: "Herramientas y calculadoras online rápidas",
-    fr: "Outils et calculatrices en ligne rapides",
-    de: "Schnelle Online-Tools und Rechner",
-    ro: "Instrumente și calculatoare online rapide",
-    pl: "Szybkie narzędzia i kalkulatory online",
-    nl: "Snelle online tools en calculators",
-    tr: "Hızlı çevrimiçi araçlar ve hesaplayıcılar",
-    ar: "أدوات وآلات حاسبة سريعة عبر الإنترنت",
+    
   } satisfies Translation,
 
   homepageDescription: {
@@ -22,13 +16,7 @@ export const dictionary = {
     it: "Utility semplici, veloci e gratuite per sviluppatori, studenti e attività quotidiane.",
     pt: "Utilitários simples, rápidos e gratuitos para desenvolvedores, estudantes e tarefas diárias.",
     es: "Utilidades simples, rápidas y gratuitas para desarrolladores, estudiantes y tareas diarias.",
-    fr: "Utilitaires simples, rapides et gratuits pour développeurs, étudiants et tâches quotidiennes.",
-    de: "Einfache, schnelle und kostenlose Tools für Entwickler, Studenten und den Alltag.",
-    ro: "Instrumente simple, rapide și gratuite pentru dezvoltatori, studenți și activități zilnice.",
-    pl: "Proste, szybkie i darmowe narzędzia dla programistów, studentów i codziennych zadań.",
-    nl: "Eenvoudige, snelle en gratis tools voor ontwikkelaars, studenten en dagelijkse taken.",
-    tr: "Geliştiriciler, öğrenciler ve günlük işler için basit, hızlı ve ücretsiz araçlar.",
-    ar: "أدوات بسيطة وسريعة ومجانية للمطورين والطلاب والمهام اليومية.",
+    
   } satisfies Translation,
 
   searchPlaceholder: {
@@ -36,13 +24,7 @@ export const dictionary = {
     it: "Cerca strumenti...",
     pt: "Buscar ferramentas...",
     es: "Buscar herramientas...",
-    fr: "Rechercher des outils...",
-    de: "Tools suchen...",
-    ro: "Caută instrumente...",
-    pl: "Szukaj narzędzi...",
-    nl: "Zoek tools...",
-    tr: "Araç ara...",
-    ar: "ابحث عن الأدوات...",
+    
   } satisfies Translation,
 
   browseByCategory: {
@@ -50,13 +32,7 @@ export const dictionary = {
     it: "Sfoglia per categoria",
     pt: "Navegar por categoria",
     es: "Explorar por categoría",
-    fr: "Parcourir par catégorie",
-    de: "Nach Kategorie durchsuchen",
-    ro: "Răsfoiește după categorie",
-    pl: "Przeglądaj według kategorii",
-    nl: "Bladeren per categorie",
-    tr: "Kategoriye göre göz at",
-    ar: "تصفح حسب الفئة",
+    
   } satisfies Translation,
 
   calculatorLabel: {
@@ -64,13 +40,7 @@ export const dictionary = {
   it: "Calcolatore",
   pt: "Calculadora",
   es: "Calculadora",
-  fr: "Calculatrice",
-  de: "Rechner",
-  ro: "Calculator",
-  pl: "Kalkulator",
-  nl: "Calculator",
-  tr: "Hesaplayıcı",
-  ar: "حاسبة",
+ 
 } satisfies Translation,
 
 copyResult: {
@@ -78,13 +48,7 @@ copyResult: {
   it: "Copia risultato",
   pt: "Copiar resultado",
   es: "Copiar resultado",
-  fr: "Copier le résultat",
-  de: "Ergebnis kopieren",
-  ro: "Copiază rezultatul",
-  pl: "Kopiuj wynik",
-  nl: "Resultaat kopiëren",
-  tr: "Sonucu kopyala",
-  ar: "نسخ النتيجة",
+  
 } satisfies Translation,
 
 relatedTools: {
@@ -92,13 +56,7 @@ relatedTools: {
   it: "Strumenti correlati",
   pt: "Ferramentas relacionadas",
   es: "Herramientas relacionadas",
-  fr: "Outils associés",
-  de: "Ähnliche Tools",
-  ro: "Instrumente similare",
-  pl: "Powiązane narzędzia",
-  nl: "Gerelateerde tools",
-  tr: "İlgili araçlar",
-  ar: "أدوات ذات صلة",
+ 
 } satisfies Translation,
 
 faqTitle: {
@@ -106,13 +64,7 @@ faqTitle: {
   it: "Domande frequenti",
   pt: "Perguntas frequentes",
   es: "Preguntas frecuentes",
-  fr: "Questions fréquentes",
-  de: "Häufig gestellte Fragen",
-  ro: "Întrebări frecvente",
-  pl: "Najczęściej zadawane pytania",
-  nl: "Veelgestelde vragen",
-  tr: "Sık sorulan sorular",
-  ar: "الأسئلة الشائعة",
+  
 } satisfies Translation,
 
 homeLabel: {
@@ -120,13 +72,7 @@ homeLabel: {
   it: "Home",
   pt: "Início",
   es: "Inicio",
-  fr: "Accueil",
-  de: "Startseite",
-  ro: "Acasă",
-  pl: "Strona główna",
-  nl: "Home",
-  tr: "Ana sayfa",
-  ar: "الرئيسية",
+  
 } satisfies Translation,
 
 resultLabel: {
@@ -134,13 +80,7 @@ resultLabel: {
   it: "Risultato",
   pt: "Resultado",
   es: "Resultado",
-  fr: "Résultat",
-  de: "Ergebnis",
-  ro: "Rezultat",
-  pl: "Wynik",
-  nl: "Resultaat",
-  tr: "Sonuç",
-  ar: "النتيجة",
+  
 } satisfies Translation,
 
 allToolsTitle: {
@@ -148,13 +88,7 @@ allToolsTitle: {
   it: "Tutti gli strumenti",
   pt: "Todas as ferramentas",
   es: "Todas las herramientas",
-  fr: "Tous les outils",
-  de: "Alle Tools",
-  ro: "Toate instrumentele",
-  pl: "Wszystkie narzędzia",
-  nl: "Alle tools",
-  tr: "Tüm araçlar",
-  ar: "كل الأدوات",
+  
 } satisfies Translation,
 
 featuredToolsTitle: {
@@ -162,13 +96,7 @@ featuredToolsTitle: {
   it: "Strumenti in evidenza",
   pt: "Ferramentas em destaque",
   es: "Herramientas destacadas",
-  fr: "Outils en vedette",
-  de: "Empfohlene Tools",
-  ro: "Instrumente recomandate",
-  pl: "Polecane narzędzia",
-  nl: "Uitgelichte tools",
-  tr: "Öne çıkan araçlar",
-  ar: "أدوات مميزة",
+  
 } satisfies Translation,
 
 popularCategoriesTitle: {
@@ -176,13 +104,7 @@ popularCategoriesTitle: {
   it: "Categorie popolari",
   pt: "Categorias populares",
   es: "Categorías populares",
-  fr: "Catégories populaires",
-  de: "Beliebte Kategorien",
-  ro: "Categorii populare",
-  pl: "Popularne kategorie",
-  nl: "Populaire categorieën",
-  tr: "Popüler kategoriler",
-  ar: "فئات شائعة",
+  
 } satisfies Translation,
 
 viewAllTools: {
@@ -190,12 +112,6 @@ viewAllTools: {
   it: "Vedi tutti gli strumenti",
   pt: "Ver todas as ferramentas",
   es: "Ver todas las herramientas",
-  fr: "Voir tous les outils",
-  de: "Alle Tools ansehen",
-  ro: "Vezi toate instrumentele",
-  pl: "Zobacz wszystkie narzędzia",
-  nl: "Bekijk alle tools",
-  tr: "Tüm araçları gör",
-  ar: "عرض كل الأدوات",
+  
 } satisfies Translation,
 };
