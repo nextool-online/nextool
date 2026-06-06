@@ -1,5 +1,5 @@
 import BmrCalculatorTool from "./component";
-import { bmrCalculatorContent } from "./content";
+import { bmrCalculatorContent } from "./content.en";
 
 import type { ToolDefinition } from "../types";
 

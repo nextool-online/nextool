@@ -10,7 +10,7 @@ import ToolSelect from "../../components/toolkit/ToolSelect";
 
 import { getText } from "../../data/i18n";
 
-import { bmrCalculatorContent } from "./content";
+import { bmrCalculatorContent } from "./content.en";
 
 import type { ToolComponentProps } from "../types";
 

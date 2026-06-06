@@ -1,5 +1,5 @@
 import PercentageIncreaseCalculatorTool from "./component";
-import { percentageIncreaseCalculatorContent } from "./content";
+import { percentageIncreaseCalculatorContent } from "./content.en";
 
 import type { ToolDefinition } from "../types";
 

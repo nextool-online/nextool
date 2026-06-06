@@ -1,5 +1,5 @@
 import UnitConverterTool from "./component";
-import { unitConverterContent } from "./content";
+import { unitConverterContent } from "./content.en";
 
 import type { ToolDefinition } from "../types";
 

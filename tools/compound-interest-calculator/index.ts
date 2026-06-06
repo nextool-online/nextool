@@ -1,5 +1,5 @@
 import CompoundInterestCalculatorTool from "./component";
-import { compoundInterestCalculatorContent } from "./content";
+import { compoundInterestCalculatorContent } from "./content.en";
 
 import type { ToolDefinition } from "../types";
 

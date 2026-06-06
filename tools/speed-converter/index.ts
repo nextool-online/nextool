@@ -1,5 +1,5 @@
 import SpeedConverterTool from "./component";
-import { speedConverterContent } from "./content";
+import { speedConverterContent } from "./content.en";
 
 import type { ToolDefinition } from "../types";
 

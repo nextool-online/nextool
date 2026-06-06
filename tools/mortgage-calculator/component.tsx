@@ -9,7 +9,7 @@ import ToolSection from "../../components/toolkit/ToolSection";
 
 import { getText } from "../../data/i18n";
 
-import { mortgageCalculatorContent } from "./content";
+import { mortgageCalculatorContent } from "./content.en";
 
 import type { ToolComponentProps } from "../types";
 

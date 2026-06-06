@@ -1,5 +1,5 @@
 import RoiCalculatorTool from "./component";
-import { roiCalculatorContent } from "./content";
+import { roiCalculatorContent } from "./content.en";
 
 import type { ToolDefinition } from "../types";
 

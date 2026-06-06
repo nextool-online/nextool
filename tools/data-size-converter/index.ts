@@ -1,5 +1,5 @@
 import DataSizeConverterTool from "./component";
-import { dataSizeConverterContent } from "./content";
+import { dataSizeConverterContent } from "./content.en";
 
 import type { ToolDefinition } from "../types";
 

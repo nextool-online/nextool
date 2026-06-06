@@ -1,5 +1,5 @@
 import MortgageCalculatorTool from "./component";
-import { mortgageCalculatorContent } from "./content";
+import { mortgageCalculatorContent } from "./content.en";
 
 import type { ToolDefinition } from "../types";
 

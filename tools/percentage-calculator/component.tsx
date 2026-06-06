@@ -10,7 +10,7 @@ import ToolSection from "../../components/toolkit/ToolSection";
 import { dictionary } from "../../data/dictionary";
 import { getText } from "../../data/i18n";
 
-import { percentageCalculatorContent } from "./content";
+import { percentageCalculatorContent } from "./content.en";
 
 import type { ToolComponentProps } from "../types";
 

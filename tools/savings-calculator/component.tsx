@@ -9,7 +9,7 @@ import ToolResult from "../../components/toolkit/ToolResult";
 
 import { getText } from "../../data/i18n";
 
-import { savingsCalculatorContent } from "./content";
+import { savingsCalculatorContent } from "./content.en";
 
 import type { ToolComponentProps } from "../types";
 

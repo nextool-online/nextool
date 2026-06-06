@@ -1,5 +1,5 @@
 import DiscountCalculatorTool from "./component";
-import { discountCalculatorContent } from "./content";
+import { discountCalculatorContent } from "./content.en";
 
 import type { ToolDefinition } from "../types";
 

@@ -1,5 +1,5 @@
 import AgeCalculatorTool from "./component";
-import { ageCalculatorContent } from "./content";
+import { ageCalculatorContent } from "./content.en";
 
 import type { ToolDefinition } from "../types";
 

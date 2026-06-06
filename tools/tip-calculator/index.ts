@@ -1,5 +1,5 @@
 import TipCalculatorTool from "./component";
-import { tipCalculatorContent } from "./content";
+import { tipCalculatorContent } from "./content.en";
 
 import type { ToolDefinition } from "../types";
 

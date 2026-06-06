@@ -1,5 +1,5 @@
 import RuleOfThreeCalculator from "./component";
-import { ruleOfThreeContent } from "./content";
+import { ruleOfThreeContent } from "./content.en";
 
 import type { ToolDefinition } from "../types";
 
@@ -14,13 +14,7 @@ export const ruleOfThreeTool: ToolDefinition = {
 
   difficulty: "basic",
 
-  availableLanguages: [
-    "en",
-    "it",
-    "pt",
-    "es",
-    
-  ],
+  availableLanguages: ["en"],
 
   tags: [
     "rule of three",

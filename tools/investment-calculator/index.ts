@@ -1,5 +1,5 @@
 import InvestmentCalculatorTool from "./component";
-import { investmentCalculatorContent } from "./content";
+import { investmentCalculatorContent } from "./content.en";
 
 import type { ToolDefinition } from "../types";
 

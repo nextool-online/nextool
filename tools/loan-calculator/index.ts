@@ -1,5 +1,5 @@
 import LoanCalculatorTool from "./component";
-import { loanCalculatorContent } from "./content";
+import { loanCalculatorContent } from "./content.en";
 
 import type { ToolDefinition } from "../types";
 

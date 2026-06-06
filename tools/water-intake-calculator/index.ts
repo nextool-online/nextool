@@ -1,5 +1,5 @@
 import WaterIntakeCalculatorTool from "./component";
-import { waterIntakeCalculatorContent } from "./content";
+import { waterIntakeCalculatorContent } from "./content.en";
 
 import type { ToolDefinition } from "../types";
 

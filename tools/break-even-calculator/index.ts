@@ -1,5 +1,5 @@
 import BreakEvenCalculatorTool from "./component";
-import { breakEvenCalculatorContent } from "./content";
+import { breakEvenCalculatorContent } from "./content.en";
 
 import type { ToolDefinition } from "../types";
 

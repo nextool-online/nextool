@@ -1,5 +1,5 @@
 import PercentageDifferenceCalculatorTool from "./component";
-import { percentageDifferenceCalculatorContent } from "./content";
+import { percentageDifferenceCalculatorContent } from "./content.en";
 
 import type { ToolDefinition } from "../types";
 

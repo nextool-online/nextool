@@ -1,5 +1,5 @@
 import InflationCalculatorTool from "./component";
-import { inflationCalculatorContent } from "./content";
+import { inflationCalculatorContent } from "./content.en";
 
 import type { ToolDefinition } from "../types";
 

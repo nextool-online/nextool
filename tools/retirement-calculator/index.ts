@@ -1,5 +1,5 @@
 import RetirementCalculatorTool from "./component";
-import { retirementCalculatorContent } from "./content";
+import { retirementCalculatorContent } from "./content.en";
 
 import type { ToolDefinition } from "../types";
 

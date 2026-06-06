@@ -1,5 +1,5 @@
 import PercentageCalculator from "./component";
-import { percentageCalculatorContent } from "./content";
+import { percentageCalculatorContent } from "./content.en";
 
 import type { ToolDefinition } from "../types";
 
@@ -14,13 +14,7 @@ export const percentageCalculatorTool: ToolDefinition = {
 
   difficulty: "basic",
 
-  availableLanguages: [
-    "en",
-    "it",
-    "pt",
-    "es",
-    
-  ],
+  availableLanguages: ["en"],
 
   tags: [
     "percentage",

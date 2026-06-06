@@ -1,5 +1,5 @@
 import SavingsCalculatorTool from "./component";
-import { savingsCalculatorContent } from "./content";
+import { savingsCalculatorContent } from "./content.en";
 
 import type { ToolDefinition } from "../types";
 

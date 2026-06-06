@@ -1,5 +1,5 @@
 import AverageCalculatorTool from "./component";
-import { averageCalculatorContent } from "./content";
+import { averageCalculatorContent } from "./content.en";
 
 import type { ToolDefinition } from "../types";
 

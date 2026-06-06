@@ -1,5 +1,5 @@
 import CalorieCalculatorTool from "./component";
-import { calorieCalculatorContent } from "./content";
+import { calorieCalculatorContent } from "./content.en";
 
 import type { ToolDefinition } from "../types";
 

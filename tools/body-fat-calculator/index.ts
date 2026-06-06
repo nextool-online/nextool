@@ -1,5 +1,5 @@
 import BodyFatCalculatorTool from "./component";
-import { bodyFatCalculatorContent } from "./content";
+import { bodyFatCalculatorContent } from "./content.en";
 
 import type { ToolDefinition } from "../types";
 
