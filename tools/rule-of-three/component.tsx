@@ -10,26 +10,30 @@ import ToolSection from "../../components/toolkit/ToolSection";
 import { dictionary } from "../../data/dictionary";
 import { getText } from "../../data/i18n";
 
-import { ruleOfThreeContent } from "./content.en";
-
 import type { ToolComponentProps } from "../types";
 
-export default function RuleOfThreeCalculator({ lang }: ToolComponentProps) {
+export default function RuleOfThreeCalculator({
+  lang,
+  ui,
+}: ToolComponentProps) {
+  const toolUi = ui!;
+
   const [a, setA] = useState("");
   const [b, setB] = useState("");
   const [c, setC] = useState("");
   const [copied, setCopied] = useState(false);
-
-  const ui = ruleOfThreeContent.ui;
 
   const result = useMemo(() => {
     const valueA = Number(a);
     const valueB = Number(b);
     const valueC = Number(c);
 
-    if (!valueA || !valueB || !valueC) return "";
+    if (!valueA || !valueB || !valueC) {
+      return "";
+    }
 
-    const calculated = (valueB * valueC) / valueA;
+    const calculated =
+      (valueB * valueC) / valueA;
 
     return Number.isInteger(calculated)
       ? calculated.toString()
@@ -37,9 +41,12 @@ export default function RuleOfThreeCalculator({ lang }: ToolComponentProps) {
   }, [a, b, c]);
 
   async function copyResult() {
-    if (!result) return;
+    if (!result) {
+      return;
+    }
 
     await navigator.clipboard.writeText(result);
+
     setCopied(true);
 
     setTimeout(() => {
@@ -50,48 +57,79 @@ export default function RuleOfThreeCalculator({ lang }: ToolComponentProps) {
   return (
     <ToolBox>
       <ToolSection
-        title={getText(ui.heading, lang)}
-        description={getText(ui.helper, lang)}
+        title={getText(
+          toolUi.heading,
+          lang
+        )}
+        description={getText(
+          toolUi.helper,
+          lang
+        )}
       >
         <div className="space-y-4">
           <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 md:gap-4">
             <ToolInput
               type="number"
               value={a}
-              onChange={(event) => setA(event.target.value)}
-              placeholder={getText(ui.valueA, lang)}
+              onChange={(event) =>
+                setA(event.target.value)
+              }
+              placeholder={getText(
+                toolUi.valueA,
+                lang
+              )}
             />
 
-            <span className="text-sm font-bold text-zinc-400">→</span>
+            <span className="text-sm font-bold text-zinc-400">
+              →
+            </span>
 
             <ToolInput
               type="number"
               value={b}
-              onChange={(event) => setB(event.target.value)}
-              placeholder={getText(ui.valueB, lang)}
+              onChange={(event) =>
+                setB(event.target.value)
+              }
+              placeholder={getText(
+                toolUi.valueB,
+                lang
+              )}
             />
           </div>
 
           <div className="text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
-            {getText(ui.as, lang)}
+            {getText(
+              toolUi.as,
+              lang
+            )}
           </div>
 
           <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 md:gap-4">
             <ToolInput
               type="number"
               value={c}
-              onChange={(event) => setC(event.target.value)}
-              placeholder={getText(ui.valueC, lang)}
+              onChange={(event) =>
+                setC(event.target.value)
+              }
+              placeholder={getText(
+                toolUi.valueC,
+                lang
+              )}
             />
 
-            <span className="text-sm font-bold text-zinc-400">→</span>
+            <span className="text-sm font-bold text-zinc-400">
+              →
+            </span>
 
             <ToolResult
               value={result}
               placeholder="X"
               onCopy={copyResult}
               copied={copied}
-              copyLabel={getText(dictionary.copyResult, lang)}
+              copyLabel={getText(
+                dictionary.copyResult,
+                lang
+              )}
             />
           </div>
         </div>

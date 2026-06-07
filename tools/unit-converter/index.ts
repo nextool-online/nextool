@@ -1,12 +1,22 @@
 import UnitConverterTool from "./component";
-import { unitConverterContent } from "./content.en";
+
+import { unitConverterContent as unitConverterContentEn } from "./content.en";
+import { unitConverterContent as unitConverterContentPt } from "./content.pt";
+
+import { mergeToolContent } from "../mergeToolContent";
 
 import type { ToolDefinition } from "../types";
+
+const unitConverterContent =
+  mergeToolContent(
+    unitConverterContentEn,
+    unitConverterContentPt
+  );
 
 export const unitConverterTool: ToolDefinition = {
   id: "unit-converter",
 
-  category: "calculators",
+  category: "converters",
 
   featured: true,
 
@@ -14,20 +24,22 @@ export const unitConverterTool: ToolDefinition = {
 
   difficulty: "basic",
 
-  availableLanguages: ["en"],
+  availableLanguages: ["en", "pt"],
 
   tags: [
-    "unit converter",
-    "conversion",
+    "converter",
+    "units",
     "length",
     "weight",
-    "measurement",
-    "calculator",
+    "metric",
+    "imperial",
+    "measurements",
   ],
 
   relatedTools: [
-  "data-size-converter",
-  "speed-converter",
+    "speed-converter",
+    "data-size-converter",
+    "rule-of-three",
   ],
 
   ...unitConverterContent,

@@ -9,14 +9,13 @@ import ToolSection from "../../components/toolkit/ToolSection";
 
 import { getText } from "../../data/i18n";
 
-import { roiCalculatorContent } from "./content.en";
-
 import type { ToolComponentProps } from "../types";
 
 export default function RoiCalculatorTool({
   lang,
+  ui,
 }: ToolComponentProps) {
-  const ui = roiCalculatorContent.ui;
+  const toolUi = ui!;
 
   const [investmentCost, setInvestmentCost] = useState("");
   const [netProfit, setNetProfit] = useState("");
@@ -25,37 +24,56 @@ export default function RoiCalculatorTool({
     const cost = Number(investmentCost);
     const profit = Number(netProfit);
 
-    if (!investmentCost || !netProfit || cost === 0) {
+    if (
+      !investmentCost ||
+      !netProfit ||
+      cost === 0
+    ) {
       return {
         roi: "",
         totalReturn: "",
       };
     }
 
-    const roi = (profit / cost) * 100;
-    const totalReturn = cost + profit;
+    const roi =
+      (profit / cost) * 100;
+
+    const totalReturn =
+      cost + profit;
 
     return {
       roi: roi.toFixed(2),
-      totalReturn: totalReturn.toFixed(2),
+      totalReturn:
+        totalReturn.toFixed(2),
     };
-  }, [investmentCost, netProfit]);
+  }, [
+    investmentCost,
+    netProfit,
+  ]);
 
   return (
     <ToolBox>
       <ToolSection
-        title={getText(ui.heading, lang)}
-        description={getText(ui.helper, lang)}
+        title={getText(
+          toolUi.heading,
+          lang
+        )}
+        description={getText(
+          toolUi.helper,
+          lang
+        )}
       >
         <div className="space-y-5">
           <ToolInput
             type="number"
             value={investmentCost}
             onChange={(event) =>
-              setInvestmentCost(event.target.value)
+              setInvestmentCost(
+                event.target.value
+              )
             }
             placeholder={getText(
-              ui.investmentCost,
+              toolUi.investmentCost,
               lang
             )}
           />
@@ -64,10 +82,12 @@ export default function RoiCalculatorTool({
             type="number"
             value={netProfit}
             onChange={(event) =>
-              setNetProfit(event.target.value)
+              setNetProfit(
+                event.target.value
+              )
             }
             placeholder={getText(
-              ui.netProfit,
+              toolUi.netProfit,
               lang
             )}
           />
@@ -75,7 +95,10 @@ export default function RoiCalculatorTool({
           <div className="grid gap-3 md:grid-cols-2">
             <div>
               <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
-                {getText(ui.roi, lang)}
+                {getText(
+                  toolUi.roi,
+                  lang
+                )}
               </p>
 
               <ToolResult
@@ -86,7 +109,10 @@ export default function RoiCalculatorTool({
 
             <div>
               <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
-                {getText(ui.totalReturn, lang)}
+                {getText(
+                  toolUi.totalReturn,
+                  lang
+                )}
               </p>
 
               <ToolResult

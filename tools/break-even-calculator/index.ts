@@ -1,7 +1,16 @@
 import BreakEvenCalculatorTool from "./component";
-import { breakEvenCalculatorContent } from "./content.en";
+
+import { breakEvenCalculatorContent as breakEvenCalculatorContentEn } from "./content.en";
+import { breakEvenCalculatorContent as breakEvenCalculatorContentPt } from "./content.pt";
+
+import { mergeToolContent } from "../mergeToolContent";
 
 import type { ToolDefinition } from "../types";
+
+const breakEvenCalculatorContent = mergeToolContent(
+  breakEvenCalculatorContentEn,
+  breakEvenCalculatorContentPt
+);
 
 export const breakEvenCalculatorTool: ToolDefinition = {
   id: "break-even-calculator",
@@ -12,26 +21,23 @@ export const breakEvenCalculatorTool: ToolDefinition = {
 
   popular: true,
 
-  isNew: true,
-
   difficulty: "basic",
 
-  availableLanguages: ["en"],
-
-  relatedTools: [
-  "roi-calculator",
-  "loan-calculator",
-  "mortgage-calculator",
-  "investment-calculator",
-  ],
+  availableLanguages: ["en", "pt"],
 
   tags: [
     "break even",
+    "profitability",
     "business",
-    "profit",
-    "sales",
     "finance",
+    "revenue",
     "calculator",
+  ],
+
+  relatedTools: [
+    "roi-calculator",
+    "investment-calculator",
+    "loan-calculator",
   ],
 
   ...breakEvenCalculatorContent,

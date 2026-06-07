@@ -9,14 +9,13 @@ import ToolSection from "../../components/toolkit/ToolSection";
 
 import { getText } from "../../data/i18n";
 
-import { percentageIncreaseCalculatorContent } from "./content.en";
-
 import type { ToolComponentProps } from "../types";
 
 export default function PercentageIncreaseCalculatorTool({
   lang,
+  ui,
 }: ToolComponentProps) {
-  const ui = percentageIncreaseCalculatorContent.ui;
+  const toolUi = ui!;
 
   const [initialValue, setInitialValue] = useState("");
   const [finalValue, setFinalValue] = useState("");
@@ -29,16 +28,26 @@ export default function PercentageIncreaseCalculatorTool({
       return "";
     }
 
-    const increase = ((final - initial) / initial) * 100;
+    const increase =
+      ((final - initial) / initial) * 100;
 
     return `${increase.toFixed(2)}%`;
-  }, [initialValue, finalValue]);
+  }, [
+    initialValue,
+    finalValue,
+  ]);
 
   return (
     <ToolBox>
       <ToolSection
-        title={getText(ui.heading, lang)}
-        description={getText(ui.helper, lang)}
+        title={getText(
+          toolUi.heading,
+          lang
+        )}
+        description={getText(
+          toolUi.helper,
+          lang
+        )}
       >
         <div className="space-y-5">
           <div className="grid gap-3 md:grid-cols-2">
@@ -46,27 +55,43 @@ export default function PercentageIncreaseCalculatorTool({
               type="number"
               value={initialValue}
               onChange={(event) =>
-                setInitialValue(event.target.value)
+                setInitialValue(
+                  event.target.value
+                )
               }
-              placeholder={getText(ui.initialValue, lang)}
+              placeholder={getText(
+                toolUi.initialValue,
+                lang
+              )}
             />
 
             <ToolInput
               type="number"
               value={finalValue}
               onChange={(event) =>
-                setFinalValue(event.target.value)
+                setFinalValue(
+                  event.target.value
+                )
               }
-              placeholder={getText(ui.finalValue, lang)}
+              placeholder={getText(
+                toolUi.finalValue,
+                lang
+              )}
             />
           </div>
 
           <div>
             <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
-              {getText(ui.increase, lang)}
+              {getText(
+                toolUi.increase,
+                lang
+              )}
             </p>
 
-            <ToolResult value={result} placeholder="0%" />
+            <ToolResult
+              value={result}
+              placeholder="0%"
+            />
           </div>
         </div>
       </ToolSection>

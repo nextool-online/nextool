@@ -1,7 +1,16 @@
 import PercentageCalculator from "./component";
-import { percentageCalculatorContent } from "./content.en";
+
+import { percentageCalculatorContent as percentageCalculatorContentEn } from "./content.en";
+import { percentageCalculatorContent as percentageCalculatorContentPt } from "./content.pt";
+
+import { mergeToolContent } from "../mergeToolContent";
 
 import type { ToolDefinition } from "../types";
+
+const percentageCalculatorContent = mergeToolContent(
+  percentageCalculatorContentEn,
+  percentageCalculatorContentPt
+);
 
 export const percentageCalculatorTool: ToolDefinition = {
   id: "percentage-calculator",
@@ -14,22 +23,22 @@ export const percentageCalculatorTool: ToolDefinition = {
 
   difficulty: "basic",
 
-  availableLanguages: ["en"],
+  availableLanguages: ["en", "pt"],
 
   tags: [
     "percentage",
     "percent",
+    "discount",
     "math",
     "calculator",
-    "discount",
+    "proportion",
     "finance",
   ],
 
   relatedTools: [
-  "percentage-increase-calculator",
-  "percentage-difference-calculator",
-  "discount-calculator",
-  "rule-of-three",
+    "percentage-increase-calculator",
+    "percentage-difference-calculator",
+    "discount-calculator",
   ],
 
   ...percentageCalculatorContent,

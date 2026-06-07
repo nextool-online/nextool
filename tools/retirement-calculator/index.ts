@@ -1,7 +1,17 @@
 import RetirementCalculatorTool from "./component";
-import { retirementCalculatorContent } from "./content.en";
+
+import { retirementCalculatorContent as retirementCalculatorContentEn } from "./content.en";
+import { retirementCalculatorContent as retirementCalculatorContentPt } from "./content.pt";
+
+import { mergeToolContent } from "../mergeToolContent";
 
 import type { ToolDefinition } from "../types";
+
+const retirementCalculatorContent =
+  mergeToolContent(
+    retirementCalculatorContentEn,
+    retirementCalculatorContentPt
+  );
 
 export const retirementCalculatorTool: ToolDefinition = {
   id: "retirement-calculator",
@@ -12,26 +22,24 @@ export const retirementCalculatorTool: ToolDefinition = {
 
   popular: true,
 
-  isNew: true,
-
   difficulty: "intermediate",
 
-  availableLanguages: ["en"],
-
-  relatedTools: [
-  "compound-interest-calculator",
-  "investment-calculator",
-  "savings-calculator",
-  "roi-calculator",
-  ],
+  availableLanguages: ["en", "pt"],
 
   tags: [
     "retirement",
-    "pension",
-    "investment",
+    "retirement planning",
+    "financial independence",
+    "investing",
     "savings",
-    "finance",
+    "future value",
     "calculator",
+  ],
+
+  relatedTools: [
+    "investment-calculator",
+    "compound-interest-calculator",
+    "savings-calculator",
   ],
 
   ...retirementCalculatorContent,

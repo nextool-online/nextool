@@ -9,14 +9,13 @@ import ToolSection from "../../components/toolkit/ToolSection";
 
 import { getText } from "../../data/i18n";
 
-import { percentageDifferenceCalculatorContent } from "./content.en";
-
 import type { ToolComponentProps } from "../types";
 
 export default function PercentageDifferenceCalculatorTool({
   lang,
+  ui,
 }: ToolComponentProps) {
-  const ui = percentageDifferenceCalculatorContent.ui;
+  const toolUi = ui!;
 
   const [valueA, setValueA] = useState("");
   const [valueB, setValueB] = useState("");
@@ -50,8 +49,10 @@ export default function PercentageDifferenceCalculatorTool({
     return {
       percentageDifference:
         percentageDifference.toFixed(2),
+
       absoluteDifference:
         absoluteDifference.toFixed(2),
+
       averageValue:
         averageValue.toFixed(2),
     };
@@ -60,8 +61,8 @@ export default function PercentageDifferenceCalculatorTool({
   return (
     <ToolBox>
       <ToolSection
-        title={getText(ui.heading, lang)}
-        description={getText(ui.helper, lang)}
+        title={getText(toolUi.heading, lang)}
+        description={getText(toolUi.helper, lang)}
       >
         <div className="space-y-5">
           <ToolInput
@@ -70,7 +71,10 @@ export default function PercentageDifferenceCalculatorTool({
             onChange={(event) =>
               setValueA(event.target.value)
             }
-            placeholder={getText(ui.valueA, lang)}
+            placeholder={getText(
+              toolUi.valueA,
+              lang
+            )}
           />
 
           <ToolInput
@@ -79,13 +83,19 @@ export default function PercentageDifferenceCalculatorTool({
             onChange={(event) =>
               setValueB(event.target.value)
             }
-            placeholder={getText(ui.valueB, lang)}
+            placeholder={getText(
+              toolUi.valueB,
+              lang
+            )}
           />
 
           <div className="grid gap-3 md:grid-cols-3">
             <div>
               <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
-                {getText(ui.percentageDifference, lang)}
+                {getText(
+                  toolUi.percentageDifference,
+                  lang
+                )}
               </p>
 
               <ToolResult
@@ -96,7 +106,10 @@ export default function PercentageDifferenceCalculatorTool({
 
             <div>
               <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
-                {getText(ui.absoluteDifference, lang)}
+                {getText(
+                  toolUi.absoluteDifference,
+                  lang
+                )}
               </p>
 
               <ToolResult
@@ -107,7 +120,10 @@ export default function PercentageDifferenceCalculatorTool({
 
             <div>
               <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
-                {getText(ui.averageValue, lang)}
+                {getText(
+                  toolUi.averageValue,
+                  lang
+                )}
               </p>
 
               <ToolResult

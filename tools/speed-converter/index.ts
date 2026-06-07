@@ -1,12 +1,22 @@
 import SpeedConverterTool from "./component";
-import { speedConverterContent } from "./content.en";
+
+import { speedConverterContent as speedConverterContentEn } from "./content.en";
+import { speedConverterContent as speedConverterContentPt } from "./content.pt";
+
+import { mergeToolContent } from "../mergeToolContent";
 
 import type { ToolDefinition } from "../types";
+
+const speedConverterContent =
+  mergeToolContent(
+    speedConverterContentEn,
+    speedConverterContentPt
+  );
 
 export const speedConverterTool: ToolDefinition = {
   id: "speed-converter",
 
-  category: "calculators",
+  category: "converters",
 
   featured: true,
 
@@ -14,20 +24,22 @@ export const speedConverterTool: ToolDefinition = {
 
   difficulty: "basic",
 
-  availableLanguages: ["en"],
+  availableLanguages: ["en", "pt"],
 
   tags: [
     "speed",
-    "converter",
-    "kmh",
+    "velocity",
+    "km/h",
     "mph",
+    "m/s",
     "knots",
-    "meters per second",
+    "converter",
   ],
 
   relatedTools: [
-  "unit-converter",
-  "data-size-converter",
+    "unit-converter",
+    "data-size-converter",
+    "rule-of-three",
   ],
 
   ...speedConverterContent,

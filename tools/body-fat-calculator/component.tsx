@@ -10,14 +10,13 @@ import ToolSelect from "../../components/toolkit/ToolSelect";
 
 import { getText } from "../../data/i18n";
 
-import { bodyFatCalculatorContent } from "./content.en";
-
 import type { ToolComponentProps } from "../types";
 
 export default function BodyFatCalculatorTool({
   lang,
+  ui,
 }: ToolComponentProps) {
-  const ui = bodyFatCalculatorContent.ui;
+  const toolUi = ui!;
 
   const [gender, setGender] =
     useState("male");
@@ -95,8 +94,8 @@ export default function BodyFatCalculatorTool({
   return (
     <ToolBox>
       <ToolSection
-        title={getText(ui.heading, lang)}
-        description={getText(ui.helper, lang)}
+        title={getText(toolUi.heading, lang)}
+        description={getText(toolUi.helper, lang)}
       >
         <div className="space-y-4">
           <ToolSelect
@@ -125,7 +124,7 @@ export default function BodyFatCalculatorTool({
               )
             }
             placeholder={getText(
-              ui.height,
+              toolUi.height,
               lang
             )}
           />
@@ -139,7 +138,7 @@ export default function BodyFatCalculatorTool({
               )
             }
             placeholder={getText(
-              ui.neck,
+              toolUi.neck,
               lang
             )}
           />
@@ -153,7 +152,7 @@ export default function BodyFatCalculatorTool({
               )
             }
             placeholder={getText(
-              ui.waist,
+              toolUi.waist,
               lang
             )}
           />
@@ -167,7 +166,7 @@ export default function BodyFatCalculatorTool({
               )
             }
             placeholder={getText(
-              ui.hip,
+              toolUi.hip,
               lang
             )}
           />
@@ -175,7 +174,7 @@ export default function BodyFatCalculatorTool({
           <div>
             <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
               {getText(
-                ui.bodyFat,
+                toolUi.bodyFat,
                 lang
               )}
             </p>

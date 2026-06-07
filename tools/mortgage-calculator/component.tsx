@@ -9,14 +9,13 @@ import ToolSection from "../../components/toolkit/ToolSection";
 
 import { getText } from "../../data/i18n";
 
-import { mortgageCalculatorContent } from "./content.en";
-
 import type { ToolComponentProps } from "../types";
 
 export default function MortgageCalculatorTool({
   lang,
+  ui,
 }: ToolComponentProps) {
-  const ui = mortgageCalculatorContent.ui;
+  const toolUi = ui!;
 
   const [homePrice, setHomePrice] = useState("");
   const [downPayment, setDownPayment] = useState("");
@@ -55,9 +54,11 @@ export default function MortgageCalculatorTool({
         Math.pow(1 + monthlyRate, loanMonths)) /
       (Math.pow(1 + monthlyRate, loanMonths) - 1);
 
-    const totalPayment = monthlyPayment * loanMonths;
+    const totalPayment =
+      monthlyPayment * loanMonths;
 
-    const totalInterest = totalPayment - loanAmount;
+    const totalInterest =
+      totalPayment - loanAmount;
 
     return {
       loanAmount: loanAmount.toFixed(2),
@@ -75,8 +76,8 @@ export default function MortgageCalculatorTool({
   return (
     <ToolBox>
       <ToolSection
-        title={getText(ui.heading, lang)}
-        description={getText(ui.helper, lang)}
+        title={getText(toolUi.heading, lang)}
+        description={getText(toolUi.helper, lang)}
       >
         <div className="space-y-5">
           <ToolInput
@@ -85,7 +86,10 @@ export default function MortgageCalculatorTool({
             onChange={(event) =>
               setHomePrice(event.target.value)
             }
-            placeholder={getText(ui.homePrice, lang)}
+            placeholder={getText(
+              toolUi.homePrice,
+              lang
+            )}
           />
 
           <ToolInput
@@ -94,7 +98,10 @@ export default function MortgageCalculatorTool({
             onChange={(event) =>
               setDownPayment(event.target.value)
             }
-            placeholder={getText(ui.downPayment, lang)}
+            placeholder={getText(
+              toolUi.downPayment,
+              lang
+            )}
           />
 
           <ToolInput
@@ -103,7 +110,10 @@ export default function MortgageCalculatorTool({
             onChange={(event) =>
               setInterestRate(event.target.value)
             }
-            placeholder={getText(ui.interestRate, lang)}
+            placeholder={getText(
+              toolUi.interestRate,
+              lang
+            )}
           />
 
           <ToolInput
@@ -112,13 +122,19 @@ export default function MortgageCalculatorTool({
             onChange={(event) =>
               setYears(event.target.value)
             }
-            placeholder={getText(ui.years, lang)}
+            placeholder={getText(
+              toolUi.years,
+              lang
+            )}
           />
 
           <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
             <div>
               <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
-                {getText(ui.loanAmount, lang)}
+                {getText(
+                  toolUi.loanAmount,
+                  lang
+                )}
               </p>
 
               <ToolResult
@@ -129,7 +145,10 @@ export default function MortgageCalculatorTool({
 
             <div>
               <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
-                {getText(ui.monthlyPayment, lang)}
+                {getText(
+                  toolUi.monthlyPayment,
+                  lang
+                )}
               </p>
 
               <ToolResult
@@ -140,7 +159,10 @@ export default function MortgageCalculatorTool({
 
             <div>
               <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
-                {getText(ui.totalPayment, lang)}
+                {getText(
+                  toolUi.totalPayment,
+                  lang
+                )}
               </p>
 
               <ToolResult
@@ -151,7 +173,10 @@ export default function MortgageCalculatorTool({
 
             <div>
               <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
-                {getText(ui.totalInterest, lang)}
+                {getText(
+                  toolUi.totalInterest,
+                  lang
+                )}
               </p>
 
               <ToolResult

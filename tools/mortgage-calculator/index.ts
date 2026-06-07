@@ -1,39 +1,47 @@
 import MortgageCalculatorTool from "./component";
-import { mortgageCalculatorContent } from "./content.en";
+
+import { mortgageCalculatorContent as mortgageCalculatorContentEn } from "./content.en";
+import { mortgageCalculatorContent as mortgageCalculatorContentPt } from "./content.pt";
+
+import { mergeToolContent } from "../mergeToolContent";
 
 import type { ToolDefinition } from "../types";
+
+const mortgageCalculatorContent = mergeToolContent(
+  mortgageCalculatorContentEn,
+  mortgageCalculatorContentPt
+);
 
 export const mortgageCalculatorTool: ToolDefinition = {
   id: "mortgage-calculator",
 
-  category: "calculators",
+  category: "finance",
 
   featured: true,
 
   popular: true,
 
-  isNew: true,
+  difficulty: "basic",
 
-  difficulty: "intermediate",
+  availableLanguages: ["en", "pt"],
 
-   relatedTools: [
-  "loan-calculator",
-  "investment-calculator",
-  "roi-calculator",
-  "break-even-calculator",
-  ],
-
-  
   tags: [
     "mortgage",
     "home loan",
-    "finance",
+    "real estate",
+    "house",
+    "financing",
     "interest",
     "calculator",
-    ],
+  ],
+
+  relatedTools: [
+    "loan-calculator",
+    "investment-calculator",
+    "roi-calculator",
+  ],
 
   ...mortgageCalculatorContent,
 
   component: MortgageCalculatorTool,
-  
 };

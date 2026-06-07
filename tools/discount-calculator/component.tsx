@@ -9,14 +9,13 @@ import ToolSection from "../../components/toolkit/ToolSection";
 
 import { getText } from "../../data/i18n";
 
-import { discountCalculatorContent } from "./content.en";
-
 import type { ToolComponentProps } from "../types";
 
 export default function DiscountCalculatorTool({
   lang,
+  ui,
 }: ToolComponentProps) {
-  const ui = discountCalculatorContent.ui;
+  const toolUi = ui!;
 
   const [originalPrice, setOriginalPrice] = useState("");
   const [discount, setDiscount] = useState("");
@@ -44,8 +43,8 @@ export default function DiscountCalculatorTool({
   return (
     <ToolBox>
       <ToolSection
-        title={getText(ui.heading, lang)}
-        description={getText(ui.helper, lang)}
+        title={getText(toolUi.heading, lang)}
+        description={getText(toolUi.helper, lang)}
       >
         <div className="space-y-5">
           <div className="grid gap-3 md:grid-cols-2">
@@ -55,7 +54,10 @@ export default function DiscountCalculatorTool({
               onChange={(event) =>
                 setOriginalPrice(event.target.value)
               }
-              placeholder={getText(ui.originalPrice, lang)}
+              placeholder={getText(
+                toolUi.originalPrice,
+                lang
+              )}
             />
 
             <ToolInput
@@ -64,14 +66,20 @@ export default function DiscountCalculatorTool({
               onChange={(event) =>
                 setDiscount(event.target.value)
               }
-              placeholder={getText(ui.discount, lang)}
+              placeholder={getText(
+                toolUi.discount,
+                lang
+              )}
             />
           </div>
 
           <div className="grid gap-3 md:grid-cols-2">
             <div>
               <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
-                {getText(ui.finalPrice, lang)}
+                {getText(
+                  toolUi.finalPrice,
+                  lang
+                )}
               </p>
 
               <ToolResult
@@ -82,7 +90,10 @@ export default function DiscountCalculatorTool({
 
             <div>
               <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
-                {getText(ui.savings, lang)}
+                {getText(
+                  toolUi.savings,
+                  lang
+                )}
               </p>
 
               <ToolResult

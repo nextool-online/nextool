@@ -9,8 +9,6 @@ import ToolResult from "../../components/toolkit/ToolResult";
 
 import { getText } from "../../data/i18n";
 
-import { compoundInterestCalculatorContent } from "./content.en";
-
 import type { ToolComponentProps } from "../types";
 
 function formatMoney(value: number) {
@@ -19,8 +17,9 @@ function formatMoney(value: number) {
 
 export default function CompoundInterestCalculatorTool({
   lang,
+  ui,
 }: ToolComponentProps) {
-  const ui = compoundInterestCalculatorContent.ui;
+  const toolUi = ui!;
 
   const [initialInvestment, setInitialInvestment] = useState("");
   const [monthlyContribution, setMonthlyContribution] = useState("");
@@ -38,7 +37,7 @@ export default function CompoundInterestCalculatorTool({
       !monthlyContribution ||
       !interestRate ||
       !years
-   ) {
+    ) {
       return {
         finalBalance: "",
         contributions: "",
@@ -57,9 +56,11 @@ export default function CompoundInterestCalculatorTool({
     }
 
     const contributions =
-      initialInvestmentValue + monthlyContributionValue * months;
+      initialInvestmentValue +
+      monthlyContributionValue * months;
 
-    const interestEarned = balance - contributions;
+    const interestEarned =
+      balance - contributions;
 
     return {
       finalBalance: formatMoney(balance),
@@ -76,8 +77,8 @@ export default function CompoundInterestCalculatorTool({
   return (
     <ToolBox>
       <ToolSection
-        title={getText(ui.heading, lang)}
-        description={getText(ui.helper, lang)}
+        title={getText(toolUi.heading, lang)}
+        description={getText(toolUi.helper, lang)}
       >
         <div className="grid gap-4 md:grid-cols-2">
           <ToolInput
@@ -86,7 +87,10 @@ export default function CompoundInterestCalculatorTool({
             onChange={(event) =>
               setInitialInvestment(event.target.value)
             }
-            placeholder={getText(ui.initialInvestment, lang)}
+            placeholder={getText(
+              toolUi.initialInvestment,
+              lang
+            )}
           />
 
           <ToolInput
@@ -95,7 +99,10 @@ export default function CompoundInterestCalculatorTool({
             onChange={(event) =>
               setMonthlyContribution(event.target.value)
             }
-            placeholder={getText(ui.monthlyContribution, lang)}
+            placeholder={getText(
+              toolUi.monthlyContribution,
+              lang
+            )}
           />
 
           <ToolInput
@@ -104,21 +111,32 @@ export default function CompoundInterestCalculatorTool({
             onChange={(event) =>
               setInterestRate(event.target.value)
             }
-            placeholder={getText(ui.interestRate, lang)}
+            placeholder={getText(
+              toolUi.interestRate,
+              lang
+            )}
           />
 
           <ToolInput
             type="number"
             value={years}
-            onChange={(event) => setYears(event.target.value)}
-            placeholder={getText(ui.years, lang)}
+            onChange={(event) =>
+              setYears(event.target.value)
+            }
+            placeholder={getText(
+              toolUi.years,
+              lang
+            )}
           />
         </div>
 
         <div className="mt-6 grid gap-4 md:grid-cols-3">
           <div>
             <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
-              {getText(ui.finalBalance, lang)}
+              {getText(
+                toolUi.finalBalance,
+                lang
+              )}
             </p>
 
             <ToolResult
@@ -129,7 +147,10 @@ export default function CompoundInterestCalculatorTool({
 
           <div>
             <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
-              {getText(ui.contributions, lang)}
+              {getText(
+                toolUi.contributions,
+                lang
+              )}
             </p>
 
             <ToolResult
@@ -140,7 +161,10 @@ export default function CompoundInterestCalculatorTool({
 
           <div>
             <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
-              {getText(ui.interestEarned, lang)}
+              {getText(
+                toolUi.interestEarned,
+                lang
+              )}
             </p>
 
             <ToolResult

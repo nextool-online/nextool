@@ -9,14 +9,13 @@ import ToolSection from "../../components/toolkit/ToolSection";
 
 import { getText } from "../../data/i18n";
 
-import { breakEvenCalculatorContent } from "./content.en";
-
 import type { ToolComponentProps } from "../types";
 
 export default function BreakEvenCalculatorTool({
   lang,
+  ui,
 }: ToolComponentProps) {
-  const ui = breakEvenCalculatorContent.ui;
+  const toolUi = ui!;
 
   const [fixedCosts, setFixedCosts] = useState("");
   const [pricePerUnit, setPricePerUnit] = useState("");
@@ -67,8 +66,8 @@ export default function BreakEvenCalculatorTool({
   return (
     <ToolBox>
       <ToolSection
-        title={getText(ui.heading, lang)}
-        description={getText(ui.helper, lang)}
+        title={getText(toolUi.heading, lang)}
+        description={getText(toolUi.helper, lang)}
       >
         <div className="grid gap-4 md:grid-cols-3">
           <ToolInput
@@ -78,7 +77,7 @@ export default function BreakEvenCalculatorTool({
               setFixedCosts(event.target.value)
             }
             placeholder={getText(
-              ui.fixedCosts,
+              toolUi.fixedCosts,
               lang
             )}
           />
@@ -90,7 +89,7 @@ export default function BreakEvenCalculatorTool({
               setPricePerUnit(event.target.value)
             }
             placeholder={getText(
-              ui.pricePerUnit,
+              toolUi.pricePerUnit,
               lang
             )}
           />
@@ -102,7 +101,7 @@ export default function BreakEvenCalculatorTool({
               setCostPerUnit(event.target.value)
             }
             placeholder={getText(
-              ui.costPerUnit,
+              toolUi.costPerUnit,
               lang
             )}
           />
@@ -111,7 +110,10 @@ export default function BreakEvenCalculatorTool({
         <div className="mt-6 grid gap-4 md:grid-cols-3">
           <div>
             <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
-              {getText(ui.breakEvenUnits, lang)}
+              {getText(
+                toolUi.breakEvenUnits,
+                lang
+              )}
             </p>
 
             <ToolResult
@@ -122,7 +124,10 @@ export default function BreakEvenCalculatorTool({
 
           <div>
             <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
-              {getText(ui.revenueNeeded, lang)}
+              {getText(
+                toolUi.revenueNeeded,
+                lang
+              )}
             </p>
 
             <ToolResult
@@ -133,7 +138,10 @@ export default function BreakEvenCalculatorTool({
 
           <div>
             <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
-              {getText(ui.profitPerUnit, lang)}
+              {getText(
+                toolUi.profitPerUnit,
+                lang
+              )}
             </p>
 
             <ToolResult

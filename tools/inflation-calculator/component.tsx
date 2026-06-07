@@ -9,14 +9,13 @@ import ToolSection from "../../components/toolkit/ToolSection";
 
 import { getText } from "../../data/i18n";
 
-import { inflationCalculatorContent } from "./content.en";
-
 import type { ToolComponentProps } from "../types";
 
 export default function InflationCalculatorTool({
   lang,
+  ui,
 }: ToolComponentProps) {
-  const ui = inflationCalculatorContent.ui;
+  const toolUi = ui!;
 
   const [amount, setAmount] = useState("");
   const [inflationRate, setInflationRate] = useState("");
@@ -50,8 +49,8 @@ export default function InflationCalculatorTool({
   return (
     <ToolBox>
       <ToolSection
-        title={getText(ui.heading, lang)}
-        description={getText(ui.helper, lang)}
+        title={getText(toolUi.heading, lang)}
+        description={getText(toolUi.helper, lang)}
       >
         <div className="space-y-5">
           <ToolInput
@@ -60,7 +59,10 @@ export default function InflationCalculatorTool({
             onChange={(event) =>
               setAmount(event.target.value)
             }
-            placeholder={getText(ui.amount, lang)}
+            placeholder={getText(
+              toolUi.amount,
+              lang
+            )}
           />
 
           <ToolInput
@@ -70,7 +72,7 @@ export default function InflationCalculatorTool({
               setInflationRate(event.target.value)
             }
             placeholder={getText(
-              ui.inflationRate,
+              toolUi.inflationRate,
               lang
             )}
           />
@@ -81,13 +83,19 @@ export default function InflationCalculatorTool({
             onChange={(event) =>
               setYears(event.target.value)
             }
-            placeholder={getText(ui.years, lang)}
+            placeholder={getText(
+              toolUi.years,
+              lang
+            )}
           />
 
           <div className="grid gap-3 md:grid-cols-2">
             <div>
               <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
-                {getText(ui.futureValue, lang)}
+                {getText(
+                  toolUi.futureValue,
+                  lang
+                )}
               </p>
 
               <ToolResult
@@ -98,7 +106,10 @@ export default function InflationCalculatorTool({
 
             <div>
               <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
-                {getText(ui.inflationImpact, lang)}
+                {getText(
+                  toolUi.inflationImpact,
+                  lang
+                )}
               </p>
 
               <ToolResult

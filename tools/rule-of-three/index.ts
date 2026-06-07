@@ -1,7 +1,17 @@
 import RuleOfThreeCalculator from "./component";
-import { ruleOfThreeContent } from "./content.en";
+
+import { ruleOfThreeContent as ruleOfThreeContentEn } from "./content.en";
+import { ruleOfThreeContent as ruleOfThreeContentPt } from "./content.pt";
+
+import { mergeToolContent } from "../mergeToolContent";
 
 import type { ToolDefinition } from "../types";
+
+const ruleOfThreeContent =
+  mergeToolContent(
+    ruleOfThreeContentEn,
+    ruleOfThreeContentPt
+  );
 
 export const ruleOfThreeTool: ToolDefinition = {
   id: "rule-of-three",
@@ -14,22 +24,22 @@ export const ruleOfThreeTool: ToolDefinition = {
 
   difficulty: "basic",
 
-  availableLanguages: ["en"],
+  availableLanguages: ["en", "pt"],
 
   tags: [
     "rule of three",
     "proportion",
     "ratio",
-    "math",
-    "calculator",
     "percentage",
+    "math",
+    "calculation",
+    "calculator",
   ],
 
   relatedTools: [
-  "percentage-calculator",
-  "percentage-increase-calculator",
-  "discount-calculator",
-  "average-calculator",
+    "percentage-calculator",
+    "percentage-increase-calculator",
+    "average-calculator",
   ],
 
   ...ruleOfThreeContent,

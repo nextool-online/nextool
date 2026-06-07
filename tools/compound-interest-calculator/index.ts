@@ -1,7 +1,16 @@
 import CompoundInterestCalculatorTool from "./component";
-import { compoundInterestCalculatorContent } from "./content.en";
+
+import { compoundInterestCalculatorContent as compoundInterestCalculatorContentEn } from "./content.en";
+import { compoundInterestCalculatorContent as compoundInterestCalculatorContentPt } from "./content.pt";
+
+import { mergeToolContent } from "../mergeToolContent";
 
 import type { ToolDefinition } from "../types";
+
+const compoundInterestCalculatorContent = mergeToolContent(
+  compoundInterestCalculatorContentEn,
+  compoundInterestCalculatorContentPt
+);
 
 export const compoundInterestCalculatorTool: ToolDefinition = {
   id: "compound-interest-calculator",
@@ -12,23 +21,23 @@ export const compoundInterestCalculatorTool: ToolDefinition = {
 
   popular: true,
 
-  difficulty: "intermediate",
+  difficulty: "basic",
 
-  availableLanguages: ["en"],
+  availableLanguages: ["en", "pt"],
 
   tags: [
     "compound interest",
     "investment",
     "finance",
+    "future value",
     "returns",
-    "savings",
+    "calculator",
   ],
 
   relatedTools: [
-  "investment-calculator",
-  "retirement-calculator",
-  "savings-calculator",
-  "roi-calculator",
+    "investment-calculator",
+    "savings-calculator",
+    "retirement-calculator",
   ],
 
   ...compoundInterestCalculatorContent,

@@ -1,7 +1,17 @@
 import SavingsCalculatorTool from "./component";
-import { savingsCalculatorContent } from "./content.en";
+
+import { savingsCalculatorContent as savingsCalculatorContentEn } from "./content.en";
+import { savingsCalculatorContent as savingsCalculatorContentPt } from "./content.pt";
+
+import { mergeToolContent } from "../mergeToolContent";
 
 import type { ToolDefinition } from "../types";
+
+const savingsCalculatorContent =
+  mergeToolContent(
+    savingsCalculatorContentEn,
+    savingsCalculatorContentPt
+  );
 
 export const savingsCalculatorTool: ToolDefinition = {
   id: "savings-calculator",
@@ -12,31 +22,27 @@ export const savingsCalculatorTool: ToolDefinition = {
 
   popular: true,
 
-  isNew: true,
+  difficulty: "basic",
 
-  difficulty: "intermediate",
+  availableLanguages: ["en", "pt"],
 
-  availableLanguages: ["en"],
-
-  
   tags: [
-     "savings",
-     "finance",
-     "interest",
-     "investment",
-     "calculator",
-     "online tool",
-   ],
+    "savings",
+    "interest",
+    "compound interest",
+    "future value",
+    "financial planning",
+    "money",
+    "calculator",
+  ],
 
   relatedTools: [
-  "compound-interest-calculator",
-  "investment-calculator",
-  "retirement-calculator",
-  "roi-calculator",
+    "compound-interest-calculator",
+    "investment-calculator",
+    "retirement-calculator",
   ],
 
   ...savingsCalculatorContent,
 
   component: SavingsCalculatorTool,
-
 };

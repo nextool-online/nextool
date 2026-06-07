@@ -9,14 +9,13 @@ import ToolSection from "../../components/toolkit/ToolSection";
 
 import { getText } from "../../data/i18n";
 
-import { loanCalculatorContent } from "./content.en";
-
 import type { ToolComponentProps } from "../types";
 
 export default function LoanCalculatorTool({
   lang,
+  ui,
 }: ToolComponentProps) {
-  const ui = loanCalculatorContent.ui;
+  const toolUi = ui!;
 
   const [amount, setAmount] = useState("");
   const [interestRate, setInterestRate] = useState("");
@@ -39,13 +38,22 @@ export default function LoanCalculatorTool({
       };
     }
 
-    const monthlyRate = annualRate / 100 / 12;
+    const monthlyRate =
+      annualRate / 100 / 12;
 
     const monthlyPayment =
       (principal *
         monthlyRate *
-        Math.pow(1 + monthlyRate, loanMonths)) /
-      (Math.pow(1 + monthlyRate, loanMonths) - 1);
+        Math.pow(
+          1 + monthlyRate,
+          loanMonths
+        )) /
+      (
+        Math.pow(
+          1 + monthlyRate,
+          loanMonths
+        ) - 1
+      );
 
     const totalPayment =
       monthlyPayment * loanMonths;
@@ -63,32 +71,49 @@ export default function LoanCalculatorTool({
       totalInterest:
         totalInterest.toFixed(2),
     };
-  }, [amount, interestRate, months]);
+  }, [
+    amount,
+    interestRate,
+    months,
+  ]);
 
   return (
     <ToolBox>
       <ToolSection
-        title={getText(ui.heading, lang)}
-        description={getText(ui.helper, lang)}
+        title={getText(
+          toolUi.heading,
+          lang
+        )}
+        description={getText(
+          toolUi.helper,
+          lang
+        )}
       >
         <div className="space-y-5">
           <ToolInput
             type="number"
             value={amount}
             onChange={(event) =>
-              setAmount(event.target.value)
+              setAmount(
+                event.target.value
+              )
             }
-            placeholder={getText(ui.amount, lang)}
+            placeholder={getText(
+              toolUi.amount,
+              lang
+            )}
           />
 
           <ToolInput
             type="number"
             value={interestRate}
             onChange={(event) =>
-              setInterestRate(event.target.value)
+              setInterestRate(
+                event.target.value
+              )
             }
             placeholder={getText(
-              ui.interestRate,
+              toolUi.interestRate,
               lang
             )}
           />
@@ -97,41 +122,61 @@ export default function LoanCalculatorTool({
             type="number"
             value={months}
             onChange={(event) =>
-              setMonths(event.target.value)
+              setMonths(
+                event.target.value
+              )
             }
-            placeholder={getText(ui.months, lang)}
+            placeholder={getText(
+              toolUi.months,
+              lang
+            )}
           />
 
           <div className="grid gap-3 md:grid-cols-3">
             <div>
               <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
-                {getText(ui.monthlyPayment, lang)}
+                {getText(
+                  toolUi.monthlyPayment,
+                  lang
+                )}
               </p>
 
               <ToolResult
-                value={result.monthlyPayment}
+                value={
+                  result.monthlyPayment
+                }
                 placeholder="0.00"
               />
             </div>
 
             <div>
               <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
-                {getText(ui.totalPayment, lang)}
+                {getText(
+                  toolUi.totalPayment,
+                  lang
+                )}
               </p>
 
               <ToolResult
-                value={result.totalPayment}
+                value={
+                  result.totalPayment
+                }
                 placeholder="0.00"
               />
             </div>
 
             <div>
               <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
-                {getText(ui.totalInterest, lang)}
+                {getText(
+                  toolUi.totalInterest,
+                  lang
+                )}
               </p>
 
               <ToolResult
-                value={result.totalInterest}
+                value={
+                  result.totalInterest
+                }
                 placeholder="0.00"
               />
             </div>

@@ -1,7 +1,16 @@
 import CalorieCalculatorTool from "./component";
-import { calorieCalculatorContent } from "./content.en";
+
+import { calorieCalculatorContent as calorieCalculatorContentEn } from "./content.en";
+import { calorieCalculatorContent as calorieCalculatorContentPt } from "./content.pt";
+
+import { mergeToolContent } from "../mergeToolContent";
 
 import type { ToolDefinition } from "../types";
+
+const calorieCalculatorContent = mergeToolContent(
+  calorieCalculatorContentEn,
+  calorieCalculatorContentPt
+);
 
 export const calorieCalculatorTool: ToolDefinition = {
   id: "calorie-calculator",
@@ -12,26 +21,23 @@ export const calorieCalculatorTool: ToolDefinition = {
 
   popular: true,
 
-  isNew: true,
+  difficulty: "basic",
 
-  difficulty: "intermediate",
-
-  availableLanguages: ["en"],
-
-  relatedTools: [
-  "bmi-calculator",
-  "bmr-calculator",
-  "body-fat-calculator",
-  "water-intake-calculator",
-  ],
+  availableLanguages: ["en", "pt"],
 
   tags: [
     "calories",
-    "diet",
+    "tdee",
     "nutrition",
     "fitness",
-    "health",
+    "weight loss",
     "calculator",
+  ],
+
+  relatedTools: [
+    "bmr-calculator",
+    "bmi-calculator",
+    "body-fat-calculator",
   ],
 
   ...calorieCalculatorContent,

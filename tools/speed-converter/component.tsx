@@ -9,8 +9,6 @@ import ToolSection from "../../components/toolkit/ToolSection";
 
 import { getText } from "../../data/i18n";
 
-import { speedConverterContent } from "./content.en";
-
 import type { ToolComponentProps } from "../types";
 
 const units = {
@@ -22,8 +20,9 @@ const units = {
 
 export default function SpeedConverterTool({
   lang,
+  ui,
 }: ToolComponentProps) {
-  const ui = speedConverterContent.ui;
+  const toolUi = ui!;
 
   const [value, setValue] = useState("");
   const [fromUnit, setFromUnit] = useState("km/h");
@@ -47,39 +46,62 @@ export default function SpeedConverterTool({
     return Number.isInteger(converted)
       ? converted.toString()
       : converted.toFixed(6).replace(/\.?0+$/, "");
-  }, [value, fromUnit, toUnit]);
+  }, [
+    value,
+    fromUnit,
+    toUnit,
+  ]);
 
   return (
     <ToolBox>
       <ToolSection
-        title={getText(ui.heading, lang)}
-        description={getText(ui.helper, lang)}
+        title={getText(
+          toolUi.heading,
+          lang
+        )}
+        description={getText(
+          toolUi.helper,
+          lang
+        )}
       >
         <div className="space-y-5">
           <ToolInput
             type="number"
             value={value}
             onChange={(event) =>
-              setValue(event.target.value)
+              setValue(
+                event.target.value
+              )
             }
-            placeholder={getText(ui.value, lang)}
+            placeholder={getText(
+              toolUi.value,
+              lang
+            )}
           />
 
           <div className="grid gap-3 md:grid-cols-2">
             <div>
               <label className="mb-2 block text-sm font-semibold text-zinc-700">
-                {getText(ui.from, lang)}
+                {getText(
+                  toolUi.from,
+                  lang
+                )}
               </label>
 
               <select
                 value={fromUnit}
                 onChange={(event) =>
-                  setFromUnit(event.target.value)
+                  setFromUnit(
+                    event.target.value
+                  )
                 }
                 className="w-full rounded-xl border border-zinc-300 bg-white p-3 font-semibold"
               >
                 {Object.keys(units).map((unit) => (
-                  <option key={unit} value={unit}>
+                  <option
+                    key={unit}
+                    value={unit}
+                  >
                     {unit}
                   </option>
                 ))}
@@ -88,18 +110,26 @@ export default function SpeedConverterTool({
 
             <div>
               <label className="mb-2 block text-sm font-semibold text-zinc-700">
-                {getText(ui.to, lang)}
+                {getText(
+                  toolUi.to,
+                  lang
+                )}
               </label>
 
               <select
                 value={toUnit}
                 onChange={(event) =>
-                  setToUnit(event.target.value)
+                  setToUnit(
+                    event.target.value
+                  )
                 }
                 className="w-full rounded-xl border border-zinc-300 bg-white p-3 font-semibold"
               >
                 {Object.keys(units).map((unit) => (
-                  <option key={unit} value={unit}>
+                  <option
+                    key={unit}
+                    value={unit}
+                  >
                     {unit}
                   </option>
                 ))}
@@ -108,7 +138,11 @@ export default function SpeedConverterTool({
           </div>
 
           <ToolResult
-            value={result ? `${result} ${toUnit}` : ""}
+            value={
+              result
+                ? `${result} ${toUnit}`
+                : ""
+            }
             placeholder="0"
           />
         </div>

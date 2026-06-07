@@ -9,21 +9,22 @@ import ToolSection from "../../components/toolkit/ToolSection";
 
 import { getText } from "../../data/i18n";
 
-import { waterIntakeCalculatorContent } from "./content.en";
-
 import type { ToolComponentProps } from "../types";
 
 export default function WaterIntakeCalculatorTool({
   lang,
+  ui,
 }: ToolComponentProps) {
-  const ui = waterIntakeCalculatorContent.ui;
+  const toolUi = ui!;
 
   const [weight, setWeight] = useState("");
   const [activityMinutes, setActivityMinutes] =
     useState("");
 
   const result = useMemo(() => {
-    const weightValue = Number(weight);
+    const weightValue =
+      Number(weight);
+
     const activityValue =
       Number(activityMinutes);
 
@@ -59,18 +60,26 @@ export default function WaterIntakeCalculatorTool({
   return (
     <ToolBox>
       <ToolSection
-        title={getText(ui.heading, lang)}
-        description={getText(ui.helper, lang)}
+        title={getText(
+          toolUi.heading,
+          lang
+        )}
+        description={getText(
+          toolUi.helper,
+          lang
+        )}
       >
         <div className="space-y-4">
           <ToolInput
             type="number"
             value={weight}
             onChange={(event) =>
-              setWeight(event.target.value)
+              setWeight(
+                event.target.value
+              )
             }
             placeholder={getText(
-              ui.weight,
+              toolUi.weight,
               lang
             )}
           />
@@ -84,7 +93,7 @@ export default function WaterIntakeCalculatorTool({
               )
             }
             placeholder={getText(
-              ui.activityMinutes,
+              toolUi.activityMinutes,
               lang
             )}
           />
@@ -93,7 +102,7 @@ export default function WaterIntakeCalculatorTool({
             <div>
               <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
                 {getText(
-                  ui.waterMl,
+                  toolUi.waterMl,
                   lang
                 )}
               </p>
@@ -107,7 +116,7 @@ export default function WaterIntakeCalculatorTool({
             <div>
               <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
                 {getText(
-                  ui.waterLiters,
+                  toolUi.waterLiters,
                   lang
                 )}
               </p>

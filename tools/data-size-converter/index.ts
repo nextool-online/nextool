@@ -1,12 +1,21 @@
 import DataSizeConverterTool from "./component";
-import { dataSizeConverterContent } from "./content.en";
+
+import { dataSizeConverterContent as dataSizeConverterContentEn } from "./content.en";
+import { dataSizeConverterContent as dataSizeConverterContentPt } from "./content.pt";
+
+import { mergeToolContent } from "../mergeToolContent";
 
 import type { ToolDefinition } from "../types";
+
+const dataSizeConverterContent = mergeToolContent(
+  dataSizeConverterContentEn,
+  dataSizeConverterContentPt
+);
 
 export const dataSizeConverterTool: ToolDefinition = {
   id: "data-size-converter",
 
-  category: "calculators",
+  category: "converters",
 
   featured: true,
 
@@ -14,21 +23,21 @@ export const dataSizeConverterTool: ToolDefinition = {
 
   difficulty: "basic",
 
-  availableLanguages: ["en"],
+  availableLanguages: ["en", "pt"],
 
   tags: [
-    "data size",
+    "data",
     "storage",
-    "kb",
-    "mb",
-    "gb",
-    "tb",
+    "bytes",
+    "kilobytes",
+    "megabytes",
+    "gigabytes",
     "converter",
   ],
 
   relatedTools: [
-  "unit-converter",
-  "speed-converter",
+    "unit-converter",
+    "speed-converter",
   ],
 
   ...dataSizeConverterContent,

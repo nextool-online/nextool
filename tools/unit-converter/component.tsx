@@ -9,8 +9,6 @@ import ToolSection from "../../components/toolkit/ToolSection";
 
 import { getText } from "../../data/i18n";
 
-import { unitConverterContent } from "./content.en";
-
 import type { ToolComponentProps } from "../types";
 
 const conversionGroups = {
@@ -36,8 +34,11 @@ const conversionGroups = {
 
 type ConversionType = keyof typeof conversionGroups;
 
-export default function UnitConverterTool({ lang }: ToolComponentProps) {
-  const ui = unitConverterContent.ui;
+export default function UnitConverterTool({
+  lang,
+  ui,
+}: ToolComponentProps) {
+  const toolUi = ui!;
 
   const [value, setValue] = useState("");
   const [conversionType, setConversionType] =
@@ -45,33 +46,69 @@ export default function UnitConverterTool({ lang }: ToolComponentProps) {
   const [fromUnit, setFromUnit] = useState("m");
   const [toUnit, setToUnit] = useState("cm");
 
-  const units = Object.keys(conversionGroups[conversionType]);
+  const units =
+    Object.keys(
+      conversionGroups[conversionType]
+    );
 
   const result = useMemo(() => {
-    const numericValue = Number(value);
+    const numericValue =
+      Number(value);
 
-    if (!numericValue && value !== "0") {
+    if (
+      !numericValue &&
+      value !== "0"
+    ) {
       return "";
     }
 
-    const group = conversionGroups[conversionType];
+    const group =
+      conversionGroups[
+        conversionType
+      ];
 
-    const fromFactor = group[fromUnit as keyof typeof group];
-    const toFactor = group[toUnit as keyof typeof group];
+    const fromFactor =
+      group[
+        fromUnit as keyof typeof group
+      ];
 
-    if (!fromFactor || !toFactor) {
+    const toFactor =
+      group[
+        toUnit as keyof typeof group
+      ];
+
+    if (
+      !fromFactor ||
+      !toFactor
+    ) {
       return "";
     }
 
-    const baseValue = numericValue * fromFactor;
-    const convertedValue = baseValue / toFactor;
+    const baseValue =
+      numericValue *
+      fromFactor;
 
-    return Number.isInteger(convertedValue)
+    const convertedValue =
+      baseValue /
+      toFactor;
+
+    return Number.isInteger(
+      convertedValue
+    )
       ? convertedValue.toString()
-      : convertedValue.toFixed(6).replace(/\.?0+$/, "");
-  }, [value, conversionType, fromUnit, toUnit]);
+      : convertedValue
+          .toFixed(6)
+          .replace(/\.?0+$/, "");
+  }, [
+    value,
+    conversionType,
+    fromUnit,
+    toUnit,
+  ]);
 
-  function handleTypeChange(nextType: ConversionType) {
+  function handleTypeChange(
+    nextType: ConversionType
+  ) {
     setConversionType(nextType);
 
     if (nextType === "length") {
@@ -88,47 +125,87 @@ export default function UnitConverterTool({ lang }: ToolComponentProps) {
   return (
     <ToolBox>
       <ToolSection
-        title={getText(ui.heading, lang)}
-        description={getText(ui.helper, lang)}
+        title={getText(
+          toolUi.heading,
+          lang
+        )}
+        description={getText(
+          toolUi.helper,
+          lang
+        )}
       >
         <div className="space-y-5">
           <div>
             <label className="mb-2 block text-sm font-semibold text-zinc-700">
-              {getText(ui.type, lang)}
+              {getText(
+                toolUi.type,
+                lang
+              )}
             </label>
 
             <select
               value={conversionType}
               onChange={(event) =>
-                handleTypeChange(event.target.value as ConversionType)
+                handleTypeChange(
+                  event.target
+                    .value as ConversionType
+                )
               }
               className="w-full rounded-xl border border-zinc-300 bg-white p-3 text-base font-semibold outline-none transition focus:border-zinc-900 md:p-4"
             >
-              <option value="length">{getText(ui.length, lang)}</option>
-              <option value="weight">{getText(ui.weight, lang)}</option>
+              <option value="length">
+                {getText(
+                  toolUi.length,
+                  lang
+                )}
+              </option>
+
+              <option value="weight">
+                {getText(
+                  toolUi.weight,
+                  lang
+                )}
+              </option>
             </select>
           </div>
 
           <ToolInput
             type="number"
             value={value}
-            onChange={(event) => setValue(event.target.value)}
-            placeholder={getText(ui.value, lang)}
+            onChange={(event) =>
+              setValue(
+                event.target.value
+              )
+            }
+            placeholder={getText(
+              toolUi.value,
+              lang
+            )}
           />
 
           <div className="grid gap-3 md:grid-cols-2">
             <div>
               <label className="mb-2 block text-sm font-semibold text-zinc-700">
-                {getText(ui.from, lang)}
+                {getText(
+                  toolUi.from,
+                  lang
+                )}
               </label>
 
               <select
                 value={fromUnit}
-                onChange={(event) => setFromUnit(event.target.value)}
+                onChange={(event) =>
+                  setFromUnit(
+                    event.target.value
+                  )
+                }
                 className="w-full rounded-xl border border-zinc-300 bg-white p-3 text-base font-semibold outline-none transition focus:border-zinc-900 md:p-4"
               >
                 {units.map((unit) => (
-                  <option key={unit} value={unit}>
+                  <option
+                    key={unit}
+                    value={unit}
+                  >
                     {unit}
                   </option>
                 ))}
@@ -137,16 +214,26 @@ export default function UnitConverterTool({ lang }: ToolComponentProps) {
 
             <div>
               <label className="mb-2 block text-sm font-semibold text-zinc-700">
-                {getText(ui.to, lang)}
+                {getText(
+                  toolUi.to,
+                  lang
+                )}
               </label>
 
               <select
                 value={toUnit}
-                onChange={(event) => setToUnit(event.target.value)}
+                onChange={(event) =>
+                  setToUnit(
+                    event.target.value
+                  )
+                }
                 className="w-full rounded-xl border border-zinc-300 bg-white p-3 text-base font-semibold outline-none transition focus:border-zinc-900 md:p-4"
               >
                 {units.map((unit) => (
-                  <option key={unit} value={unit}>
+                  <option
+                    key={unit}
+                    value={unit}
+                  >
                     {unit}
                   </option>
                 ))}
@@ -156,11 +243,18 @@ export default function UnitConverterTool({ lang }: ToolComponentProps) {
 
           <div>
             <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
-              {getText(ui.result, lang)}
+              {getText(
+                toolUi.result,
+                lang
+              )}
             </p>
 
             <ToolResult
-              value={result ? `${result} ${toUnit}` : ""}
+              value={
+                result
+                  ? `${result} ${toUnit}`
+                  : ""
+              }
               placeholder="0"
             />
           </div>

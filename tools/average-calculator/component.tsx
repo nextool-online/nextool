@@ -9,14 +9,13 @@ import ToolSection from "../../components/toolkit/ToolSection";
 
 import { getText } from "../../data/i18n";
 
-import { averageCalculatorContent } from "./content.en";
-
 import type { ToolComponentProps } from "../types";
 
 export default function AverageCalculatorTool({
   lang,
+  ui,
 }: ToolComponentProps) {
-  const ui = averageCalculatorContent.ui;
+  const toolUi = ui!;
 
   const [values, setValues] = useState("");
 
@@ -51,8 +50,8 @@ export default function AverageCalculatorTool({
   return (
     <ToolBox>
       <ToolSection
-        title={getText(ui.heading, lang)}
-        description={getText(ui.helper, lang)}
+        title={getText(toolUi.heading, lang)}
+        description={getText(toolUi.helper, lang)}
       >
         <div className="space-y-5">
           <ToolInput
@@ -66,7 +65,7 @@ export default function AverageCalculatorTool({
           <div className="grid gap-3 md:grid-cols-3">
             <div>
               <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
-                {getText(ui.average, lang)}
+                {getText(toolUi.average, lang)}
               </p>
 
               <ToolResult
@@ -77,7 +76,7 @@ export default function AverageCalculatorTool({
 
             <div>
               <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
-                {getText(ui.count, lang)}
+                {getText(toolUi.count, lang)}
               </p>
 
               <ToolResult
@@ -88,7 +87,7 @@ export default function AverageCalculatorTool({
 
             <div>
               <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
-                {getText(ui.sum, lang)}
+                {getText(toolUi.sum, lang)}
               </p>
 
               <ToolResult

@@ -10,16 +10,17 @@ import ToolSection from "../../components/toolkit/ToolSection";
 import { dictionary } from "../../data/dictionary";
 import { getText } from "../../data/i18n";
 
-import { percentageCalculatorContent } from "./content.en";
-
 import type { ToolComponentProps } from "../types";
 
-export default function PercentageCalculator({ lang }: ToolComponentProps) {
+export default function PercentageCalculator({
+  lang,
+  ui,
+}: ToolComponentProps) {
+  const toolUi = ui!;
+
   const [percentage, setPercentage] = useState("");
   const [value, setValue] = useState("");
   const [copied, setCopied] = useState(false);
-
-  const ui = percentageCalculatorContent.ui;
 
   const result = useMemo(() => {
     const p = Number(percentage);
@@ -38,6 +39,7 @@ export default function PercentageCalculator({ lang }: ToolComponentProps) {
     if (!result) return;
 
     await navigator.clipboard.writeText(result);
+
     setCopied(true);
 
     setTimeout(() => {
@@ -48,34 +50,62 @@ export default function PercentageCalculator({ lang }: ToolComponentProps) {
   return (
     <ToolBox>
       <ToolSection
-        title={getText(ui.heading, lang)}
-        description={getText(ui.helper, lang)}
+        title={getText(
+          toolUi.heading,
+          lang
+        )}
+        description={getText(
+          toolUi.helper,
+          lang
+        )}
       >
         <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 md:gap-4">
           <ToolInput
             type="number"
             value={percentage}
-            onChange={(event) => setPercentage(event.target.value)}
-            placeholder={getText(ui.percentage, lang)}
+            onChange={(event) =>
+              setPercentage(
+                event.target.value
+              )
+            }
+            placeholder={getText(
+              toolUi.percentage,
+              lang
+            )}
           />
 
-          <span className="text-sm font-bold text-zinc-400">%</span>
+          <span className="text-sm font-bold text-zinc-400">
+            %
+          </span>
 
           <ToolInput
             type="number"
             value={value}
-            onChange={(event) => setValue(event.target.value)}
-            placeholder={getText(ui.value, lang)}
+            onChange={(event) =>
+              setValue(
+                event.target.value
+              )
+            }
+            placeholder={getText(
+              toolUi.value,
+              lang
+            )}
           />
         </div>
 
         <div className="mt-4">
           <ToolResult
             value={result}
-            placeholder={getText(dictionary.resultLabel, lang)}
+            placeholder={getText(
+              dictionary.resultLabel,
+              lang
+            )}
             onCopy={copyResult}
             copied={copied}
-            copyLabel={getText(dictionary.copyResult, lang)}
+            copyLabel={getText(
+              dictionary.copyResult,
+              lang
+            )}
           />
         </div>
       </ToolSection>

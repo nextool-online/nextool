@@ -9,8 +9,6 @@ import ToolSection from "../../components/toolkit/ToolSection";
 
 import { getText } from "../../data/i18n";
 
-import { dataSizeConverterContent } from "./content.en";
-
 import type { ToolComponentProps } from "../types";
 
 const units = {
@@ -24,8 +22,9 @@ const units = {
 
 export default function DataSizeConverterTool({
   lang,
+  ui,
 }: ToolComponentProps) {
-  const ui = dataSizeConverterContent.ui;
+  const toolUi = ui!;
 
   const [value, setValue] = useState("");
   const [fromUnit, setFromUnit] = useState("MB");
@@ -54,8 +53,8 @@ export default function DataSizeConverterTool({
   return (
     <ToolBox>
       <ToolSection
-        title={getText(ui.heading, lang)}
-        description={getText(ui.helper, lang)}
+        title={getText(toolUi.heading, lang)}
+        description={getText(toolUi.helper, lang)}
       >
         <div className="space-y-5">
           <ToolInput
@@ -64,13 +63,19 @@ export default function DataSizeConverterTool({
             onChange={(event) =>
               setValue(event.target.value)
             }
-            placeholder={getText(ui.value, lang)}
+            placeholder={getText(
+              toolUi.value,
+              lang
+            )}
           />
 
           <div className="grid gap-3 md:grid-cols-2">
             <div>
               <label className="mb-2 block text-sm font-semibold text-zinc-700">
-                {getText(ui.from, lang)}
+                {getText(
+                  toolUi.from,
+                  lang
+                )}
               </label>
 
               <select
@@ -90,7 +95,10 @@ export default function DataSizeConverterTool({
 
             <div>
               <label className="mb-2 block text-sm font-semibold text-zinc-700">
-                {getText(ui.to, lang)}
+                {getText(
+                  toolUi.to,
+                  lang
+                )}
               </label>
 
               <select

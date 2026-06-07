@@ -9,38 +9,35 @@ import ToolSection from "../../components/toolkit/ToolSection";
 
 import { getText } from "../../data/i18n";
 
-import { ageCalculatorContent } from "./content.en";
-
 import type { ToolComponentProps } from "../types";
 
-export default function AgeCalculatorTool({ lang }: ToolComponentProps) {
-  const ui = ageCalculatorContent.ui;
-
-  const today = new Date();
-
-  const result = useMemo(() => {
-    return {
-      years: "",
-      months: "",
-      days: "",
-    };
-  }, []);
+export default function AgeCalculatorTool({
+  lang,
+  ui,
+}: ToolComponentProps) {
+  const toolUi = ui!;
 
   return (
     <ToolBox>
       <ToolSection
-        title={getText(ui.heading, lang)}
-        description={getText(ui.helper, lang)}
+        title={getText(toolUi.heading, lang)}
+        description={getText(toolUi.helper, lang)}
       >
-        <AgeCalculatorForm lang={lang} />
+        <AgeCalculatorForm lang={lang} ui={toolUi} />
       </ToolSection>
     </ToolBox>
   );
 }
 
-function AgeCalculatorForm({ lang }: ToolComponentProps) {
-  const ui = ageCalculatorContent.ui;
+type AgeCalculatorFormProps = {
+  lang: ToolComponentProps["lang"];
+  ui: NonNullable<ToolComponentProps["ui"]>;
+};
 
+function AgeCalculatorForm({
+  lang,
+  ui,
+}: AgeCalculatorFormProps) {
   const [birthDate, setBirthDate] = useState("");
 
   const result = useMemo(() => {

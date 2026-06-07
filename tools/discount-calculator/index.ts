@@ -1,7 +1,16 @@
 import DiscountCalculatorTool from "./component";
-import { discountCalculatorContent } from "./content.en";
+
+import { discountCalculatorContent as discountCalculatorContentEn } from "./content.en";
+import { discountCalculatorContent as discountCalculatorContentPt } from "./content.pt";
+
+import { mergeToolContent } from "../mergeToolContent";
 
 import type { ToolDefinition } from "../types";
+
+const discountCalculatorContent = mergeToolContent(
+  discountCalculatorContentEn,
+  discountCalculatorContentPt
+);
 
 export const discountCalculatorTool: ToolDefinition = {
   id: "discount-calculator",
@@ -14,22 +23,22 @@ export const discountCalculatorTool: ToolDefinition = {
 
   difficulty: "basic",
 
-  availableLanguages: ["en"],
+  availableLanguages: ["en", "pt"],
 
   tags: [
     "discount",
     "sale",
-    "shopping",
     "price",
+    "promotion",
     "savings",
+    "percentage",
     "calculator",
   ],
 
   relatedTools: [
-  "percentage-calculator",
-  "percentage-increase-calculator",
-  "rule-of-three",
-  "tip-calculator",
+    "percentage-calculator",
+    "percentage-increase-calculator",
+    "break-even-calculator",
   ],
 
   ...discountCalculatorContent,

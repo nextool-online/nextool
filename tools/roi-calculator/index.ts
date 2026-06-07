@@ -1,7 +1,17 @@
 import RoiCalculatorTool from "./component";
-import { roiCalculatorContent } from "./content.en";
+
+import { roiCalculatorContent as roiCalculatorContentEn } from "./content.en";
+import { roiCalculatorContent as roiCalculatorContentPt } from "./content.pt";
+
+import { mergeToolContent } from "../mergeToolContent";
 
 import type { ToolDefinition } from "../types";
+
+const roiCalculatorContent =
+  mergeToolContent(
+    roiCalculatorContentEn,
+    roiCalculatorContentPt
+  );
 
 export const roiCalculatorTool: ToolDefinition = {
   id: "roi-calculator",
@@ -12,26 +22,24 @@ export const roiCalculatorTool: ToolDefinition = {
 
   popular: true,
 
-  isNew: true,
-
   difficulty: "basic",
 
-  availableLanguages: ["en"],
-
-  relatedTools: [
-  "investment-calculator",
-  "compound-interest-calculator",
-  "break-even-calculator",
-  "retirement-calculator",
-  ],
+  availableLanguages: ["en", "pt"],
 
   tags: [
     "roi",
     "return on investment",
     "investment",
     "profit",
-    "finance",
+    "profitability",
+    "returns",
     "calculator",
+  ],
+
+  relatedTools: [
+    "investment-calculator",
+    "compound-interest-calculator",
+    "break-even-calculator",
   ],
 
   ...roiCalculatorContent,

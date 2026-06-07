@@ -9,14 +9,13 @@ import ToolSection from "../../components/toolkit/ToolSection";
 
 import { getText } from "../../data/i18n";
 
-import { retirementCalculatorContent } from "./content.en";
-
 import type { ToolComponentProps } from "../types";
 
 export default function RetirementCalculatorTool({
   lang,
+  ui,
 }: ToolComponentProps) {
-  const ui = retirementCalculatorContent.ui;
+  const toolUi = ui!;
 
   const [currentAge, setCurrentAge] = useState("");
   const [retirementAge, setRetirementAge] = useState("");
@@ -91,18 +90,26 @@ export default function RetirementCalculatorTool({
   return (
     <ToolBox>
       <ToolSection
-        title={getText(ui.heading, lang)}
-        description={getText(ui.helper, lang)}
+        title={getText(
+          toolUi.heading,
+          lang
+        )}
+        description={getText(
+          toolUi.helper,
+          lang
+        )}
       >
         <div className="grid gap-4 md:grid-cols-2">
           <ToolInput
             type="number"
             value={currentAge}
             onChange={(event) =>
-              setCurrentAge(event.target.value)
+              setCurrentAge(
+                event.target.value
+              )
             }
             placeholder={getText(
-              ui.currentAge,
+              toolUi.currentAge,
               lang
             )}
           />
@@ -111,10 +118,12 @@ export default function RetirementCalculatorTool({
             type="number"
             value={retirementAge}
             onChange={(event) =>
-              setRetirementAge(event.target.value)
+              setRetirementAge(
+                event.target.value
+              )
             }
             placeholder={getText(
-              ui.retirementAge,
+              toolUi.retirementAge,
               lang
             )}
           />
@@ -123,10 +132,12 @@ export default function RetirementCalculatorTool({
             type="number"
             value={currentSavings}
             onChange={(event) =>
-              setCurrentSavings(event.target.value)
+              setCurrentSavings(
+                event.target.value
+              )
             }
             placeholder={getText(
-              ui.currentSavings,
+              toolUi.currentSavings,
               lang
             )}
           />
@@ -140,7 +151,7 @@ export default function RetirementCalculatorTool({
               )
             }
             placeholder={getText(
-              ui.monthlyContribution,
+              toolUi.monthlyContribution,
               lang
             )}
           />
@@ -149,10 +160,12 @@ export default function RetirementCalculatorTool({
             type="number"
             value={annualReturn}
             onChange={(event) =>
-              setAnnualReturn(event.target.value)
+              setAnnualReturn(
+                event.target.value
+              )
             }
             placeholder={getText(
-              ui.annualReturn,
+              toolUi.annualReturn,
               lang
             )}
           />
@@ -162,7 +175,7 @@ export default function RetirementCalculatorTool({
           <div>
             <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
               {getText(
-                ui.yearsUntilRetirement,
+                toolUi.yearsUntilRetirement,
                 lang
               )}
             </p>
@@ -176,7 +189,7 @@ export default function RetirementCalculatorTool({
           <div>
             <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
               {getText(
-                ui.totalContributions,
+                toolUi.totalContributions,
                 lang
               )}
             </p>
@@ -190,7 +203,7 @@ export default function RetirementCalculatorTool({
           <div>
             <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
               {getText(
-                ui.projectedSavings,
+                toolUi.projectedSavings,
                 lang
               )}
             </p>

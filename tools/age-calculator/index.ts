@@ -1,7 +1,16 @@
 import AgeCalculatorTool from "./component";
-import { ageCalculatorContent } from "./content.en";
+
+import { ageCalculatorContent as ageCalculatorContentEn } from "./content.en";
+import { ageCalculatorContent as ageCalculatorContentPt } from "./content.pt";
+
+import { mergeToolContent } from "../mergeToolContent";
 
 import type { ToolDefinition } from "../types";
+
+const ageCalculatorContent = mergeToolContent(
+  ageCalculatorContentEn,
+  ageCalculatorContentPt
+);
 
 export const ageCalculatorTool: ToolDefinition = {
   id: "age-calculator",
@@ -14,7 +23,7 @@ export const ageCalculatorTool: ToolDefinition = {
 
   difficulty: "basic",
 
-  availableLanguages: ["en"],
+  availableLanguages: ["en", "pt"],
 
   tags: [
     "age",
@@ -27,9 +36,9 @@ export const ageCalculatorTool: ToolDefinition = {
   ],
 
   relatedTools: [
-  "average-calculator",
-  "bmi-calculator",
-  "calorie-calculator",
+    "average-calculator",
+    "bmi-calculator",
+    "calorie-calculator",
   ],
 
   ...ageCalculatorContent,

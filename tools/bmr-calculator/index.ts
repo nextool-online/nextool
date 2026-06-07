@@ -1,7 +1,16 @@
 import BmrCalculatorTool from "./component";
-import { bmrCalculatorContent } from "./content.en";
+
+import { bmrCalculatorContent as bmrCalculatorContentEn } from "./content.en";
+import { bmrCalculatorContent as bmrCalculatorContentPt } from "./content.pt";
+
+import { mergeToolContent } from "../mergeToolContent";
 
 import type { ToolDefinition } from "../types";
+
+const bmrCalculatorContent = mergeToolContent(
+  bmrCalculatorContentEn,
+  bmrCalculatorContentPt
+);
 
 export const bmrCalculatorTool: ToolDefinition = {
   id: "bmr-calculator",
@@ -12,26 +21,23 @@ export const bmrCalculatorTool: ToolDefinition = {
 
   popular: true,
 
-  isNew: true,
-
   difficulty: "basic",
 
-  availableLanguages: ["en"],
-
-  relatedTools: [
-  "bmi-calculator",
-  "calorie-calculator",
-  "body-fat-calculator",
-  "water-intake-calculator",
-  ],
+  availableLanguages: ["en", "pt"],
 
   tags: [
     "bmr",
     "basal metabolic rate",
-    "health",
+    "metabolism",
+    "calories",
     "fitness",
-    "nutrition",
     "calculator",
+  ],
+
+  relatedTools: [
+    "bmi-calculator",
+    "calorie-calculator",
+    "body-fat-calculator",
   ],
 
   ...bmrCalculatorContent,

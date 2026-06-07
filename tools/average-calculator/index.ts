@@ -1,7 +1,16 @@
 import AverageCalculatorTool from "./component";
-import { averageCalculatorContent } from "./content.en";
+
+import { averageCalculatorContent as averageCalculatorContentEn } from "./content.en";
+import { averageCalculatorContent as averageCalculatorContentPt } from "./content.pt";
+
+import { mergeToolContent } from "../mergeToolContent";
 
 import type { ToolDefinition } from "../types";
+
+const averageCalculatorContent = mergeToolContent(
+  averageCalculatorContentEn,
+  averageCalculatorContentPt
+);
 
 export const averageCalculatorTool: ToolDefinition = {
   id: "average-calculator",
@@ -14,22 +23,20 @@ export const averageCalculatorTool: ToolDefinition = {
 
   difficulty: "basic",
 
-  availableLanguages: ["en"],
+  availableLanguages: ["en", "pt"],
 
   tags: [
     "average",
     "mean",
+    "arithmetic mean",
     "statistics",
-    "math",
     "calculator",
-    "numbers",
   ],
 
   relatedTools: [
-  "percentage-difference-calculator",
-  "percentage-calculator",
-  "rule-of-three",
-  "age-calculator",
+    "percentage-calculator",
+    "age-calculator",
+    "bmi-calculator",
   ],
 
   ...averageCalculatorContent,

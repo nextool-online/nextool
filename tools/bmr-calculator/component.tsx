@@ -10,14 +10,13 @@ import ToolSelect from "../../components/toolkit/ToolSelect";
 
 import { getText } from "../../data/i18n";
 
-import { bmrCalculatorContent } from "./content.en";
-
 import type { ToolComponentProps } from "../types";
 
 export default function BmrCalculatorTool({
   lang,
+  ui,
 }: ToolComponentProps) {
-  const ui = bmrCalculatorContent.ui;
+  const toolUi = ui!;
 
   const [gender, setGender] =
     useState("male");
@@ -70,8 +69,8 @@ export default function BmrCalculatorTool({
   return (
     <ToolBox>
       <ToolSection
-        title={getText(ui.heading, lang)}
-        description={getText(ui.helper, lang)}
+        title={getText(toolUi.heading, lang)}
+        description={getText(toolUi.helper, lang)}
       >
         <div className="space-y-4">
           <ToolSelect
@@ -96,7 +95,7 @@ export default function BmrCalculatorTool({
               setAge(event.target.value)
             }
             placeholder={getText(
-              ui.age,
+              toolUi.age,
               lang
             )}
           />
@@ -108,7 +107,7 @@ export default function BmrCalculatorTool({
               setWeight(event.target.value)
             }
             placeholder={getText(
-              ui.weight,
+              toolUi.weight,
               lang
             )}
           />
@@ -120,7 +119,7 @@ export default function BmrCalculatorTool({
               setHeight(event.target.value)
             }
             placeholder={getText(
-              ui.height,
+              toolUi.height,
               lang
             )}
           />
@@ -128,7 +127,7 @@ export default function BmrCalculatorTool({
           <div>
             <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
               {getText(
-                ui.bmr,
+                toolUi.bmr,
                 lang
               )}
             </p>

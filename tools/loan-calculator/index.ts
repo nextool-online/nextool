@@ -1,34 +1,44 @@
 import LoanCalculatorTool from "./component";
-import { loanCalculatorContent } from "./content.en";
+
+import { loanCalculatorContent as loanCalculatorContentEn } from "./content.en";
+import { loanCalculatorContent as loanCalculatorContentPt } from "./content.pt";
+
+import { mergeToolContent } from "../mergeToolContent";
 
 import type { ToolDefinition } from "../types";
+
+const loanCalculatorContent = mergeToolContent(
+  loanCalculatorContentEn,
+  loanCalculatorContentPt
+);
 
 export const loanCalculatorTool: ToolDefinition = {
   id: "loan-calculator",
 
-  category: "calculators",
+  category: "finance",
 
   featured: true,
 
   popular: true,
 
-  difficulty: "intermediate",
+  difficulty: "basic",
 
-  availableLanguages: ["en"],
+  availableLanguages: ["en", "pt"],
 
   tags: [
     "loan",
-    "finance",
+    "financing",
     "interest",
-    "mortgage",
+    "monthly payment",
+    "debt",
+    "credit",
     "calculator",
   ],
 
   relatedTools: [
-  "mortgage-calculator",
-  "compound-interest-calculator",
-  "investment-calculator",
-  "roi-calculator",
+    "mortgage-calculator",
+    "roi-calculator",
+    "compound-interest-calculator",
   ],
 
   ...loanCalculatorContent,

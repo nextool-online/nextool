@@ -9,8 +9,6 @@ import ToolResult from "../../components/toolkit/ToolResult";
 
 import { getText } from "../../data/i18n";
 
-import { savingsCalculatorContent } from "./content.en";
-
 import type { ToolComponentProps } from "../types";
 
 function formatMoney(value: number) {
@@ -19,8 +17,9 @@ function formatMoney(value: number) {
 
 export default function SavingsCalculatorTool({
   lang,
+  ui,
 }: ToolComponentProps) {
-  const ui = savingsCalculatorContent.ui;
+  const toolUi = ui!;
 
   const [initialDeposit, setinitialDeposit] = useState("");
   const [monthlySavings, setmonthlySavings] = useState("");
@@ -38,7 +37,7 @@ export default function SavingsCalculatorTool({
       !monthlySavings ||
       !interestRate ||
       !years
-   ) {
+    ) {
       return {
         futureValue: "",
         totalDeposited: "",
@@ -46,25 +45,38 @@ export default function SavingsCalculatorTool({
       };
     }
 
-    const monthlyRate = interestRateValue / 100 / 12;
-    const months = yearsValue * 12;
+    const monthlyRate =
+      interestRateValue / 100 / 12;
 
-    let balance = initialDepositValue;
+    const months =
+      yearsValue * 12;
+
+    let balance =
+      initialDepositValue;
 
     for (let i = 0; i < months; i += 1) {
-      balance = balance * (1 + monthlyRate);
+      balance =
+        balance * (1 + monthlyRate);
+
       balance += monthlySavingsValue;
     }
 
     const totalDeposited =
-      initialDepositValue + monthlySavingsValue * months;
+      initialDepositValue +
+      monthlySavingsValue * months;
 
-    const interestEarned = balance - totalDeposited;
+    const interestEarned =
+      balance - totalDeposited;
 
     return {
-      futureValue: formatMoney(balance),
-      totalDeposited: formatMoney(totalDeposited),
-      interestEarned: formatMoney(interestEarned),
+      futureValue:
+        formatMoney(balance),
+
+      totalDeposited:
+        formatMoney(totalDeposited),
+
+      interestEarned:
+        formatMoney(interestEarned),
     };
   }, [
     initialDeposit,
@@ -76,49 +88,80 @@ export default function SavingsCalculatorTool({
   return (
     <ToolBox>
       <ToolSection
-        title={getText(ui.heading, lang)}
-        description={getText(ui.helper, lang)}
+        title={getText(
+          toolUi.heading,
+          lang
+        )}
+        description={getText(
+          toolUi.helper,
+          lang
+        )}
       >
         <div className="grid gap-4 md:grid-cols-2">
           <ToolInput
             type="number"
             value={initialDeposit}
             onChange={(event) =>
-              setinitialDeposit(event.target.value)
+              setinitialDeposit(
+                event.target.value
+              )
             }
-            placeholder={getText(ui.initialDeposit, lang)}
+            placeholder={getText(
+              toolUi.initialDeposit,
+              lang
+            )}
           />
 
           <ToolInput
             type="number"
             value={monthlySavings}
             onChange={(event) =>
-              setmonthlySavings(event.target.value)
+              setmonthlySavings(
+                event.target.value
+              )
             }
-            placeholder={getText(ui.monthlySavings, lang)}
+            placeholder={getText(
+              toolUi.monthlySavings,
+              lang
+            )}
           />
 
           <ToolInput
             type="number"
             value={interestRate}
             onChange={(event) =>
-              setInterestRate(event.target.value)
+              setInterestRate(
+                event.target.value
+              )
             }
-            placeholder={getText(ui.interestRate, lang)}
+            placeholder={getText(
+              toolUi.interestRate,
+              lang
+            )}
           />
 
           <ToolInput
             type="number"
             value={years}
-            onChange={(event) => setYears(event.target.value)}
-            placeholder={getText(ui.years, lang)}
+            onChange={(event) =>
+              setYears(
+                event.target.value
+              )
+            }
+            placeholder={getText(
+              toolUi.years,
+              lang
+            )}
           />
         </div>
 
         <div className="mt-6 grid gap-4 md:grid-cols-3">
           <div>
             <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
-              {getText(ui.futureValue, lang)}
+              {getText(
+                toolUi.futureValue,
+                lang
+              )}
             </p>
 
             <ToolResult
@@ -129,7 +172,10 @@ export default function SavingsCalculatorTool({
 
           <div>
             <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
-              {getText(ui.totalDeposited, lang)}
+              {getText(
+                toolUi.totalDeposited,
+                lang
+              )}
             </p>
 
             <ToolResult
@@ -140,7 +186,10 @@ export default function SavingsCalculatorTool({
 
           <div>
             <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
-              {getText(ui.interestEarned, lang)}
+              {getText(
+                toolUi.interestEarned,
+                lang
+              )}
             </p>
 
             <ToolResult

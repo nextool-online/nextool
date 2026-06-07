@@ -1,36 +1,44 @@
 import InvestmentCalculatorTool from "./component";
-import { investmentCalculatorContent } from "./content.en";
+
+import { investmentCalculatorContent as investmentCalculatorContentEn } from "./content.en";
+import { investmentCalculatorContent as investmentCalculatorContentPt } from "./content.pt";
+
+import { mergeToolContent } from "../mergeToolContent";
 
 import type { ToolDefinition } from "../types";
+
+const investmentCalculatorContent = mergeToolContent(
+  investmentCalculatorContentEn,
+  investmentCalculatorContentPt
+);
 
 export const investmentCalculatorTool: ToolDefinition = {
   id: "investment-calculator",
 
-  category: "calculators",
+  category: "finance",
 
   featured: true,
 
   popular: true,
 
-  isNew: true,
+  difficulty: "basic",
 
-  difficulty: "intermediate",
-
-  availableLanguages: ["en"],
-
-  relatedTools: [
-  "compound-interest-calculator",
-  "retirement-calculator",
-  "savings-calculator",
-  "roi-calculator",
-  ],
+  availableLanguages: ["en", "pt"],
 
   tags: [
     "investment",
+    "portfolio",
     "returns",
-    "compound growth",
-    "finance",
+    "compound interest",
+    "wealth",
+    "future value",
     "calculator",
+  ],
+
+  relatedTools: [
+    "compound-interest-calculator",
+    "retirement-calculator",
+    "roi-calculator",
   ],
 
   ...investmentCalculatorContent,
