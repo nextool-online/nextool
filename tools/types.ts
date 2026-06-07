@@ -3,10 +3,6 @@ import type { LanguageCode } from "../data/languages";
 
 export type Translation = Partial<Record<LanguageCode, string>>;
 
-export type ToolComponentProps = {
-  lang: LanguageCode;
-};
-
 export type ToolArticleSection = {
   heading: Translation;
   body: Translation;
@@ -28,6 +24,11 @@ export type ToolFormula = {
 };
 
 export type ToolUi = Record<string, Translation>;
+
+export type ToolComponentProps = {
+  lang: LanguageCode;
+  ui?: ToolUi;
+};
 
 export type ToolDefinition = {
   id: string;
@@ -63,8 +64,6 @@ export type ToolDefinition = {
   formula?: ToolFormula;
 
   ui: ToolUi;
-
-  
 
   component: ComponentType<ToolComponentProps>;
 };

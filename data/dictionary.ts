@@ -114,4 +114,67 @@ viewAllTools: {
   es: "Ver todas las herramientas",
   
 } satisfies Translation,
+
+toolsLabel: {
+  en: "Tools",
+  it: "Strumenti",
+  pt: "Ferramentas",
+  es: "Herramientas",
+} satisfies Translation,
+
+pagesLabel: {
+  en: "Pages",
+  it: "Pagine",
+  pt: "Páginas",
+  es: "Páginas",
+} satisfies Translation,
+
+legalLabel: {
+  en: "Legal",
+  it: "Legale",
+  pt: "Legal",
+  es: "Legal",
+} satisfies Translation,
+
+languagesLabel: {
+  en: "Languages",
+  it: "Lingue",
+  pt: "Idiomas",
+  es: "Idiomas",
+} satisfies Translation,
+
+privacyPolicy: {
+  en: "Privacy Policy",
+  it: "Informativa sulla privacy",
+  pt: "Política de Privacidade",
+  es: "Política de Privacidad",
+} satisfies Translation,
+
+termsLabel: {
+  en: "Terms",
+  it: "Termini",
+  pt: "Termos de Uso",
+  es: "Términos",
+} satisfies Translation,
+
+disclaimerLabel: {
+  en: "Disclaimer",
+  it: "Disclaimer",
+  pt: "Isenção de Responsabilidade",
+  es: "Aviso Legal",
+} satisfies Translation,
+
+allRightsReserved: {
+  en: "All rights reserved.",
+  it: "Tutti i diritti riservati.",
+  pt: "Todos os direitos reservados.",
+  es: "Todos los derechos reservados.",
+} satisfies Translation,
+
+footerDescription: {
+  en: "Fast online tools and calculators for developers, students and everyday tasks.",
+  it: "Strumenti e calcolatrici online veloci per sviluppatori, studenti e attività quotidiane.",
+  pt: "Ferramentas e calculadoras online rápidas para desenvolvedores, estudantes e tarefas do dia a dia.",
+  es: "Herramientas y calculadoras online rápidas para desarrolladores, estudiantes y tareas cotidianas.",
+} satisfies Translation,
 };

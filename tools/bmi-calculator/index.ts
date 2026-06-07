@@ -1,7 +1,16 @@
 import BmiCalculatorTool from "./component";
-import { bmiCalculatorContent } from "./content.en";
+
+import { bmiCalculatorContent as bmiCalculatorContentEn } from "./content.en";
+import { bmiCalculatorContent as bmiCalculatorContentPt } from "./content.pt";
 
 import type { ToolDefinition } from "../types";
+
+import { mergeToolContent } from "../mergeToolContent";
+
+const bmiCalculatorContent = mergeToolContent(
+  bmiCalculatorContentEn,
+  bmiCalculatorContentPt
+);
 
 export const bmiCalculatorTool: ToolDefinition = {
   id: "bmi-calculator",
@@ -14,7 +23,7 @@ export const bmiCalculatorTool: ToolDefinition = {
 
   difficulty: "basic",
 
-  availableLanguages: ["en"],
+  availableLanguages: ["en", "pt"],
 
   tags: [
     "bmi",

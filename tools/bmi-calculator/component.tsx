@@ -9,14 +9,13 @@ import ToolSection from "../../components/toolkit/ToolSection";
 
 import { getText } from "../../data/i18n";
 
-import { bmiCalculatorContent } from "./content.en";
-
 import type { ToolComponentProps } from "../types";
 
 export default function BmiCalculatorTool({
   lang,
+  ui,
 }: ToolComponentProps) {
-  const ui = bmiCalculatorContent.ui;
+  const toolUi = ui!;
 
   const [weight, setWeight] = useState("");
   const [height, setHeight] = useState("");
@@ -58,8 +57,8 @@ export default function BmiCalculatorTool({
   return (
     <ToolBox>
       <ToolSection
-        title={getText(ui.heading, lang)}
-        description={getText(ui.helper, lang)}
+        title={getText(toolUi.heading, lang)}
+        description={getText(toolUi.helper, lang)}
       >
         <div className="space-y-5">
           <ToolInput
@@ -68,7 +67,7 @@ export default function BmiCalculatorTool({
             onChange={(event) =>
               setWeight(event.target.value)
             }
-            placeholder={getText(ui.weight, lang)}
+            placeholder={getText(toolUi.weight, lang)}
           />
 
           <ToolInput
@@ -77,7 +76,7 @@ export default function BmiCalculatorTool({
             onChange={(event) =>
               setHeight(event.target.value)
             }
-            placeholder={getText(ui.height, lang)}
+            placeholder={getText(toolUi.height, lang)}
           />
 
           <ToolResult

@@ -5,6 +5,8 @@ import { getText } from "../../data/i18n";
 
 import type { LanguageCode } from "../../data/languages";
 
+import { dictionary } from "../../data/dictionary";
+
 type NavbarProps = {
   lang?: LanguageCode;
 };
@@ -17,7 +19,9 @@ export default function Navbar({ lang = "en" }: NavbarProps) {
       </Link>
 
       <div className="flex gap-6 text-sm font-medium">
-        <Link href={`/${lang}/tools`}>Tools</Link>
+        <Link href={`/${lang}/tools`}>
+          {getText(dictionary.toolsLabel, lang)}
+        </Link>
 
         {categories.map((category) => (
           <Link key={category.id} href={`/${lang}/categories/${category.id}`}>

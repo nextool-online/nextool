@@ -2,6 +2,9 @@ import Link from "next/link";
 
 import { languages, type LanguageCode } from "../../data/languages";
 
+import { dictionary } from "../../data/dictionary";
+import { getText } from "../../data/i18n";
+
 type FooterProps = {
   lang: LanguageCode;
 };
@@ -16,16 +19,17 @@ export default function Footer({ lang }: FooterProps) {
           </Link>
 
           <p className="mt-3 max-w-md text-sm leading-6 text-zinc-600">
-            Fast online tools and calculators for developers, students and
-            everyday tasks.
+            {getText(dictionary.footerDescription, lang)}
           </p>
         </div>
 
         <div className="grid gap-6 text-sm md:grid-cols-3">
           <div>
-            <p className="font-semibold text-zinc-950">Pages</p>
+            <p className="font-semibold text-zinc-950">
+               {getText(dictionary.pagesLabel, lang)}
+            </p>
               <Link href={`/${lang}/tools`} className="hover:text-zinc-950">
-                Tools
+                {getText(dictionary.toolsLabel, lang)}
               </Link>
             <div className="mt-3 grid gap-2 text-zinc-600">
               <Link href={`/${lang}`} className="hover:text-zinc-950">
@@ -49,28 +53,32 @@ export default function Footer({ lang }: FooterProps) {
           </div>
 
           <div>
-            <p className="font-semibold text-zinc-950">Legal</p>
+            <p className="font-semibold text-zinc-950">
+               {getText(dictionary.legalLabel, lang)}
+            </p>
 
             <div className="mt-3 grid gap-2 text-zinc-600">
               <Link href={`/${lang}/privacy`} className="hover:text-zinc-950">
-                Privacy Policy
+                {getText(dictionary.privacyPolicy, lang)}
               </Link>
 
               <Link href={`/${lang}/terms`} className="hover:text-zinc-950">
-                Terms
+                {getText(dictionary.termsLabel, lang)}
               </Link>
 
               <Link
                 href={`/${lang}/disclaimer`}
                 className="hover:text-zinc-950"
               >
-                Disclaimer
+                {getText(dictionary.disclaimerLabel, lang)}
               </Link>
             </div>
           </div>
 
           <div>
-            <p className="font-semibold text-zinc-950">Languages</p>
+            <p className="font-semibold text-zinc-950">
+              {getText(dictionary.languagesLabel, lang)}
+            </p>
 
             <div className="mt-3 grid grid-cols-2 gap-x-4 gap-y-2 text-zinc-600">
               {languages.map((language) => (
@@ -88,7 +96,7 @@ export default function Footer({ lang }: FooterProps) {
       </div>
 
       <div className="border-t border-zinc-100 px-6 py-4 text-center text-xs text-zinc-500">
-        © {new Date().getFullYear()} Nextool. All rights reserved.
+        © {new Date().getFullYear()} Nextool. {getText(dictionary.allRightsReserved, lang)}
       </div>
     </footer>
   );

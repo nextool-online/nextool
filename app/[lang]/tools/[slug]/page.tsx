@@ -248,7 +248,10 @@ export default async function ToolPage({ params }: ToolPageProps) {
 
       <Breadcrumbs items={breadcrumbs} />
 
-      <Calculator lang={lang} />
+      <Calculator
+        lang={lang}
+        ui={tool.ui}
+      />
 
       {tool.formula && (
        <section className="mt-10 rounded-2xl border border-zinc-200 bg-zinc-50 p-6">
