@@ -20,7 +20,7 @@ type CategoryPageProps = {
   }>;
 };
 
-const baseUrl = "https://nextool.online";
+const baseUrl = "https://www.nextool.online";
 
 export function generateStaticParams() {
   return languagesList.flatMap((language) =>

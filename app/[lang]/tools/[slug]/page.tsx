@@ -19,7 +19,7 @@ type ToolPageProps = {
   }>;
 };
 
-const baseUrl = "https://nextool.online";
+const baseUrl = "https://www.nextool.online";
 
 function getAvailableLanguages(tool: ToolDefinition): LanguageCode[] {
   return tool.availableLanguages || (Object.keys(tool.slug) as LanguageCode[]);
@@ -256,7 +256,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
       {tool.formula && (
        <section className="mt-10 rounded-2xl border border-zinc-200 bg-zinc-50 p-6">
         <h2 className="text-2xl font-bold text-zinc-950">
-          Formula
+          {getText(dictionary.formulaTitle, lang)}
         </h2>
 
         <div className="mt-4 overflow-x-auto rounded-xl bg-white p-4">

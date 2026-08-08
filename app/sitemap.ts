@@ -5,7 +5,7 @@ import { getText } from "../data/i18n";
 import { languages, type LanguageCode } from "../data/languages";
 import { tools } from "../tools/registry";
 
-const baseUrl = "https://nextool.online";
+const baseUrl = "https://www.nextool.online";
 
 const legalPages = ["privacy", "terms", "disclaimer"];
 

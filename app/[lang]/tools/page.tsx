@@ -16,7 +16,7 @@ type ToolsPageProps = {
   }>;
 };
 
-const baseUrl = "https://nextool.online";
+const baseUrl = "https://www.nextool.online";
 
 export function generateStaticParams() {
   return languages.map((language) => ({
@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: ToolsPageProps) {
   );
 
   return {
-    title: `${getText(dictionary.allToolsTitle, lang)} - Nextool`,
+    title: `${getText(dictionary.allToolsTitle, lang)}`,
     description: getText(dictionary.homepageDescription, lang),
 
     alternates: {

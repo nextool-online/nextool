@@ -67,7 +67,7 @@ export default function SearchBar({ lang }: SearchBarProps) {
             })
           ) : (
             <p className="px-5 py-4 text-sm text-zinc-500">
-              No tools found.
+              {getText(dictionary.noToolsFound, lang)}
             </p>
           )}
         </div>

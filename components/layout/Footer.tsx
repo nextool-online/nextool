@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { languages, type LanguageCode } from "../../data/languages";
+import { categories } from "../../data/categories";
 
 import { dictionary } from "../../data/dictionary";
 import { getText } from "../../data/i18n";
@@ -33,22 +34,18 @@ export default function Footer({ lang }: FooterProps) {
               </Link>
             <div className="mt-3 grid gap-2 text-zinc-600">
               <Link href={`/${lang}`} className="hover:text-zinc-950">
-                Home
+                {getText(dictionary.homeLabel, lang)}
               </Link>
 
-              <Link
-                href={`/${lang}/categories/calculators`}
-                className="hover:text-zinc-950"
-              >
-                Calculators
-              </Link>
-
-              <Link
-                href={`/${lang}/categories/developer-tools`}
-                className="hover:text-zinc-950"
-              >
-                Developer Tools
-              </Link>
+              {categories.map((category) => (
+                <Link
+                  key={category.id}
+                  href={`/${lang}/categories/${category.id}`}
+                  className="hover:text-zinc-950"
+                >
+                  {getText(category.name, lang)}
+                </Link>
+              ))}
             </div>
           </div>
 

@@ -11,18 +11,7 @@
     currentLang,
     urls,
   }: LanguageSwitcherProps) {
-    const supportedLanguages: LanguageCode[] = [
-  "en",
-  "pt",
-  "it",
-  "es",
-];
-
-const availableLanguages = languages.filter(
-  (language) =>
-    supportedLanguages.includes(language.code) &&
-    urls[language.code]
-);
+const availableLanguages = languages.filter((language) => urls[language.code]);
 
     if (availableLanguages.length <= 1) {
       return null;

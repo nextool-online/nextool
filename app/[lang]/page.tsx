@@ -21,7 +21,7 @@ type HomePageProps = {
   }>;
 };
 
-const baseUrl = "https://nextool.online";
+const baseUrl = "https://www.nextool.online";
 
 export function generateStaticParams() {
   return languages.map((language) => ({
@@ -196,35 +196,35 @@ export default async function HomePage({ params }: HomePageProps) {
         </div>
       </section>
       <section className="border-t border-zinc-200 bg-white">
-  <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-    <div className="text-center">
-      <h2 className="text-3xl font-bold tracking-tight">
-        Why Nextool?
-      </h2>
+        <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h2 className="text-3xl font-bold tracking-tight">
+              {getText(dictionary.whyNextoolTitle, lang)}
+            </h2>
 
-      <p className="mt-3 text-zinc-600">
-        Fast, free and accessible online tools.
-      </p>
-    </div>
+            <p className="mt-3 text-zinc-600">
+              {getText(dictionary.whyNextoolDescription, lang)}
+            </p>
+          </div>
 
-    <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-      {whyNextool.map((item) => (
-        <div
-          key={item.title}
-          className="rounded-3xl border border-zinc-200 bg-zinc-50 p-6"
-        >
-          <h3 className="font-semibold text-zinc-950">
-            {item.title}
-          </h3>
+          <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {whyNextool.map((item) => (
+              <div
+                key={getText(item.title, lang)}
+                className="rounded-3xl border border-zinc-200 bg-zinc-50 p-6"
+              >
+                <h3 className="font-semibold text-zinc-950">
+                  {getText(item.title, lang)}
+                </h3>
 
-          <p className="mt-2 text-sm leading-6 text-zinc-600">
-            {item.description}
-          </p>
+                <p className="mt-2 text-sm leading-6 text-zinc-600">
+                  {getText(item.description, lang)}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
-      ))}
-    </div>
-  </div>
-    </section>
+      </section>
     
       <Footer lang={lang} />
     </main>

@@ -1,6 +1,4 @@
-import type { LanguageCode } from "./languages";
-
-type Translation = Partial<Record<LanguageCode, string>>;
+type Translation = Record<string, string>;
 
 export const toolContent = {
   "rule-of-three": {

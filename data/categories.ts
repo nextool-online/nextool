@@ -1,6 +1,4 @@
-import type { LanguageCode } from "./languages";
-
-type Translation = Partial<Record<LanguageCode, string>>;
+type Translation = Record<string, string>;
 
 export const categories = [
   {
@@ -32,10 +30,10 @@ export const categories = [
 
     seo: {
       title: {
-        en: "Online Calculators - Fast Free Tools | Nextool",
-        it: "Calcolatori Online - Strumenti Gratuiti e Veloci | Nextool",
-        pt: "Calculadoras Online - Ferramentas Gratuitas e Rápidas | Nextool",
-        es: "Calculadoras Online - Herramientas Gratuitas y Rápidas | Nextool",
+        en: "Online Calculators - Fast Free Tools",
+        it: "Calcolatori Online - Strumenti Gratuiti e Veloci",
+        pt: "Calculadoras Online - Ferramentas Gratuitas e Rápidas",
+        es: "Calculadoras Online - Herramientas Gratuitas y Rápidas",
         
       } satisfies Translation,
 
@@ -78,10 +76,10 @@ export const categories = [
 
     seo: {
       title: {
-        en: "Developer Tools Online - Free Fast Utilities | Nextool",
-        it: "Strumenti per Sviluppatori Online - Utility Gratuite | Nextool",
-        pt: "Ferramentas para Desenvolvedores Online - Utilitários Gratuitos | Nextool",
-        es: "Herramientas para Desarrolladores Online - Utilidades Gratis | Nextool",
+        en: "Developer Tools Online - Free Fast Utilities",
+        it: "Strumenti per Sviluppatori Online - Utility Gratuite",
+        pt: "Ferramentas para Desenvolvedores Online - Utilitários Gratuitos",
+        es: "Herramientas para Desarrolladores Online - Utilidades Gratis",
         
       } satisfies Translation,
 

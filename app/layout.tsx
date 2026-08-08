@@ -4,7 +4,7 @@ import "./globals.css";
 import { GoogleAnalytics } from "@next/third-parties/google";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://nextool.online"),
+  metadataBase: new URL("https://www.nextool.online"),
 
   title: {
     default: "Nextool",
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     title: "Nextool",
     description:
       "Fast online tools and calculators for developers, students and everyday tasks.",
-    url: "https://nextool.online",
+    url: "https://www.nextool.online",
   },
 
   twitter: {
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
   },
 
   alternates: {
-    canonical: "https://nextool.online",
+    canonical: "https://www.nextool.online",
   },
 };
 

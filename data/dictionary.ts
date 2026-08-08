@@ -1,6 +1,4 @@
-import type { LanguageCode } from "./languages";
-
-type Translation = Record<LanguageCode, string>;
+type Translation = Record<string, string>;
 
 export const dictionary = {
   homepageTitle: {
@@ -169,6 +167,26 @@ allRightsReserved: {
   it: "Tutti i diritti riservati.",
   pt: "Todos os direitos reservados.",
   es: "Todos los derechos reservados.",
+} satisfies Translation,
+
+whyNextoolTitle: {
+  en: "Why Nextool?",
+  pt: "Por que usar o Nextool?",
+} satisfies Translation,
+
+whyNextoolDescription: {
+  en: "Fast, free and accessible online tools.",
+  pt: "Ferramentas online rápidas, gratuitas e acessíveis.",
+} satisfies Translation,
+
+noToolsFound: {
+  en: "No tools found.",
+  pt: "Nenhuma ferramenta encontrada.",
+} satisfies Translation,
+
+formulaTitle: {
+  en: "Formula",
+  pt: "Fórmula",
 } satisfies Translation,
 
 footerDescription: {

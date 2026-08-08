@@ -1,18 +1,42 @@
 export const whyNextool = [
   {
-    title: "Fast Calculations",
-    description: "Get instant results without waiting.",
+    title: {
+      en: "Fast calculations",
+      pt: "Cálculos rápidos",
+    },
+    description: {
+      en: "Get instant results without waiting.",
+      pt: "Obtenha resultados instantâneos, sem espera.",
+    },
   },
   {
-    title: "Multiple Languages",
-    description: "Available in 11 languages with localized URLs.",
+    title: {
+      en: "Focused languages",
+      pt: "Idiomas bem cuidados",
+    },
+    description: {
+      en: "Available first in English and Portuguese, with localized URLs and content.",
+      pt: "Disponível primeiro em inglês e português, com URLs e conteúdo localizados.",
+    },
   },
   {
-    title: "Free Forever",
-    description: "No registration, subscriptions or hidden costs.",
+    title: {
+      en: "Free to use",
+      pt: "Grátis para usar",
+    },
+    description: {
+      en: "No registration, subscriptions or hidden costs.",
+      pt: "Sem cadastro, assinatura ou custos escondidos.",
+    },
   },
   {
-    title: "Mobile Friendly",
-    description: "Works perfectly on desktop, tablet and mobile.",
+    title: {
+      en: "Mobile friendly",
+      pt: "Funciona bem no celular",
+    },
+    description: {
+      en: "Works on desktop, tablet and mobile.",
+      pt: "Funciona no computador, tablet e celular.",
+    },
   },
 ];
