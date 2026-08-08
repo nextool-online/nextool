@@ -239,5 +239,65 @@ export const bmiCalculatorContent = {
     classification: {
       pt: "Classificação",
     },
+
+    you: {
+      pt: "Você",
+    },
+
+    underweight: {
+      pt: "Abaixo do peso",
+    },
+
+    normal: {
+      pt: "Normal",
+    },
+
+    overweight: {
+      pt: "Sobrepeso",
+    },
+
+    obesity: {
+      pt: "Obesidade",
+    },
+
+    resultSummary: {
+      pt: "Seu IMC está na faixa de {classification}.",
+    },
+
+    belowRangeSummary: {
+      pt: "Para alcançar a faixa comum de IMC saudável, a estimativa sugere ganhar cerca de {amount}.",
+    },
+
+    insideRangeSummary: {
+      pt: "Seu peso está dentro da faixa comum de IMC saudável para sua altura.",
+    },
+
+    aboveRangeSummary: {
+      pt: "Para alcançar o limite superior da faixa comum de IMC saudável, a estimativa sugere perder cerca de {amount}.",
+    },
+
+    targetWeightLabel: {
+      pt: "Peso alvo (IMC 22)",
+    },
+
+    healthyMinLabel: {
+      pt: "Peso saudável mínimo",
+    },
+
+    healthyMaxLabel: {
+      pt: "Peso saudável máximo",
+    },
+
+    weightDeltaLabel: {
+      pt: "Distância até a faixa saudável",
+    },
+
+    disclaimer: {
+      pt: "O IMC é uma estimativa geral de triagem. Ele não substitui orientação médica nem avaliação de composição corporal.",
+    },
+
+    relatedTitle: {
+      pt: "Próximos cálculos úteis",
+    },
   },
 };

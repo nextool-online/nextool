@@ -38,7 +38,7 @@ export const bmiCalculatorContent = {
     },
 
     body: {
-      en: "BMI is calculated by dividing body weight in kilograms by height in meters squared. The resulting value is used to classify weight status.",
+      en: "When using pounds and inches, BMI is calculated as 703 × weight in pounds divided by height in inches squared. The resulting value is used to classify weight status.",
     },
   },
 
@@ -68,7 +68,7 @@ export const bmiCalculatorContent = {
     },
 
     body: {
-      en: "A person weighing 70 kg with a height of 1.75 meters has a BMI of approximately 22.9, which falls within the normal weight category.",
+      en: "A person weighing 154 lb with a height of 69 inches has a BMI of approximately 22.7, which falls within the normal weight category.",
     },
   },
 
@@ -207,11 +207,11 @@ export const bmiCalculatorContent = {
 
   formula: {
       expression: {
-       en: "BMI = Weight (kg) / Height² (m²)",
+       en: "BMI = 703 × Weight (lb) / Height² (in²)",
       },
 
        explanation: {
-        en: "<strong>Weight</strong> = Body Weight in Kilograms<br/><strong>Height</strong> = Height in Meters<br/><strong>BMI</strong> = Body Mass Index",
+        en: "<strong>Weight</strong> = Body Weight in Pounds<br/><strong>Height</strong> = Height in Inches<br/><strong>BMI</strong> = Body Mass Index",
       },
     },
 
@@ -225,11 +225,15 @@ export const bmiCalculatorContent = {
     },
 
     weight: {
-      en: "Weight (kg)",
+      en: "Weight (lb)",
     },
 
-    height: {
-      en: "Height (cm)",
+    heightFeet: {
+      en: "Height (ft)",
+    },
+
+    heightInches: {
+      en: "Height (in)",
     },
 
     bmi: {
@@ -238,6 +242,66 @@ export const bmiCalculatorContent = {
 
     classification: {
       en: "Classification",
+    },
+
+    you: {
+      en: "You",
+    },
+
+    underweight: {
+      en: "Underweight",
+    },
+
+    normal: {
+      en: "Normal",
+    },
+
+    overweight: {
+      en: "Overweight",
+    },
+
+    obesity: {
+      en: "Obesity",
+    },
+
+    resultSummary: {
+      en: "Your BMI falls in the {classification} range.",
+    },
+
+    belowRangeSummary: {
+      en: "To reach the common healthy BMI range, the estimate suggests gaining about {amount}.",
+    },
+
+    insideRangeSummary: {
+      en: "Your weight is within the common healthy BMI range for your height.",
+    },
+
+    aboveRangeSummary: {
+      en: "To reach the upper limit of the common healthy BMI range, the estimate suggests losing about {amount}.",
+    },
+
+    targetWeightLabel: {
+      en: "Target weight (BMI 22)",
+    },
+
+    healthyMinLabel: {
+      en: "Healthy weight min",
+    },
+
+    healthyMaxLabel: {
+      en: "Healthy weight max",
+    },
+
+    weightDeltaLabel: {
+      en: "Distance to healthy range",
+    },
+
+    disclaimer: {
+      en: "BMI is a general screening estimate. It does not replace medical advice or body composition assessment.",
+    },
+
+    relatedTitle: {
+      en: "Useful next calculations",
     },
   },
 };
