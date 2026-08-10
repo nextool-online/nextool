@@ -5,12 +5,16 @@ import { useMemo, useState } from "react";
 
 import ToolBox from "../../components/ui/ToolBox";
 import ToolInput from "../../components/toolkit/ToolInput";
-import ToolResult from "../../components/toolkit/ToolResult";
 import ToolSection from "../../components/toolkit/ToolSection";
 
 import { getLocaleProfile } from "../../data/localeProfiles";
 import { getText } from "../../data/i18n";
 import { formatDecimal, formatUnit } from "../../utils/formatters";
+import {
+  getBmiMetricStatus,
+  getHealthyWeightMetricStatus,
+  type MetricStatusId,
+} from "../health/fitness";
 import {
   calculateBmi,
   getBmiCategory,
@@ -31,20 +35,110 @@ const categoryKeys: BmiCategoryId[] = [
   "obesity",
 ];
 
-const relatedToolLinks = {
-  en: [
-    { href: "/en/tools/bmr-calculator", label: "BMR Calculator" },
-    { href: "/en/tools/calorie-calculator", label: "Calorie Calculator" },
-    { href: "/en/tools/water-intake-calculator", label: "Water Intake Calculator" },
-    { href: "/en/tools/body-fat-calculator", label: "Body Fat Calculator" },
-  ],
-  pt: [
-    { href: "/pt/tools/calculadora-tmb", label: "Calculadora de TMB" },
-    { href: "/pt/tools/calculadora-calorias", label: "Calculadora de Calorias" },
-    { href: "/pt/tools/calculadora-ingestao-agua", label: "Calculadora de Água" },
-    { href: "/pt/tools/calculadora-gordura-corporal", label: "Calculadora de Gordura Corporal" },
-  ],
+const statusLabels = {
+  en: {
+    good: "Within range",
+    attention: "Attention",
+    "out-of-range": "Outside estimated range",
+    low: "Low",
+    neutral: "Reference range",
+  },
+  pt: {
+    good: "Dentro da faixa",
+    attention: "Atenção",
+    "out-of-range": "Fora da faixa estimada",
+    low: "Baixo",
+    neutral: "Faixa de referência",
+  },
+} satisfies Record<string, Record<MetricStatusId, string>>;
+
+const fitnessCta = {
+  en: {
+    title: "Want the full fitness snapshot?",
+    description: "Use BMI together with calories, water, protein and local progress history in NexTool Fit.",
+    button: "Open NexTool Fit",
+    href: "/en/fitness",
+  },
+  pt: {
+    title: "Quer ver o perfil fitness completo?",
+    description: "Use o IMC junto com calorias, água, proteína e histórico local dentro do NexTool Fit.",
+    button: "Abrir NexTool Fit",
+    href: "/pt/fitness",
+  },
+} satisfies Record<string, { title: string; description: string; button: string; href: string }>;
+
+const statusCardStyles: Record<MetricStatusId, string> = {
+  good: "border-emerald-200 bg-emerald-50/70",
+  attention: "border-amber-200 bg-amber-50/70",
+  "out-of-range": "border-rose-200 bg-rose-50/70",
+  low: "border-sky-200 bg-sky-50/70",
+  neutral: "border-zinc-200 bg-white",
 };
+
+const statusChipStyles: Record<MetricStatusId, string> = {
+  good: "bg-emerald-100 text-emerald-700",
+  attention: "bg-amber-100 text-amber-700",
+  "out-of-range": "bg-rose-100 text-rose-700",
+  low: "bg-sky-100 text-sky-700",
+  neutral: "bg-zinc-100 text-zinc-600",
+};
+
+const statusValueStyles: Record<MetricStatusId, string> = {
+  good: "text-emerald-700",
+  attention: "text-amber-700",
+  "out-of-range": "text-rose-700",
+  low: "text-sky-700",
+  neutral: "text-zinc-950",
+};
+
+const statusBarPositions: Record<MetricStatusId, number> = {
+  low: 18,
+  good: 52,
+  neutral: 62,
+  attention: 76,
+  "out-of-range": 92,
+};
+
+const statusBarColors: Record<MetricStatusId, string> = {
+  good: "bg-emerald-600",
+  attention: "bg-amber-500",
+  "out-of-range": "bg-rose-600",
+  low: "bg-sky-600",
+  neutral: "bg-zinc-700",
+};
+
+function comparisonCard({
+  label,
+  value,
+  status,
+  lang,
+}: {
+  label: string;
+  value: string;
+  status: MetricStatusId;
+  lang: "en" | "pt";
+}) {
+  return (
+    <div className={`rounded-2xl border p-4 ${statusCardStyles[status]}`}>
+      <div className="flex flex-wrap items-start gap-2">
+        <p className="min-w-0 flex-1 text-xs font-bold uppercase tracking-wide text-zinc-500">{label}</p>
+        <span className={`rounded-full px-2.5 py-1 text-[0.62rem] font-black uppercase tracking-wide ${statusChipStyles[status]}`}>
+          {statusLabels[lang][status]}
+        </span>
+      </div>
+      <p className={`mt-3 text-2xl font-black tracking-tight ${statusValueStyles[status]}`}>{value}</p>
+      <div className="mt-3" aria-hidden="true">
+        <div className="relative h-2 rounded-full bg-gradient-to-r from-sky-300 via-emerald-300 via-amber-300 to-rose-300">
+          <span className={`absolute top-1/2 h-4 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full ${statusBarColors[status]}`} style={{ left: `${statusBarPositions[status]}%` }} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function parseUserNumber(value: string) {
+  return Number(value.replace(",", "."));
+}
 
 function applyTemplate(template: string, values: Record<string, string>) {
   return Object.entries(values).reduce(
@@ -67,7 +161,7 @@ export default function BmiCalculatorTool({
   const [heightIn, setHeightIn] = useState("");
 
   const result = useMemo(() => {
-    const weightValue = Number(weight);
+    const weightValue = parseUserNumber(weight);
 
     if (!weightValue) {
       return null;
@@ -77,13 +171,13 @@ export default function BmiCalculatorTool({
       ? {
           system: "imperial" as const,
           weightLb: weightValue,
-          heightFt: Number(heightFt),
-          heightIn: Number(heightIn),
+          heightFt: parseUserNumber(heightFt),
+          heightIn: parseUserNumber(heightIn),
         }
       : {
           system: "metric" as const,
           weightKg: weightValue,
-          heightCm: Number(heightCm),
+          heightCm: parseUserNumber(heightCm),
         };
 
     const hasValidHeight = usesImperial
@@ -110,6 +204,14 @@ export default function BmiCalculatorTool({
       healthyRange,
       delta,
       markerPosition: getBmiMarkerPosition(bmi),
+      statuses: {
+        bmi: getBmiMetricStatus(category.id),
+        healthyRange: getHealthyWeightMetricStatus({
+          currentWeightKg: weightKg,
+          minKg: healthyRange.minKg,
+          maxKg: healthyRange.maxKg,
+        }),
+      },
     };
   }, [heightCm, heightFt, heightIn, usesImperial, weight]);
 
@@ -144,6 +246,20 @@ export default function BmiCalculatorTool({
         )
     : "";
 
+  const fitnessHref = useMemo(() => {
+    const params = new URLSearchParams();
+    if (weight) params.set("weight", weight);
+    if (usesImperial) {
+      if (heightFt) params.set("heightFt", heightFt);
+      if (heightIn) params.set("heightIn", heightIn);
+    } else if (heightCm) {
+      params.set("heightCm", heightCm);
+    }
+    params.set("from", "bmi");
+    const query = params.toString();
+    return `${fitnessCta[lang].href}${query ? `?${query}` : ""}`;
+  }, [heightCm, heightFt, heightIn, lang, usesImperial, weight]);
+
   return (
     <ToolBox>
       <ToolSection
@@ -152,57 +268,76 @@ export default function BmiCalculatorTool({
       >
         <div className="space-y-6">
           <div className="grid gap-3 md:grid-cols-2">
-            <ToolInput
-              type="number"
-              value={weight}
-              onChange={(event) => setWeight(event.target.value)}
-              placeholder={getText(toolUi.weight, lang)}
-            />
+            <label className="block">
+              <ToolInput
+                type="text"
+                inputMode="decimal"
+                value={weight}
+                onChange={(event) => setWeight(event.target.value)}
+                onInput={(event) => setWeight(event.currentTarget.value)}
+                placeholder={getText(toolUi.weight, lang)}
+              />
+            </label>
 
             {usesImperial ? (
               <div className="grid grid-cols-2 gap-3">
-                <ToolInput
-                  type="number"
-                  value={heightFt}
-                  onChange={(event) => setHeightFt(event.target.value)}
-                  placeholder={getText(toolUi.heightFeet, lang)}
-                />
+                <label className="block">
+                  <ToolInput
+                    type="text"
+                inputMode="decimal"
+                    value={heightFt}
+                    onChange={(event) => setHeightFt(event.target.value)}
+                    onInput={(event) => setHeightFt(event.currentTarget.value)}
+                    placeholder={getText(toolUi.heightFeet, lang)}
+                  />
+                </label>
 
-                <ToolInput
-                  type="number"
-                  value={heightIn}
-                  onChange={(event) => setHeightIn(event.target.value)}
-                  placeholder={getText(toolUi.heightInches, lang)}
-                />
+                <label className="block">
+                  <ToolInput
+                    type="text"
+                inputMode="decimal"
+                    value={heightIn}
+                    onChange={(event) => setHeightIn(event.target.value)}
+                    onInput={(event) => setHeightIn(event.currentTarget.value)}
+                    placeholder={getText(toolUi.heightInches, lang)}
+                  />
+                </label>
               </div>
             ) : (
-              <ToolInput
-                type="number"
-                value={heightCm}
-                onChange={(event) => setHeightCm(event.target.value)}
-                placeholder={getText(toolUi.height, lang)}
-              />
+              <label className="block">
+                <ToolInput
+                  type="text"
+                inputMode="decimal"
+                  value={heightCm}
+                  onChange={(event) => setHeightCm(event.target.value)}
+                  onInput={(event) => setHeightCm(event.currentTarget.value)}
+                  placeholder={getText(toolUi.height, lang)}
+                />
+              </label>
             )}
           </div>
 
-          <ToolResult
-            value={
-              result
-                ? `${formatDecimal(result.bmi, lang)} (${categoryLabels[result.category.id]})`
-                : ""
-            }
-            placeholder="0"
-          />
-
           {result && (
             <div className="space-y-5 rounded-3xl border border-zinc-200 bg-gradient-to-br from-white to-zinc-50 p-4 shadow-sm md:p-6">
+              <div className="grid gap-4 rounded-3xl bg-zinc-950 p-5 text-center text-white sm:grid-cols-2 sm:items-center">
+                <div className="rounded-2xl bg-white/5 p-4">
+                  <p className="text-sm font-bold text-zinc-400">{getText(toolUi.heading, lang)}</p>
+                  <p className="mt-1 text-5xl font-black tracking-tight">{formatDecimal(result.bmi, lang)}</p>
+                </div>
+                <div className="flex justify-center rounded-2xl bg-white/5 p-4">
+                  <span className={`self-center rounded-full px-4 py-2 text-sm font-black uppercase ${statusChipStyles[result.statuses.bmi.id]}`}>
+                    {categoryLabels[result.category.id]}
+                  </span>
+                </div>
+              </div>
+
               <div className="space-y-3">
                 <div className="relative pt-7">
                   <div
                     className="absolute top-0 -translate-x-1/2 text-center"
                     style={{ left: `${result.markerPosition}%` }}
                   >
-                    <div className="rounded-full bg-zinc-950 px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-white">
+                    <div className={`rounded-full px-2 py-1 text-[10px] font-bold uppercase tracking-wide ${statusChipStyles[result.statuses.bmi.id]}`}>
                       {getText(toolUi.you, lang)}
                     </div>
 
@@ -244,54 +379,72 @@ export default function BmiCalculatorTool({
               </div>
 
               <div className="grid gap-4 md:grid-cols-2">
-                <div>
-                  <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
-                    {getText(toolUi.healthyMinLabel, lang)}
-                  </p>
-
-                  <ToolResult value={formatWeight(result.healthyRange.minKg)} />
-                </div>
-
-                <div>
-                  <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
-                    {getText(toolUi.healthyMaxLabel, lang)}
-                  </p>
-
-                  <ToolResult value={formatWeight(result.healthyRange.maxKg)} />
-                </div>
-
-                <div>
-                  <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
-                    {getText(toolUi.targetWeightLabel, lang)}
-                  </p>
-
-                  <ToolResult value={formatWeight(result.healthyRange.targetKg)} />
-                </div>
-
-                <div>
-                  <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
-                    {getText(toolUi.weightDeltaLabel, lang)}
-                  </p>
-
-                  <ToolResult value={formatWeight(result.delta.kg)} />
-                </div>
+                {comparisonCard({
+                  label: getText(toolUi.healthyMinLabel, lang),
+                  value: formatWeight(result.healthyRange.minKg),
+                  status: "neutral",
+                  lang,
+                })}
+                {comparisonCard({
+                  label: getText(toolUi.healthyMaxLabel, lang),
+                  value: formatWeight(result.healthyRange.maxKg),
+                  status: "neutral",
+                  lang,
+                })}
+                {comparisonCard({
+                  label: getText(toolUi.targetWeightLabel, lang),
+                  value: formatWeight(result.healthyRange.targetKg),
+                  status: result.statuses.healthyRange.id,
+                  lang,
+                })}
+                {comparisonCard({
+                  label: getText(toolUi.weightDeltaLabel, lang),
+                  value: formatWeight(result.delta.kg),
+                  status: result.delta.direction === "inside" ? "good" : result.statuses.healthyRange.id,
+                  lang,
+                })}
               </div>
 
-              <div className="rounded-2xl border border-zinc-200 bg-white p-4">
-                <p className="text-sm font-bold text-zinc-950">
-                  {getText(toolUi.relatedTitle, lang)}
-                </p>
+              <div className="overflow-hidden rounded-3xl border border-emerald-200 bg-zinc-950 text-white shadow-2xl shadow-emerald-900/20">
+                <div className="mx-auto flex max-w-4xl flex-col items-center gap-5 p-5 text-center md:p-6">
+                  <p className="text-xs font-black uppercase tracking-[0.24em] text-emerald-300">
+                    {lang === "pt" ? "Próximo passo" : "Next step"}
+                  </p>
+                  <h3 className="text-2xl font-black tracking-tight md:text-3xl">
+                    {lang === "pt" ? "Descubra também:" : "Also discover:"}
+                  </h3>
 
-                <div className="mt-3 grid gap-2 md:grid-cols-2">
-                  {relatedToolLinks[lang].map((tool) => (
-                    <Link
-                      key={tool.href}
-                      href={tool.href}
-                      className="rounded-xl border border-zinc-200 px-3 py-2 text-sm font-semibold text-zinc-700 transition hover:border-zinc-950 hover:text-zinc-950"
-                    >
-                      {tool.label}
-                    </Link>
-                  ))}
+                  <div className="grid w-full grid-cols-1 gap-3 text-left text-sm sm:grid-cols-2 lg:grid-cols-4">
+                    {(lang === "pt"
+                      ? [
+                          ["🔥", "Calorias diárias"],
+                          ["⚙️", "Metabolismo basal"],
+                          ["💧", "Água diária"],
+                          ["🥩", "Proteína diária"],
+                        ]
+                      : [
+                          ["🔥", "Daily calories"],
+                          ["⚙️", "Basal metabolic rate"],
+                          ["💧", "Daily water"],
+                          ["🥩", "Daily protein"],
+                        ]
+                    ).map(([icon, item]) => (
+                      <div key={item} className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-white/10 bg-white/10 p-4 text-center shadow-lg shadow-black/10">
+                        <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-white/10 text-xl" aria-hidden="true">{icon}</span>
+                        <p className="text-base font-black leading-tight text-white md:text-sm lg:text-base">{item}</p>
+                      </div>
+                    ))}
+                  </div>
+
+                  <Link href={fitnessHref} className="inline-flex rounded-full bg-emerald-300 px-5 py-3 text-sm font-black text-zinc-950 shadow-lg shadow-emerald-950/30 transition hover:bg-emerald-200">
+                    {lang === "pt" ? "Gerar meu perfil fitness completo" : "Generate my full fitness profile"}
+                  </Link>
+
+                  <p className="max-w-2xl text-sm leading-6 text-zinc-300">
+                    {lang === "pt"
+                      ? "Complete seu painel fitness com as outras métricas que ajudam a transformar um número isolado em uma visão prática."
+                      : "Complete your fitness dashboard with the other metrics that turn one isolated number into a practical view."}
+                  </p>
                 </div>
               </div>
             </div>

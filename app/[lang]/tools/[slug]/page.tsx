@@ -20,6 +20,13 @@ type ToolPageProps = {
 };
 
 const baseUrl = "https://www.nextool.online";
+const fitnessLandingToolIds = new Set([
+  "bmi-calculator",
+  "bmr-calculator",
+  "calorie-calculator",
+  "water-intake-calculator",
+  "body-fat-calculator",
+]);
 
 function getAvailableLanguages(tool: ToolDefinition): LanguageCode[] {
   return tool.availableLanguages || (Object.keys(tool.slug) as LanguageCode[]);
@@ -121,6 +128,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
   const toolDescription = getText(tool.description, lang);
   const categoryName = category ? getText(category.name, lang) : tool.category;
   const relatedTools = getRelatedTools(tool, lang);
+  const isFitnessLandingTool = fitnessLandingToolIds.has(tool.id);
 
   const languageUrls = Object.fromEntries(
     getAvailableLanguages(tool).map((language) => [
@@ -213,6 +221,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
       description={toolDescription}
       lang={lang}
       languageUrls={languageUrls}
+      variant={isFitnessLandingTool ? "fitness" : "default"}
     >
       <script
         type="application/ld+json"
@@ -246,15 +255,16 @@ export default async function ToolPage({ params }: ToolPageProps) {
         />
       )}
 
-      <Breadcrumbs items={breadcrumbs} />
+      {!isFitnessLandingTool && <Breadcrumbs items={breadcrumbs} />}
 
       <Calculator
         lang={lang}
         ui={tool.ui}
       />
 
+      <div className={isFitnessLandingTool ? "mt-10 rounded-[2rem] bg-white p-5 text-zinc-950 shadow-2xl md:p-8" : ""}>
       {tool.formula && (
-       <section className="mt-10 rounded-2xl border border-zinc-200 bg-zinc-50 p-6">
+       <section className={isFitnessLandingTool ? "mt-10 rounded-3xl border border-zinc-200 bg-zinc-50 p-6 shadow-xl shadow-zinc-300/60" : "mt-10 rounded-2xl border border-zinc-200 bg-zinc-50 p-6"}>
         <h2 className="text-2xl font-bold text-zinc-950">
           {getText(dictionary.formulaTitle, lang)}
         </h2>
@@ -279,7 +289,10 @@ export default async function ToolPage({ params }: ToolPageProps) {
       <article className="mt-10 space-y-6 text-base leading-7 text-zinc-700 md:mt-12 md:leading-8">
         {tool.article.map(
          (section: (typeof tool.article)[number]) => (
-          <section key={getText(section.heading, lang)}>
+          <section
+            key={getText(section.heading, lang)}
+            className={isFitnessLandingTool ? "rounded-3xl border border-zinc-200 bg-white p-5 shadow-xl shadow-zinc-300/60" : ""}
+          >
             <h2 className="text-2xl font-bold text-zinc-950">
               {getText(section.heading, lang)}
             </h2>
@@ -301,7 +314,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
              (item: NonNullable<typeof tool.faq>[number]) => (
               <div
                 key={getText(item.question, lang)}
-                className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm"
+                className={isFitnessLandingTool ? "rounded-3xl border border-zinc-200 bg-white p-5 shadow-xl shadow-zinc-300/60" : "rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm"}
               >
                 <h3 className="font-semibold text-zinc-950">
                   {getText(item.question, lang)}
@@ -336,6 +349,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
           </div>
         </section>
       )}
+      </div>
     </ToolPageLayout>
   );
 }

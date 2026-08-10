@@ -7,6 +7,10 @@ import {
   calculateMaintenanceCalories,
   calculateProteinRange,
   calculateWaterIntakeLiters,
+  calculateWaterIntakeLitersFromWeightKg,
+  getBmiMetricStatus,
+  getHealthyWeightMetricStatus,
+  getTargetMetricStatus,
   litersToFluidOunces,
 } from "../tools/health/fitness.ts";
 
@@ -28,6 +32,8 @@ assert.equal(calculateGoalCalories(maintenance, "gain").toFixed(0), "2767");
 const water = calculateWaterIntakeLiters(metricInput, "moderate");
 assert.equal(water.toFixed(1), "3.0");
 assert.equal(litersToFluidOunces(water).toFixed(0), "100");
+assert.equal(calculateWaterIntakeLitersFromWeightKg(70, 30).toFixed(1), "2.8");
+assert.equal(calculateWaterIntakeLitersFromWeightKg(180 * 0.45359237, 30).toFixed(1), "3.2");
 
 const protein = calculateProteinRange(metricInput, "gain");
 assert.equal(protein.minGrams.toFixed(0), "112");
@@ -40,11 +46,37 @@ assert.equal(
   fitnessContent.pt.description,
   "Com poucos dados, você entende seus principais números fitness em um painel visual, simples e direto."
 );
-assert.equal(fitnessContent.pt.goalCalories, "Meta de calorias diárias");
-assert.equal(fitnessContent.pt.water, "Água para beber por dia");
-assert.equal(fitnessContent.pt.protein, "Proteína para comer por dia");
+assert.equal(fitnessContent.pt.goalCalories, "Calorias");
+assert.equal(fitnessContent.pt.secondaryCta, "Ver próximas etapas");
+assert.equal(fitnessContent.pt.water, "Água");
+assert.equal(fitnessContent.pt.protein, "Proteína");
+assert.equal(fitnessContent.pt.healthyRange, "Peso ideal");
+assert.equal(fitnessContent.pt.metricHelpers.water, "Quanta água devo beber em um dia normal?");
+assert.equal(fitnessContent.pt.metricHelpers.goalCalories, "Quantas calorias devo ingerir por dia para chegar mais perto do peso ideal?");
+assert.equal(fitnessContent.pt.metricHelpers.protein, "Quanta proteína diária me ajudaria na minha evolução?");
+assert.equal(fitnessContent.pt.metricHelpers.maintenance, "Quantas calorias eu preciso para manter meu peso atual?");
+assert.equal(fitnessContent.pt.metricHelpers.bmr, "Quantas calorias meu corpo queima sozinho, sem exercício?");
 assert.equal(fitnessContent.pt.bmiLegend.underweight, "Abaixo do peso");
-assert.equal(fitnessContent.en.goalCalories, "Daily calorie target");
-assert.equal(fitnessContent.en.water, "Water to drink per day");
+assert.equal(fitnessContent.pt.statusLabels.good, "Dentro da faixa");
+assert.equal(fitnessContent.pt.statusLabels["out-of-range"], "Fora da faixa estimada");
+assert.equal(fitnessContent.en.goalCalories, "Calories");
+assert.equal(fitnessContent.en.water, "Water");
+assert.equal(fitnessContent.en.protein, "Protein");
+assert.equal(fitnessContent.en.statusLabels.neutral, "Daily target");
+
+assert.equal(getBmiMetricStatus("normal").id, "good");
+assert.equal(getBmiMetricStatus("overweight").id, "attention");
+assert.equal(getBmiMetricStatus("obesity").id, "out-of-range");
+assert.equal(getBmiMetricStatus("underweight").id, "low");
+
+assert.equal(
+  getHealthyWeightMetricStatus({ currentWeightKg: 70, minKg: 56.7, maxKg: 76.3 }).id,
+  "good"
+);
+assert.equal(
+  getHealthyWeightMetricStatus({ currentWeightKg: 113.5, minKg: 56.7, maxKg: 76.3 }).id,
+  "out-of-range"
+);
+assert.equal(getTargetMetricStatus().id, "neutral");
 
 console.log("Fitness journey verification passed");

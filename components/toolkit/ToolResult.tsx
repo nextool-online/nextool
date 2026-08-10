@@ -15,7 +15,7 @@ export default function ToolResult({
 }: ToolResultProps) {
   return (
     <div className="flex min-w-0 items-center overflow-hidden rounded-xl border border-zinc-300 bg-zinc-100">
-      <div className="min-w-0 flex-1 truncate p-3 text-center text-base font-bold md:p-4 md:text-lg">
+      <div className="min-w-0 flex-1 truncate p-3 text-center text-base font-bold text-zinc-950 md:p-4 md:text-lg">
         {value || <span className="text-zinc-400">{placeholder}</span>}
       </div>
 

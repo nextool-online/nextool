@@ -25,7 +25,7 @@ export default function ToolCard({
   return (
     <Link
       href={href}
-      className="rounded-2xl border border-zinc-200 bg-white p-6 transition hover:border-zinc-400 hover:shadow-md"
+      className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-xl shadow-zinc-300/50 transition hover:-translate-y-0.5 hover:border-zinc-400 hover:shadow-2xl"
     >
       {category && (
         <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-zinc-400">

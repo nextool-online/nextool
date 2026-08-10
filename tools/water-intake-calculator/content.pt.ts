@@ -207,11 +207,11 @@ export const waterIntakeCalculatorContent = {
 
   formula: {
     expression: {
-      pt: "Ingestão de Água (ml) = Peso (kg) × 35",
+      pt: "Ingestão de Água (ml) = Peso (kg) × 35 + Minutos de atividade × 12",
     },
 
     explanation: {
-      pt: "<strong>Peso</strong> = Peso Corporal em Quilogramas<br/><strong>35</strong> = Quantidade Recomendada de Água por Quilograma<br/><strong>Ingestão de Água</strong> = Necessidade Diária Estimada de Hidratação",
+      pt: "<strong>Peso</strong> = Peso corporal em quilogramas<br/><strong>35</strong> = Estimativa de água por quilograma<br/><strong>Minutos de atividade</strong> = Estimativa extra para exercício ou rotina ativa<br/><strong>Ingestão de Água</strong> = Necessidade diária estimada de hidratação",
     },
   },
 

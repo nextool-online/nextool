@@ -207,11 +207,11 @@ export const waterIntakeCalculatorContent = {
 
   formula: {
   expression: {
-    en: "Water Intake (ml) = Weight (kg) × 35",
+    en: "Water Intake (ml) = Weight (lb) × 0.453592 × 35 + Activity minutes × 12",
   },
 
   explanation: {
-    en: "<strong>Weight</strong> = Body Weight in Kilograms<br/><strong>35</strong> = Recommended Daily Water Intake per Kilogram<br/><strong>Water Intake</strong> = Estimated Daily Hydration Need",
+    en: "<strong>Weight</strong> = Body weight in pounds, converted to kilograms<br/><strong>35</strong> = Estimated daily water per kilogram<br/><strong>Activity minutes</strong> = Extra hydration estimate for daily exercise or active time<br/><strong>Water Intake</strong> = Estimated daily hydration need",
   },
 },
 
@@ -225,7 +225,7 @@ export const waterIntakeCalculatorContent = {
     },
 
     weight: {
-      en: "Weight (kg)",
+      en: "Weight (lb)",
     },
 
     activityMinutes: {

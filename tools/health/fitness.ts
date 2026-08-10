@@ -1,4 +1,4 @@
-import { kgToPounds, normalizeBmiInput, type BmiInput } from "./bmi";
+import { kgToPounds, normalizeBmiInput, type BmiCategoryId, type BmiInput } from "./bmi";
 
 export type Sex = "male" | "female";
 export type FitnessGoal = "lose" | "maintain" | "gain";
@@ -17,6 +17,48 @@ export const activityMultipliers: Record<ActivityLevel, number> = {
   very: 1.725,
   extra: 1.9,
 };
+
+export type MetricStatusId = "good" | "attention" | "out-of-range" | "low" | "neutral";
+
+export type MetricStatus = {
+  id: MetricStatusId;
+};
+
+export function getBmiMetricStatus(categoryId: BmiCategoryId): MetricStatus {
+  if (categoryId === "normal") {
+    return { id: "good" };
+  }
+
+  if (categoryId === "overweight") {
+    return { id: "attention" };
+  }
+
+  if (categoryId === "obesity") {
+    return { id: "out-of-range" };
+  }
+
+  return { id: "low" };
+}
+
+export function getHealthyWeightMetricStatus({
+  currentWeightKg,
+  minKg,
+  maxKg,
+}: {
+  currentWeightKg: number;
+  minKg: number;
+  maxKg: number;
+}): MetricStatus {
+  if (currentWeightKg >= minKg && currentWeightKg <= maxKg) {
+    return { id: "good" };
+  }
+
+  return { id: "out-of-range" };
+}
+
+export function getTargetMetricStatus(): MetricStatus {
+  return { id: "neutral" };
+}
 
 export function calculateBmr({
   input,
@@ -60,6 +102,11 @@ export function calculateWaterIntakeLiters(input: BmiInput, activity: ActivityLe
   };
 
   return weightKg * 0.035 + activityBonusLiters[activity];
+}
+
+export function calculateWaterIntakeLitersFromWeightKg(weightKg: number, activityMinutes = 0) {
+  const safeActivityMinutes = Math.max(0, activityMinutes || 0);
+  return (weightKg * 35 + safeActivityMinutes * 12) / 1000;
 }
 
 export function calculateProteinRange(input: BmiInput, goal: FitnessGoal) {

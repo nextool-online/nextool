@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { getLocaleProfile } from "../../data/localeProfiles";
 import { getFitnessContent } from "../../data/fitness";
@@ -21,10 +21,14 @@ import {
   calculateMaintenanceCalories,
   calculateProteinRange,
   calculateWaterIntakeLiters,
+  getBmiMetricStatus,
+  getHealthyWeightMetricStatus,
+  getTargetMetricStatus,
   kgRangeToPoundsRange,
   litersToFluidOunces,
   type ActivityLevel,
   type FitnessGoal,
+  type MetricStatusId,
   type Sex,
 } from "../../tools/health/fitness";
 
@@ -58,15 +62,131 @@ const categoryLabels = {
   },
 };
 
-function metricCard({ label, value, helper }: { label: string; value: string; helper?: string }) {
+const statusCardStyles: Record<MetricStatusId, string> = {
+  good: "border-emerald-200 bg-emerald-50/60",
+  attention: "border-amber-200 bg-amber-50/60",
+  "out-of-range": "border-rose-200 bg-rose-50/60",
+  low: "border-sky-200 bg-sky-50/60",
+  neutral: "border-zinc-200 bg-white",
+};
+
+const statusChipStyles: Record<MetricStatusId, string> = {
+  good: "bg-emerald-100 text-emerald-700",
+  attention: "bg-amber-100 text-amber-700",
+  "out-of-range": "bg-rose-100 text-rose-700",
+  low: "bg-sky-100 text-sky-700",
+  neutral: "bg-zinc-100 text-zinc-600",
+};
+
+const statusValueStyles: Record<MetricStatusId, string> = {
+  good: "text-emerald-700",
+  attention: "text-amber-700",
+  "out-of-range": "text-rose-700",
+  low: "text-sky-700",
+  neutral: "text-zinc-950",
+};
+
+const statusBarPositions: Record<MetricStatusId, number> = {
+  low: 18,
+  good: 52,
+  neutral: 62,
+  attention: 76,
+  "out-of-range": 92,
+};
+
+const statusBarColors: Record<MetricStatusId, string> = {
+  good: "bg-emerald-600",
+  attention: "bg-amber-500",
+  "out-of-range": "bg-rose-600",
+  low: "bg-sky-600",
+  neutral: "bg-zinc-700",
+};
+
+function parseUserNumber(value: string) {
+  return Number(value.replace(",", "."));
+}
+
+function getWeightRangeMarkerPosition(currentKg: number, minKg: number, maxKg: number) {
+  if (currentKg < minKg) {
+    return Math.max(6, Math.min(27, (currentKg / minKg) * 27));
+  }
+
+  if (currentKg > maxKg) {
+    return Math.min(94, 73 + ((currentKg - maxKg) / maxKg) * 21);
+  }
+
+  return 28 + ((currentKg - minKg) / (maxKg - minKg || 1)) * 44;
+}
+
+function metricCard({
+  label,
+  value,
+  helper,
+  status,
+  statusLabel,
+  minMarkerPosition,
+  maxMarkerPosition,
+  weightMarkerPosition,
+  rangeMinLabel,
+  rangeMaxLabel,
+  currentLabel,
+}: {
+  label: string;
+  value: string;
+  helper?: string;
+  status: MetricStatusId;
+  statusLabel: string;
+  minMarkerPosition?: number;
+  maxMarkerPosition?: number;
+  weightMarkerPosition?: number;
+  rangeMinLabel?: string;
+  rangeMaxLabel?: string;
+  currentLabel?: string;
+}) {
   return (
-    <div className="rounded-3xl border border-zinc-200 bg-white p-5 shadow-sm">
-      <p className="text-xs font-bold uppercase tracking-wide text-zinc-400">
-        {label}
-      </p>
-      <p className="mt-3 text-3xl font-black tracking-tight text-zinc-950">
+    <div className={`rounded-3xl border p-5 shadow-sm ${statusCardStyles[status]}`}>
+      <div className="flex flex-wrap items-start gap-2">
+        <p className="min-w-0 flex-1 text-xs font-bold uppercase tracking-wide text-zinc-500">
+          {label}
+        </p>
+        {status !== "neutral" && (
+          <span className={`max-w-[8.5rem] shrink rounded-full px-2.5 py-1 text-center text-[0.62rem] font-black uppercase leading-tight tracking-wide ${statusChipStyles[status]}`}>
+            {statusLabel}
+          </span>
+        )}
+      </div>
+      <p className={`mt-3 text-3xl font-black tracking-tight ${statusValueStyles[status]}`}>
         {value}
       </p>
+      <div className="mt-4" aria-hidden="true">
+        {typeof weightMarkerPosition === "number" ? (
+          <div className="relative px-1 pt-7 pb-6">
+            <div className="relative h-3 rounded-full bg-gradient-to-r from-sky-300 via-emerald-300 to-rose-300">
+              {[
+                { label: rangeMinLabel, position: minMarkerPosition ?? 28, color: "bg-emerald-700", labelClass: "top-7" },
+                { label: rangeMaxLabel, position: maxMarkerPosition ?? 72, color: "bg-emerald-700", labelClass: "top-7" },
+                { label: currentLabel, position: weightMarkerPosition, color: statusBarColors[status], labelClass: "bottom-7" },
+              ].map((marker) => (
+                <span
+                  key={marker.label}
+                  className="absolute top-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-1"
+                  style={{ left: `${marker.position}%` }}
+                >
+                  <span className={`h-7 w-1.5 rounded-full ${marker.color}`} />
+                  <span className={`absolute ${marker.labelClass} text-[0.62rem] font-black uppercase tracking-wide text-zinc-500`}>{marker.label}</span>
+                </span>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div className="relative h-2 rounded-full bg-gradient-to-r from-sky-300 via-emerald-300 via-amber-300 to-rose-300">
+            <span
+              className={`absolute top-1/2 h-4 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full ${statusBarColors[status]}`}
+              style={{ left: `${statusBarPositions[status]}%` }}
+            />
+          </div>
+        )}
+      </div>
       {helper && <p className="mt-2 text-sm leading-6 text-zinc-600">{helper}</p>}
     </div>
   );
@@ -76,12 +196,13 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
   const content = getFitnessContent(lang);
   const profile = getLocaleProfile(lang);
   const usesImperial = profile.measurementSystem === "imperial";
+  const weightInputRef = useRef<HTMLInputElement>(null);
 
-  const [weight, setWeight] = useState(usesImperial ? "180" : "70");
-  const [heightCm, setHeightCm] = useState("175");
-  const [heightFt, setHeightFt] = useState("5");
-  const [heightIn, setHeightIn] = useState("10");
-  const [age, setAge] = useState("35");
+  const [weight, setWeight] = useState("");
+  const [heightCm, setHeightCm] = useState("");
+  const [heightFt, setHeightFt] = useState("");
+  const [heightIn, setHeightIn] = useState("");
+  const [age, setAge] = useState("");
   const [sex, setSex] = useState<Sex>("male");
   const [activity, setActivity] = useState<ActivityLevel>("moderate");
   const [goal, setGoal] = useState<FitnessGoal>("lose");
@@ -100,13 +221,34 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
   });
   const [saved, setSaved] = useState(false);
 
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const queryWeight = params.get("weight");
+    const queryHeightCm = params.get("heightCm");
+    const queryHeightFt = params.get("heightFt");
+    const queryHeightIn = params.get("heightIn");
+    const queryActivityMinutes = params.get("activityMinutes");
+
+    window.requestAnimationFrame(() => {
+      if (queryWeight) setWeight(queryWeight);
+      if (queryHeightCm) setHeightCm(queryHeightCm);
+      if (queryHeightFt) setHeightFt(queryHeightFt);
+      if (queryHeightIn) setHeightIn(queryHeightIn);
+      if (queryActivityMinutes) {
+        const minutes = parseUserNumber(queryActivityMinutes);
+        if (minutes >= 45) setActivity("moderate");
+        else if (minutes > 0) setActivity("light");
+      }
+    });
+  }, []);
+
   const input = useMemo<BmiInput | null>(() => {
-    const weightValue = Number(weight);
+    const weightValue = parseUserNumber(weight);
     if (!weightValue) return null;
 
     if (usesImperial) {
-      const feet = Number(heightFt);
-      const inches = Number(heightIn);
+      const feet = parseUserNumber(heightFt);
+      const inches = parseUserNumber(heightIn);
       if (!feet && !inches) return null;
 
       return {
@@ -117,7 +259,7 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
       };
     }
 
-    const cm = Number(heightCm);
+    const cm = parseUserNumber(heightCm);
     if (!cm) return null;
 
     return {
@@ -128,12 +270,13 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
   }, [heightCm, heightFt, heightIn, usesImperial, weight]);
 
   const result = useMemo(() => {
-    if (!input || !Number(age)) return null;
+    const ageValue = parseUserNumber(age);
+    if (!input || !ageValue) return null;
 
     const bmi = calculateBmi(input);
     const category = getBmiCategory(bmi);
     const range = getHealthyWeightRange(input);
-    const bmr = calculateBmr({ input, age: Number(age), sex });
+    const bmr = calculateBmr({ input, age: ageValue, sex });
     const maintenance = calculateMaintenanceCalories(bmr, activity);
     const goalCalories = calculateGoalCalories(maintenance, goal);
     const waterLiters = calculateWaterIntakeLiters(input, activity);
@@ -151,6 +294,19 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
       protein,
       marker: getBmiMarkerPosition(bmi),
       normalized,
+      statuses: {
+        bmi: getBmiMetricStatus(category.id),
+        healthyRange: getHealthyWeightMetricStatus({
+          currentWeightKg: normalized.weightKg,
+          minKg: range.minKg,
+          maxKg: range.maxKg,
+        }),
+        water: getTargetMetricStatus(),
+        goalCalories: getTargetMetricStatus(),
+        protein: getTargetMetricStatus(),
+        maintenance: getTargetMetricStatus(),
+        bmr: getTargetMetricStatus(),
+      },
     };
   }, [activity, age, goal, input, sex]);
 
@@ -173,6 +329,20 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
       ? `${formatNumber(litersToFluidOunces(result.waterLiters), lang, { maximumFractionDigits: 0 })} oz`
       : `${formatDecimal(result.waterLiters, lang)} L`
     : "—";
+
+  const startWithOwnData = () => {
+    setWeight("");
+    setHeightCm("");
+    setHeightFt("");
+    setHeightIn("");
+    setAge("");
+    setSaved(false);
+
+    window.requestAnimationFrame(() => {
+      weightInputRef.current?.focus();
+      weightInputRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+  };
 
   const saveSnapshot = () => {
     if (!result) return;
@@ -212,12 +382,12 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
             {content.description}
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <a href="#fitness-form" className="rounded-full bg-emerald-400 px-6 py-3 text-sm font-black text-zinc-950 transition hover:bg-emerald-300">
+            <button type="button" onClick={startWithOwnData} className="rounded-full bg-emerald-400 px-6 py-3 text-sm font-black text-zinc-950 transition hover:bg-emerald-300">
               {content.cta}
-            </a>
-            <Link href={`/${lang}/tools/${lang === "pt" ? "calculadora-imc" : "bmi-calculator"}`} className="hidden rounded-full border border-white/15 px-6 py-3 text-sm font-bold text-white transition hover:bg-white/10 sm:inline-flex">
+            </button>
+            <a href="#fitness-next" className="hidden rounded-full border border-white/15 px-6 py-3 text-sm font-bold text-white transition hover:bg-white/10 sm:inline-flex">
               {content.secondaryCta}
-            </Link>
+            </a>
           </div>
         </div>
 
@@ -229,35 +399,35 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
           <div className="mt-5 grid gap-3 md:grid-cols-2">
             <label className="space-y-1">
               <span className="px-1 text-xs font-bold uppercase tracking-wide text-zinc-400">{content.weight}</span>
-              <input className="w-full rounded-2xl border border-zinc-200 p-4 font-bold outline-none focus:border-emerald-500" type="number" value={weight} onChange={(event) => setWeight(event.target.value)} placeholder={content.weight} />
+              <input ref={weightInputRef} className="w-full rounded-2xl border border-zinc-200 p-4 text-lg font-bold outline-none focus:border-emerald-500" type="text" inputMode="decimal" value={weight} onChange={(event) => setWeight(event.target.value)} onInput={(event) => setWeight(event.currentTarget.value)} placeholder={content.weight} />
             </label>
 
             {usesImperial ? (
               <div className="grid grid-cols-2 gap-3">
                 <label className="space-y-1">
                   <span className="px-1 text-xs font-bold uppercase tracking-wide text-zinc-400">{content.heightFt}</span>
-                  <input className="w-full rounded-2xl border border-zinc-200 p-4 font-bold outline-none focus:border-emerald-500" type="number" value={heightFt} onChange={(event) => setHeightFt(event.target.value)} placeholder={content.heightFt} />
+                  <input className="w-full rounded-2xl border border-zinc-200 p-4 text-lg font-bold outline-none focus:border-emerald-500" type="text" inputMode="decimal" value={heightFt} onChange={(event) => setHeightFt(event.target.value)} onInput={(event) => setHeightFt(event.currentTarget.value)} placeholder={content.heightFt} />
                 </label>
                 <label className="space-y-1">
                   <span className="px-1 text-xs font-bold uppercase tracking-wide text-zinc-400">{content.heightIn}</span>
-                  <input className="w-full rounded-2xl border border-zinc-200 p-4 font-bold outline-none focus:border-emerald-500" type="number" value={heightIn} onChange={(event) => setHeightIn(event.target.value)} placeholder={content.heightIn} />
+                  <input className="w-full rounded-2xl border border-zinc-200 p-4 text-lg font-bold outline-none focus:border-emerald-500" type="text" inputMode="decimal" value={heightIn} onChange={(event) => setHeightIn(event.target.value)} onInput={(event) => setHeightIn(event.currentTarget.value)} placeholder={content.heightIn} />
                 </label>
               </div>
             ) : (
               <label className="space-y-1">
                 <span className="px-1 text-xs font-bold uppercase tracking-wide text-zinc-400">{content.height}</span>
-                <input className="w-full rounded-2xl border border-zinc-200 p-4 font-bold outline-none focus:border-emerald-500" type="number" value={heightCm} onChange={(event) => setHeightCm(event.target.value)} placeholder={content.height} />
+                <input className="w-full rounded-2xl border border-zinc-200 p-4 text-lg font-bold outline-none focus:border-emerald-500" type="text" inputMode="decimal" value={heightCm} onChange={(event) => setHeightCm(event.target.value)} onInput={(event) => setHeightCm(event.currentTarget.value)} placeholder={content.height} />
               </label>
             )}
 
             <label className="space-y-1">
               <span className="px-1 text-xs font-bold uppercase tracking-wide text-zinc-400">{content.age}</span>
-              <input className="w-full rounded-2xl border border-zinc-200 p-4 font-bold outline-none focus:border-emerald-500" type="number" value={age} onChange={(event) => setAge(event.target.value)} placeholder={content.age} />
+              <input className="w-full rounded-2xl border border-zinc-200 p-4 text-lg font-bold outline-none focus:border-emerald-500" type="text" inputMode="decimal" value={age} onChange={(event) => setAge(event.target.value)} onInput={(event) => setAge(event.currentTarget.value)} placeholder={content.age} />
             </label>
 
             <label className="space-y-1">
               <span className="px-1 text-xs font-bold uppercase tracking-wide text-zinc-400">{content.sex}</span>
-              <select className="w-full rounded-2xl border border-zinc-200 p-4 font-bold outline-none focus:border-emerald-500" value={sex} onChange={(event) => setSex(event.target.value as Sex)} aria-label={content.sex}>
+              <select className="w-full rounded-2xl border border-zinc-200 p-4 text-lg font-bold outline-none focus:border-emerald-500" value={sex} onChange={(event) => setSex(event.target.value as Sex)} aria-label={content.sex}>
                 <option value="male">{content.male}</option>
                 <option value="female">{content.female}</option>
               </select>
@@ -265,7 +435,7 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
 
             <label className="space-y-1">
               <span className="px-1 text-xs font-bold uppercase tracking-wide text-zinc-400">{content.activity}</span>
-              <select className="w-full rounded-2xl border border-zinc-200 p-4 font-bold outline-none focus:border-emerald-500" value={activity} onChange={(event) => setActivity(event.target.value as ActivityLevel)} aria-label={content.activity}>
+              <select className="w-full rounded-2xl border border-zinc-200 p-4 text-lg font-bold outline-none focus:border-emerald-500" value={activity} onChange={(event) => setActivity(event.target.value as ActivityLevel)} aria-label={content.activity}>
                 {Object.entries(content.activityOptions).map(([key, label]) => (
                   <option key={key} value={key}>{label}</option>
                 ))}
@@ -274,7 +444,7 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
 
             <label className="space-y-1">
               <span className="px-1 text-xs font-bold uppercase tracking-wide text-zinc-400">{content.goal}</span>
-              <select className="w-full rounded-2xl border border-zinc-200 p-4 font-bold outline-none focus:border-emerald-500" value={goal} onChange={(event) => setGoal(event.target.value as FitnessGoal)} aria-label={content.goal}>
+              <select className="w-full rounded-2xl border border-zinc-200 p-4 text-lg font-bold outline-none focus:border-emerald-500" value={goal} onChange={(event) => setGoal(event.target.value as FitnessGoal)} aria-label={content.goal}>
                 {Object.entries(content.goalOptions).map(([key, label]) => (
                   <option key={key} value={key}>{label}</option>
                 ))}
@@ -290,7 +460,7 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
                     <p className="text-sm font-bold text-zinc-400">{content.resultsTitle}</p>
                     <p className="mt-1 text-5xl font-black">{formatDecimal(result.bmi, lang)}</p>
                   </div>
-                  <p className="rounded-full bg-emerald-400 px-4 py-2 text-sm font-black text-zinc-950">
+                  <p className={`rounded-full px-4 py-2 text-sm font-black ${statusChipStyles[result.statuses.bmi.id]}`}>
                     {categoryLabels[lang][result.category.id]}
                   </p>
                 </div>
@@ -315,12 +485,54 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
               </div>
 
               <div className="grid gap-4 md:grid-cols-2">
-                {metricCard({ label: content.healthyRange, value: formatHealthyRange(), helper: content.metricHelpers.healthyRange })}
-                {metricCard({ label: content.water, value: waterValue, helper: content.metricHelpers.water })}
-                {metricCard({ label: content.goalCalories, value: `${formatNumber(result.goalCalories, lang, { maximumFractionDigits: 0 })} kcal`, helper: content.metricHelpers.goalCalories })}
-                {metricCard({ label: content.protein, value: `${formatNumber(result.protein.minGrams, lang, { maximumFractionDigits: 0 })}–${formatNumber(result.protein.maxGrams, lang, { maximumFractionDigits: 0 })} g`, helper: content.metricHelpers.protein })}
-                {metricCard({ label: content.maintenance, value: `${formatNumber(result.maintenance, lang, { maximumFractionDigits: 0 })} kcal`, helper: content.metricHelpers.maintenance })}
-                {metricCard({ label: content.bmr, value: `${formatNumber(result.bmr, lang, { maximumFractionDigits: 0 })} kcal`, helper: content.metricHelpers.bmr })}
+                {metricCard({
+                  label: content.healthyRange,
+                  value: formatHealthyRange(),
+                  helper: content.metricHelpers.healthyRange,
+                  status: result.statuses.healthyRange.id,
+                  statusLabel: content.statusLabels[result.statuses.healthyRange.id],
+                  minMarkerPosition: 28,
+                  maxMarkerPosition: 72,
+                  weightMarkerPosition: getWeightRangeMarkerPosition(result.normalized.weightKg, result.range.minKg, result.range.maxKg),
+                  currentLabel: lang === "pt" ? "Peso" : "Weight",
+                  rangeMinLabel: "Min",
+                  rangeMaxLabel: "Max",
+                })}
+                {metricCard({
+                  label: content.water,
+                  value: waterValue,
+                  helper: content.metricHelpers.water,
+                  status: result.statuses.water.id,
+                  statusLabel: content.statusLabels[result.statuses.water.id],
+                })}
+                {metricCard({
+                  label: content.goalCalories,
+                  value: `${formatNumber(result.goalCalories, lang, { maximumFractionDigits: 0 })} kcal`,
+                  helper: content.metricHelpers.goalCalories,
+                  status: result.statuses.goalCalories.id,
+                  statusLabel: content.statusLabels[result.statuses.goalCalories.id],
+                })}
+                {metricCard({
+                  label: content.protein,
+                  value: `${formatNumber(result.protein.minGrams, lang, { maximumFractionDigits: 0 })}–${formatNumber(result.protein.maxGrams, lang, { maximumFractionDigits: 0 })} g`,
+                  helper: content.metricHelpers.protein,
+                  status: result.statuses.protein.id,
+                  statusLabel: content.statusLabels[result.statuses.protein.id],
+                })}
+                {metricCard({
+                  label: content.maintenance,
+                  value: `${formatNumber(result.maintenance, lang, { maximumFractionDigits: 0 })} kcal`,
+                  helper: content.metricHelpers.maintenance,
+                  status: result.statuses.maintenance.id,
+                  statusLabel: content.statusLabels[result.statuses.maintenance.id],
+                })}
+                {metricCard({
+                  label: content.bmr,
+                  value: `${formatNumber(result.bmr, lang, { maximumFractionDigits: 0 })} kcal`,
+                  helper: content.metricHelpers.bmr,
+                  status: result.statuses.bmr.id,
+                  statusLabel: content.statusLabels[result.statuses.bmr.id],
+                })}
               </div>
 
               <div id="fitness-save" className="rounded-3xl border border-emerald-100 bg-emerald-50 p-5">
@@ -370,20 +582,22 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
       <section id="fitness-next" className="border-t border-white/10 bg-white px-4 py-12 text-zinc-950 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="max-w-2xl">
-            <h2 className="text-3xl font-black tracking-tight">{content.relatedTitle}</h2>
-            <p className="mt-3 text-sm leading-6 text-zinc-600">{content.relatedIntro}</p>
+            <h2 className="text-4xl font-black tracking-tight md:text-3xl">{content.relatedTitle}</h2>
+            <p className="mt-4 text-lg leading-8 text-zinc-600 md:text-base md:leading-7">{content.relatedIntro}</p>
           </div>
-          <div className="mt-6 grid gap-4 md:grid-cols-4">
+          <div className="mt-7 grid gap-4 md:grid-cols-4">
             {[
               ["01", content.bmi, content.relatedSteps.bmi, `/${lang}/tools/${lang === "pt" ? "calculadora-imc" : "bmi-calculator"}`],
               ["02", content.bmr, content.relatedSteps.bmr, `/${lang}/tools/${lang === "pt" ? "calculadora-tmb" : "bmr-calculator"}`],
               ["03", content.goalCalories, content.relatedSteps.calories, `/${lang}/tools/${lang === "pt" ? "calculadora-de-calorias" : "calorie-calculator"}`],
               ["04", content.water, content.relatedSteps.water, `/${lang}/tools/${lang === "pt" ? "calculadora-de-ingestao-de-agua" : "water-intake-calculator"}`],
             ].map(([step, label, helper, href]) => (
-              <Link key={href} href={href} className="group rounded-3xl border border-zinc-200 bg-zinc-50 p-5 transition hover:-translate-y-0.5 hover:border-emerald-300 hover:bg-emerald-50">
-                <p className="text-xs font-black text-emerald-600">{step}</p>
-                <p className="mt-3 font-black">{label}</p>
-                <p className="mt-2 text-sm leading-6 text-zinc-600">{helper}</p>
+              <Link key={href} href={href} className="group rounded-3xl border border-zinc-200 bg-zinc-50 p-5 transition hover:-translate-y-0.5 hover:border-emerald-300 hover:bg-emerald-50 md:min-h-32">
+                <div className="flex items-center gap-3">
+                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-emerald-400 text-sm font-black text-zinc-950 shadow-sm shadow-emerald-900/20 md:h-8 md:w-8 md:text-xs">{step}</span>
+                  <p className="text-2xl font-black leading-tight md:text-lg">{label}</p>
+                </div>
+                <p className="mt-4 text-lg leading-7 text-zinc-600 md:text-sm md:leading-6">{helper}</p>
               </Link>
             ))}
           </div>
