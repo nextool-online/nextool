@@ -228,12 +228,16 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
     const queryHeightFt = params.get("heightFt");
     const queryHeightIn = params.get("heightIn");
     const queryActivityMinutes = params.get("activityMinutes");
+    const queryAge = params.get("age");
+    const querySex = params.get("sex");
 
     window.requestAnimationFrame(() => {
       if (queryWeight) setWeight(queryWeight);
       if (queryHeightCm) setHeightCm(queryHeightCm);
       if (queryHeightFt) setHeightFt(queryHeightFt);
       if (queryHeightIn) setHeightIn(queryHeightIn);
+      if (queryAge) setAge(queryAge);
+      if (querySex === "male" || querySex === "female") setSex(querySex);
       if (queryActivityMinutes) {
         const minutes = parseUserNumber(queryActivityMinutes);
         if (minutes >= 45) setActivity("moderate");

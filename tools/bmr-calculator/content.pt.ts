@@ -237,7 +237,67 @@ export const bmrCalculatorContent = {
     },
 
     bmr: {
-      pt: "Taxa Metabólica Basal",
+      pt: "Metabolismo basal",
+    },
+
+    gender: {
+      pt: "Sexo",
+    },
+
+    male: {
+      pt: "Masculino",
+    },
+
+    female: {
+      pt: "Feminino",
+    },
+
+    resultTitle: {
+      pt: "Seu metabolismo em repouso",
+    },
+
+    status: {
+      pt: "Estimativa diária",
+    },
+
+    resultHelper: {
+      pt: "Essa é uma estimativa de quantas calorias seu corpo usa em repouso, antes de somar treino e rotina.",
+    },
+
+    openFitness: {
+      pt: "Gerar meu perfil fitness completo",
+    },
+
+    ctaEyebrow: {
+      pt: "Próximo passo",
+    },
+
+    ctaTitle: {
+      pt: "Descubra também:",
+    },
+
+    ctaDescription: {
+      pt: "Use sua TMB junto com IMC, calorias, água, proteína e histórico local dentro do NexTool Fit.",
+    },
+
+    calories: {
+      pt: "Calorias diárias",
+    },
+
+    water: {
+      pt: "Água diária",
+    },
+
+    protein: {
+      pt: "Proteína diária",
+    },
+
+    idealWeight: {
+      pt: "Peso ideal",
+    },
+
+    disclaimer: {
+      pt: "Esta é uma estimativa geral para adultos e não substitui orientação médica ou nutricional.",
     },
   },
 };

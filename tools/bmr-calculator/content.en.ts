@@ -78,7 +78,7 @@ export const bmrCalculatorContent = {
     },
 
     body: {
-      en: "A 35-year-old person weighing 75 kg and measuring 175 cm may have a BMR of approximately 1,650 to 1,750 calories per day.",
+      en: "A 35-year-old person weighing 165 lb and standing 5 ft 9 in may have a BMR of approximately 1,600 to 1,700 calories per day.",
     },
   },
 
@@ -206,14 +206,14 @@ export const bmrCalculatorContent = {
 ],
 
   formula: {
-  expression: {
-    en: "BMR = 10W + 6.25H - 5A + S",
-  },
+    expression: {
+      en: "BMR = 4.536W + 15.88H - 5A + S",
+    },
 
-  explanation: {
-    en: "<strong>W</strong> = Weight (kg)<br/><strong>H</strong> = Height (cm)<br/><strong>A</strong> = Age (years)<br/><strong>S</strong> = +5 for men or -161 for women",
+    explanation: {
+      en: "<strong>W</strong> = Weight in pounds<br/><strong>H</strong> = Total height in inches<br/><strong>A</strong> = Age in years<br/><strong>S</strong> = +5 for men or -161 for women",
+    },
   },
-},
 
   ui: {
     heading: {
@@ -229,15 +229,83 @@ export const bmrCalculatorContent = {
     },
 
     weight: {
-      en: "Weight (kg)",
+      en: "Weight (lb)",
     },
 
     height: {
-      en: "Height (cm)",
+      en: "Height",
+    },
+
+    heightFt: {
+      en: "Height (ft)",
+    },
+
+    heightIn: {
+      en: "Height (in)",
     },
 
     bmr: {
-      en: "Basal Metabolic Rate",
+      en: "Basal metabolism",
+    },
+
+    gender: {
+      en: "Gender",
+    },
+
+    male: {
+      en: "Male",
+    },
+
+    female: {
+      en: "Female",
+    },
+
+    resultTitle: {
+      en: "Your resting metabolism",
+    },
+
+    status: {
+      en: "Daily estimate",
+    },
+
+    resultHelper: {
+      en: "This estimates how many calories your body uses at rest, before adding workouts and daily movement.",
+    },
+
+    openFitness: {
+      en: "Generate my full fitness profile",
+    },
+
+    ctaEyebrow: {
+      en: "Next step",
+    },
+
+    ctaTitle: {
+      en: "Also discover:",
+    },
+
+    ctaDescription: {
+      en: "Use BMR together with BMI, calories, water, protein and local progress history inside NexTool Fit.",
+    },
+
+    calories: {
+      en: "Daily calories",
+    },
+
+    water: {
+      en: "Daily water",
+    },
+
+    protein: {
+      en: "Daily protein",
+    },
+
+    idealWeight: {
+      en: "Ideal weight",
+    },
+
+    disclaimer: {
+      en: "This is a general estimate for adults and does not replace medical or nutrition advice.",
     },
   },
 };
