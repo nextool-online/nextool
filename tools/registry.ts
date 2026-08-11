@@ -24,6 +24,7 @@ import { bmrCalculatorTool } from "./bmr-calculator";
 import { waterIntakeCalculatorTool } from "./water-intake-calculator";
 import { bodyFatCalculatorTool } from "./body-fat-calculator";
 import { proteinCalculatorTool } from "./protein-calculator";
+import { idealWeightCalculatorTool } from "./ideal-weight-calculator";
 
 export const tools = [
   percentageCalculatorTool,
@@ -51,6 +52,7 @@ export const tools = [
   bmrCalculatorTool,
   waterIntakeCalculatorTool,
   proteinCalculatorTool,
+  idealWeightCalculatorTool,
   bodyFatCalculatorTool,
 
 ];

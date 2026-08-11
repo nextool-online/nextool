@@ -90,6 +90,7 @@ export const fitnessContent = {
       calories: "Plan daily intake",
       water: "Support daily routine",
       protein: "Support muscle and satiety",
+      idealWeight: "Find your target range",
     },
   },
   pt: {
@@ -181,6 +182,7 @@ export const fitnessContent = {
       calories: "Planeje calorias diárias",
       water: "Apoie sua rotina diária",
       protein: "Apoie músculos e saciedade",
+      idealWeight: "Encontre sua faixa-alvo",
     },
   },
 } satisfies Record<LanguageCode, Record<string, unknown>>;
