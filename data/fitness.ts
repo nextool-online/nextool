@@ -82,9 +82,13 @@ export const fitnessContent = {
     clearHistory: "Clear history",
     emailTitle: "Receive your metrics by email",
     emailDescription:
-      "Get your fitness snapshot in your inbox and keep tracking weekly progress by email.",
+      "Get your fitness metrics in your inbox now and keep tracking weekly progress by email.",
     emailPlaceholder: "your@email.com",
     emailButton: "Send my metrics",
+    emailConsent: "I agree to receive my fitness metrics and progress emails from NexTool Fit.",
+    emailSuccess: "Done — your metrics were sent. Check your inbox.",
+    emailPreviewSuccess: "Preview confirmed. Add email and database credentials to send this for real.",
+    emailError: "We could not send your metrics right now. Please try again.",
     disclaimer:
       "These numbers are general estimates for adults and do not replace medical or nutrition advice.",
     relatedTitle: "Continue with focused calculators",
@@ -181,9 +185,13 @@ export const fitnessContent = {
     clearHistory: "Limpar histórico",
     emailTitle: "Receba suas métricas por email",
     emailDescription:
-      "Acompanhe sua evolução semanalmente por email com suas métricas de IMC, calorias, proteína, água e macros em um relatório simples.",
+      "Receba suas métricas por email agora mesmo e acompanhe sua evolução semanalmente.",
     emailPlaceholder: "seu@email.com",
     emailButton: "Receber minhas métricas",
+    emailConsent: "Aceito receber minhas métricas fitness e emails de evolução da NexTool Fit.",
+    emailSuccess: "Pronto — suas métricas foram enviadas. Confira sua caixa de entrada.",
+    emailPreviewSuccess: "Preview confirmado. Adicione as credenciais de email e banco para enviar de verdade.",
+    emailError: "Não conseguimos enviar suas métricas agora. Tente novamente.",
     disclaimer:
       "Esses números são estimativas gerais para adultos e não substituem orientação médica ou nutricional.",
     relatedTitle: "Continue com calculadoras focadas",

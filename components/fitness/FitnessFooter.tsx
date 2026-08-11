@@ -30,7 +30,7 @@ export default function FitnessFooter({ lang }: FitnessFooterProps) {
             <p className="font-black text-white">{content.footerJourney}</p>
             <div className="mt-3 grid gap-2 text-zinc-400">
               <a href="#fitness-form" className="hover:text-white">{content.navStart}</a>
-              <a href="#fitness-save" className="hover:text-white">{content.navProgress}</a>
+              <a href="#fitness-email" className="hover:text-white">{content.navProgress}</a>
               <a href="#fitness-next" className="hover:text-white">{content.navCalculators}</a>
             </div>
           </div>

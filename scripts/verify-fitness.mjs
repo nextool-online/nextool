@@ -64,9 +64,11 @@ assert.equal(fitnessContent.en.goalCalories, "Calories");
 assert.equal(fitnessContent.en.water, "Water");
 assert.equal(fitnessContent.en.protein, "Protein");
 assert.equal(fitnessContent.pt.emailTitle, "Receba suas métricas por email");
-assert.match(fitnessContent.pt.emailDescription, /Acompanhe sua evolução semanalmente/);
+assert.match(fitnessContent.pt.emailDescription, /acompanhe sua evolução semanalmente/);
 assert.doesNotMatch(JSON.stringify(fitnessContent.pt), /snapshot/i);
 assert.equal(fitnessContent.pt.emailButton, "Receber minhas métricas");
+assert.match(fitnessContent.pt.emailDescription, /agora mesmo/);
+assert.match(fitnessContent.pt.emailConsent, /Aceito receber minhas métricas/);
 assert.equal(fitnessContent.en.statusLabels.neutral, "Daily target");
 
 const fitnessJourneySource = fs.readFileSync(new URL("../components/fitness/FitnessJourney.tsx", import.meta.url), "utf8");
@@ -83,6 +85,13 @@ assert.doesNotMatch(fitnessJourneySource, /calculadora-percentual-gordura/);
 assert.doesNotMatch(waterSource, /body-fat-calculator|calculadora-percentual-gordura/);
 assert.doesNotMatch(fitnessLayoutSource, /w-fit rounded-full border border-white\/10 bg-white\/5 p-1/);
 assert.doesNotMatch(fitnessFooterSource, /English|Português|lang === "pt" \? "en" : "pt"/);
+assert.match(fitnessJourneySource, /\/api\/fitness\/lead/);
+assert.match(fitnessJourneySource, /fitness_metrics_generated/);
+assert.match(fitnessJourneySource, /email_submitted/);
+assert.match(fitnessJourneySource, /id="fitness-email"/);
+assert.doesNotMatch(fitnessJourneySource, /Salvar progresso neste dispositivo|Save progress on this device|disabled>\s*\{content\.emailButton\}/);
+assert.match(fitnessFooterSource, /#fitness-email/);
+assert.doesNotMatch(fitnessFooterSource, /#fitness-save/);
 
 assert.equal(getBmiMetricStatus("normal").id, "good");
 assert.equal(getBmiMetricStatus("overweight").id, "attention");

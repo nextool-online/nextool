@@ -1,17 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 
 import { getLocaleProfile } from "../../data/localeProfiles";
 import { getFitnessContent } from "../../data/fitness";
-import { formatDecimal, formatNumber, formatUnit } from "../../utils/formatters";
+import { formatDecimal, formatNumber } from "../../utils/formatters";
 import {
   calculateBmi,
   getBmiCategory,
   getBmiMarkerPosition,
   getHealthyWeightRange,
-  kgToPounds,
   normalizeBmiInput,
   type BmiInput,
 } from "../../tools/health/bmi";
@@ -37,15 +36,6 @@ import type { LanguageCode } from "../../data/languages";
 type FitnessJourneyProps = {
   lang: LanguageCode;
 };
-
-type Snapshot = {
-  createdAt: string;
-  bmi: number;
-  weight: number;
-  unit: "kg" | "lb";
-};
-
-const storageKey = "nextool_fit_snapshots_v1";
 
 const categoryLabels = {
   en: {
@@ -194,8 +184,7 @@ function metricCard({
 
 export default function FitnessJourney({ lang }: FitnessJourneyProps) {
   const content = getFitnessContent(lang);
-  const profile = getLocaleProfile(lang);
-  const usesImperial = profile.measurementSystem === "imperial";
+  const usesImperial = getLocaleProfile(lang).measurementSystem === "imperial";
   const weightInputRef = useRef<HTMLInputElement>(null);
 
   const [weight, setWeight] = useState("");
@@ -209,19 +198,11 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
   const [knownCalories, setKnownCalories] = useState("");
   const [source, setSource] = useState("");
   const [email, setEmail] = useState("");
-  const [snapshots, setSnapshots] = useState<Snapshot[]>(() => {
-    if (typeof window === "undefined") {
-      return [];
-    }
-
-    try {
-      const raw = window.localStorage.getItem(storageKey);
-      return raw ? JSON.parse(raw) : [];
-    } catch {
-      return [];
-    }
-  });
-  const [saved, setSaved] = useState(false);
+  const [consent, setConsent] = useState(false);
+  const [honeypot, setHoneypot] = useState("");
+  const [emailStatus, setEmailStatus] = useState<"idle" | "sending" | "success" | "preview" | "error">("idle");
+  const [emailMessage, setEmailMessage] = useState("");
+  const resultTrackedRef = useRef(false);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -337,7 +318,7 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
     };
   }, [activity, age, goal, input, knownCalories, sex]);
 
-  const formatHealthyRange = () => {
+  const healthyRangeValue = useMemo(() => {
     if (!result) return "—";
 
     if (usesImperial) {
@@ -349,7 +330,7 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
     }
 
     return `${formatNumber(result.range.minKg, lang, { maximumFractionDigits: 0 })}–${formatNumber(result.range.maxKg, lang, { maximumFractionDigits: 0 })} kg`;
-  };
+  }, [lang, result, usesImperial]);
 
   const waterValue = result
     ? usesImperial
@@ -367,7 +348,9 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
     setAge("");
     setKnownCalories("");
     setSource("");
-    setSaved(false);
+    setEmailStatus("idle");
+    setEmailMessage("");
+    resultTrackedRef.current = false;
 
     window.requestAnimationFrame(() => {
       weightInputRef.current?.focus();
@@ -375,28 +358,81 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
     });
   };
 
-  const saveSnapshot = () => {
-    if (!result) return;
+  const trackFitnessEvent = (eventName: string, detail: Record<string, string | boolean | number> = {}) => {
+    if (typeof window === "undefined") return;
+    window.dispatchEvent(new CustomEvent("nextool:fitness", { detail: { event: eventName, ...detail } }));
 
-    const nextSnapshots = [
-      {
-        createdAt: new Date().toISOString(),
-        bmi: result.bmi,
-        weight: usesImperial ? kgToPounds(result.normalized.weightKg) : result.normalized.weightKg,
-        unit: usesImperial ? "lb" as const : "kg" as const,
-      },
-      ...snapshots,
-    ].slice(0, 8);
-
-    setSnapshots(nextSnapshots);
-    setSaved(true);
-    window.localStorage.setItem(storageKey, JSON.stringify(nextSnapshots));
+    const dataLayer = (window as typeof window & { dataLayer?: Record<string, unknown>[] }).dataLayer;
+    dataLayer?.push({ event: eventName, ...detail });
   };
 
-  const clearHistory = () => {
-    setSnapshots([]);
-    setSaved(false);
-    window.localStorage.removeItem(storageKey);
+  useEffect(() => {
+    if (!result || resultTrackedRef.current) return;
+    resultTrackedRef.current = true;
+    trackFitnessEvent("fitness_metrics_generated", { source: source || "direct_fitness", lang });
+  }, [lang, result, source]);
+
+  const metricsPayload = useMemo(() => {
+    if (!result) return null;
+
+    return {
+      bmi: formatDecimal(result.bmi, lang),
+      idealWeight: healthyRangeValue,
+      water: waterValue,
+      calories: `${formatNumber(result.goalCalories, lang, { maximumFractionDigits: 0 })} kcal`,
+      protein: `${formatNumber(result.protein.minGrams, lang, { maximumFractionDigits: 0 })}–${formatNumber(result.protein.maxGrams, lang, { maximumFractionDigits: 0 })} g`,
+      maintenance: `${formatNumber(result.maintenance, lang, { maximumFractionDigits: 0 })} kcal`,
+      bmr: `${formatNumber(result.bmr, lang, { maximumFractionDigits: 0 })} kcal`,
+    };
+  }, [healthyRangeValue, lang, result, waterValue]);
+
+  const submitEmail = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!metricsPayload || emailStatus === "sending") return;
+
+    setEmailStatus("sending");
+    setEmailMessage("");
+    trackFitnessEvent("email_submitted", { source: source || "direct_fitness", lang });
+
+    try {
+      const response = await fetch("/api/fitness/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          lang,
+          source: source || "direct_fitness",
+          consent,
+          honeypot,
+          profile: {
+            weight,
+            heightCm,
+            heightFt,
+            heightIn,
+            age,
+            sex,
+            activity,
+            goal,
+            calories: knownCalories,
+          },
+          metrics: metricsPayload,
+        }),
+      });
+      const data = await response.json();
+
+      if (!response.ok || !data.ok) {
+        throw new Error(data.error || "email_error");
+      }
+
+      const previewMode = data.mode === "preview";
+      setEmailStatus(previewMode ? "preview" : "success");
+      setEmailMessage(previewMode ? String(content.emailPreviewSuccess) : String(content.emailSuccess));
+      trackFitnessEvent(previewMode ? "email_preview_success" : "email_sent_success", { source: source || "direct_fitness", lang });
+    } catch {
+      setEmailStatus("error");
+      setEmailMessage(String(content.emailError));
+      trackFitnessEvent("email_sent_error", { source: source || "direct_fitness", lang });
+    }
   };
 
   return (
@@ -523,7 +559,7 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
               <div className="grid gap-4 md:grid-cols-2">
                 {metricCard({
                   label: content.healthyRange,
-                  value: formatHealthyRange(),
+                  value: healthyRangeValue,
                   helper: content.metricHelpers.healthyRange,
                   status: result.statuses.healthyRange.id,
                   statusLabel: content.statusLabels[result.statuses.healthyRange.id],
@@ -571,43 +607,27 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
                 })}
               </div>
 
-              <div id="fitness-save" className="rounded-3xl border border-emerald-100 bg-emerald-50 p-5">
-                <p className="font-black text-zinc-950">{content.saveTitle}</p>
-                <p className="mt-2 text-sm leading-6 text-zinc-600">{content.saveDescription}</p>
-                <button type="button" onClick={saveSnapshot} className="mt-4 rounded-full bg-zinc-950 px-5 py-3 text-sm font-black text-white transition hover:bg-zinc-800">
-                  {saved ? content.saved : content.saveButton}
-                </button>
-              </div>
-
-              {snapshots.length > 0 && (
-                <div className="rounded-3xl border border-zinc-200 bg-white p-5">
-                  <div className="flex items-center justify-between gap-4">
-                    <p className="font-black text-zinc-950">{content.historyTitle}</p>
-                    <button type="button" onClick={clearHistory} className="text-xs font-bold text-zinc-500 hover:text-zinc-950">
-                      {content.clearHistory}
-                    </button>
-                  </div>
-                  <div className="mt-4 space-y-2">
-                    {snapshots.map((snapshot) => (
-                      <div key={`${snapshot.createdAt}-${snapshot.bmi}`} className="flex items-center justify-between rounded-2xl bg-zinc-50 px-4 py-3 text-sm">
-                        <span className="font-semibold text-zinc-600">{new Date(snapshot.createdAt).toLocaleDateString(profile.locale)}</span>
-                        <span className="font-black">BMI {formatDecimal(snapshot.bmi, lang)} · {formatUnit(snapshot.weight, snapshot.unit, lang)}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              <div className="rounded-3xl border border-zinc-200 bg-zinc-50 p-5">
-                <p className="font-black text-zinc-950">{content.emailTitle}</p>
+              <form id="fitness-email" onSubmit={submitEmail} className="rounded-3xl border border-emerald-200 bg-gradient-to-br from-emerald-50 to-white p-5 shadow-lg shadow-emerald-900/10">
+                <p className="text-xs font-black uppercase tracking-[0.22em] text-emerald-700">{lang === "pt" ? "Próximo passo" : "Next step"}</p>
+                <p className="mt-2 text-2xl font-black tracking-tight text-zinc-950">{content.emailTitle}</p>
                 <p className="mt-2 text-sm leading-6 text-zinc-600">{content.emailDescription}</p>
+                <input className="hidden" tabIndex={-1} autoComplete="off" value={honeypot} onChange={(event) => setHoneypot(event.target.value)} aria-hidden="true" />
                 <div className="mt-4 flex flex-col gap-3 sm:flex-row">
-                  <input className="min-w-0 flex-1 rounded-full border border-zinc-200 px-5 py-3 text-sm outline-none focus:border-emerald-500" type="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder={content.emailPlaceholder} />
-                  <button type="button" className="rounded-full bg-emerald-400 px-5 py-3 text-sm font-black text-zinc-950 opacity-70" disabled>
-                    {content.emailButton}
+                  <input className="min-w-0 flex-1 rounded-full border border-emerald-200 bg-white px-5 py-3 text-base font-semibold outline-none focus:border-emerald-500" type="email" value={email} onFocus={() => trackFitnessEvent("email_field_focused", { source: source || "direct_fitness", lang })} onChange={(event) => setEmail(event.target.value)} placeholder={content.emailPlaceholder} required />
+                  <button type="submit" className="rounded-full bg-emerald-400 px-5 py-3 text-sm font-black text-zinc-950 transition hover:bg-emerald-300 disabled:cursor-not-allowed disabled:opacity-60" disabled={emailStatus === "sending"}>
+                    {emailStatus === "sending" ? (lang === "pt" ? "Enviando..." : "Sending...") : content.emailButton}
                   </button>
                 </div>
-              </div>
+                <label className="mt-4 flex items-start gap-3 text-xs font-semibold leading-5 text-zinc-600">
+                  <input type="checkbox" className="mt-1 h-4 w-4 rounded border-emerald-300 text-emerald-500" checked={consent} onChange={(event) => setConsent(event.target.checked)} required />
+                  <span>{content.emailConsent}</span>
+                </label>
+                {emailMessage && (
+                  <p className={`mt-4 rounded-2xl px-4 py-3 text-sm font-bold leading-6 ${emailStatus === "error" ? "bg-rose-50 text-rose-700" : "bg-white text-emerald-700"}`}>
+                    {emailMessage}
+                  </p>
+                )}
+              </form>
 
               <p className="text-xs leading-5 text-zinc-500">{content.disclaimer}</p>
             </div>
