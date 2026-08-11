@@ -44,6 +44,14 @@ export type EventCount = CountItem & {
   event: string;
 };
 
+export type CalculatorCount = {
+  calculator: string;
+  events: number;
+  views: number;
+  resultShown: number;
+  ctaClicks: number;
+};
+
 export type FitnessLeadMetrics = {
   totalSubmissions: number;
   uniqueEmails: number;
@@ -66,10 +74,15 @@ export type FitnessEventMetrics = {
   byLang: LangCount[];
   byDay: DayCount[];
   funnel: EventCount[];
+  calculatorFunnel: EventCount[];
+  byCalculator: CalculatorCount[];
   latestCreatedAt: string | null;
 };
 
 const allowedEvents = new Set([
+  "calculator_view",
+  "calculator_result_shown",
+  "calculator_cta_click",
   "fitness_page_view",
   "fitness_profile_started",
   "fitness_metrics_generated",
@@ -94,7 +107,21 @@ const allowedSources = new Set([
   "production_validation",
   "production_email_explanation_validation",
   "email_explanation_validation",
+  "bmi-calculator",
+  "bmr-calculator",
+  "calorie-calculator",
+  "water-intake-calculator",
+  "protein-calculator",
+  "ideal-weight-calculator",
+  "body-fat-calculator",
+  "macro-calculator",
 ]);
+
+const calculatorFunnelOrder = [
+  "calculator_view",
+  "calculator_result_shown",
+  "calculator_cta_click",
+];
 
 const funnelOrder = [
   "fitness_page_view",
@@ -124,6 +151,24 @@ function isRecent(createdAt: string, now: Date, days: number) {
   if (!Number.isFinite(createdDate.valueOf())) return false;
   const ageMs = now.valueOf() - createdDate.valueOf();
   return ageMs >= 0 && ageMs <= days * 24 * 60 * 60 * 1000;
+}
+
+export function filterRecordsByDateRange<T extends { created_at?: string | null }>(
+  records: T[],
+  fromDate?: string | null,
+  toDate?: string | null
+) {
+  const from = fromDate ? new Date(`${fromDate}T00:00:00.000Z`) : null;
+  const to = toDate ? new Date(`${toDate}T23:59:59.999Z`) : null;
+
+  return records.filter((record) => {
+    if (!record.created_at) return false;
+    const createdAt = new Date(record.created_at);
+    if (!Number.isFinite(createdAt.valueOf())) return false;
+    if (from && createdAt < from) return false;
+    if (to && createdAt > to) return false;
+    return true;
+  });
 }
 
 export function validateDashboardToken(token: string | null | undefined, expected: string | null | undefined) {
@@ -220,6 +265,7 @@ export function aggregateFitnessEventMetrics(
   const sourceMap = new Map<string, number>();
   const langMap = new Map<string, number>();
   const dayMap = new Map<string, number>();
+  const calculatorMap = new Map<string, CalculatorCount>();
   const visitorSet = new Set<string>();
   let last24hEvents = 0;
   let last7dEvents = 0;
@@ -235,6 +281,20 @@ export function aggregateFitnessEventMetrics(
     increment(eventMap, eventName);
     increment(sourceMap, source);
     increment(langMap, lang);
+    if (eventName.startsWith("calculator_")) {
+      const current = calculatorMap.get(source) || {
+        calculator: source,
+        events: 0,
+        views: 0,
+        resultShown: 0,
+        ctaClicks: 0,
+      };
+      current.events += 1;
+      if (eventName === "calculator_view") current.views += 1;
+      if (eventName === "calculator_result_shown") current.resultShown += 1;
+      if (eventName === "calculator_cta_click") current.ctaClicks += 1;
+      calculatorMap.set(source, current);
+    }
     if (visitorId) visitorSet.add(visitorId);
 
     if (createdAt) {
@@ -259,5 +319,7 @@ export function aggregateFitnessEventMetrics(
     byLang: sortCounts(Array.from(langMap, ([lang, count]) => ({ lang, count }))),
     byDay: Array.from(dayMap, ([day, count]) => ({ day, count })).sort((a, b) => b.day.localeCompare(a.day)),
     funnel: funnelOrder.map((event) => ({ event, count: eventMap.get(event) || 0 })),
+    calculatorFunnel: calculatorFunnelOrder.map((event) => ({ event, count: eventMap.get(event) || 0 })),
+    byCalculator: Array.from(calculatorMap.values()).sort((a, b) => b.events - a.events),
   };
 }

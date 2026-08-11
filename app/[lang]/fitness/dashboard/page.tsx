@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import {
   aggregateFitnessEventMetrics,
   aggregateFitnessLeadMetrics,
+  filterRecordsByDateRange,
   validateDashboardToken,
   type FitnessEventMetricRecord,
   type FitnessLeadMetricRecord,
@@ -14,7 +15,7 @@ export const runtime = "nodejs";
 
 type DashboardPageProps = {
   params: Promise<{ lang: LanguageCode }>;
-  searchParams: Promise<{ token?: string }>;
+  searchParams: Promise<{ token?: string; from?: string; to?: string }>;
 };
 
 const copy = {
@@ -35,8 +36,14 @@ const copy = {
     lang: "Idioma",
     timeline: "Leads por dia",
     eventTimeline: "Eventos por dia",
-    funnel: "Funil de eventos",
+    funnel: "Funil /fitness",
+    calculatorFunnel: "Funil das calculadoras",
+    byCalculator: "Por calculadora",
     latest: "Último lead",
+    rangeTitle: "Período analisado",
+    fromDate: "De",
+    toDate: "Até",
+    applyRange: "Aplicar período",
   },
   en: {
     title: "NexTool Fit Dashboard",
@@ -55,8 +62,14 @@ const copy = {
     lang: "Language",
     timeline: "Leads by day",
     eventTimeline: "Events by day",
-    funnel: "Event funnel",
+    funnel: "Fitness funnel",
+    calculatorFunnel: "Calculator funnel",
+    byCalculator: "By calculator",
     latest: "Latest lead",
+    rangeTitle: "Date range",
+    fromDate: "From",
+    toDate: "To",
+    applyRange: "Apply range",
   },
 };
 
@@ -120,8 +133,42 @@ function CountList({ title, items, labelKey }: { title: string; items: Array<{ c
   );
 }
 
+function CalculatorList({ title, items }: { title: string; items: Array<{ calculator: string; events: number; views: number; resultShown: number; ctaClicks: number }> }) {
+  return (
+    <section className="rounded-3xl border border-zinc-800 bg-zinc-900 p-5 md:col-span-3">
+      <h2 className="text-xl font-black text-white">{title}</h2>
+      <div className="mt-4 overflow-x-auto">
+        <table className="w-full min-w-[680px] border-separate border-spacing-y-2 text-left text-sm">
+          <thead className="text-xs uppercase tracking-wide text-zinc-500">
+            <tr>
+              <th className="px-4 py-2">Calculadora</th>
+              <th className="px-4 py-2">Views</th>
+              <th className="px-4 py-2">Resultados</th>
+              <th className="px-4 py-2">Cliques CTA</th>
+              <th className="px-4 py-2">Eventos</th>
+            </tr>
+          </thead>
+          <tbody>
+            {items.length === 0 ? (
+              <tr><td className="rounded-2xl bg-zinc-950 px-4 py-3 text-zinc-400" colSpan={5}>0</td></tr>
+            ) : items.map((item) => (
+              <tr key={item.calculator} className="bg-zinc-950 text-zinc-200">
+                <td className="rounded-l-2xl px-4 py-3 font-bold">{item.calculator}</td>
+                <td className="px-4 py-3 font-black text-white">{item.views}</td>
+                <td className="px-4 py-3 font-black text-white">{item.resultShown}</td>
+                <td className="px-4 py-3 font-black text-white">{item.ctaClicks}</td>
+                <td className="rounded-r-2xl px-4 py-3 font-black text-white">{item.events}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  );
+}
+
 export default async function FitnessDashboardPage({ params, searchParams }: DashboardPageProps) {
-  const [{ lang }, { token }] = await Promise.all([params, searchParams]);
+  const [{ lang }, { token, from: fromDate, to: toDate }] = await Promise.all([params, searchParams]);
   const labels = copy[lang] || copy.en;
 
   if (!validateDashboardToken(token, process.env.FITNESS_DASHBOARD_TOKEN)) {
@@ -141,8 +188,8 @@ export default async function FitnessDashboardPage({ params, searchParams }: Das
   }
 
   const [leadRecords, eventRecords] = await Promise.all([fetchLeadRecords(), fetchEventRecords()]);
-  const metrics = aggregateFitnessLeadMetrics(leadRecords);
-  const eventMetrics = aggregateFitnessEventMetrics(eventRecords);
+  const metrics = aggregateFitnessLeadMetrics(filterRecordsByDateRange(leadRecords, fromDate, toDate));
+  const eventMetrics = aggregateFitnessEventMetrics(filterRecordsByDateRange(eventRecords, fromDate, toDate));
 
   return (
     <main className="min-h-screen bg-zinc-950 px-4 py-10 text-white">
@@ -150,6 +197,21 @@ export default async function FitnessDashboardPage({ params, searchParams }: Das
         <p className="text-sm font-bold uppercase tracking-[0.2em] text-emerald-300">NexTool Fit</p>
         <h1 className="mt-4 text-4xl font-black md:text-6xl">{labels.title}</h1>
         <p className="mt-4 max-w-3xl text-lg text-zinc-300">{labels.subtitle}</p>
+
+        <form className="mt-6 grid gap-3 rounded-3xl border border-zinc-800 bg-zinc-900 p-5 md:grid-cols-[1fr_1fr_auto]" action={`/${lang}/fitness/dashboard`}>
+          <input type="hidden" name="token" value={token} />
+          <label className="text-sm font-bold text-zinc-300">
+            {labels.fromDate}
+            <input className="mt-2 w-full rounded-2xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-white outline-none focus:border-emerald-400" type="date" name="from" defaultValue={fromDate || ""} />
+          </label>
+          <label className="text-sm font-bold text-zinc-300">
+            {labels.toDate}
+            <input className="mt-2 w-full rounded-2xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-white outline-none focus:border-emerald-400" type="date" name="to" defaultValue={toDate || ""} />
+          </label>
+          <button className="self-end rounded-2xl bg-emerald-400 px-5 py-3 text-sm font-black text-zinc-950 transition hover:bg-emerald-300" type="submit">
+            {labels.applyRange}
+          </button>
+        </form>
 
         <div className="mt-8 grid gap-4 md:grid-cols-4">
           <StatCard label={labels.unique} value={metrics.uniqueEmails} />
@@ -164,7 +226,9 @@ export default async function FitnessDashboardPage({ params, searchParams }: Das
 
         <div className="mt-6 grid gap-4 md:grid-cols-3">
           <CountList title={labels.funnel} items={eventMetrics.funnel} labelKey="event" />
+          <CountList title={labels.calculatorFunnel} items={eventMetrics.calculatorFunnel} labelKey="event" />
           <CountList title={labels.source} items={metrics.bySource} labelKey="source" />
+          <CalculatorList title={labels.byCalculator} items={eventMetrics.byCalculator} />
           <CountList title={labels.eventSource} items={eventMetrics.bySource} labelKey="source" />
           <CountList title={labels.lang} items={metrics.byLang} labelKey="lang" />
           <CountList title={labels.timeline} items={metrics.byDay.slice(0, 14)} labelKey="day" />

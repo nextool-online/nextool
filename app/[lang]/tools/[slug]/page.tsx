@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Breadcrumbs from "../../../../components/ui/Breadcrumbs";
 import ToolCard from "../../../../components/ui/ToolCard";
 import ToolPageLayout from "../../../../components/layout/ToolPageLayout";
+import FitnessToolAnalytics from "../../../../components/fitness/FitnessToolAnalytics";
 
 import { categories } from "../../../../data/categories";
 import { dictionary } from "../../../../data/dictionary";
@@ -259,6 +260,8 @@ export default async function ToolPage({ params }: ToolPageProps) {
       )}
 
       {!isFitnessLandingTool && <Breadcrumbs items={breadcrumbs} />}
+
+      {isFitnessLandingTool && <FitnessToolAnalytics lang={lang} toolId={tool.id} />}
 
       <Calculator
         lang={lang}

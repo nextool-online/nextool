@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import {
   aggregateFitnessEventMetrics,
   aggregateFitnessLeadMetrics,
+  filterRecordsByDateRange,
   validateDashboardToken,
   type FitnessEventMetricRecord,
   type FitnessLeadMetricRecord,
@@ -51,6 +52,8 @@ async function fetchEventMetricRecords(): Promise<FitnessEventMetricRecord[]> {
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const token = url.searchParams.get("token");
+  const fromDate = url.searchParams.get("from");
+  const toDate = url.searchParams.get("to");
 
   if (!validateDashboardToken(token, process.env.FITNESS_DASHBOARD_TOKEN)) {
     return NextResponse.json({ ok: false, error: "Unauthorized" }, { status: 401 });
@@ -64,8 +67,9 @@ export async function GET(request: Request) {
 
     return NextResponse.json({
       ok: true,
-      metrics: aggregateFitnessLeadMetrics(leadRecords),
-      eventMetrics: aggregateFitnessEventMetrics(eventRecords),
+      range: { from: fromDate, to: toDate },
+      metrics: aggregateFitnessLeadMetrics(filterRecordsByDateRange(leadRecords, fromDate, toDate)),
+      eventMetrics: aggregateFitnessEventMetrics(filterRecordsByDateRange(eventRecords, fromDate, toDate)),
     });
   } catch (error) {
     return NextResponse.json({
