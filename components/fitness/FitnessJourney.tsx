@@ -203,6 +203,8 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
   const [emailStatus, setEmailStatus] = useState<"idle" | "sending" | "success" | "preview" | "error">("idle");
   const [emailMessage, setEmailMessage] = useState("");
   const resultTrackedRef = useRef(false);
+  const pageTrackedRef = useRef(false);
+  const visitorIdRef = useRef("");
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -341,6 +343,7 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
   const sourceMessage = source ? sourceMessages[source] || sourceMessages.default : "";
 
   const startWithOwnData = () => {
+    trackFitnessEvent("fitness_profile_started", { source: source || "direct_fitness", lang });
     setWeight("");
     setHeightCm("");
     setHeightFt("");
@@ -358,18 +361,64 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
     });
   };
 
+  const getVisitorId = () => {
+    if (typeof window === "undefined") return "";
+    if (visitorIdRef.current) return visitorIdRef.current;
+
+    const storageKey = "nextool_fitness_visitor_id";
+    const existing = window.localStorage.getItem(storageKey);
+    if (existing) {
+      visitorIdRef.current = existing;
+      return existing;
+    }
+
+    const generated = window.crypto?.randomUUID?.() || `visitor-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+    window.localStorage.setItem(storageKey, generated);
+    visitorIdRef.current = generated;
+    return generated;
+  };
+
   const trackFitnessEvent = (eventName: string, detail: Record<string, string | boolean | number> = {}) => {
     if (typeof window === "undefined") return;
-    window.dispatchEvent(new CustomEvent("nextool:fitness", { detail: { event: eventName, ...detail } }));
+    const eventDetail = { event: eventName, ...detail };
+    window.dispatchEvent(new CustomEvent("nextool:fitness", { detail: eventDetail }));
 
     const dataLayer = (window as typeof window & { dataLayer?: Record<string, unknown>[] }).dataLayer;
     dataLayer?.push({ event: eventName, ...detail });
+
+    const visitorId = getVisitorId();
+    if (!visitorId) return;
+
+    void fetch("/api/fitness/event", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      keepalive: true,
+      body: JSON.stringify({
+        event: eventName,
+        visitorId,
+        lang,
+        source: String(detail.source || source || "direct_fitness"),
+        path: window.location.pathname,
+      }),
+    }).catch(() => undefined);
   };
+
+  useEffect(() => {
+    const timeout = window.setTimeout(() => {
+      if (pageTrackedRef.current) return;
+      pageTrackedRef.current = true;
+      trackFitnessEvent("fitness_page_view", { source: source || "direct_fitness", lang });
+    }, 300);
+
+    return () => window.clearTimeout(timeout);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lang, source]);
 
   useEffect(() => {
     if (!result || resultTrackedRef.current) return;
     resultTrackedRef.current = true;
     trackFitnessEvent("fitness_metrics_generated", { source: source || "direct_fitness", lang });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lang, result, source]);
 
   const metricsPayload = useMemo(() => {
