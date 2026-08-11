@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import fs from "node:fs";
 import { calculateBmi, getBmiCategory } from "../tools/health/bmi.ts";
 import { fitnessContent } from "../data/fitness.ts";
 import {
@@ -62,7 +63,26 @@ assert.equal(fitnessContent.pt.statusLabels["out-of-range"], "Fora da faixa esti
 assert.equal(fitnessContent.en.goalCalories, "Calories");
 assert.equal(fitnessContent.en.water, "Water");
 assert.equal(fitnessContent.en.protein, "Protein");
+assert.equal(fitnessContent.pt.emailTitle, "Receba suas métricas por email");
+assert.match(fitnessContent.pt.emailDescription, /Acompanhe sua evolução semanalmente/);
+assert.doesNotMatch(JSON.stringify(fitnessContent.pt), /snapshot/i);
+assert.equal(fitnessContent.pt.emailButton, "Receber minhas métricas");
 assert.equal(fitnessContent.en.statusLabels.neutral, "Daily target");
+
+const fitnessJourneySource = fs.readFileSync(new URL("../components/fitness/FitnessJourney.tsx", import.meta.url), "utf8");
+const waterSource = fs.readFileSync(new URL("../tools/water-intake-calculator/component.tsx", import.meta.url), "utf8");
+const fitnessLayoutSource = fs.readFileSync(new URL("../components/layout/ToolPageLayout.tsx", import.meta.url), "utf8");
+const fitnessFooterSource = fs.readFileSync(new URL("../components/fitness/FitnessFooter.tsx", import.meta.url), "utf8");
+
+assert.match(fitnessJourneySource, /calculadora-de-tmb/);
+assert.doesNotMatch(fitnessJourneySource, /calculadora-tmb/);
+assert.match(fitnessJourneySource, /calculadora-calorias/);
+assert.doesNotMatch(fitnessJourneySource, /calculadora-de-calorias/);
+assert.doesNotMatch(fitnessJourneySource, /body-fat-calculator/);
+assert.doesNotMatch(fitnessJourneySource, /calculadora-percentual-gordura/);
+assert.doesNotMatch(waterSource, /body-fat-calculator|calculadora-percentual-gordura/);
+assert.doesNotMatch(fitnessLayoutSource, /w-fit rounded-full border border-white\/10 bg-white\/5 p-1/);
+assert.doesNotMatch(fitnessFooterSource, /English|Português|lang === "pt" \? "en" : "pt"/);
 
 assert.equal(getBmiMetricStatus("normal").id, "good");
 assert.equal(getBmiMetricStatus("overweight").id, "attention");

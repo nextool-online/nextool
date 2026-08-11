@@ -48,7 +48,7 @@ const copy = {
       { href: "/en/tools/bmi-calculator", label: "BMI Calculator" },
       { href: "/en/tools/bmr-calculator", label: "Basal Metabolic Rate Calculator" },
       { href: "/en/tools/calorie-calculator", label: "Daily Calorie Calculator" },
-      { href: "/en/tools/body-fat-calculator", label: "Body Fat Calculator" },
+      { href: "/en/tools/macro-calculator", label: "Macro Calculator" },
     ],
   },
   pt: {
@@ -77,7 +77,7 @@ const copy = {
       { href: "/pt/tools/calculadora-imc", label: "Calculadora IMC" },
       { href: "/pt/tools/calculadora-de-tmb", label: "Taxa de Metabolismo Basal" },
       { href: "/pt/tools/calculadora-calorias", label: "Calculadora de Calorias Diárias" },
-      { href: "/pt/tools/calculadora-percentual-gordura", label: "Calculadora de Gordura Corporal" },
+      { href: "/pt/tools/calculadora-de-macros", label: "Calculadora de Macros" },
     ],
   },
 };

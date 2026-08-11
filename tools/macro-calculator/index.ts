@@ -20,7 +20,7 @@ export const macroCalculatorTool: ToolDefinition = {
   difficulty: "basic",
   availableLanguages: ["en", "pt"],
   tags: ["macros", "protein", "carbs", "fat", "nutrition", "fitness", "calculator"],
-  relatedTools: ["calorie-calculator", "protein-calculator", "body-fat-calculator", "water-intake-calculator"],
+  relatedTools: ["calorie-calculator", "protein-calculator", "water-intake-calculator", "ideal-weight-calculator"],
   ...macroCalculatorContent,
   component: MacroCalculatorTool,
 };

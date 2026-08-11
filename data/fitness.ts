@@ -16,6 +16,11 @@ export const fitnessContent = {
     footerJourney: "Journey",
     footerRights: "All rights reserved.",
     formTitle: "Your starting point",
+    sourceMessages: {
+      macros: "We brought your calories, weight and goal from the Macro Calculator. Complete the missing fields to turn them into your full fitness metrics.",
+      calories: "We brought your calorie context. Complete the remaining fields to see the full profile.",
+      default: "We brought the numbers you already entered. Complete only what is missing.",
+    },
     weight: "Weight (lb)",
     height: "Height (cm)",
     heightFt: "Height (ft)",
@@ -75,11 +80,11 @@ export const fitnessContent = {
     saved: "Snapshot saved",
     historyTitle: "Local progress history",
     clearHistory: "Clear history",
-    emailTitle: "Soon: weekly progress by email",
+    emailTitle: "Receive your metrics by email",
     emailDescription:
-      "After we validate the experience, this is where users will receive a beautiful report and opt in to progress tracking.",
+      "Get your fitness snapshot in your inbox and keep tracking weekly progress by email.",
     emailPlaceholder: "your@email.com",
-    emailButton: "Join the waitlist",
+    emailButton: "Send my metrics",
     disclaimer:
       "These numbers are general estimates for adults and do not replace medical or nutrition advice.",
     relatedTitle: "Continue with focused calculators",
@@ -110,6 +115,11 @@ export const fitnessContent = {
     footerJourney: "Jornada",
     footerRights: "Todos os direitos reservados.",
     formTitle: "Seu ponto de partida",
+    sourceMessages: {
+      macros: "Trouxemos suas calorias, peso e objetivo da Calculadora de Macros. Complete os dados que faltam para transformar isso nas suas métricas fitness.",
+      calories: "Trouxemos seu contexto de calorias. Complete os dados restantes para ver o perfil completo.",
+      default: "Trouxemos os números que você já digitou. Complete só o que está faltando.",
+    },
     weight: "Peso (kg)",
     height: "Altura (cm)",
     heightFt: "Altura (ft)",
@@ -169,11 +179,11 @@ export const fitnessContent = {
     saved: "Perfil salvo",
     historyTitle: "Histórico local de evolução",
     clearHistory: "Limpar histórico",
-    emailTitle: "Em breve: evolução semanal por email",
+    emailTitle: "Receba suas métricas por email",
     emailDescription:
-      "Depois de validarmos a experiência, este será o ponto para receber um relatório bonito e acompanhar sua evolução.",
+      "Acompanhe sua evolução semanalmente por email com suas métricas de IMC, calorias, proteína, água e macros em um relatório simples.",
     emailPlaceholder: "seu@email.com",
-    emailButton: "Entrar na lista",
+    emailButton: "Receber minhas métricas",
     disclaimer:
       "Esses números são estimativas gerais para adultos e não substituem orientação médica ou nutricional.",
     relatedTitle: "Continue com calculadoras focadas",

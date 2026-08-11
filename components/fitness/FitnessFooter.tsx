@@ -49,9 +49,6 @@ export default function FitnessFooter({ lang }: FitnessFooterProps) {
             <div className="mt-3 grid gap-2 text-zinc-400">
               <Link href={`/${lang}`} className="hover:text-white">{getText(dictionary.homeLabel, lang)}</Link>
               <Link href={`/${lang}/tools`} className="hover:text-white">{getText(dictionary.toolsLabel, lang)}</Link>
-              <Link href={`/${lang === "pt" ? "en" : "pt"}/fitness`} className="hover:text-white">
-                {lang === "pt" ? "English" : "Português"}
-              </Link>
             </div>
           </div>
         </div>

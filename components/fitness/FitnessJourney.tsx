@@ -206,6 +206,8 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
   const [sex, setSex] = useState<Sex>("male");
   const [activity, setActivity] = useState<ActivityLevel>("moderate");
   const [goal, setGoal] = useState<FitnessGoal>("lose");
+  const [knownCalories, setKnownCalories] = useState("");
+  const [source, setSource] = useState("");
   const [email, setEmail] = useState("");
   const [snapshots, setSnapshots] = useState<Snapshot[]>(() => {
     if (typeof window === "undefined") {
@@ -232,6 +234,8 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
     const queryAge = params.get("age");
     const querySex = params.get("sex");
     const queryGoal = params.get("goal");
+    const queryCalories = params.get("calories");
+    const querySource = params.get("from");
 
     window.requestAnimationFrame(() => {
       if (queryWeight) setWeight(queryWeight);
@@ -239,6 +243,8 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
       if (queryHeightFt) setHeightFt(queryHeightFt);
       if (queryHeightIn) setHeightIn(queryHeightIn);
       if (queryAge) setAge(queryAge);
+      if (queryCalories) setKnownCalories(queryCalories);
+      if (querySource) setSource(querySource);
       if (querySex === "male" || querySex === "female") setSex(querySex);
       if (queryGoal === "lose" || queryGoal === "maintain" || queryGoal === "gain") {
         setGoal(queryGoal);
@@ -289,6 +295,7 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
 
   const result = useMemo(() => {
     const ageValue = parseUserNumber(age);
+    const knownCalorieValue = parseUserNumber(knownCalories);
     if (!input || !ageValue) return null;
 
     const bmi = calculateBmi(input);
@@ -296,7 +303,9 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
     const range = getHealthyWeightRange(input);
     const bmr = calculateBmr({ input, age: ageValue, sex });
     const maintenance = calculateMaintenanceCalories(bmr, activity);
-    const goalCalories = calculateGoalCalories(maintenance, goal);
+    const goalCalories = Number.isFinite(knownCalorieValue) && knownCalorieValue > 0
+      ? knownCalorieValue
+      : calculateGoalCalories(maintenance, goal);
     const waterLiters = calculateWaterIntakeLiters(input, activity);
     const protein = calculateProteinRange(input, goal);
     const normalized = normalizeBmiInput(input);
@@ -326,7 +335,7 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
         bmr: getTargetMetricStatus(),
       },
     };
-  }, [activity, age, goal, input, sex]);
+  }, [activity, age, goal, input, knownCalories, sex]);
 
   const formatHealthyRange = () => {
     if (!result) return "—";
@@ -347,6 +356,8 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
       ? `${formatNumber(litersToFluidOunces(result.waterLiters), lang, { maximumFractionDigits: 0 })} oz`
       : `${formatDecimal(result.waterLiters, lang)} L`
     : "—";
+  const sourceMessages = content.sourceMessages as Record<string, string>;
+  const sourceMessage = source ? sourceMessages[source] || sourceMessages.default : "";
 
   const startWithOwnData = () => {
     setWeight("");
@@ -354,6 +365,8 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
     setHeightFt("");
     setHeightIn("");
     setAge("");
+    setKnownCalories("");
+    setSource("");
     setSaved(false);
 
     window.requestAnimationFrame(() => {
@@ -413,6 +426,11 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
           <p className="text-sm font-black uppercase tracking-wide text-emerald-600">
             {content.formTitle}
           </p>
+          {sourceMessage && (
+            <div className="mt-4 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-bold leading-6 text-emerald-800">
+              {sourceMessage}
+            </div>
+          )}
 
           <div className="mt-5 grid gap-3 md:grid-cols-2">
             <label className="space-y-1">
@@ -606,8 +624,8 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
           <div className="mt-7 grid gap-4 md:grid-cols-3 xl:grid-cols-7">
             {[
               ["01", content.bmi, content.relatedSteps.bmi, `/${lang}/tools/${lang === "pt" ? "calculadora-imc" : "bmi-calculator"}`],
-              ["02", content.bmr, content.relatedSteps.bmr, `/${lang}/tools/${lang === "pt" ? "calculadora-tmb" : "bmr-calculator"}`],
-              ["03", content.goalCalories, content.relatedSteps.calories, `/${lang}/tools/${lang === "pt" ? "calculadora-de-calorias" : "calorie-calculator"}`],
+              ["02", content.bmr, content.relatedSteps.bmr, `/${lang}/tools/${lang === "pt" ? "calculadora-de-tmb" : "bmr-calculator"}`],
+              ["03", content.goalCalories, content.relatedSteps.calories, `/${lang}/tools/${lang === "pt" ? "calculadora-calorias" : "calorie-calculator"}`],
               ["04", content.water, content.relatedSteps.water, `/${lang}/tools/${lang === "pt" ? "calculadora-de-ingestao-de-agua" : "water-intake-calculator"}`],
               ["05", content.protein, content.relatedSteps.protein, `/${lang}/tools/${lang === "pt" ? "calculadora-de-proteina" : "protein-calculator"}`],
               ["06", content.healthyRange, content.relatedSteps.idealWeight, `/${lang}/tools/${lang === "pt" ? "calculadora-peso-ideal" : "ideal-weight-calculator"}`],

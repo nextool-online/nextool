@@ -102,7 +102,7 @@ export default function MacroCalculatorTool({ lang, ui }: ToolComponentProps) {
                 <p className="text-xs font-black uppercase tracking-[0.24em] text-emerald-300">{getText(toolUi.ctaEyebrow, lang)}</p>
                 <h3 className="mt-2 text-2xl font-black tracking-tight md:text-3xl">{getText(toolUi.ctaTitle, lang)}</h3>
                 <div className="mt-5 grid gap-3 sm:grid-cols-4">
-                  {[["📏", getText(toolUi.bmi, lang)], ["🧬", getText(toolUi.bodyFat, lang)], ["💧", getText(toolUi.water, lang)], ["⚖️", getText(toolUi.idealWeight, lang)]].map(([icon, item]) => (
+                  {[["📏", getText(toolUi.bmi, lang)], ["🥩", getText(toolUi.protein, lang)], ["💧", getText(toolUi.water, lang)], ["⚖️", getText(toolUi.idealWeight, lang)]].map(([icon, item]) => (
                     <div key={item} className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-white/10 bg-white/10 p-4 text-center shadow-lg shadow-black/10">
                       <span className="text-3xl leading-none" aria-hidden="true">{icon}</span>
                       <span className="text-base font-black leading-tight text-white md:text-lg">{item}</span>

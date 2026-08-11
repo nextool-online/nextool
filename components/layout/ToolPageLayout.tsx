@@ -44,12 +44,6 @@ export default function ToolPageLayout({
                 {description}
               </p>
             </div>
-
-            {languageUrls && (
-              <div className="w-fit rounded-full border border-white/10 bg-white/5 p-1">
-                <LanguageSwitcher currentLang={lang} urls={languageUrls} />
-              </div>
-            )}
           </div>
 
           {children}
