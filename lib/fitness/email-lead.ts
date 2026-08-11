@@ -116,26 +116,74 @@ function escapeHtml(value: string) {
     .replace(/"/g, "&quot;");
 }
 
-const metricLabels: Record<FitnessLeadLang, Record<string, string>> = {
+const metricDetails: Record<FitnessLeadLang, Record<string, { label: string; explanation: string }>> = {
   pt: {
-    bmi: "IMC",
-    idealWeight: "Peso ideal",
-    water: "Água diária",
-    calories: "Calorias",
-    protein: "Proteína",
-    maintenance: "Manutenção",
-    bmr: "Metabolismo basal",
-    macros: "Macros",
+    bmi: {
+      label: "IMC",
+      explanation: "Seu índice de massa corporal. Ajuda a entender se seu peso está dentro de uma faixa estimada para sua altura.",
+    },
+    idealWeight: {
+      label: "Peso ideal",
+      explanation: "Faixa de peso estimada como referência saudável para sua altura, não uma meta obrigatória.",
+    },
+    water: {
+      label: "Água diária",
+      explanation: "Estimativa de água para um dia comum, considerando seu peso e nível de atividade.",
+    },
+    calories: {
+      label: "Calorias para seu objetivo",
+      explanation: "Sua meta estimada de calorias por dia para o objetivo escolhido: perder gordura, manter peso ou ganhar massa.",
+    },
+    protein: {
+      label: "Proteína diária",
+      explanation: "Faixa estimada de proteína por dia para apoiar saciedade, manutenção muscular e evolução fitness.",
+    },
+    maintenance: {
+      label: "Calorias de manutenção",
+      explanation: "Estimativa de quanto você consumiria por dia para manter o peso atual, sem foco em perder ou ganhar.",
+    },
+    bmr: {
+      label: "Metabolismo basal",
+      explanation: "Seu corpo gastaria em repouso aproximadamente esse valor por dia, antes de contar atividades e exercícios.",
+    },
+    macros: {
+      label: "Macros",
+      explanation: "Divisão estimada entre proteína, carboidratos e gorduras para organizar melhor sua alimentação.",
+    },
   },
   en: {
-    bmi: "BMI",
-    idealWeight: "Ideal weight",
-    water: "Daily water",
-    calories: "Calories",
-    protein: "Protein",
-    maintenance: "Maintenance",
-    bmr: "Basal metabolism",
-    macros: "Macros",
+    bmi: {
+      label: "BMI",
+      explanation: "Your body mass index. It helps estimate whether your weight is within a general range for your height.",
+    },
+    idealWeight: {
+      label: "Ideal weight",
+      explanation: "An estimated reference range for your height, not a mandatory target.",
+    },
+    water: {
+      label: "Daily water",
+      explanation: "Estimated water intake for a regular day, based on your weight and activity level.",
+    },
+    calories: {
+      label: "Calories for your goal",
+      explanation: "Your estimated daily calorie target for the goal you chose: lose fat, maintain weight, or gain muscle.",
+    },
+    protein: {
+      label: "Daily protein",
+      explanation: "Estimated protein range per day to support satiety, muscle maintenance, and fitness progress.",
+    },
+    maintenance: {
+      label: "Maintenance calories",
+      explanation: "Estimated daily intake to maintain your current weight, before adding a lose or gain goal.",
+    },
+    bmr: {
+      label: "Basal metabolism",
+      explanation: "Your body would burn approximately this amount at rest before activity and exercise.",
+    },
+    macros: {
+      label: "Macros",
+      explanation: "Estimated split between protein, carbs, and fats to organize your daily nutrition.",
+    },
   },
 };
 
@@ -144,22 +192,25 @@ export function buildFitnessEmailHtml(payload: FitnessLeadPayload) {
   const subject = isPt ? "Suas métricas fitness estão prontas" : "Your fitness metrics are ready";
   const title = isPt ? "Suas métricas fitness" : "Your fitness metrics";
   const intro = isPt
-    ? "Aqui estão os principais números que você acabou de gerar no NexTool Fit. Guarde este email para comparar sua evolução nas próximas semanas."
-    : "Here are the key numbers you just generated in NexTool Fit. Keep this email so you can compare your progress over the next weeks.";
+    ? "Você acabou de gerar um painel fitness no navegador. Abaixo estão os mesmos números, agora com uma explicação simples do que cada um significa."
+    : "You just generated a fitness panel in your browser. Below are the same numbers with a simple explanation of what each one means.";
+  const visualNote = isPt
+    ? "No seu navegador você viu isso como cards visuais. Aqui está a versão por email para você guardar e comparar depois."
+    : "In your browser you saw these as visual cards. Here is the email version to save and compare later.";
   const disclaimer = isPt
-    ? "Esses números são estimativas gerais para adultos e não substituem orientação médica ou nutricional."
-    : "These numbers are general estimates for adults and do not replace medical or nutrition advice.";
+    ? "Esses números são estimativas gerais para adultos. Eles ajudam a orientar sua rotina, mas não substituem orientação médica ou nutricional."
+    : "These numbers are general estimates for adults. They can guide your routine, but they do not replace medical or nutrition advice.";
   const cta = isPt ? "Atualizar minhas métricas" : "Update my metrics";
   const url = `https://www.nextool.online/${payload.lang}/fitness`;
-  const labels = metricLabels[payload.lang];
+  const details = metricDetails[payload.lang];
   const rows = Object.entries(payload.metrics)
     .map(([key, value]) => {
-      const label = labels[key] || key;
-      return `<tr><td style="padding:14px 0;color:#71717a;font-weight:700;">${escapeHtml(label)}</td><td style="padding:14px 0;text-align:right;color:#18181b;font-weight:900;">${escapeHtml(value)}</td></tr>`;
+      const detail = details[key] || { label: key, explanation: "" };
+      return `<div style="border:1px solid #3f3f46;border-radius:24px;background:#27272a;padding:18px 18px;margin:0 0 12px;"><table role="presentation" style="width:100%;border-collapse:collapse;"><tr><td style="vertical-align:top;padding:0 12px 0 0;"><p style="margin:0 0 6px;color:#ffffff;font-size:17px;font-weight:900;">${escapeHtml(detail.label)}</p><p style="margin:0;color:#d4d4d8;font-size:14px;line-height:1.55;">${escapeHtml(detail.explanation)}</p></td><td style="vertical-align:top;text-align:right;white-space:nowrap;padding:0;color:#ffffff;font-size:22px;font-weight:900;">${escapeHtml(value)}</td></tr></table></div>`;
     })
     .join("");
 
-  const html = `<!doctype html><html><body style="margin:0;background:#f4f4f5;font-family:Arial,sans-serif;color:#18181b;"><div style="max-width:640px;margin:0 auto;padding:28px 16px;"><div style="background:#ffffff;border-radius:28px;padding:28px;border:1px solid #e4e4e7;"><p style="margin:0 0 12px;color:#059669;font-weight:900;letter-spacing:.08em;text-transform:uppercase;">NexTool Fit</p><h1 style="margin:0;font-size:32px;line-height:1.1;">${escapeHtml(title)}</h1><p style="margin:16px 0 24px;color:#52525b;line-height:1.65;">${escapeHtml(intro)}</p><table style="width:100%;border-collapse:collapse;border-top:1px solid #e4e4e7;border-bottom:1px solid #e4e4e7;">${rows}</table><p style="margin:24px 0 0;"><a href="${url}" style="display:inline-block;background:#34d399;color:#18181b;text-decoration:none;border-radius:999px;padding:14px 20px;font-weight:900;">${escapeHtml(cta)}</a></p><p style="margin:24px 0 0;color:#71717a;font-size:12px;line-height:1.6;">${escapeHtml(disclaimer)}</p></div></div></body></html>`;
+  const html = `<!doctype html><html><body style="margin:0;background:#18181b;font-family:Arial,sans-serif;color:#ffffff;"><div style="max-width:640px;margin:0 auto;padding:24px 12px;"><div style="background:#202024;border-radius:28px;padding:28px 22px;border:1px solid #3f3f46;"><p style="margin:0 0 14px;color:#34d399;font-weight:900;letter-spacing:.12em;text-transform:uppercase;font-size:14px;">NexTool Fit</p><h1 style="margin:0;font-size:36px;line-height:1.06;color:#ffffff;">${escapeHtml(title)}</h1><p style="margin:18px 0 12px;color:#e4e4e7;line-height:1.7;font-size:17px;">${escapeHtml(intro)}</p><p style="margin:0 0 24px;color:#a1a1aa;line-height:1.65;font-size:14px;">${escapeHtml(visualNote)}</p>${rows}<p style="margin:24px 0 0;"><a href="${url}" style="display:inline-block;background:#16a34a;color:#ffffff;text-decoration:none;border-radius:999px;padding:15px 24px;font-weight:900;font-size:16px;">${escapeHtml(cta)}</a></p><p style="margin:24px 0 0;color:#a1a1aa;font-size:12px;line-height:1.6;">${escapeHtml(disclaimer)}</p></div></div></body></html>`;
 
   return { subject, html };
 }

@@ -64,6 +64,11 @@ const ptHtml = buildFitnessEmailHtml(sanitized);
 assert.match(ptHtml.subject, /métricas fitness/i);
 assert.match(ptHtml.html, /IMC/);
 assert.match(ptHtml.html, /2\.517 kcal/);
+assert.match(ptHtml.html, /Seu índice de massa corporal/);
+assert.match(ptHtml.html, /Sua meta estimada de calorias por dia/);
+assert.match(ptHtml.html, /Seu corpo gastaria em repouso/);
+assert.match(ptHtml.html, /No seu navegador você viu isso como cards visuais/);
+assert.match(ptHtml.html, /border-radius:24px/);
 assert.doesNotMatch(ptHtml.html, /snapshot/i);
 assert.match(ptHtml.html, /não substituem orientação/i);
 
