@@ -18,6 +18,25 @@ export const activityMultipliers: Record<ActivityLevel, number> = {
   extra: 1.9,
 };
 
+export type BodyFatNavyInput =
+  | {
+      system: "metric";
+      sex: Sex;
+      heightCm: number;
+      neckCm: number;
+      waistCm: number;
+      hipCm?: number;
+    }
+  | {
+      system: "imperial";
+      sex: Sex;
+      heightFt: number;
+      heightIn: number;
+      neckIn: number;
+      waistIn: number;
+      hipIn?: number;
+    };
+
 export type MetricStatusId = "good" | "attention" | "out-of-range" | "low" | "neutral";
 
 export type MetricStatus = {
@@ -122,6 +141,38 @@ export function calculateProteinRange(input: BmiInput, goal: FitnessGoal) {
     minGrams: weightKg * multipliers.min,
     maxGrams: weightKg * multipliers.max,
   };
+}
+
+export function calculateBodyFatNavy(input: BodyFatNavyInput) {
+  const normalized =
+    input.system === "metric"
+      ? {
+          sex: input.sex,
+          heightIn: input.heightCm / 2.54,
+          neckIn: input.neckCm / 2.54,
+          waistIn: input.waistCm / 2.54,
+          hipIn: input.hipCm ? input.hipCm / 2.54 : undefined,
+        }
+      : {
+          sex: input.sex,
+          heightIn: input.heightFt * 12 + input.heightIn,
+          neckIn: input.neckIn,
+          waistIn: input.waistIn,
+          hipIn: input.hipIn,
+        };
+
+  const waistMinusNeck = normalized.waistIn - normalized.neckIn;
+  if (normalized.heightIn <= 0 || waistMinusNeck <= 0) return NaN;
+
+  if (normalized.sex === "male") {
+    return 86.010 * Math.log10(waistMinusNeck) - 70.041 * Math.log10(normalized.heightIn) + 36.76;
+  }
+
+  if (!normalized.hipIn) return NaN;
+  const waistPlusHipMinusNeck = normalized.waistIn + normalized.hipIn - normalized.neckIn;
+  if (waistPlusHipMinusNeck <= 0) return NaN;
+
+  return 163.205 * Math.log10(waistPlusHipMinusNeck) - 97.684 * Math.log10(normalized.heightIn) - 78.387;
 }
 
 export function litersToFluidOunces(liters: number) {

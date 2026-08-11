@@ -78,7 +78,7 @@ export const bodyFatCalculatorContent = {
     },
 
     body: {
-      en: "A person with moderate waist measurements and healthy body composition may fall within a body fat range of approximately 15% to 25%, depending on age and gender.",
+      en: "For example, someone at 5 ft 10 in with moderate waist and neck measurements may receive an estimated body fat percentage in the mid-to-high teens, depending on sex and measurement points.",
     },
   },
 
@@ -211,7 +211,7 @@ export const bodyFatCalculatorContent = {
   },
 
   explanation: {
-    en: "<strong>Height</strong> = Body Height<br/><strong>Neck</strong> = Neck Circumference<br/><strong>Waist</strong> = Waist Circumference<br/><strong>Hip</strong> = Hip Circumference (Women Only)",
+    en: "English inputs use inches for neck, waist and hip, plus feet and inches for height. The calculator applies the U.S. Navy body fat estimation method.",
   },
 },
 
@@ -225,23 +225,47 @@ export const bodyFatCalculatorContent = {
     },
 
     height: {
-      en: "Height (cm)",
+      en: "Height",
+    },
+
+    heightFt: {
+      en: "Height (ft)",
+    },
+
+    heightIn: {
+      en: "Height (in)",
     },
 
     neck: {
-      en: "Neck (cm)",
+      en: "Neck (in)",
     },
 
     waist: {
-      en: "Waist (cm)",
+      en: "Waist (in)",
     },
 
     hip: {
-      en: "Hip (cm)",
+      en: "Hip (in)",
     },
 
-    bodyFat: {
-      en: "Body Fat (%)",
-    },
+    gender: { en: "Gender" },
+    male: { en: "Male" },
+    female: { en: "Female" },
+    bodyFat: { en: "Body fat" },
+    resultTitle: { en: "Your estimate" },
+    status: { en: "Visual estimate" },
+    neckHelper: { en: "Neck" },
+    waistHelper: { en: "Waist" },
+    hipHelper: { en: "Hip" },
+    resultHelper: { en: "Use this number as a body-composition estimate, not as a diagnosis. Different measurement points can change the result." },
+    openFitness: { en: "Generate my full fitness profile" },
+    ctaEyebrow: { en: "Next step" },
+    ctaTitle: { en: "Also discover:" },
+    ctaDescription: { en: "See body fat together with BMI, calories, metabolism, protein and progress inside NexTool Fit." },
+    bmi: { en: "BMI" },
+    calories: { en: "Daily calories" },
+    protein: { en: "Daily protein" },
+    idealWeight: { en: "Ideal weight" },
+    disclaimer: { en: "This is a general estimate for adults and does not replace medical, nutrition or fitness assessment." },
   },
 };
