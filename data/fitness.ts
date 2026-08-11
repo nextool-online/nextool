@@ -89,6 +89,7 @@ export const fitnessContent = {
       bmr: "Understand baseline burn",
       calories: "Plan daily intake",
       water: "Support daily routine",
+      protein: "Support muscle and satiety",
     },
   },
   pt: {
@@ -179,6 +180,7 @@ export const fitnessContent = {
       bmr: "Entenda seu gasto basal",
       calories: "Planeje calorias diárias",
       water: "Apoie sua rotina diária",
+      protein: "Apoie músculos e saciedade",
     },
   },
 } satisfies Record<LanguageCode, Record<string, unknown>>;

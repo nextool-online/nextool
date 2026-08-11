@@ -25,6 +25,7 @@ const fitnessLandingToolIds = new Set([
   "bmr-calculator",
   "calorie-calculator",
   "water-intake-calculator",
+  "protein-calculator",
   "body-fat-calculator",
 ]);
 

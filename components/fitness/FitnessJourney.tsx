@@ -231,6 +231,7 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
     const queryActivity = params.get("activity");
     const queryAge = params.get("age");
     const querySex = params.get("sex");
+    const queryGoal = params.get("goal");
 
     window.requestAnimationFrame(() => {
       if (queryWeight) setWeight(queryWeight);
@@ -239,6 +240,9 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
       if (queryHeightIn) setHeightIn(queryHeightIn);
       if (queryAge) setAge(queryAge);
       if (querySex === "male" || querySex === "female") setSex(querySex);
+      if (queryGoal === "lose" || queryGoal === "maintain" || queryGoal === "gain") {
+        setGoal(queryGoal);
+      }
       if (
         queryActivity === "sedentary" ||
         queryActivity === "light" ||
@@ -599,12 +603,13 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
             <h2 className="text-4xl font-black tracking-tight md:text-3xl">{content.relatedTitle}</h2>
             <p className="mt-4 text-lg leading-8 text-zinc-600 md:text-base md:leading-7">{content.relatedIntro}</p>
           </div>
-          <div className="mt-7 grid gap-4 md:grid-cols-4">
+          <div className="mt-7 grid gap-4 md:grid-cols-5">
             {[
               ["01", content.bmi, content.relatedSteps.bmi, `/${lang}/tools/${lang === "pt" ? "calculadora-imc" : "bmi-calculator"}`],
               ["02", content.bmr, content.relatedSteps.bmr, `/${lang}/tools/${lang === "pt" ? "calculadora-tmb" : "bmr-calculator"}`],
               ["03", content.goalCalories, content.relatedSteps.calories, `/${lang}/tools/${lang === "pt" ? "calculadora-de-calorias" : "calorie-calculator"}`],
               ["04", content.water, content.relatedSteps.water, `/${lang}/tools/${lang === "pt" ? "calculadora-de-ingestao-de-agua" : "water-intake-calculator"}`],
+              ["05", content.protein, content.relatedSteps.protein, `/${lang}/tools/${lang === "pt" ? "calculadora-de-proteina" : "protein-calculator"}`],
             ].map(([step, label, helper, href]) => (
               <Link key={href} href={href} className="group rounded-3xl border border-zinc-200 bg-zinc-50 p-5 transition hover:-translate-y-0.5 hover:border-emerald-300 hover:bg-emerald-50 md:min-h-32">
                 <div className="flex items-center gap-3">
