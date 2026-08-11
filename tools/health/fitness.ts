@@ -143,6 +143,28 @@ export function calculateProteinRange(input: BmiInput, goal: FitnessGoal) {
   };
 }
 
+export function calculateMacroTargets({
+  calories,
+  input,
+  goal,
+}: {
+  calories: number;
+  input: BmiInput;
+  goal: FitnessGoal;
+}) {
+  const proteinRange = calculateProteinRange(input, goal);
+  const proteinGrams = Math.round((proteinRange.minGrams + proteinRange.maxGrams) / 2);
+  const fatRatio = goal === "maintain" ? 0.3 : 0.25;
+  const fatGrams = Math.round((calories * fatRatio) / 9);
+  const carbCalories = Math.max(0, calories - proteinGrams * 4 - fatGrams * 9);
+
+  return {
+    proteinGrams,
+    fatGrams,
+    carbGrams: Math.round(carbCalories / 4),
+  };
+}
+
 export function calculateBodyFatNavy(input: BodyFatNavyInput) {
   const normalized =
     input.system === "metric"

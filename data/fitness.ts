@@ -45,6 +45,7 @@ export const fitnessContent = {
     goalCalories: "Calories",
     water: "Water",
     protein: "Protein",
+    macros: "Macros",
     healthyRange: "Ideal weight",
     bmiLegend: {
       underweight: "Underweight",
@@ -91,6 +92,7 @@ export const fitnessContent = {
       water: "Support daily routine",
       protein: "Support muscle and satiety",
       idealWeight: "Find your target range",
+      macros: "Split daily nutrition",
     },
   },
   pt: {
@@ -137,6 +139,7 @@ export const fitnessContent = {
     goalCalories: "Calorias",
     water: "Água",
     protein: "Proteína",
+    macros: "Macros",
     healthyRange: "Peso ideal",
     bmiLegend: {
       underweight: "Abaixo do peso",
@@ -183,6 +186,7 @@ export const fitnessContent = {
       water: "Apoie sua rotina diária",
       protein: "Apoie músculos e saciedade",
       idealWeight: "Encontre sua faixa-alvo",
+      macros: "Divida sua nutrição diária",
     },
   },
 } satisfies Record<LanguageCode, Record<string, unknown>>;

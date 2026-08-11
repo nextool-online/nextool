@@ -28,6 +28,7 @@ const fitnessLandingToolIds = new Set([
   "protein-calculator",
   "ideal-weight-calculator",
   "body-fat-calculator",
+  "macro-calculator",
 ]);
 
 function getAvailableLanguages(tool: ToolDefinition): LanguageCode[] {
