@@ -245,7 +245,103 @@ export const calorieCalculatorContent = {
     },
 
     calories: {
-      pt: "Calorias Diárias",
+      pt: "Calorias diárias",
+    },
+
+    heightFt: {
+      pt: "Altura (ft)",
+    },
+
+    heightIn: {
+      pt: "Altura (in)",
+    },
+
+    male: {
+      pt: "Masculino",
+    },
+
+    female: {
+      pt: "Feminino",
+    },
+
+    sedentary: {
+      pt: "Sedentário",
+    },
+
+    light: {
+      pt: "Levemente ativo",
+    },
+
+    moderate: {
+      pt: "Moderadamente ativo",
+    },
+
+    very: {
+      pt: "Muito ativo",
+    },
+
+    extra: {
+      pt: "Extremamente ativo",
+    },
+
+    resultTitle: {
+      pt: "Sua manutenção diária",
+    },
+
+    status: {
+      pt: "Estimativa diária",
+    },
+
+    loseTarget: {
+      pt: "Para perder gordura",
+    },
+
+    maintainTarget: {
+      pt: "Para manter peso",
+    },
+
+    gainTarget: {
+      pt: "Para ganhar massa",
+    },
+
+    resultHelper: {
+      pt: "Esta é uma estimativa de manutenção. Para mudar peso, o próximo passo é ajustar meta, proteína, água e acompanhar progresso.",
+    },
+
+    openFitness: {
+      pt: "Gerar meu perfil fitness completo",
+    },
+
+    ctaEyebrow: {
+      pt: "Próximo passo",
+    },
+
+    ctaTitle: {
+      pt: "Descubra também:",
+    },
+
+    ctaDescription: {
+      pt: "Use calorias junto com IMC, metabolismo, água, proteína e histórico local dentro do NexTool Fit.",
+    },
+
+    metabolism: {
+      pt: "Metabolismo basal",
+    },
+
+    water: {
+      pt: "Água diária",
+    },
+
+    protein: {
+      pt: "Proteína diária",
+    },
+
+    idealWeight: {
+      pt: "Peso ideal",
+    },
+
+    disclaimer: {
+      pt: "Esta é uma estimativa geral para adultos e não substitui orientação médica ou nutricional.",
     },
   },
 };

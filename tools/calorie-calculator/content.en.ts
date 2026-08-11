@@ -88,7 +88,7 @@ export const calorieCalculatorContent = {
     },
 
     body: {
-      en: "A moderately active 35-year-old person weighing 75 kg and measuring 175 cm may require approximately 2,400 to 2,700 calories per day to maintain body weight.",
+      en: "A moderately active 35-year-old person weighing 165 lb and standing 5 ft 9 in may require approximately 2,400 to 2,700 calories per day to maintain body weight.",
     },
   },
 
@@ -211,7 +211,7 @@ export const calorieCalculatorContent = {
       },
 
      explanation: {
-       en: "<strong>BMR</strong> = Basal Metabolic Rate<br/><strong>Activity Factor</strong> = Daily Activity Multiplier<br/><strong>Calories</strong> = Estimated Daily Calorie Needs",
+       en: "<strong>BMR</strong> = Basal Metabolic Rate estimated from age, gender, weight in pounds and height in total inches<br/><strong>Activity Factor</strong> = Daily Activity Multiplier<br/><strong>Calories</strong> = Estimated Daily Calorie Needs",
      },
     },
 
@@ -225,7 +225,7 @@ export const calorieCalculatorContent = {
     },
 
     gender: {
-      en: "Gender (male/female)",
+      en: "Gender",
     },
 
     age: {
@@ -233,19 +233,115 @@ export const calorieCalculatorContent = {
     },
 
     weight: {
-      en: "Weight (kg)",
+      en: "Weight (lb)",
     },
 
     height: {
-      en: "Height (cm)",
+      en: "Height",
+    },
+
+    heightFt: {
+      en: "Height (ft)",
+    },
+
+    heightIn: {
+      en: "Height (in)",
     },
 
     activityLevel: {
-      en: "Activity Level",
+      en: "Activity level",
     },
 
     calories: {
-      en: "Daily Calories",
+      en: "Daily calories",
+    },
+
+    male: {
+      en: "Male",
+    },
+
+    female: {
+      en: "Female",
+    },
+
+    sedentary: {
+      en: "Sedentary",
+    },
+
+    light: {
+      en: "Lightly active",
+    },
+
+    moderate: {
+      en: "Moderately active",
+    },
+
+    very: {
+      en: "Very active",
+    },
+
+    extra: {
+      en: "Extra active",
+    },
+
+    resultTitle: {
+      en: "Your daily maintenance",
+    },
+
+    status: {
+      en: "Daily estimate",
+    },
+
+    loseTarget: {
+      en: "For fat loss",
+    },
+
+    maintainTarget: {
+      en: "To maintain weight",
+    },
+
+    gainTarget: {
+      en: "For muscle gain",
+    },
+
+    resultHelper: {
+      en: "This is a maintenance estimate. To change weight, the next step is adjusting goals, protein, water and progress tracking.",
+    },
+
+    openFitness: {
+      en: "Generate my full fitness profile",
+    },
+
+    ctaEyebrow: {
+      en: "Next step",
+    },
+
+    ctaTitle: {
+      en: "Also discover:",
+    },
+
+    ctaDescription: {
+      en: "Use calories together with BMI, metabolism, water, protein and local progress history inside NexTool Fit.",
+    },
+
+    metabolism: {
+      en: "Basal metabolism",
+    },
+
+    water: {
+      en: "Daily water",
+    },
+
+    protein: {
+      en: "Daily protein",
+    },
+
+    idealWeight: {
+      en: "Ideal weight",
+    },
+
+    disclaimer: {
+      en: "This is a general estimate for adults and does not replace medical or nutrition advice.",
     },
   },
 };
