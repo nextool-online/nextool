@@ -54,10 +54,10 @@ const copy = {
     cta: "CTA",
     events: "Eventos",
     visualHint: "Ranking por melhor relação entre conversão para o funil fitness e emails capturados.",
-    periodNow: "Período observado",
-    allTime: "Histórico total",
-    lastDays: "Últimos {days} dias",
-    languageSwitch: "Idioma das métricas",
+    allTime: "Total",
+    dateHint: "dd/mm/aaaa",
+    emailCaptureRate: "email_capture_rate",
+    emailsCaptured: "emails_captured",
   },
   en: {
     title: "NexTool Fit Dashboard",
@@ -93,10 +93,10 @@ const copy = {
     cta: "CTA",
     events: "Events",
     visualHint: "Ranking by the best relationship between fitness-funnel conversion rate and captured emails.",
-    periodNow: "Observed period",
     allTime: "All time",
-    lastDays: "Last {days} days",
-    languageSwitch: "Metrics language",
+    dateHint: "yyyy-mm-dd",
+    emailCaptureRate: "email_capture_rate",
+    emailsCaptured: "emails_captured",
   },
 };
 
@@ -123,17 +123,37 @@ async function supabaseSelect(path: string) {
   return response.json();
 }
 
-async function fetchLeadRecords(): Promise<FitnessLeadMetricRecord[]> {
+function appendDashboardMetricFilters(params: URLSearchParams, fromDate?: string | null, toDate?: string | null, lang?: string | null) {
+  if (lang === "pt" || lang === "en") params.set("lang", `eq.${lang}`);
+  if (fromDate) params.set("created_at", `gte.${fromDate}T00:00:00.000Z`);
+  if (toDate) params.append("created_at", `lte.${toDate}T23:59:59.999Z`);
+}
+
+function buildDashboardMetricPath(table: string, select: string, limit: number, fromDate?: string | null, toDate?: string | null, lang?: string | null) {
+  const params = new URLSearchParams();
+  params.set("select", select);
+  params.set("order", "created_at.desc");
+  params.set("limit", String(limit));
+  appendDashboardMetricFilters(params, fromDate, toDate, lang);
+  return `${table}?${params.toString()}`;
+}
+
+async function fetchLeadRecords(fromDate?: string | null, toDate?: string | null, lang?: string | null): Promise<FitnessLeadMetricRecord[]> {
   const table = process.env.SUPABASE_FITNESS_LEADS_TABLE || "fitness_leads";
-  return supabaseSelect(`${table}?select=email,lang,source,created_at&order=created_at.desc&limit=5000`);
+  return supabaseSelect(buildDashboardMetricPath(table, "email,lang,source,created_at", 5000, fromDate, toDate, lang));
 }
 
-async function fetchEventRecords(): Promise<FitnessEventMetricRecord[]> {
+async function fetchEventRecords(fromDate?: string | null, toDate?: string | null, lang?: string | null): Promise<FitnessEventMetricRecord[]> {
   const table = process.env.SUPABASE_FITNESS_EVENTS_TABLE || "fitness_events";
-  return supabaseSelect(`${table}?select=event_name,visitor_id,lang,source,path,created_at&order=created_at.desc&limit=10000`);
+  return supabaseSelect(buildDashboardMetricPath(table, "event_name,visitor_id,lang,source,path,created_at", 10000, fromDate, toDate, lang));
 }
 
-const quickRanges = [7, 30, 60, 90];
+const quickRanges = [
+  { days: 7, label: "7d" },
+  { days: 30, label: "30d" },
+  { days: 60, label: "60d" },
+  { days: 90, label: "90d" },
+];
 
 function isoDateDaysAgo(days: number) {
   const date = new Date();
@@ -155,11 +175,21 @@ function dashboardHref(lang: LanguageCode, token: string | undefined, from?: str
   return `/${lang}/fitness/dashboard${query ? `?${query}` : ""}`;
 }
 
-function activeRangeLabel(labels: typeof copy.pt, fromDate?: string | null, toDate?: string | null) {
-  if (!fromDate && !toDate) return labels.allTime;
+function activeRangeLabel(fromDate?: string | null, toDate?: string | null) {
+  if (!fromDate && !toDate) return "total";
   if (fromDate && toDate) return `${fromDate} → ${toDate}`;
-  if (fromDate) return `${labels.fromDate}: ${fromDate}`;
-  return `${labels.toDate}: ${toDate}`;
+  if (fromDate) return `from ${fromDate}`;
+  return `to ${toDate}`;
+}
+
+function activeChipClass(isActive: boolean) {
+  return isActive
+    ? "rounded-full bg-emerald-400 px-4 py-2 text-sm font-black text-zinc-950"
+    : "rounded-full border border-zinc-700 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:border-emerald-400 hover:text-emerald-200";
+}
+
+function isSameRange(fromDate: string | null | undefined, toDate: string | null | undefined, from?: string | null, to?: string | null) {
+  return (fromDate || "") === (from || "") && (toDate || "") === (to || "");
 }
 
 const calculatorFunnelLayout = [
@@ -193,10 +223,11 @@ function StatCard({ label, value }: { label: string; value: string | number }) {
   );
 }
 
-function FitnessTotals({ title, items }: { title: string; items: Array<{ event: string; count: number }> }) {
+function FitnessTotals({ title, items, uniqueEmails }: { title: string; items: Array<{ event: string; count: number }>; uniqueEmails: number }) {
   const submitted = metricCount(items, "email_submitted");
   const generated = metricCount(items, "fitness_metrics_generated");
-  const conversion = generated > 0 ? submitted / generated * 100 : 0;
+  const submitConversion = generated > 0 ? submitted / generated * 100 : 0;
+  const captureConversion = generated > 0 ? uniqueEmails / generated * 100 : 0;
 
   return (
     <section className="rounded-[2rem] border border-emerald-500/30 bg-gradient-to-br from-zinc-900 to-zinc-950 p-5 shadow-2xl shadow-emerald-950/20">
@@ -210,8 +241,16 @@ function FitnessTotals({ title, items }: { title: string; items: Array<{ event: 
           </div>
         ))}
         <div className="flex items-center justify-between rounded-2xl border border-emerald-400/30 bg-emerald-400/10 px-4 py-2">
+          <span className="font-bold text-emerald-200">emails_captured</span>
+          <span className="font-black text-emerald-100">{uniqueEmails}</span>
+        </div>
+        <div className="flex items-center justify-between rounded-2xl border border-emerald-400/30 bg-emerald-400/10 px-4 py-2">
           <span className="font-bold text-emerald-200">email_conv_rate</span>
-          <span className="font-black text-emerald-100">{formatPercent(conversion)}</span>
+          <span className="font-black text-emerald-100">{formatPercent(submitConversion)}</span>
+        </div>
+        <div className="flex items-center justify-between rounded-2xl border border-emerald-400/30 bg-emerald-400/10 px-4 py-2">
+          <span className="font-bold text-emerald-200">email_capture_rate</span>
+          <span className="font-black text-emerald-100">{formatPercent(captureConversion)}</span>
         </div>
       </div>
     </section>
@@ -343,7 +382,7 @@ export default async function FitnessDashboardPage({ params, searchParams }: Das
     notFound();
   }
 
-  const [leadRecords, eventRecords] = await Promise.all([fetchLeadRecords(), fetchEventRecords()]);
+  const [leadRecords, eventRecords] = await Promise.all([fetchLeadRecords(fromDate, toDate, lang), fetchEventRecords(fromDate, toDate, lang)]);
   const filteredLeads = filterRecordsByDateRange(leadRecords, fromDate, toDate).filter((record) => record.lang === lang);
   const filteredEvents = filterRecordsByDateRange(eventRecords, fromDate, toDate).filter((record) => record.lang === lang);
   const metrics = aggregateFitnessLeadMetrics(filteredLeads);
@@ -383,41 +422,42 @@ export default async function FitnessDashboardPage({ params, searchParams }: Das
             </h1>
             <p className="mt-4 max-w-2xl text-base leading-7 text-zinc-300 md:text-lg">{labels.subtitle}</p>
 
-            <form className="mt-6 grid gap-3 rounded-3xl border border-zinc-800 bg-zinc-900 p-4 md:grid-cols-[1fr_1fr_auto]" action={`/${lang}/fitness/dashboard`}>
+            <div className="mt-4 flex flex-wrap items-center gap-2 text-sm" data-testid="languageSwitch">
+              <Link className={`rounded-full px-4 py-2 font-black ${lang === "pt" ? "bg-emerald-400 text-zinc-950" : "border border-zinc-700 text-zinc-300"}`} href={dashboardHref("pt", token, fromDate, toDate)}>PT</Link>
+              <Link className={`rounded-full px-4 py-2 font-black ${lang === "en" ? "bg-emerald-400 text-zinc-950" : "border border-zinc-700 text-zinc-300"}`} href={dashboardHref("en", token, fromDate, toDate)}>EN</Link>
+            </div>
+
+            <div className="mt-5 flex flex-wrap items-center gap-2">
+              <Link className={activeChipClass(isSameRange(fromDate, toDate))} href={dashboardHref(lang, token)}>{labels.allTime}</Link>
+              {quickRanges.map((range) => {
+                const from = isoDateDaysAgo(range.days);
+                const to = todayIsoDate();
+                return (
+                  <Link key={range.label} className={activeChipClass(isSameRange(fromDate, toDate, from, to))} href={dashboardHref(lang, token, from, to)}>
+                    {range.label}
+                  </Link>
+                );
+              })}
+              <span className="rounded-full border border-zinc-800 px-4 py-2 text-xs font-bold text-zinc-400">{activeRangeLabel(fromDate, toDate)}</span>
+            </div>
+
+            <form className="mt-3 grid gap-3 rounded-3xl border border-zinc-800 bg-zinc-900 p-4 md:grid-cols-[1fr_1fr_auto]" action={`/${lang}/fitness/dashboard`}>
               <input type="hidden" name="token" value={token} />
               <label className="text-sm font-bold text-zinc-300">
                 {labels.fromDate}
-                <input className="mt-2 w-full rounded-2xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-white outline-none focus:border-emerald-400" type="date" name="from" defaultValue={fromDate || ""} />
+                <input className="date-input mt-2 w-full rounded-2xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-white outline-none focus:border-emerald-400" type="date" name="from" defaultValue={fromDate || ""} aria-label={`${labels.fromDate} ${labels.dateHint}`} />
               </label>
               <label className="text-sm font-bold text-zinc-300">
                 {labels.toDate}
-                <input className="mt-2 w-full rounded-2xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-white outline-none focus:border-emerald-400" type="date" name="to" defaultValue={toDate || ""} />
+                <input className="date-input mt-2 w-full rounded-2xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-white outline-none focus:border-emerald-400" type="date" name="to" defaultValue={toDate || ""} aria-label={`${labels.toDate} ${labels.dateHint}`} />
               </label>
               <button className="self-end rounded-2xl bg-emerald-400 px-5 py-3 text-sm font-black text-zinc-950 transition hover:bg-emerald-300" type="submit">
                 {labels.applyRange}
               </button>
             </form>
-
-            <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
-              <span className="rounded-full border border-emerald-400/30 bg-emerald-400/10 px-4 py-2 font-black text-emerald-200">
-                {labels.periodNow}: {activeRangeLabel(labels, fromDate, toDate)}
-              </span>
-              <Link className="rounded-full border border-zinc-700 px-4 py-2 font-bold text-zinc-300 transition hover:border-emerald-400 hover:text-emerald-200" href={dashboardHref(lang, token)}>{labels.allTime}</Link>
-              {quickRanges.map((days) => (
-                <Link key={days} className="rounded-full border border-zinc-700 px-4 py-2 font-bold text-zinc-300 transition hover:border-emerald-400 hover:text-emerald-200" href={dashboardHref(lang, token, isoDateDaysAgo(days), todayIsoDate())}>
-                  {labels.lastDays.replace("{days}", String(days))}
-                </Link>
-              ))}
-            </div>
-
-            <div className="mt-3 flex flex-wrap items-center gap-2 text-sm" data-testid="languageSwitch">
-              <span className="font-bold text-zinc-400">{labels.languageSwitch}</span>
-              <Link className={`rounded-full px-4 py-2 font-black ${lang === "pt" ? "bg-emerald-400 text-zinc-950" : "border border-zinc-700 text-zinc-300"}`} href={dashboardHref("pt", token, fromDate, toDate)}>PT</Link>
-              <Link className={`rounded-full px-4 py-2 font-black ${lang === "en" ? "bg-emerald-400 text-zinc-950" : "border border-zinc-700 text-zinc-300"}`} href={dashboardHref("en", token, fromDate, toDate)}>EN</Link>
-            </div>
           </div>
 
-          <FitnessTotals title={labels.fitnessTotals} items={eventMetrics.funnel} />
+          <FitnessTotals title={labels.fitnessTotals} items={eventMetrics.funnel} uniqueEmails={metrics.uniqueEmails} />
         </div>
 
         <VisualFunnel title="NexTool Fit" items={visualItems} labels={labels} />

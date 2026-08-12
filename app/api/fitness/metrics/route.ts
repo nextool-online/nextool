@@ -35,15 +35,30 @@ async function supabaseSelect(path: string) {
   return response.json();
 }
 
-async function fetchLeadMetricRecords(): Promise<FitnessLeadMetricRecord[]> {
-  const table = process.env.SUPABASE_FITNESS_LEADS_TABLE || "fitness_leads";
-  return supabaseSelect(`${table}?select=email,lang,source,created_at&order=created_at.desc&limit=5000`);
+function appendMetricFilters(params: URLSearchParams, fromDate?: string | null, toDate?: string | null, lang?: string | null) {
+  if (lang === "pt" || lang === "en") params.set("lang", `eq.${lang}`);
+  if (fromDate) params.set("created_at", `gte.${fromDate}T00:00:00.000Z`);
+  if (toDate) params.append("created_at", `lte.${toDate}T23:59:59.999Z`);
 }
 
-async function fetchEventMetricRecords(): Promise<FitnessEventMetricRecord[]> {
+function buildMetricPath(table: string, select: string, limit: number, fromDate?: string | null, toDate?: string | null, lang?: string | null) {
+  const params = new URLSearchParams();
+  params.set("select", select);
+  params.set("order", "created_at.desc");
+  params.set("limit", String(limit));
+  appendMetricFilters(params, fromDate, toDate, lang);
+  return `${table}?${params.toString()}`;
+}
+
+async function fetchLeadMetricRecords(fromDate?: string | null, toDate?: string | null, lang?: string | null): Promise<FitnessLeadMetricRecord[]> {
+  const table = process.env.SUPABASE_FITNESS_LEADS_TABLE || "fitness_leads";
+  return supabaseSelect(buildMetricPath(table, "email,lang,source,created_at", 5000, fromDate, toDate, lang));
+}
+
+async function fetchEventMetricRecords(fromDate?: string | null, toDate?: string | null, lang?: string | null): Promise<FitnessEventMetricRecord[]> {
   const table = process.env.SUPABASE_FITNESS_EVENTS_TABLE || "fitness_events";
   try {
-    return await supabaseSelect(`${table}?select=event_name,visitor_id,lang,source,path,created_at&order=created_at.desc&limit=10000`);
+    return await supabaseSelect(buildMetricPath(table, "event_name,visitor_id,lang,source,path,created_at", 10000, fromDate, toDate, lang));
   } catch {
     return [];
   }
@@ -54,6 +69,7 @@ export async function GET(request: Request) {
   const token = url.searchParams.get("token");
   const fromDate = url.searchParams.get("from");
   const toDate = url.searchParams.get("to");
+  const lang = url.searchParams.get("lang");
 
   if (!validateDashboardToken(token, process.env.FITNESS_DASHBOARD_TOKEN)) {
     return NextResponse.json({ ok: false, error: "Unauthorized" }, { status: 401 });
@@ -61,13 +77,13 @@ export async function GET(request: Request) {
 
   try {
     const [leadRecords, eventRecords] = await Promise.all([
-      fetchLeadMetricRecords(),
-      fetchEventMetricRecords(),
+      fetchLeadMetricRecords(fromDate, toDate, lang),
+      fetchEventMetricRecords(fromDate, toDate, lang),
     ]);
 
     return NextResponse.json({
       ok: true,
-      range: { from: fromDate, to: toDate },
+      range: { from: fromDate, to: toDate, lang },
       metrics: aggregateFitnessLeadMetrics(filterRecordsByDateRange(leadRecords, fromDate, toDate)),
       eventMetrics: aggregateFitnessEventMetrics(filterRecordsByDateRange(eventRecords, fromDate, toDate)),
     });
