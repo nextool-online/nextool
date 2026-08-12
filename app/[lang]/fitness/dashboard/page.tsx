@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import {
@@ -53,6 +54,10 @@ const copy = {
     cta: "CTA",
     events: "Eventos",
     visualHint: "Ranking por melhor relação entre conversão para o funil fitness e emails capturados.",
+    periodNow: "Período observado",
+    allTime: "Histórico total",
+    lastDays: "Últimos {days} dias",
+    languageSwitch: "Idioma das métricas",
   },
   en: {
     title: "NexTool Fit Dashboard",
@@ -88,6 +93,10 @@ const copy = {
     cta: "CTA",
     events: "Events",
     visualHint: "Ranking by the best relationship between fitness-funnel conversion rate and captured emails.",
+    periodNow: "Observed period",
+    allTime: "All time",
+    lastDays: "Last {days} days",
+    languageSwitch: "Metrics language",
   },
 };
 
@@ -124,6 +133,35 @@ async function fetchEventRecords(): Promise<FitnessEventMetricRecord[]> {
   return supabaseSelect(`${table}?select=event_name,visitor_id,lang,source,path,created_at&order=created_at.desc&limit=10000`);
 }
 
+const quickRanges = [7, 30, 60, 90];
+
+function isoDateDaysAgo(days: number) {
+  const date = new Date();
+  date.setUTCHours(0, 0, 0, 0);
+  date.setUTCDate(date.getUTCDate() - days + 1);
+  return date.toISOString().slice(0, 10);
+}
+
+function todayIsoDate() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function dashboardHref(lang: LanguageCode, token: string | undefined, from?: string | null, to?: string | null) {
+  const params = new URLSearchParams();
+  if (token) params.set("token", token);
+  if (from) params.set("from", from);
+  if (to) params.set("to", to);
+  const query = params.toString();
+  return `/${lang}/fitness/dashboard${query ? `?${query}` : ""}`;
+}
+
+function activeRangeLabel(labels: typeof copy.pt, fromDate?: string | null, toDate?: string | null) {
+  if (!fromDate && !toDate) return labels.allTime;
+  if (fromDate && toDate) return `${fromDate} → ${toDate}`;
+  if (fromDate) return `${labels.fromDate}: ${fromDate}`;
+  return `${labels.toDate}: ${toDate}`;
+}
+
 const calculatorFunnelLayout = [
   { id: "bmi-calculator", leadSource: "bmi", short: "BMI", pt: "IMC", en: "BMI" },
   { id: "bmr-calculator", leadSource: "bmr", short: "BMR", pt: "TMB", en: "BMR" },
@@ -152,24 +190,6 @@ function StatCard({ label, value }: { label: string; value: string | number }) {
       <p className="text-sm font-bold uppercase tracking-[0.2em] text-emerald-300">{label}</p>
       <p className="mt-3 text-4xl font-black text-white">{value}</p>
     </div>
-  );
-}
-
-function CountList({ title, items, labelKey }: { title: string; items: Array<{ count: number } & Record<string, string | number>>; labelKey: string }) {
-  return (
-    <section className="rounded-3xl border border-zinc-800 bg-zinc-900 p-5">
-      <h2 className="text-xl font-black text-white">{title}</h2>
-      <div className="mt-4 space-y-3">
-        {items.length === 0 ? (
-          <p className="text-zinc-400">0</p>
-        ) : items.map((item) => (
-          <div key={String(item[labelKey])} className="flex items-center justify-between rounded-2xl bg-zinc-950 px-4 py-3">
-            <span className="font-bold text-zinc-200">{String(item[labelKey])}</span>
-            <span className="text-lg font-black text-white">{item.count}</span>
-          </div>
-        ))}
-      </div>
-    </section>
   );
 }
 
@@ -269,7 +289,7 @@ function CalculatorList({ title, items }: { title: string; items: Array<{ calcul
     <section className="rounded-3xl border border-zinc-800 bg-zinc-900 p-5 md:col-span-3">
       <h2 className="text-xl font-black text-white">{title}</h2>
       <div className="mt-4 overflow-x-auto">
-        <table className="w-full min-w-[760px] border-separate border-spacing-y-2 text-left text-sm">
+        <table className="w-full min-w-[760px] border-separate border-spacing-y-2 text-center text-sm">
           <thead className="text-xs uppercase tracking-wide text-zinc-500">
             <tr>
               <th className="px-4 py-2">Calculadora</th>
@@ -300,9 +320,12 @@ function CalculatorList({ title, items }: { title: string; items: Array<{ calcul
   );
 }
 
+const hiddenSections = ["funnel", "calculatorFunnel", "eventSource", "language", "timeline", "eventTimeline"];
+
 export default async function FitnessDashboardPage({ params, searchParams }: DashboardPageProps) {
   const [{ lang }, { token, from: fromDate, to: toDate }] = await Promise.all([params, searchParams]);
   const labels = copy[lang] || copy.en;
+  void hiddenSections;
 
   if (!validateDashboardToken(token, process.env.FITNESS_DASHBOARD_TOKEN)) {
     return (
@@ -321,8 +344,8 @@ export default async function FitnessDashboardPage({ params, searchParams }: Das
   }
 
   const [leadRecords, eventRecords] = await Promise.all([fetchLeadRecords(), fetchEventRecords()]);
-  const filteredLeads = filterRecordsByDateRange(leadRecords, fromDate, toDate);
-  const filteredEvents = filterRecordsByDateRange(eventRecords, fromDate, toDate);
+  const filteredLeads = filterRecordsByDateRange(leadRecords, fromDate, toDate).filter((record) => record.lang === lang);
+  const filteredEvents = filterRecordsByDateRange(eventRecords, fromDate, toDate).filter((record) => record.lang === lang);
   const metrics = aggregateFitnessLeadMetrics(filteredLeads);
   const eventMetrics = aggregateFitnessEventMetrics(filteredEvents);
   const visualItems = calculatorFunnelLayout
@@ -354,7 +377,10 @@ export default async function FitnessDashboardPage({ params, searchParams }: Das
         <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-start">
           <div>
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-emerald-300">NexTool Fit</p>
-            <h1 className="mt-4 max-w-3xl text-4xl font-black leading-[0.95] md:text-6xl">{labels.title}</h1>
+            <h1 className="mt-4 max-w-3xl text-4xl font-black leading-[0.95] md:text-6xl">
+              <span className="block">Dashboard</span>
+              <span className="block">NexTool Fit</span>
+            </h1>
             <p className="mt-4 max-w-2xl text-base leading-7 text-zinc-300 md:text-lg">{labels.subtitle}</p>
 
             <form className="mt-6 grid gap-3 rounded-3xl border border-zinc-800 bg-zinc-900 p-4 md:grid-cols-[1fr_1fr_auto]" action={`/${lang}/fitness/dashboard`}>
@@ -371,6 +397,24 @@ export default async function FitnessDashboardPage({ params, searchParams }: Das
                 {labels.applyRange}
               </button>
             </form>
+
+            <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
+              <span className="rounded-full border border-emerald-400/30 bg-emerald-400/10 px-4 py-2 font-black text-emerald-200">
+                {labels.periodNow}: {activeRangeLabel(labels, fromDate, toDate)}
+              </span>
+              <Link className="rounded-full border border-zinc-700 px-4 py-2 font-bold text-zinc-300 transition hover:border-emerald-400 hover:text-emerald-200" href={dashboardHref(lang, token)}>{labels.allTime}</Link>
+              {quickRanges.map((days) => (
+                <Link key={days} className="rounded-full border border-zinc-700 px-4 py-2 font-bold text-zinc-300 transition hover:border-emerald-400 hover:text-emerald-200" href={dashboardHref(lang, token, isoDateDaysAgo(days), todayIsoDate())}>
+                  {labels.lastDays.replace("{days}", String(days))}
+                </Link>
+              ))}
+            </div>
+
+            <div className="mt-3 flex flex-wrap items-center gap-2 text-sm" data-testid="languageSwitch">
+              <span className="font-bold text-zinc-400">{labels.languageSwitch}</span>
+              <Link className={`rounded-full px-4 py-2 font-black ${lang === "pt" ? "bg-emerald-400 text-zinc-950" : "border border-zinc-700 text-zinc-300"}`} href={dashboardHref("pt", token, fromDate, toDate)}>PT</Link>
+              <Link className={`rounded-full px-4 py-2 font-black ${lang === "en" ? "bg-emerald-400 text-zinc-950" : "border border-zinc-700 text-zinc-300"}`} href={dashboardHref("en", token, fromDate, toDate)}>EN</Link>
+            </div>
           </div>
 
           <FitnessTotals title={labels.fitnessTotals} items={eventMetrics.funnel} />
@@ -390,14 +434,7 @@ export default async function FitnessDashboardPage({ params, searchParams }: Das
         </div>
 
         <div className="mt-6 grid gap-4 md:grid-cols-3">
-          <CountList title={labels.funnel} items={eventMetrics.funnel} labelKey="event" />
-          <CountList title={labels.calculatorFunnel} items={eventMetrics.calculatorFunnel} labelKey="event" />
-          <CountList title={labels.source} items={metrics.bySource} labelKey="source" />
           <CalculatorList title={labels.byCalculator} items={eventMetrics.byCalculator} />
-          <CountList title={labels.eventSource} items={eventMetrics.bySource} labelKey="source" />
-          <CountList title={labels.lang} items={metrics.byLang} labelKey="lang" />
-          <CountList title={labels.timeline} items={metrics.byDay.slice(0, 14)} labelKey="day" />
-          <CountList title={labels.eventTimeline} items={eventMetrics.byDay.slice(0, 14)} labelKey="day" />
         </div>
       </div>
     </main>
