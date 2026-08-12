@@ -44,6 +44,15 @@ const copy = {
     fromDate: "De",
     toDate: "Até",
     applyRange: "Aplicar período",
+    fitnessTotals: "FITNESS (TOTAIS)",
+    visualFunnel: "Funil visual por calculadora",
+    conversionRate: "% conv. rate Fitness",
+    capturedEmails: "emails capturados",
+    started: "Started",
+    metrics: "Metrics",
+    cta: "CTA",
+    events: "Eventos",
+    visualHint: "Ranking por melhor relação entre conversão para o funil fitness e emails capturados.",
   },
   en: {
     title: "NexTool Fit Dashboard",
@@ -70,6 +79,15 @@ const copy = {
     fromDate: "From",
     toDate: "To",
     applyRange: "Apply range",
+    fitnessTotals: "FITNESS (TOTALS)",
+    visualFunnel: "Visual funnel by calculator",
+    conversionRate: "% Fitness conv. rate",
+    capturedEmails: "captured emails",
+    started: "Started",
+    metrics: "Metrics",
+    cta: "CTA",
+    events: "Events",
+    visualHint: "Ranking by the best relationship between fitness-funnel conversion rate and captured emails.",
   },
 };
 
@@ -106,6 +124,28 @@ async function fetchEventRecords(): Promise<FitnessEventMetricRecord[]> {
   return supabaseSelect(`${table}?select=event_name,visitor_id,lang,source,path,created_at&order=created_at.desc&limit=10000`);
 }
 
+const calculatorFunnelLayout = [
+  { id: "bmi-calculator", leadSource: "bmi", short: "BMI", pt: "IMC", en: "BMI" },
+  { id: "bmr-calculator", leadSource: "bmr", short: "BMR", pt: "TMB", en: "BMR" },
+  { id: "calorie-calculator", leadSource: "calories", short: "CALORIES", pt: "Calorias", en: "Calories" },
+  { id: "protein-calculator", leadSource: "protein", short: "PROTEIN", pt: "Proteína", en: "Protein" },
+  { id: "ideal-weight-calculator", leadSource: "ideal-weight", short: "IDEAL WEIGHT", pt: "Peso ideal", en: "Ideal weight" },
+  { id: "water-intake-calculator", leadSource: "water", short: "WATER INTAKE", pt: "Água", en: "Water intake" },
+  { id: "macro-calculator", leadSource: "macros", short: "MACRO", pt: "Macros", en: "Macro" },
+];
+
+function metricCount(items: Array<{ event: string; count: number }>, event: string) {
+  return items.find((item) => item.event === event)?.count || 0;
+}
+
+function sourceCount(items: Array<{ source: string; count: number }>, source: string) {
+  return items.find((item) => item.source === source)?.count || 0;
+}
+
+function formatPercent(value: number) {
+  return `${Math.round(value)}%`;
+}
+
 function StatCard({ label, value }: { label: string; value: string | number }) {
   return (
     <div className="rounded-3xl border border-zinc-800 bg-zinc-900 p-5">
@@ -133,28 +173,121 @@ function CountList({ title, items, labelKey }: { title: string; items: Array<{ c
   );
 }
 
+function FitnessTotals({ title, items }: { title: string; items: Array<{ event: string; count: number }> }) {
+  const submitted = metricCount(items, "email_submitted");
+  const generated = metricCount(items, "fitness_metrics_generated");
+  const conversion = generated > 0 ? submitted / generated * 100 : 0;
+
+  return (
+    <section className="rounded-[2rem] border border-emerald-500/30 bg-gradient-to-br from-zinc-900 to-zinc-950 p-5 shadow-2xl shadow-emerald-950/20">
+      <p className="text-xs font-black uppercase tracking-[0.24em] text-emerald-300">{title}</p>
+      <h2 className="mt-2 text-2xl font-black text-white">Funil /fitness</h2>
+      <div className="mt-4 space-y-2 text-sm">
+        {items.map((item) => (
+          <div key={item.event} className="flex items-center justify-between rounded-2xl bg-white/5 px-4 py-2">
+            <span className="font-bold text-zinc-300">{item.event}</span>
+            <span className="font-black text-white">{item.count}</span>
+          </div>
+        ))}
+        <div className="flex items-center justify-between rounded-2xl border border-emerald-400/30 bg-emerald-400/10 px-4 py-2">
+          <span className="font-bold text-emerald-200">email_conv_rate</span>
+          <span className="font-black text-emerald-100">{formatPercent(conversion)}</span>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+type CalculatorVisualItem = {
+  id: string;
+  label: string;
+  views: number;
+  started: number;
+  metrics: number;
+  ctaClicks: number;
+  conversionRate: number;
+  capturedEmails: number;
+  events: number;
+};
+
+function VisualFunnel({ title, items, labels }: { title: string; items: CalculatorVisualItem[]; labels: typeof copy.pt }) {
+  return (
+    <section className="mt-6 rounded-[2rem] border border-zinc-800 bg-zinc-900 p-5 shadow-2xl shadow-zinc-950/30">
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <p className="text-xs font-black uppercase tracking-[0.24em] text-emerald-300">{title}</p>
+          <h2 className="mt-2 text-2xl font-black text-white">{labels.visualFunnel}</h2>
+        </div>
+        <p className="max-w-xl text-sm font-medium leading-6 text-zinc-400">{labels.visualHint}</p>
+      </div>
+      <div className="mt-6 grid gap-4 md:grid-cols-4">
+        {items.slice(0, 4).map((item) => <VisualCalculatorCard key={item.id} item={item} labels={labels} />)}
+      </div>
+      <div className="mt-4 grid gap-4 md:grid-cols-3 md:px-16">
+        {items.slice(4).map((item) => <VisualCalculatorCard key={item.id} item={item} labels={labels} />)}
+      </div>
+    </section>
+  );
+}
+
+function VisualCalculatorCard({ item, labels }: { item: CalculatorVisualItem; labels: typeof copy.pt }) {
+  return (
+    <details className="group rounded-[1.75rem] border border-zinc-800 bg-zinc-950 p-4 open:border-emerald-500/40 open:bg-emerald-950/20" open={item.events > 0 || item.capturedEmails > 0}>
+      <summary className="cursor-pointer list-none">
+        <div className="flex items-center justify-between gap-3">
+          <h3 className="text-lg font-black uppercase tracking-wide text-emerald-300">{item.label}</h3>
+          <span className="rounded-full bg-zinc-900 px-3 py-1 text-xs font-black text-white">{formatPercent(item.conversionRate)}</span>
+        </div>
+        <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
+          <span className="rounded-2xl bg-white/5 px-3 py-2 font-bold text-zinc-300">{labels.capturedEmails}: <b className="text-white">{item.capturedEmails}</b></span>
+          <span className="rounded-2xl bg-white/5 px-3 py-2 font-bold text-zinc-300">CTA: <b className="text-white">{item.ctaClicks}</b></span>
+        </div>
+      </summary>
+      <div className="mt-4 space-y-2 text-xs">
+        <MetricLine label={`${item.id}_page_view`} value={item.views} />
+        <MetricLine label={`${item.id}_profile_started`} value={item.started} />
+        <MetricLine label={`${item.id}_metrics_generated`} value={item.metrics} />
+        <MetricLine label={`${item.id}_cta_click`} value={item.ctaClicks} />
+        <MetricLine label={labels.conversionRate} value={formatPercent(item.conversionRate)} />
+        <MetricLine label={labels.capturedEmails} value={item.capturedEmails} />
+      </div>
+    </details>
+  );
+}
+
+function MetricLine({ label, value }: { label: string; value: string | number }) {
+  return (
+    <div className="flex items-center justify-between gap-3 rounded-2xl bg-zinc-900 px-3 py-2">
+      <span className="truncate font-bold text-zinc-400">{label}</span>
+      <span className="font-black text-white">{value}</span>
+    </div>
+  );
+}
+
 function CalculatorList({ title, items }: { title: string; items: Array<{ calculator: string; events: number; views: number; resultShown: number; ctaClicks: number }> }) {
   return (
     <section className="rounded-3xl border border-zinc-800 bg-zinc-900 p-5 md:col-span-3">
       <h2 className="text-xl font-black text-white">{title}</h2>
       <div className="mt-4 overflow-x-auto">
-        <table className="w-full min-w-[680px] border-separate border-spacing-y-2 text-left text-sm">
+        <table className="w-full min-w-[760px] border-separate border-spacing-y-2 text-left text-sm">
           <thead className="text-xs uppercase tracking-wide text-zinc-500">
             <tr>
               <th className="px-4 py-2">Calculadora</th>
               <th className="px-4 py-2">Views</th>
-              <th className="px-4 py-2">Resultados</th>
-              <th className="px-4 py-2">Cliques CTA</th>
+              <th className="px-4 py-2">Started</th>
+              <th className="px-4 py-2">Metrics</th>
+              <th className="px-4 py-2">CTA</th>
               <th className="px-4 py-2">Eventos</th>
             </tr>
           </thead>
           <tbody>
             {items.length === 0 ? (
-              <tr><td className="rounded-2xl bg-zinc-950 px-4 py-3 text-zinc-400" colSpan={5}>0</td></tr>
+              <tr><td className="rounded-2xl bg-zinc-950 px-4 py-3 text-zinc-400" colSpan={6}>0</td></tr>
             ) : items.map((item) => (
               <tr key={item.calculator} className="bg-zinc-950 text-zinc-200">
-                <td className="rounded-l-2xl px-4 py-3 font-bold">{item.calculator}</td>
+                <td className="rounded-l-2xl px-4 py-3 font-bold text-emerald-300">{item.calculator}</td>
                 <td className="px-4 py-3 font-black text-white">{item.views}</td>
+                <td className="px-4 py-3 font-black text-white">{item.resultShown}</td>
                 <td className="px-4 py-3 font-black text-white">{item.resultShown}</td>
                 <td className="px-4 py-3 font-black text-white">{item.ctaClicks}</td>
                 <td className="rounded-r-2xl px-4 py-3 font-black text-white">{item.events}</td>
@@ -188,30 +321,62 @@ export default async function FitnessDashboardPage({ params, searchParams }: Das
   }
 
   const [leadRecords, eventRecords] = await Promise.all([fetchLeadRecords(), fetchEventRecords()]);
-  const metrics = aggregateFitnessLeadMetrics(filterRecordsByDateRange(leadRecords, fromDate, toDate));
-  const eventMetrics = aggregateFitnessEventMetrics(filterRecordsByDateRange(eventRecords, fromDate, toDate));
+  const filteredLeads = filterRecordsByDateRange(leadRecords, fromDate, toDate);
+  const filteredEvents = filterRecordsByDateRange(eventRecords, fromDate, toDate);
+  const metrics = aggregateFitnessLeadMetrics(filteredLeads);
+  const eventMetrics = aggregateFitnessEventMetrics(filteredEvents);
+  const visualItems = calculatorFunnelLayout
+    .map((calculator) => {
+      const stats = eventMetrics.byCalculator.find((item) => item.calculator === calculator.id);
+      const views = stats?.views || 0;
+      const metricsGenerated = stats?.resultShown || 0;
+      const ctaClicks = stats?.ctaClicks || 0;
+      const capturedEmails = sourceCount(metrics.bySource, calculator.leadSource) + sourceCount(metrics.bySource, calculator.id);
+      const conversionRate = views > 0 ? ctaClicks / views * 100 : 0;
+
+      return {
+        id: calculator.id,
+        label: calculator[lang] || calculator.short,
+        views,
+        started: metricsGenerated,
+        metrics: metricsGenerated,
+        ctaClicks,
+        conversionRate,
+        capturedEmails,
+        events: stats?.events || 0,
+      };
+    })
+    .sort((a, b) => b.conversionRate - a.conversionRate || b.capturedEmails - a.capturedEmails || b.events - a.events);
 
   return (
     <main className="min-h-screen bg-zinc-950 px-4 py-10 text-white">
       <div className="mx-auto max-w-6xl">
-        <p className="text-sm font-bold uppercase tracking-[0.2em] text-emerald-300">NexTool Fit</p>
-        <h1 className="mt-4 text-4xl font-black md:text-6xl">{labels.title}</h1>
-        <p className="mt-4 max-w-3xl text-lg text-zinc-300">{labels.subtitle}</p>
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-start">
+          <div>
+            <p className="text-sm font-bold uppercase tracking-[0.2em] text-emerald-300">NexTool Fit</p>
+            <h1 className="mt-4 max-w-3xl text-4xl font-black leading-[0.95] md:text-6xl">{labels.title}</h1>
+            <p className="mt-4 max-w-2xl text-base leading-7 text-zinc-300 md:text-lg">{labels.subtitle}</p>
 
-        <form className="mt-6 grid gap-3 rounded-3xl border border-zinc-800 bg-zinc-900 p-5 md:grid-cols-[1fr_1fr_auto]" action={`/${lang}/fitness/dashboard`}>
-          <input type="hidden" name="token" value={token} />
-          <label className="text-sm font-bold text-zinc-300">
-            {labels.fromDate}
-            <input className="mt-2 w-full rounded-2xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-white outline-none focus:border-emerald-400" type="date" name="from" defaultValue={fromDate || ""} />
-          </label>
-          <label className="text-sm font-bold text-zinc-300">
-            {labels.toDate}
-            <input className="mt-2 w-full rounded-2xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-white outline-none focus:border-emerald-400" type="date" name="to" defaultValue={toDate || ""} />
-          </label>
-          <button className="self-end rounded-2xl bg-emerald-400 px-5 py-3 text-sm font-black text-zinc-950 transition hover:bg-emerald-300" type="submit">
-            {labels.applyRange}
-          </button>
-        </form>
+            <form className="mt-6 grid gap-3 rounded-3xl border border-zinc-800 bg-zinc-900 p-4 md:grid-cols-[1fr_1fr_auto]" action={`/${lang}/fitness/dashboard`}>
+              <input type="hidden" name="token" value={token} />
+              <label className="text-sm font-bold text-zinc-300">
+                {labels.fromDate}
+                <input className="mt-2 w-full rounded-2xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-white outline-none focus:border-emerald-400" type="date" name="from" defaultValue={fromDate || ""} />
+              </label>
+              <label className="text-sm font-bold text-zinc-300">
+                {labels.toDate}
+                <input className="mt-2 w-full rounded-2xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-white outline-none focus:border-emerald-400" type="date" name="to" defaultValue={toDate || ""} />
+              </label>
+              <button className="self-end rounded-2xl bg-emerald-400 px-5 py-3 text-sm font-black text-zinc-950 transition hover:bg-emerald-300" type="submit">
+                {labels.applyRange}
+              </button>
+            </form>
+          </div>
+
+          <FitnessTotals title={labels.fitnessTotals} items={eventMetrics.funnel} />
+        </div>
+
+        <VisualFunnel title="NexTool Fit" items={visualItems} labels={labels} />
 
         <div className="mt-8 grid gap-4 md:grid-cols-4">
           <StatCard label={labels.unique} value={metrics.uniqueEmails} />
