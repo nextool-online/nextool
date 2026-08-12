@@ -31,18 +31,20 @@ const events = [
   { event_name: "fitness_page_view", visitor_id: "v1", source: "direct_fitness", lang: "pt", created_at: "2026-08-11T10:00:00Z" },
   { event_name: "fitness_metrics_generated", visitor_id: "v1", source: "direct_fitness", lang: "pt", created_at: "2026-08-11T10:01:00Z" },
   { event_name: "email_submitted", visitor_id: "v1", source: "direct_fitness", lang: "pt", created_at: "2026-08-11T10:02:00Z" },
+  { event_name: "email_submitted", visitor_id: "v1", source: "direct_fitness", lang: "pt", created_at: "2026-08-11T10:03:00Z" },
+  { event_name: "email_submitted", visitor_id: "v4", source: "direct_fitness", lang: "pt", created_at: "2026-08-11T10:04:00Z" },
   { event_name: "fitness_page_view", visitor_id: "v2", source: "macros", lang: "pt", created_at: "2026-08-10T10:00:00Z" },
   { event_name: "calculator_view", visitor_id: "v3", source: "macro-calculator", lang: "pt", created_at: "2026-08-11T09:00:00Z" },
   { event_name: "calculator_result_shown", visitor_id: "v3", source: "macro-calculator", lang: "pt", created_at: "2026-08-11T09:01:00Z" },
   { event_name: "calculator_cta_click", visitor_id: "v3", source: "macro-calculator", lang: "pt", created_at: "2026-08-11T09:02:00Z" },
 ];
 const eventMetrics = aggregateFitnessEventMetrics(events, new Date("2026-08-11T12:00:00Z"));
-assert.equal(eventMetrics.totalEvents, 7);
-assert.equal(eventMetrics.uniqueVisitors, 3);
-assert.equal(eventMetrics.last24hEvents, 6);
-assert.equal(eventMetrics.byEvent[0].event, "fitness_page_view");
-assert.equal(eventMetrics.byEvent[0].count, 2);
-assert.equal(eventMetrics.funnel.find((item) => item.event === "email_submitted")?.count, 1);
+assert.equal(eventMetrics.totalEvents, 9);
+assert.equal(eventMetrics.uniqueVisitors, 4);
+assert.equal(eventMetrics.last24hEvents, 8);
+assert.equal(eventMetrics.byEvent.find((item) => item.event === "fitness_page_view")?.count, 2);
+assert.equal(eventMetrics.byUniqueEvent.find((item) => item.event === "email_submitted")?.count, 2);
+assert.equal(eventMetrics.funnel.find((item) => item.event === "email_submitted")?.count, 2);
 assert.equal(eventMetrics.calculatorFunnel.find((item) => item.event === "calculator_view")?.count, 1);
 assert.equal(eventMetrics.byCalculator[0].calculator, "macro-calculator");
 assert.equal(eventMetrics.byCalculator[0].events, 3);
@@ -94,6 +96,9 @@ assert.match(dashboardPage, /byCalculator/);
 assert.match(dashboardPage, /VisualFunnel/);
 assert.match(dashboardPage, /quickRanges/);
 assert.match(dashboardPage, /email_capture_rate/);
+assert.match(dashboardPage, /uniqueEmailCaptures/);
+assert.match(dashboardPage, /uniqueFitnessMetrics/);
+assert.match(dashboardPage, /Math\.min\(100/);
 assert.match(dashboardPage, /emails_captured/);
 assert.match(dashboardPage, /date-input/);
 assert.match(dashboardPage, /7d/);
@@ -101,6 +106,9 @@ assert.match(dashboardPage, /30d/);
 assert.match(dashboardPage, /60d/);
 assert.match(dashboardPage, /90d/);
 assert.match(dashboardPage, /languageSwitch/);
+assert.match(dashboardPage, /justify-end/);
+assert.match(dashboardPage, /type="text" inputMode="numeric"/);
+assert.match(dashboardPage, /parseDashboardDate/);
 assert.doesNotMatch(dashboardPage, /Idioma das métricas/);
 assert.doesNotMatch(dashboardPage, /Metrics language/);
 assert.doesNotMatch(dashboardPage, /Período observado/);
@@ -139,6 +147,11 @@ assert.match(journey, /email_sent_success/);
 assert.match(journey, /email_sent_error/);
 assert.match(journey, /fitness_metrics_generated/);
 assert.match(journey, /keepalive: true/);
+assert.match(toolAnalytics, /utm_source/);
+assert.match(toolAnalytics, /utm_campaign/);
+assert.match(journey, /utm_source/);
+assert.match(journey, /utm_campaign/);
+assert.match(journey, /attribution/);
 assert.match(toolPage, /FitnessToolAnalytics/);
 assert.match(envExample, /FITNESS_DASHBOARD_TOKEN/);
 assert.match(eventsSql, /create table if not exists public\.fitness_events/);

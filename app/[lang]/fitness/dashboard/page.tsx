@@ -175,11 +175,31 @@ function dashboardHref(lang: LanguageCode, token: string | undefined, from?: str
   return `/${lang}/fitness/dashboard${query ? `?${query}` : ""}`;
 }
 
-function activeRangeLabel(fromDate?: string | null, toDate?: string | null) {
+function parseDashboardDate(value?: string | null) {
+  if (!value) return null;
+  if (/^\d{4}-\d{2}-\d{2}$/.test(value)) return value;
+  const brMatch = value.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+  if (brMatch) return `${brMatch[3]}-${brMatch[2]}-${brMatch[1]}`;
+  return null;
+}
+
+function formatDashboardDate(value: string | null | undefined, lang: LanguageCode) {
+  const iso = parseDashboardDate(value);
+  if (!iso) return "";
+  if (lang === "pt") {
+    const [year, month, day] = iso.split("-");
+    return `${day}/${month}/${year}`;
+  }
+  return iso;
+}
+
+function activeRangeLabel(fromDate: string | null | undefined, toDate: string | null | undefined, lang: LanguageCode) {
   if (!fromDate && !toDate) return "total";
-  if (fromDate && toDate) return `${fromDate} → ${toDate}`;
-  if (fromDate) return `from ${fromDate}`;
-  return `to ${toDate}`;
+  const fromLabel = formatDashboardDate(fromDate, lang);
+  const toLabel = formatDashboardDate(toDate, lang);
+  if (fromLabel && toLabel) return `${fromLabel} → ${toLabel}`;
+  if (fromLabel) return `from ${fromLabel}`;
+  return `to ${toLabel}`;
 }
 
 function activeChipClass(isActive: boolean) {
@@ -223,11 +243,13 @@ function StatCard({ label, value }: { label: string; value: string | number }) {
   );
 }
 
-function FitnessTotals({ title, items, uniqueEmails }: { title: string; items: Array<{ event: string; count: number }>; uniqueEmails: number }) {
+function FitnessTotals({ title, items }: { title: string; items: Array<{ event: string; count: number }> }) {
   const submitted = metricCount(items, "email_submitted");
-  const generated = metricCount(items, "fitness_metrics_generated");
-  const submitConversion = generated > 0 ? submitted / generated * 100 : 0;
-  const captureConversion = generated > 0 ? uniqueEmails / generated * 100 : 0;
+  const sentSuccess = metricCount(items, "email_sent_success");
+  const uniqueFitnessMetrics = metricCount(items, "fitness_metrics_generated");
+  const uniqueEmailCaptures = sentSuccess;
+  const submitConversion = uniqueFitnessMetrics > 0 ? Math.min(100, submitted / uniqueFitnessMetrics * 100) : 0;
+  const captureConversion = uniqueFitnessMetrics > 0 ? Math.min(100, uniqueEmailCaptures / uniqueFitnessMetrics * 100) : 0;
 
   return (
     <section className="rounded-[2rem] border border-emerald-500/30 bg-gradient-to-br from-zinc-900 to-zinc-950 p-5 shadow-2xl shadow-emerald-950/20">
@@ -242,7 +264,7 @@ function FitnessTotals({ title, items, uniqueEmails }: { title: string; items: A
         ))}
         <div className="flex items-center justify-between rounded-2xl border border-emerald-400/30 bg-emerald-400/10 px-4 py-2">
           <span className="font-bold text-emerald-200">emails_captured</span>
-          <span className="font-black text-emerald-100">{uniqueEmails}</span>
+          <span className="font-black text-emerald-100">{uniqueEmailCaptures}</span>
         </div>
         <div className="flex items-center justify-between rounded-2xl border border-emerald-400/30 bg-emerald-400/10 px-4 py-2">
           <span className="font-bold text-emerald-200">email_conv_rate</span>
@@ -362,7 +384,9 @@ function CalculatorList({ title, items }: { title: string; items: Array<{ calcul
 const hiddenSections = ["funnel", "calculatorFunnel", "eventSource", "language", "timeline", "eventTimeline"];
 
 export default async function FitnessDashboardPage({ params, searchParams }: DashboardPageProps) {
-  const [{ lang }, { token, from: fromDate, to: toDate }] = await Promise.all([params, searchParams]);
+  const [{ lang }, { token, from: rawFromDate, to: rawToDate }] = await Promise.all([params, searchParams]);
+  const fromDate = parseDashboardDate(rawFromDate);
+  const toDate = parseDashboardDate(rawToDate);
   const labels = copy[lang] || copy.en;
   void hiddenSections;
 
@@ -422,7 +446,7 @@ export default async function FitnessDashboardPage({ params, searchParams }: Das
             </h1>
             <p className="mt-4 max-w-2xl text-base leading-7 text-zinc-300 md:text-lg">{labels.subtitle}</p>
 
-            <div className="mt-4 flex flex-wrap items-center gap-2 text-sm" data-testid="languageSwitch">
+            <div className="mt-4 flex flex-wrap items-center justify-end gap-2 text-sm" data-testid="languageSwitch">
               <Link className={`rounded-full px-4 py-2 font-black ${lang === "pt" ? "bg-emerald-400 text-zinc-950" : "border border-zinc-700 text-zinc-300"}`} href={dashboardHref("pt", token, fromDate, toDate)}>PT</Link>
               <Link className={`rounded-full px-4 py-2 font-black ${lang === "en" ? "bg-emerald-400 text-zinc-950" : "border border-zinc-700 text-zinc-300"}`} href={dashboardHref("en", token, fromDate, toDate)}>EN</Link>
             </div>
@@ -438,18 +462,18 @@ export default async function FitnessDashboardPage({ params, searchParams }: Das
                   </Link>
                 );
               })}
-              <span className="rounded-full border border-zinc-800 px-4 py-2 text-xs font-bold text-zinc-400">{activeRangeLabel(fromDate, toDate)}</span>
+              <span className="rounded-full border border-zinc-800 px-4 py-2 text-xs font-bold text-zinc-400">{activeRangeLabel(fromDate, toDate, lang)}</span>
             </div>
 
             <form className="mt-3 grid gap-3 rounded-3xl border border-zinc-800 bg-zinc-900 p-4 md:grid-cols-[1fr_1fr_auto]" action={`/${lang}/fitness/dashboard`}>
               <input type="hidden" name="token" value={token} />
               <label className="text-sm font-bold text-zinc-300">
                 {labels.fromDate}
-                <input className="date-input mt-2 w-full rounded-2xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-white outline-none focus:border-emerald-400" type="date" name="from" defaultValue={fromDate || ""} aria-label={`${labels.fromDate} ${labels.dateHint}`} />
+                <input className="date-input mt-2 w-full rounded-2xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-white outline-none focus:border-emerald-400" type="text" inputMode="numeric" name="from" defaultValue={formatDashboardDate(fromDate, lang)} placeholder={labels.dateHint} aria-label={`${labels.fromDate} ${labels.dateHint}`} />
               </label>
               <label className="text-sm font-bold text-zinc-300">
                 {labels.toDate}
-                <input className="date-input mt-2 w-full rounded-2xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-white outline-none focus:border-emerald-400" type="date" name="to" defaultValue={toDate || ""} aria-label={`${labels.toDate} ${labels.dateHint}`} />
+                <input className="date-input mt-2 w-full rounded-2xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-white outline-none focus:border-emerald-400" type="text" inputMode="numeric" name="to" defaultValue={formatDashboardDate(toDate, lang)} placeholder={labels.dateHint} aria-label={`${labels.toDate} ${labels.dateHint}`} />
               </label>
               <button className="self-end rounded-2xl bg-emerald-400 px-5 py-3 text-sm font-black text-zinc-950 transition hover:bg-emerald-300" type="submit">
                 {labels.applyRange}
@@ -457,7 +481,7 @@ export default async function FitnessDashboardPage({ params, searchParams }: Das
             </form>
           </div>
 
-          <FitnessTotals title={labels.fitnessTotals} items={eventMetrics.funnel} uniqueEmails={metrics.uniqueEmails} />
+          <FitnessTotals title={labels.fitnessTotals} items={eventMetrics.funnel} />
         </div>
 
         <VisualFunnel title="NexTool Fit" items={visualItems} labels={labels} />

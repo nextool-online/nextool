@@ -378,6 +378,17 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
     return generated;
   };
 
+  const getAttribution = () => {
+    if (typeof window === "undefined") return {};
+    const params = new URLSearchParams(window.location.search);
+    const attributionKeys = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "gclid", "fbclid"];
+    return Object.fromEntries(
+      attributionKeys
+        .map((key) => [key, params.get(key)?.slice(0, 120) || ""])
+        .filter(([, value]) => value)
+    );
+  };
+
   const trackFitnessEvent = (eventName: string, detail: Record<string, string | boolean | number> = {}) => {
     if (typeof window === "undefined") return;
     const eventDetail = { event: eventName, ...detail };
@@ -399,6 +410,7 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
         lang,
         source: String(detail.source || source || "direct_fitness"),
         path: window.location.pathname,
+        metadata: getAttribution(),
       }),
     }).catch(() => undefined);
   };
@@ -463,6 +475,7 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
             activity,
             goal,
             calories: knownCalories,
+            attribution: JSON.stringify(getAttribution()),
           },
           metrics: metricsPayload,
         }),

@@ -70,6 +70,7 @@ export type FitnessEventMetrics = {
   last24hEvents: number;
   last7dEvents: number;
   byEvent: EventCount[];
+  byUniqueEvent: EventCount[];
   bySource: SourceCount[];
   byLang: LangCount[];
   byDay: DayCount[];
@@ -262,6 +263,7 @@ export function aggregateFitnessEventMetrics(
   now = new Date()
 ): FitnessEventMetrics {
   const eventMap = new Map<string, number>();
+  const uniqueEventMap = new Map<string, Set<string>>();
   const sourceMap = new Map<string, number>();
   const langMap = new Map<string, number>();
   const dayMap = new Map<string, number>();
@@ -279,9 +281,15 @@ export function aggregateFitnessEventMetrics(
     const createdAt = event.created_at || "";
 
     increment(eventMap, eventName);
+    if (visitorId) {
+      const visitors = uniqueEventMap.get(eventName) || new Set<string>();
+      visitors.add(visitorId);
+      uniqueEventMap.set(eventName, visitors);
+    }
     increment(sourceMap, source);
     increment(langMap, lang);
     if (eventName.startsWith("calculator_")) {
+      const uniqueSourceEvent = `${source}:${eventName}`;
       const current = calculatorMap.get(source) || {
         calculator: source,
         events: 0,
@@ -290,9 +298,19 @@ export function aggregateFitnessEventMetrics(
         ctaClicks: 0,
       };
       current.events += 1;
-      if (eventName === "calculator_view") current.views += 1;
-      if (eventName === "calculator_result_shown") current.resultShown += 1;
-      if (eventName === "calculator_cta_click") current.ctaClicks += 1;
+      if (visitorId) {
+        const sourceVisitors = uniqueEventMap.get(uniqueSourceEvent) || new Set<string>();
+        const hadVisitor = sourceVisitors.has(visitorId);
+        sourceVisitors.add(visitorId);
+        uniqueEventMap.set(uniqueSourceEvent, sourceVisitors);
+        if (!hadVisitor && eventName === "calculator_view") current.views += 1;
+        if (!hadVisitor && eventName === "calculator_result_shown") current.resultShown += 1;
+        if (!hadVisitor && eventName === "calculator_cta_click") current.ctaClicks += 1;
+      } else {
+        if (eventName === "calculator_view") current.views += 1;
+        if (eventName === "calculator_result_shown") current.resultShown += 1;
+        if (eventName === "calculator_cta_click") current.ctaClicks += 1;
+      }
       calculatorMap.set(source, current);
     }
     if (visitorId) visitorSet.add(visitorId);
@@ -315,11 +333,12 @@ export function aggregateFitnessEventMetrics(
     last7dEvents,
     latestCreatedAt,
     byEvent: sortCounts(Array.from(eventMap, ([event, count]) => ({ event, count }))),
+    byUniqueEvent: sortCounts(Array.from(uniqueEventMap, ([event, visitors]) => ({ event, count: visitors.size })).filter((item) => !item.event.includes(":"))),
     bySource: sortCounts(Array.from(sourceMap, ([source, count]) => ({ source, count }))),
     byLang: sortCounts(Array.from(langMap, ([lang, count]) => ({ lang, count }))),
     byDay: Array.from(dayMap, ([day, count]) => ({ day, count })).sort((a, b) => b.day.localeCompare(a.day)),
-    funnel: funnelOrder.map((event) => ({ event, count: eventMap.get(event) || 0 })),
-    calculatorFunnel: calculatorFunnelOrder.map((event) => ({ event, count: eventMap.get(event) || 0 })),
+    funnel: funnelOrder.map((event) => ({ event, count: uniqueEventMap.get(event)?.size || 0 })),
+    calculatorFunnel: calculatorFunnelOrder.map((event) => ({ event, count: uniqueEventMap.get(event)?.size || 0 })),
     byCalculator: Array.from(calculatorMap.values()).sort((a, b) => b.events - a.events),
   };
 }

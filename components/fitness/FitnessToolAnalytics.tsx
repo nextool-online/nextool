@@ -9,6 +9,17 @@ type FitnessToolAnalyticsProps = {
   toolId: string;
 };
 
+const attributionKeys = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "gclid", "fbclid"];
+
+function getAttribution() {
+  const params = new URLSearchParams(window.location.search);
+  return Object.fromEntries(
+    attributionKeys
+      .map((key) => [key, params.get(key)?.slice(0, 120) || ""])
+      .filter(([, value]) => value)
+  );
+}
+
 function getVisitorId() {
   const storageKey = "nextool_fitness_visitor_id";
   const existing = window.localStorage.getItem(storageKey);
@@ -37,6 +48,7 @@ function sendFitnessToolEvent(eventName: string, lang: LanguageCode, toolId: str
       lang,
       source: toolId,
       path: window.location.pathname,
+      metadata: getAttribution(),
     }),
   }).catch(() => undefined);
 }
