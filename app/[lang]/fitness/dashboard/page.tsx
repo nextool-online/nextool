@@ -58,6 +58,10 @@ const copy = {
     dateHint: "dd/mm/aaaa",
     emailCaptureRate: "email_capture_rate",
     emailsCaptured: "emails_captured",
+    affiliateFunnelTitle: "Afiliados / ofertas",
+    offerTracking: "Tracking de ofertas",
+    offerViews: "offer_views",
+    offerClicks: "offer_clicks",
   },
   en: {
     title: "NexTool Fit Dashboard",
@@ -97,6 +101,10 @@ const copy = {
     dateHint: "yyyy-mm-dd",
     emailCaptureRate: "email_capture_rate",
     emailsCaptured: "emails_captured",
+    affiliateFunnelTitle: "Affiliate offers",
+    offerTracking: "Offer tracking",
+    offerViews: "offer_views",
+    offerClicks: "offer_clicks",
   },
 };
 
@@ -145,7 +153,7 @@ async function fetchLeadRecords(fromDate?: string | null, toDate?: string | null
 
 async function fetchEventRecords(fromDate?: string | null, toDate?: string | null, lang?: string | null): Promise<FitnessEventMetricRecord[]> {
   const table = process.env.SUPABASE_FITNESS_EVENTS_TABLE || "fitness_events";
-  return supabaseSelect(buildDashboardMetricPath(table, "event_name,visitor_id,lang,source,path,created_at", 10000, fromDate, toDate, lang));
+  return supabaseSelect(buildDashboardMetricPath(table, "event_name,visitor_id,lang,source,path,metadata,created_at", 10000, fromDate, toDate, lang));
 }
 
 const quickRanges = [
@@ -381,6 +389,42 @@ function CalculatorList({ title, items }: { title: string; items: Array<{ calcul
   );
 }
 
+function AffiliateOfferList({ title, items, labels }: { title: string; items: Array<{ offerId: string; calculator: string; productCategory: string; placement: string; views: number; clicks: number }>; labels: typeof copy.pt }) {
+  return (
+    <section className="rounded-3xl border border-zinc-800 bg-zinc-900 p-5 md:col-span-3">
+      <h2 className="text-xl font-black text-white">{title}</h2>
+      <div className="mt-4 overflow-x-auto">
+        <table className="w-full min-w-[760px] border-separate border-spacing-y-2 text-center text-sm">
+          <thead className="text-xs uppercase tracking-wide text-zinc-500">
+            <tr>
+              <th className="px-4 py-2">offer_id</th>
+              <th className="px-4 py-2">Calculadora</th>
+              <th className="px-4 py-2">Categoria</th>
+              <th className="px-4 py-2">Placement</th>
+              <th className="px-4 py-2">{labels.offerViews}</th>
+              <th className="px-4 py-2">{labels.offerClicks}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {items.length === 0 ? (
+              <tr><td className="rounded-2xl bg-zinc-950 px-4 py-3 text-zinc-400" colSpan={6}>0</td></tr>
+            ) : items.map((item) => (
+              <tr key={item.offerId} className="bg-zinc-950 text-zinc-200">
+                <td className="rounded-l-2xl px-4 py-3 font-bold text-emerald-300">{item.offerId}</td>
+                <td className="px-4 py-3 font-black text-white">{item.calculator}</td>
+                <td className="px-4 py-3 font-black text-white">{item.productCategory}</td>
+                <td className="px-4 py-3 font-black text-white">{item.placement}</td>
+                <td className="px-4 py-3 font-black text-white">{item.views}</td>
+                <td className="rounded-r-2xl px-4 py-3 font-black text-white">{item.clicks}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  );
+}
+
 const hiddenSections = ["funnel", "calculatorFunnel", "eventSource", "language", "timeline", "eventTimeline"];
 
 export default async function FitnessDashboardPage({ params, searchParams }: DashboardPageProps) {
@@ -494,11 +538,14 @@ export default async function FitnessDashboardPage({ params, searchParams }: Das
           <StatCard label={labels.day} value={metrics.last24hSubmissions} />
           <StatCard label={labels.week} value={metrics.last7dSubmissions} />
           <StatCard label={labels.events24h} value={eventMetrics.last24hEvents} />
+          <StatCard label={labels.offerViews} value={metricCount(eventMetrics.affiliateFunnel, "affiliate_offer_view")} />
+          <StatCard label={labels.offerClicks} value={metricCount(eventMetrics.affiliateFunnel, "affiliate_offer_click")} />
           <StatCard label={labels.latest} value={metrics.latestCreatedAt ? new Date(metrics.latestCreatedAt).toLocaleDateString(lang === "pt" ? "pt-BR" : "en-US") : "—"} />
         </div>
 
         <div className="mt-6 grid gap-4 md:grid-cols-3">
           <CalculatorList title={labels.byCalculator} items={eventMetrics.byCalculator} />
+          <AffiliateOfferList title={labels.affiliateFunnelTitle} items={eventMetrics.byOffer} labels={labels} />
         </div>
       </div>
     </main>

@@ -37,11 +37,13 @@ const events = [
   { event_name: "calculator_view", visitor_id: "v3", source: "macro-calculator", lang: "pt", created_at: "2026-08-11T09:00:00Z" },
   { event_name: "calculator_result_shown", visitor_id: "v3", source: "macro-calculator", lang: "pt", created_at: "2026-08-11T09:01:00Z" },
   { event_name: "calculator_cta_click", visitor_id: "v3", source: "macro-calculator", lang: "pt", created_at: "2026-08-11T09:02:00Z" },
+  { event_name: "affiliate_offer_view", visitor_id: "v3", source: "macro-calculator", lang: "pt", metadata: { offer_id: "whey-macros", product_category: "protein", placement: "post_capture" }, created_at: "2026-08-11T09:03:00Z" },
+  { event_name: "affiliate_offer_click", visitor_id: "v3", source: "macro-calculator", lang: "pt", metadata: { offer_id: "whey-macros", product_category: "protein", placement: "post_capture" }, created_at: "2026-08-11T09:04:00Z" },
 ];
 const eventMetrics = aggregateFitnessEventMetrics(events, new Date("2026-08-11T12:00:00Z"));
-assert.equal(eventMetrics.totalEvents, 9);
+assert.equal(eventMetrics.totalEvents, 11);
 assert.equal(eventMetrics.uniqueVisitors, 4);
-assert.equal(eventMetrics.last24hEvents, 8);
+assert.equal(eventMetrics.last24hEvents, 10);
 assert.equal(eventMetrics.byEvent.find((item) => item.event === "fitness_page_view")?.count, 2);
 assert.equal(eventMetrics.byUniqueEvent.find((item) => item.event === "email_submitted")?.count, 2);
 assert.equal(eventMetrics.funnel.find((item) => item.event === "email_submitted")?.count, 2);
@@ -50,6 +52,11 @@ assert.equal(eventMetrics.byCalculator[0].calculator, "macro-calculator");
 assert.equal(eventMetrics.byCalculator[0].events, 3);
 assert.equal(eventMetrics.byCalculator[0].resultShown, 1);
 assert.equal(eventMetrics.byCalculator[0].ctaClicks, 1);
+assert.equal(eventMetrics.affiliateFunnel.find((item) => item.event === "affiliate_offer_view")?.count, 1);
+assert.equal(eventMetrics.affiliateFunnel.find((item) => item.event === "affiliate_offer_click")?.count, 1);
+assert.equal(eventMetrics.byOffer[0].offerId, "whey-macros");
+assert.equal(eventMetrics.byOffer[0].views, 1);
+assert.equal(eventMetrics.byOffer[0].clicks, 1);
 
 const rangedLeads = filterRecordsByDateRange(leads, "2026-08-10", "2026-08-10");
 assert.equal(rangedLeads.length, 1);
@@ -75,6 +82,14 @@ assert.equal(sanitizeFitnessEventPayload({
   source: "macro-calculator",
   path: "/pt/tools/calculadora-de-macros",
 }).source, "macro-calculator");
+assert.equal(sanitizeFitnessEventPayload({
+  event: "affiliate_offer_click",
+  visitorId: "visitor-789",
+  lang: "pt",
+  source: "protein-calculator",
+  path: "/pt/tools/calculadora-de-proteina",
+  metadata: { offer_id: "whey-protein", placement: "post_capture", email: "strip@example.com" },
+}).metadata.offer_id, "whey-protein");
 
 assert.equal(validateDashboardToken("abc", "abc"), true);
 assert.equal(validateDashboardToken("", "abc"), false);
@@ -133,7 +148,12 @@ assert.match(metricsRoute, /searchParams\.get\("lang"\)/);
 assert.match(metricsRoute, /eq\.\$\{lang\}/);
 assert.match(metricsRoute, /gte\.\$\{fromDate\}/);
 assert.match(metricsRoute, /lte\.\$\{toDate\}/);
+assert.match(metricsRoute, /metadata,created_at/);
 assert.match(metricsRoute, /filterRecordsByDateRange/);
+assert.match(dashboardPage, /affiliate_offer_click/);
+assert.match(dashboardPage, /affiliateFunnel/);
+assert.match(dashboardPage, /byOffer/);
+assert.match(dashboardPage, /AffiliateOfferList/);
 assert.match(eventRoute, /sanitizeFitnessEventPayload/);
 assert.match(journey, /fitness_page_view/);
 assert.match(journey, /api\/fitness\/event/);

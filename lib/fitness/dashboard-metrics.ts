@@ -52,6 +52,15 @@ export type CalculatorCount = {
   ctaClicks: number;
 };
 
+export type AffiliateOfferCount = {
+  offerId: string;
+  calculator: string;
+  productCategory: string;
+  placement: string;
+  views: number;
+  clicks: number;
+};
+
 export type FitnessLeadMetrics = {
   totalSubmissions: number;
   uniqueEmails: number;
@@ -76,7 +85,9 @@ export type FitnessEventMetrics = {
   byDay: DayCount[];
   funnel: EventCount[];
   calculatorFunnel: EventCount[];
+  affiliateFunnel: EventCount[];
   byCalculator: CalculatorCount[];
+  byOffer: AffiliateOfferCount[];
   latestCreatedAt: string | null;
 };
 
@@ -92,6 +103,10 @@ const allowedEvents = new Set([
   "email_sent_success",
   "email_preview_success",
   "email_sent_error",
+  "affiliate_offer_view",
+  "affiliate_offer_click",
+  "affiliate_landing_view",
+  "affiliate_landing_cta_click",
 ]);
 
 const allowedLangs = new Set(["en", "pt"]);
@@ -122,6 +137,13 @@ const calculatorFunnelOrder = [
   "calculator_view",
   "calculator_result_shown",
   "calculator_cta_click",
+];
+
+const affiliateFunnelOrder = [
+  "affiliate_offer_view",
+  "affiliate_offer_click",
+  "affiliate_landing_view",
+  "affiliate_landing_cta_click",
 ];
 
 const funnelOrder = [
@@ -268,6 +290,7 @@ export function aggregateFitnessEventMetrics(
   const langMap = new Map<string, number>();
   const dayMap = new Map<string, number>();
   const calculatorMap = new Map<string, CalculatorCount>();
+  const offerMap = new Map<string, AffiliateOfferCount>();
   const visitorSet = new Set<string>();
   let last24hEvents = 0;
   let last7dEvents = 0;
@@ -313,6 +336,32 @@ export function aggregateFitnessEventMetrics(
       }
       calculatorMap.set(source, current);
     }
+    if (eventName.startsWith("affiliate_")) {
+      const offerId = cleanText(event.metadata?.offer_id || event.metadata?.offerId || "unknown_offer", "unknown_offer");
+      const productCategory = cleanText(event.metadata?.product_category || event.metadata?.productCategory || "unknown", "unknown");
+      const placement = cleanText(event.metadata?.placement || "unknown", "unknown");
+      const current = offerMap.get(offerId) || {
+        offerId,
+        calculator: source,
+        productCategory,
+        placement,
+        views: 0,
+        clicks: 0,
+      };
+      const uniqueOfferEvent = `${offerId}:${eventName}`;
+      if (visitorId) {
+        const offerVisitors = uniqueEventMap.get(uniqueOfferEvent) || new Set<string>();
+        const hadVisitor = offerVisitors.has(visitorId);
+        offerVisitors.add(visitorId);
+        uniqueEventMap.set(uniqueOfferEvent, offerVisitors);
+        if (!hadVisitor && eventName === "affiliate_offer_view") current.views += 1;
+        if (!hadVisitor && eventName === "affiliate_offer_click") current.clicks += 1;
+      } else {
+        if (eventName === "affiliate_offer_view") current.views += 1;
+        if (eventName === "affiliate_offer_click") current.clicks += 1;
+      }
+      offerMap.set(offerId, current);
+    }
     if (visitorId) visitorSet.add(visitorId);
 
     if (createdAt) {
@@ -339,6 +388,8 @@ export function aggregateFitnessEventMetrics(
     byDay: Array.from(dayMap, ([day, count]) => ({ day, count })).sort((a, b) => b.day.localeCompare(a.day)),
     funnel: funnelOrder.map((event) => ({ event, count: uniqueEventMap.get(event)?.size || 0 })),
     calculatorFunnel: calculatorFunnelOrder.map((event) => ({ event, count: uniqueEventMap.get(event)?.size || 0 })),
+    affiliateFunnel: affiliateFunnelOrder.map((event) => ({ event, count: uniqueEventMap.get(event)?.size || 0 })),
     byCalculator: Array.from(calculatorMap.values()).sort((a, b) => b.events - a.events),
+    byOffer: Array.from(offerMap.values()).sort((a, b) => b.clicks - a.clicks || b.views - a.views),
   };
 }

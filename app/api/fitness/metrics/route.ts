@@ -58,7 +58,7 @@ async function fetchLeadMetricRecords(fromDate?: string | null, toDate?: string 
 async function fetchEventMetricRecords(fromDate?: string | null, toDate?: string | null, lang?: string | null): Promise<FitnessEventMetricRecord[]> {
   const table = process.env.SUPABASE_FITNESS_EVENTS_TABLE || "fitness_events";
   try {
-    return await supabaseSelect(buildMetricPath(table, "event_name,visitor_id,lang,source,path,created_at", 10000, fromDate, toDate, lang));
+    return await supabaseSelect(buildMetricPath(table, "event_name,visitor_id,lang,source,path,metadata,created_at", 10000, fromDate, toDate, lang));
   } catch {
     return [];
   }
