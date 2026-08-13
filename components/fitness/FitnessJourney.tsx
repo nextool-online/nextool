@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 
 import { getLocaleProfile } from "../../data/localeProfiles";
@@ -191,6 +192,7 @@ function metricCard({
 }
 
 export default function FitnessJourney({ lang }: FitnessJourneyProps) {
+  const router = useRouter();
   const content = getFitnessContent(lang);
   const usesImperial = getLocaleProfile(lang).measurementSystem === "imperial";
   const weightInputRef = useRef<HTMLInputElement>(null);
@@ -500,6 +502,7 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
       trackFitnessEvent(previewMode ? "email_preview_success" : "email_sent_success", { source: source || "direct_fitness", lang });
       if (!previewMode) {
         trackAffiliateEvent("affiliate_offer_view", lang, proteinOffer.source, proteinOffer);
+        router.push(`/${lang}/fitness/email-sent?source=${encodeURIComponent(source || "direct_fitness")}`);
       }
     } catch {
       setEmailStatus("error");

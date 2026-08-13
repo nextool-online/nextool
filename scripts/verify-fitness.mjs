@@ -94,6 +94,8 @@ assert.match(fitnessJourneySource, /emailStatus === "success"/);
 assert.match(fitnessJourneySource, /Promoções|Promotions/);
 assert.match(fitnessJourneySource, /spam/i);
 assert.match(fitnessJourneySource, /Ver opções práticas|See practical options/);
+assert.match(fitnessJourneySource, /router.push/);
+assert.match(fitnessJourneySource, /fitness\/email-sent/);
 assert.match(fitnessJourneySource, /id="fitness-email"/);
 assert.match(fitnessJourneySource, /affiliate_offer_view/);
 assert.match(fitnessJourneySource, /affiliate_offer_click/);
@@ -122,3 +124,9 @@ assert.equal(
 assert.equal(getTargetMetricStatus().id, "neutral");
 
 console.log("Fitness journey verification passed");
+
+const emailSentPageSource = fs.readFileSync(new URL("../components/fitness/FitnessEmailSentPage.tsx", import.meta.url), "utf8");
+assert.match(emailSentPageSource, /Email enviado/);
+assert.match(emailSentPageSource, /Promoções/);
+assert.match(emailSentPageSource, /Spam/);
+assert.match(emailSentPageSource, /protein-contextual-offer/);
