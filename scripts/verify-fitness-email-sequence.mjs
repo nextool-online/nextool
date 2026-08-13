@@ -11,6 +11,9 @@ const sequence = buildFitnessEmailSequence({ lang: "pt", source: "protein", prof
 assert.equal(sequence.sequenceId, "protein_pt_default_v1");
 assert.equal(sequence.steps.length, 5);
 assert.equal(sequence.steps[0].stepId, "protein_pt_01_metrics_delivery");
+assert.doesNotMatch(sequence.steps[0].html, /protein-contextual-offer/);
+assert.match(sequence.steps[1].subject, /proteína/i);
+assert.match(sequence.steps[1].html, /protein-contextual-offer/);
 assert.match(sequence.steps[2].subject, /proteína/i);
 assert.match(sequence.steps[2].html, /protein-contextual-offer/);
 assert.doesNotMatch(sequence.steps[2].html, /cura|milagre|diagnost/i);
