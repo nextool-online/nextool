@@ -16,6 +16,14 @@ assert.match(sequence.steps[1].subject, /proteína/i);
 assert.match(sequence.steps[1].html, /protein-contextual-offer/);
 assert.match(sequence.steps[2].subject, /proteína/i);
 assert.match(sequence.steps[2].html, /protein-contextual-offer/);
+assert.match(sequence.steps[1].html, /Plano simples de proteína/);
+assert.match(sequence.steps[3].html, /calculadora-de-macros/);
+assert.match(sequence.steps[3].html, /calculadora-calorias/);
+assert.match(sequence.steps[4].html, /calculadora-de-proteina/);
+for (const step of sequence.steps.slice(1)) {
+  assert.ok((step.html.match(/<p style=/g) || []).length >= 2, `${step.stepId} needs more value paragraphs`);
+  assert.match(step.html, /Próximo passo|Plano simples|Abrir|Refazer|Ver opções/);
+}
 assert.doesNotMatch(sequence.steps[2].html, /cura|milagre|diagnost/i);
 
 assert.equal(buildFitnessEmailHash("Carlos@Example.com"), buildFitnessEmailHash(" carlos@example.com "));

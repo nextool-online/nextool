@@ -65,13 +65,28 @@ export function buildFitnessEmailHash(email: string) {
   return createHash("sha256").update(email.trim().toLowerCase()).digest("hex");
 }
 
-function offerBlock(lang: FitnessLeadLang, offerId: string) {
-  const href = `https://www.nextool.online/${lang}/fitness/offers/protein?utm_source=email&utm_medium=sequence&utm_campaign=protein_${lang}_default_v1&utm_content=${offerId}`;
-  return `<div style="margin-top:24px;padding:20px;border-radius:22px;background:#ecfdf5;border:1px solid #a7f3d0"><p style="margin:0 0 10px;font-size:12px;font-weight:800;color:#047857;text-transform:uppercase">${offerId}</p><p style="margin:0 0 14px;color:#0f172a;font-weight:800">${lang === "pt" ? "Próximo passo prático" : "Practical next step"}</p><a href="${href}" style="display:inline-block;background:#0f172a;color:#ffffff;text-decoration:none;border-radius:999px;padding:12px 18px;font-weight:800">${lang === "pt" ? "Ver opções de proteína" : "See protein options"}</a></div>`;
+function emailUrl(lang: FitnessLeadLang, path: string, campaign: string, content: string) {
+  return `https://www.nextool.online/${lang}${path}?utm_source=email&utm_medium=sequence&utm_campaign=${campaign}&utm_content=${content}&variant=soft`;
 }
 
-function shell(title: string, body: string) {
-  return `<div style="font-family:Arial,sans-serif;background:#09090b;color:#f4f4f5;padding:28px"><div style="max-width:640px;margin:0 auto;background:#ffffff;color:#18181b;border-radius:28px;padding:28px"><h1 style="margin:0 0 16px;font-size:28px;line-height:1.15">${escapeHtml(title)}</h1>${body}<p style="margin-top:24px;font-size:12px;line-height:1.6;color:#71717a">${title.includes("proteína") ? "Estimativas gerais. Não substituem orientação médica ou nutricional." : "General estimates. They do not replace medical or nutrition advice."}</p></div></div>`;
+function button(href: string, label: string) {
+  return `<p style="margin:22px 0 0"><a href="${href}" style="display:inline-block;background:#0ea5e9;color:#ffffff;text-decoration:none;border-radius:999px;padding:12px 18px;font-weight:800">${label}</a></p>`;
+}
+
+function valueBlock(title: string, body: string) {
+  return `<div style="margin:20px 0;padding:18px;border-radius:22px;background:linear-gradient(135deg,#e0f2fe,#ecfdf5);border:1px solid #bae6fd"><p style="margin:0 0 8px;font-size:13px;font-weight:900;color:#0369a1;text-transform:uppercase">${title}</p><p style="margin:0;line-height:1.7;color:#0f172a;font-weight:700">${body}</p></div>`;
+}
+
+function offerBlock(lang: FitnessLeadLang, offerId: string, label?: string) {
+  const href = emailUrl(lang, "/fitness/offers/protein", `protein_${lang}_default_v1`, offerId);
+  return `<div style="margin-top:24px;padding:20px;border-radius:22px;background:#ecfdf5;border:1px solid #a7f3d0"><p style="margin:0 0 10px;font-size:12px;font-weight:800;color:#047857;text-transform:uppercase">${offerId}</p><p style="margin:0 0 14px;color:#0f172a;font-weight:800">${lang === "pt" ? "Próximo passo" : "Next step"}</p><p style="margin:0 0 14px;line-height:1.6;color:#334155">${lang === "pt" ? "Compare opções práticas com calma. Comida primeiro; complemento apenas quando reduzir atrito." : "Compare practical options calmly. Food first; supplements only when they reduce friction."}</p>${button(href, label || (lang === "pt" ? "Ver opções práticas" : "See practical options"))}</div>`;
+}
+
+function shell(lang: FitnessLeadLang, title: string, body: string) {
+  const disclaimer = lang === "pt"
+    ? "Estimativas gerais. Não substituem orientação médica ou nutricional."
+    : "General estimates. They do not replace medical or nutrition advice.";
+  return `<div style="font-family:Arial,sans-serif;background:#f0f9ff;color:#0f172a;padding:24px"><div style="max-width:640px;margin:0 auto;background:#ffffff;color:#18181b;border-radius:28px;padding:28px;border:1px solid #dbeafe"><h1 style="margin:0 0 16px;font-size:28px;line-height:1.15;color:#0f172a">${escapeHtml(title)}</h1>${body}<p style="margin-top:24px;font-size:12px;line-height:1.6;color:#71717a">${disclaimer}</p></div></div>`;
 }
 
 export function buildFitnessEmailSequence(payload: Pick<FitnessLeadPayload, "lang" | "source" | "profile" | "metrics">): FitnessEmailSequence {
@@ -87,30 +102,30 @@ export function buildFitnessEmailSequence(payload: Pick<FitnessLeadPayload, "lan
       delayDays: 0,
       subject: "Suas métricas de proteína",
       preview: "Sua meta estimada e como usar esse número sem complicar.",
-      html: shell("Suas métricas de proteína", `<p style="line-height:1.7">Sua meta estimada de proteína ficou em <strong>${protein}</strong>.</p><p style="line-height:1.7">Sua meta de calorias estimada é <strong>${calories}</strong>.</p><p style="line-height:1.7">Use esses números como referência prática para organizar a semana. No próximo email eu te mostro formas simples de bater essa meta com menos atrito.</p>`),
+      html: shell("pt", "Suas métricas de proteína", `<p style="line-height:1.7">Sua meta estimada de proteína ficou em <strong>${protein}</strong>. Sua meta de calorias estimada é <strong>${calories}</strong>.</p><p style="line-height:1.7">Use esses números como referência prática para organizar a semana, não como cobrança perfeita para todos os dias.</p>${valueBlock("Como usar hoje", "Escolha uma refeição do dia para melhorar primeiro. É mais fácil ajustar um ponto da rotina do que tentar mudar tudo ao mesmo tempo.")}`),
     },
     {
       stepId: "protein_pt_02_simple_offer",
       delayDays: 1,
       subject: "Sua meta de proteína parece alta?",
-      preview: "Comida primeiro; complemento só quando reduzir atrito.",
+      preview: "Um plano simples para transformar número em rotina.",
       offerId: "protein-contextual-offer",
-      html: shell("Bater proteína sem complicar", `<p style="line-height:1.7">O problema quase nunca é saber o número. O problema é repetir em dias normais.</p><p style="line-height:1.7">Comida de verdade vem primeiro. Mas quando falta praticidade, algumas pessoas usam fontes simples como whey, proteína vegetal ou creatina para reduzir atrito.</p><p style="line-height:1.7">Não é obrigatório. É só um atalho para comparar opções com calma.</p>${offerBlock("pt", "protein-contextual-offer")}`),
+      html: shell("pt", "Bater proteína sem complicar", `<p style="line-height:1.7">O problema quase nunca é saber o número. O problema é repetir em dias normais, quando você está com pressa, sem planejamento ou sem opções fáceis por perto.</p><p style="line-height:1.7">Plano simples de proteína: divida sua meta em 3 ou 4 momentos. Em cada um, tente ter uma fonte clara: ovos, iogurte, frango, peixe, leguminosas, whey ou proteína vegetal quando fizer sentido.</p>${valueBlock("Plano simples de proteína", "Meta alta fica mais leve quando vira blocos menores. 120g por dia pode virar 30g em quatro momentos, por exemplo.")}${offerBlock("pt", "protein-contextual-offer")}`),
     },
     {
       stepId: "protein_pt_03_offer_bridge",
       delayDays: 3,
       subject: "O erro que impede muita gente de bater proteína",
-      preview: "O problema quase nunca é saber o número. É conseguir repetir.",
+      preview: "Não é falta de vontade. É falta de ambiente fácil.",
       offerId: "protein-contextual-offer",
-      html: shell("O erro não é a conta — é a rotina", `<p style="line-height:1.7">Saber que precisa de <strong>${protein}</strong> é só o início. O desafio é ter fontes práticas o suficiente para repetir isso sem depender de força de vontade.</p>${offerBlock("pt", "protein-contextual-offer")}`),
+      html: shell("pt", "O erro não é a conta — é o ambiente", `<p style="line-height:1.7">Quando a rotina não tem opções prontas, a meta vira esforço mental. A pessoa sabe o que deveria fazer, mas decide em cima da hora — e quase sempre escolhe o mais fácil.</p><p style="line-height:1.7">A solução é montar um ambiente favorável: compras certas, porções simples e uma opção de emergência para os dias corridos. Isso reduz atrito sem depender de motivação.</p>${valueBlock("Sugestão prática", "Tenha duas fontes principais de comida e uma opção de conveniência. Assim você não precisa improvisar todos os dias.")}${offerBlock("pt", "protein-contextual-offer", "Abrir guia de opções práticas")}`),
     },
     {
       stepId: "protein_pt_04_calories_macros",
       delayDays: 5,
       subject: "Proteína, calorias e macros precisam conversar",
-      preview: "Proteína isolada ajuda pouco se as calorias estiverem fora do objetivo.",
-      html: shell("Conecte proteína, calorias e macros", `<p style="line-height:1.7">Proteína ajuda, mas seu resultado depende do conjunto: calorias, treino, sono e consistência.</p>`),
+      preview: "Proteína ajuda, mas o contexto decide o resultado.",
+      html: shell("pt", "Conecte proteína, calorias e macros", `<p style="line-height:1.7">Proteína ajuda na saciedade e na manutenção muscular, mas seu resultado depende do conjunto: calorias, treino, sono e consistência.</p><p style="line-height:1.7">Se a proteína está boa mas as calorias estão muito acima ou muito abaixo do objetivo, o progresso pode parecer confuso. Por isso vale olhar os macros como um mapa simples do dia.</p>${valueBlock("Próximo passo", "Use proteína como âncora, calorias como direção e macros como distribuição. Não precisa ser perfeito: precisa ser repetível.")}${button(emailUrl("pt", "/tools/calculadora-de-macros", "protein_pt_default_v1", "email_04_macros"), "Abrir calculadora de macros")}${button(emailUrl("pt", "/tools/calculadora-calorias", "protein_pt_default_v1", "email_04_calories"), "Abrir calculadora de calorias")}`),
     },
     {
       stepId: "protein_pt_05_recheck",
@@ -118,7 +133,7 @@ export function buildFitnessEmailSequence(payload: Pick<FitnessLeadPayload, "lan
       subject: "Refaça sua conta de proteína esta semana",
       preview: "Uma nova medição ajuda a ajustar a rotina.",
       offerId: "protein-contextual-offer",
-      html: shell("Refaça sua conta", `<p style="line-height:1.7">Se seu peso, objetivo ou rotina mudaram, vale recalcular sua meta e ajustar suas fontes de proteína.</p>${offerBlock("pt", "protein-contextual-offer")}`),
+      html: shell("pt", "Refaça sua conta com uma semana de contexto", `<p style="line-height:1.7">Depois de alguns dias, você já entende melhor onde a meta pesa: café da manhã, almoço, jantar ou lanches. Esse aprendizado vale mais que tentar acertar tudo no primeiro dia.</p><p style="line-height:1.7">Refaça sua conta, compare com sua rotina real e ajuste uma coisa por vez. Se a dificuldade for praticidade, revise opções simples para reduzir atrito.</p>${valueBlock("Refazer e ajustar", "O objetivo é construir um sistema que você consegue repetir. Métrica boa é aquela que vira decisão simples.")}${button(emailUrl("pt", "/tools/calculadora-de-proteina", "protein_pt_default_v1", "email_05_recheck"), "Refazer calculadora de proteína")}${offerBlock("pt", "protein-contextual-offer")}`),
     },
   ] : [
     {
@@ -126,30 +141,30 @@ export function buildFitnessEmailSequence(payload: Pick<FitnessLeadPayload, "lan
       delayDays: 0,
       subject: "Your protein metrics",
       preview: "Your estimated target and how to use it simply.",
-      html: shell("Your protein metrics", `<p style="line-height:1.7">Your estimated protein target is <strong>${protein}</strong>.</p><p style="line-height:1.7">Your estimated calorie target is <strong>${calories}</strong>.</p><p style="line-height:1.7">Use these numbers as a practical reference for the week. In the next email I will show simple ways to hit that target with less friction.</p>`),
+      html: shell("en", "Your protein metrics", `<p style="line-height:1.7">Your estimated protein target is <strong>${protein}</strong>. Your estimated calorie target is <strong>${calories}</strong>.</p><p style="line-height:1.7">Use these numbers as a practical reference for the week, not as a perfect rule for every day.</p>${valueBlock("How to use this today", "Pick one meal to improve first. It is easier to adjust one point in the routine than to change everything at once.")}`),
     },
     {
       stepId: "protein_en_02_simple_offer",
       delayDays: 1,
       subject: "Does your protein target feel high?",
-      preview: "Food first; supplements only when they reduce friction.",
+      preview: "A simple plan to turn the number into routine.",
       offerId: "protein-contextual-offer",
-      html: shell("Hit protein without overthinking", `<p style="line-height:1.7">The problem is rarely knowing the number. The problem is repeating it on normal days.</p><p style="line-height:1.7">Real food comes first. But when convenience is missing, some people use simple sources like whey, plant protein or creatine to reduce friction.</p><p style="line-height:1.7">It is not mandatory. It is just a shortcut to compare options calmly.</p>${offerBlock("en", "protein-contextual-offer")}`),
+      html: shell("en", "Hit protein without overthinking", `<p style="line-height:1.7">The problem is rarely knowing the number. The problem is repeating it on normal days when you are busy, unplanned or missing easy options.</p><p style="line-height:1.7">Simple protein plan: split your target across 3 or 4 moments. In each one, aim for a clear source: eggs, yogurt, chicken, fish, legumes, whey or plant protein when it makes sense.</p>${valueBlock("Simple protein plan", "A high target feels lighter when it becomes smaller blocks. 120g/day can become 30g across four moments, for example.")}${offerBlock("en", "protein-contextual-offer")}`),
     },
     {
       stepId: "protein_en_03_offer_bridge",
       delayDays: 3,
       subject: "The mistake that keeps people from hitting protein",
-      preview: "The problem is rarely knowing the number. It is repeating it.",
+      preview: "It is not willpower. It is the environment.",
       offerId: "protein-contextual-offer",
-      html: shell("The issue is routine", `<p style="line-height:1.7">Knowing you need <strong>${protein}</strong> is only the start. The challenge is having practical protein sources you can repeat.</p>${offerBlock("en", "protein-contextual-offer")}`),
+      html: shell("en", "The issue is not the calculation — it is the environment", `<p style="line-height:1.7">When the routine has no ready options, the target becomes mental effort. You know what you should do, but decide at the last minute — and the easiest option wins.</p><p style="line-height:1.7">The solution is building a helpful environment: better groceries, simple portions and an emergency option for busy days. That reduces friction without relying on motivation.</p>${valueBlock("Practical suggestion", "Keep two main food sources and one convenience option. Then you do not need to improvise every day.")}${offerBlock("en", "protein-contextual-offer", "Open practical options guide")}`),
     },
     {
       stepId: "protein_en_04_calories_macros",
       delayDays: 5,
       subject: "Protein, calories and macros need to work together",
-      preview: "Protein alone helps less if calories are off target.",
-      html: shell("Connect protein, calories and macros", `<p style="line-height:1.7">Protein helps, but progress depends on the system: calories, training, sleep and consistency.</p>`),
+      preview: "Protein helps, but context decides the result.",
+      html: shell("en", "Connect protein, calories and macros", `<p style="line-height:1.7">Protein helps with satiety and muscle maintenance, but progress depends on the system: calories, training, sleep and consistency.</p><p style="line-height:1.7">If protein is fine but calories are far above or below your goal, progress can feel confusing. That is why macros are useful as a simple map for the day.</p>${valueBlock("Next step", "Use protein as the anchor, calories as the direction and macros as the distribution. It does not need to be perfect: it needs to be repeatable.")}${button(emailUrl("en", "/tools/macro-calculator", "protein_en_default_v1", "email_04_macros"), "Open macro calculator")}${button(emailUrl("en", "/tools/calorie-calculator", "protein_en_default_v1", "email_04_calories"), "Open calorie calculator")}`),
     },
     {
       stepId: "protein_en_05_recheck",
@@ -157,7 +172,7 @@ export function buildFitnessEmailSequence(payload: Pick<FitnessLeadPayload, "lan
       subject: "Recheck your protein target this week",
       preview: "A fresh calculation helps adjust your routine.",
       offerId: "protein-contextual-offer",
-      html: shell("Recheck your number", `<p style="line-height:1.7">If your weight, goal or routine changed, recalculate and adjust your protein sources.</p>${offerBlock("en", "protein-contextual-offer")}`),
+      html: shell("en", "Recheck your number with a week of context", `<p style="line-height:1.7">After a few days, you understand where the target is hardest: breakfast, lunch, dinner or snacks. That learning matters more than getting everything right on day one.</p><p style="line-height:1.7">Recalculate, compare with your real routine and adjust one thing at a time. If convenience is the issue, review practical options that reduce friction.</p>${valueBlock("Recheck and adjust", "The goal is building a system you can repeat. A useful metric turns into a simple decision.")}${button(emailUrl("en", "/tools/protein-calculator", "protein_en_default_v1", "email_05_recheck"), "Recheck protein calculator")}${offerBlock("en", "protein-contextual-offer")}`),
     },
   ];
 
