@@ -13,6 +13,10 @@ import {
   type FitnessEventMetricRecord,
   type FitnessLeadMetricRecord,
 } from "../../../../lib/fitness/dashboard-metrics";
+import {
+  aggregateFitnessEmailEventMetrics,
+  type FitnessEmailEventRecord,
+} from "../../../../lib/fitness/email-sequence";
 import { languages, type LanguageCode } from "../../../../data/languages";
 
 export const dynamic = "force-dynamic";
@@ -70,6 +74,7 @@ const copy = {
     adCost: "ad_cost",
     cpl: "CPL",
     costPer1000Emails: "cost_per_1000_emails",
+    emailSequences: "Sequências de email",
     commission: "commission",
     profit: "profit",
     commissionPer1000Emails: "commission_per_1000_emails",
@@ -120,6 +125,7 @@ const copy = {
     adCost: "ad_cost",
     cpl: "CPL",
     costPer1000Emails: "cost_per_1000_emails",
+    emailSequences: "Sequências de email",
     commission: "commission",
     profit: "profit",
     commissionPer1000Emails: "commission_per_1000_emails",
@@ -167,6 +173,11 @@ function buildDashboardMetricPath(table: string, select: string, limit: number, 
 async function fetchLeadRecords(fromDate?: string | null, toDate?: string | null, lang?: string | null): Promise<FitnessLeadMetricRecord[]> {
   const table = process.env.SUPABASE_FITNESS_LEADS_TABLE || "fitness_leads";
   return supabaseSelect(buildDashboardMetricPath(table, "email,lang,source,created_at", 5000, fromDate, toDate, lang));
+}
+
+async function fetchEmailEventRecords(fromDate?: string | null, toDate?: string | null, lang?: string | null): Promise<FitnessEmailEventRecord[]> {
+  const table = process.env.SUPABASE_FITNESS_EMAIL_EVENTS_TABLE || "fitness_email_events";
+  return supabaseSelect(buildDashboardMetricPath(table, "event_name,email_hash,lang,source,sequence_id,step_id,provider,provider_message_id,offer_id,url,metadata,created_at", 10000, fromDate, toDate, lang));
 }
 
 async function fetchEventRecords(fromDate?: string | null, toDate?: string | null, lang?: string | null): Promise<FitnessEventMetricRecord[]> {
@@ -381,6 +392,17 @@ function MetricLine({ label, value }: { label: string; value: string | number })
   );
 }
 
+function MiniMetricList({ title, items }: { title: string; items: Array<{ label: string; count: number }> }) {
+  return (
+    <div className="rounded-3xl border border-zinc-800 bg-zinc-950 p-4">
+      <h3 className="text-sm font-black uppercase tracking-wide text-zinc-500">{title}</h3>
+      <div className="mt-3 space-y-2">
+        {items.length === 0 ? <MetricLine label="0" value={0} /> : items.slice(0, 8).map((item) => <MetricLine key={item.label} label={item.label} value={item.count} />)}
+      </div>
+    </div>
+  );
+}
+
 function CalculatorList({ title, items }: { title: string; items: Array<{ calculator: string; events: number; views: number; resultShown: number; ctaClicks: number }> }) {
   return (
     <section className="rounded-3xl border border-zinc-800 bg-zinc-900 p-5 md:col-span-3">
@@ -420,6 +442,26 @@ function CalculatorList({ title, items }: { title: string; items: Array<{ calcul
 
 function formatMoney(value: number, currency = "USD") {
   return new Intl.NumberFormat("en-US", { style: "currency", currency }).format(value || 0);
+}
+
+
+function EmailSequenceList({ title, metrics }: { title: string; metrics: ReturnType<typeof aggregateFitnessEmailEventMetrics> }) {
+  return (
+    <section className="rounded-3xl border border-zinc-800 bg-zinc-900 p-5 md:col-span-3">
+      <h2 className="text-xl font-black text-white">{title}</h2>
+      <div className="mt-4 grid gap-3 md:grid-cols-4">
+        <StatCard label="email_events" value={metrics.totalEvents} />
+        <StatCard label="unique_email_hashes" value={metrics.uniqueEmailHashes} />
+        <StatCard label="email_step_sent" value={metricCount(metrics.byEvent, "email_step_sent")} />
+        <StatCard label="email_offer_clicked" value={metricCount(metrics.byEvent, "email_offer_clicked")} />
+      </div>
+      <div className="mt-4 grid gap-4 md:grid-cols-3">
+        <MiniMetricList title="by_sequence" items={metrics.bySequence.map((item) => ({ label: item.sequenceId, count: item.count }))} />
+        <MiniMetricList title="by_step" items={metrics.byStep.map((item) => ({ label: item.stepId, count: item.count }))} />
+        <MiniMetricList title="by_offer" items={metrics.byOffer.map((item) => ({ label: item.offerId, count: item.count }))} />
+      </div>
+    </section>
+  );
 }
 
 function UnitEconomicsList({ title, visualItems, adCosts, revenues, labels }: { title: string; visualItems: CalculatorVisualItem[]; adCosts: Array<{ calculator: string; cost: number; clicks: number; currency: string }>; revenues: Array<{ calculator: string; commission: number; clicks: number; conversions: number; currency: string }>; labels: typeof copy.pt }) {
@@ -534,13 +576,14 @@ export default async function FitnessDashboardPage({ params, searchParams }: Das
     notFound();
   }
 
-  const [leadRecords, eventRecords, adCostRecords, affiliateRevenueRecords] = await Promise.all([fetchLeadRecords(fromDate, toDate, lang), fetchEventRecords(fromDate, toDate, lang), fetchAdCostRecords(fromDate, toDate, lang), fetchAffiliateRevenueRecords(fromDate, toDate, lang)]);
+  const [leadRecords, eventRecords, adCostRecords, affiliateRevenueRecords, emailEventRecords] = await Promise.all([fetchLeadRecords(fromDate, toDate, lang), fetchEventRecords(fromDate, toDate, lang), fetchAdCostRecords(fromDate, toDate, lang), fetchAffiliateRevenueRecords(fromDate, toDate, lang), fetchEmailEventRecords(fromDate, toDate, lang)]);
   const filteredLeads = filterRecordsByDateRange(leadRecords, fromDate, toDate).filter((record) => record.lang === lang);
   const filteredEvents = filterRecordsByDateRange(eventRecords, fromDate, toDate).filter((record) => record.lang === lang);
   const metrics = aggregateFitnessLeadMetrics(filteredLeads);
   const eventMetrics = aggregateFitnessEventMetrics(filteredEvents);
   const adCostMetrics = aggregateFitnessAdCostMetrics(adCostRecords.filter((record) => record.lang === lang));
   const affiliateRevenueMetrics = aggregateFitnessAffiliateRevenueMetrics(affiliateRevenueRecords.filter((record) => record.lang === lang));
+  const emailSequenceMetrics = aggregateFitnessEmailEventMetrics(emailEventRecords.filter((record) => record.lang === lang));
   const visualItems = calculatorFunnelLayout
     .map((calculator) => {
       const stats = eventMetrics.byCalculator.find((item) => item.calculator === calculator.id);
@@ -631,6 +674,7 @@ export default async function FitnessDashboardPage({ params, searchParams }: Das
 
         <div className="mt-6 grid gap-4 md:grid-cols-3">
           <CalculatorList title={labels.byCalculator} items={eventMetrics.byCalculator} />
+          <EmailSequenceList title={labels.emailSequences} metrics={emailSequenceMetrics} />
           <UnitEconomicsList title={labels.unitEconomics} visualItems={visualItems} adCosts={adCostMetrics.byCalculator} revenues={affiliateRevenueMetrics.byCalculator} labels={labels} />
           <AffiliateOfferList title={labels.affiliateFunnelTitle} items={eventMetrics.byOffer} labels={labels} />
         </div>

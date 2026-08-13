@@ -5,6 +5,11 @@ import {
   buildFitnessLeadRecord,
   sanitizeFitnessLeadPayload,
 } from "../../../../lib/fitness/email-lead";
+import {
+  buildFitnessEmailSequence,
+  buildFitnessEmailSequenceEvents,
+  type FitnessEmailEventRecord,
+} from "../../../../lib/fitness/email-sequence";
 
 export const runtime = "nodejs";
 
@@ -32,6 +37,34 @@ async function saveLead(record: ReturnType<typeof buildFitnessLeadRecord>): Prom
       Prefer: "return=minimal",
     },
     body: JSON.stringify(record),
+  });
+
+  if (!response.ok) {
+    return { configured: true, ok: false, detail: await response.text() };
+  }
+
+  return { configured: true, ok: true };
+}
+
+
+async function saveEmailEvents(events: FitnessEmailEventRecord[]): Promise<DeliveryResult> {
+  const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const table = process.env.SUPABASE_FITNESS_EMAIL_EVENTS_TABLE || "fitness_email_events";
+
+  if (!supabaseUrl || !serviceRoleKey) {
+    return { configured: false, ok: false, detail: "Supabase env vars missing" };
+  }
+
+  const response = await fetch(`${supabaseUrl.replace(/\/$/, "")}/rest/v1/${table}`, {
+    method: "POST",
+    headers: {
+      apikey: serviceRoleKey,
+      Authorization: `Bearer ${serviceRoleKey}`,
+      "Content-Type": "application/json",
+      Prefer: "return=minimal",
+    },
+    body: JSON.stringify(events),
   });
 
   if (!response.ok) {
@@ -89,7 +122,18 @@ export async function POST(request: Request) {
       referer: request.headers.get("referer"),
     });
 
+    const sequence = buildFitnessEmailSequence(payload);
     const [database, email] = await Promise.all([saveLead(record), sendEmail(payload)]);
+    const sequenceEvents = buildFitnessEmailSequenceEvents({
+      email: payload.email,
+      lang: payload.lang,
+      source: payload.source,
+      sequenceId: sequence.sequenceId,
+      provider: "brevo",
+      providerMessageId: null,
+      status: email.ok ? "sent" : "failed",
+    });
+    const emailEvents = await saveEmailEvents(sequenceEvents);
     const configured = database.configured && email.configured;
     const delivered = database.ok && email.ok;
 
@@ -99,6 +143,8 @@ export async function POST(request: Request) {
       mode: configured ? "live" : "preview",
       database: { configured: database.configured, ok: database.ok },
       email: { configured: email.configured, ok: email.ok },
+      emailEvents: { configured: emailEvents.configured, ok: emailEvents.ok },
+      sequence: { id: sequence.sequenceId },
     }, { status: delivered || !configured ? 200 : 502 });
   } catch (error) {
     return NextResponse.json({

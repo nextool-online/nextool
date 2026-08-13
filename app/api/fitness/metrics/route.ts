@@ -12,6 +12,10 @@ import {
   type FitnessEventMetricRecord,
   type FitnessLeadMetricRecord,
 } from "../../../../lib/fitness/dashboard-metrics";
+import {
+  aggregateFitnessEmailEventMetrics,
+  type FitnessEmailEventRecord,
+} from "../../../../lib/fitness/email-sequence";
 
 export const runtime = "nodejs";
 
@@ -59,6 +63,15 @@ async function fetchLeadMetricRecords(fromDate?: string | null, toDate?: string 
   return supabaseSelect(buildMetricPath(table, "email,lang,source,created_at", 5000, fromDate, toDate, lang));
 }
 
+async function fetchEmailEventMetricRecords(fromDate?: string | null, toDate?: string | null, lang?: string | null): Promise<FitnessEmailEventRecord[]> {
+  const table = process.env.SUPABASE_FITNESS_EMAIL_EVENTS_TABLE || "fitness_email_events";
+  try {
+    return await supabaseSelect(buildMetricPath(table, "event_name,email_hash,lang,source,sequence_id,step_id,provider,provider_message_id,offer_id,url,metadata,created_at", 10000, fromDate, toDate, lang));
+  } catch {
+    return [];
+  }
+}
+
 async function fetchEventMetricRecords(fromDate?: string | null, toDate?: string | null, lang?: string | null): Promise<FitnessEventMetricRecord[]> {
   const table = process.env.SUPABASE_FITNESS_EVENTS_TABLE || "fitness_events";
   try {
@@ -98,11 +111,12 @@ export async function GET(request: Request) {
   }
 
   try {
-    const [leadRecords, eventRecords, adCostRecords, affiliateRevenueRecords] = await Promise.all([
+    const [leadRecords, eventRecords, adCostRecords, affiliateRevenueRecords, emailEventRecords] = await Promise.all([
       fetchLeadMetricRecords(fromDate, toDate, lang),
       fetchEventMetricRecords(fromDate, toDate, lang),
       fetchAdCostMetricRecords(fromDate, toDate, lang),
       fetchAffiliateRevenueMetricRecords(fromDate, toDate, lang),
+      fetchEmailEventMetricRecords(fromDate, toDate, lang),
     ]);
 
     return NextResponse.json({
@@ -112,6 +126,7 @@ export async function GET(request: Request) {
       eventMetrics: aggregateFitnessEventMetrics(filterRecordsByDateRange(eventRecords, fromDate, toDate)),
       adCostMetrics: aggregateFitnessAdCostMetrics(adCostRecords),
       affiliateRevenueMetrics: aggregateFitnessAffiliateRevenueMetrics(affiliateRevenueRecords),
+      emailSequenceMetrics: aggregateFitnessEmailEventMetrics(emailEventRecords),
     });
   } catch (error) {
     return NextResponse.json({
