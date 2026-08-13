@@ -130,3 +130,7 @@ assert.match(emailSentPageSource, /Email enviado/);
 assert.match(emailSentPageSource, /Promoções/);
 assert.match(emailSentPageSource, /Spam/);
 assert.match(emailSentPageSource, /protein-contextual-offer/);
+assert.match(emailSentPageSource, /variant === "soft"/);
+assert.match(emailSentPageSource, /bg-sky-50/);
+assert.match(emailSentPageSource, /from-sky-50/);
+assert.match(fitnessJourneySource, /variant=soft/);

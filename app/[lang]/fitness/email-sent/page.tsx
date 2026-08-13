@@ -7,8 +7,10 @@ export function generateStaticParams() {
   return languages.map((language) => ({ lang: language.code }));
 }
 
-export default async function EmailSentPage({ params }: { params: Promise<{ lang: LanguageCode }> }) {
+export default async function EmailSentPage({ params, searchParams }: { params: Promise<{ lang: LanguageCode }>; searchParams?: Promise<{ variant?: string }> }) {
   const { lang } = await params;
   if (!languages.some((language) => language.code === lang)) notFound();
-  return <FitnessEmailSentPage lang={lang} />;
+  const query = searchParams ? await searchParams : {};
+  const variant = query.variant === "soft" ? "soft" : "dark";
+  return <FitnessEmailSentPage lang={lang} variant={variant} />;
 }

@@ -502,7 +502,8 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
       trackFitnessEvent(previewMode ? "email_preview_success" : "email_sent_success", { source: source || "direct_fitness", lang });
       if (!previewMode) {
         trackAffiliateEvent("affiliate_offer_view", lang, proteinOffer.source, proteinOffer);
-        router.push(`/${lang}/fitness/email-sent?source=${encodeURIComponent(source || "direct_fitness")}`);
+        const visualVariant = new URLSearchParams(window.location.search).get("variant") === "soft" ? "&variant=soft" : "";
+        router.push(`/${lang}/fitness/email-sent?source=${encodeURIComponent(source || "direct_fitness")}${visualVariant}`);
       }
     } catch {
       setEmailStatus("error");
