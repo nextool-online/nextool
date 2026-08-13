@@ -2,10 +2,12 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import {
+  aggregateFitnessAdCostMetrics,
   aggregateFitnessEventMetrics,
   aggregateFitnessLeadMetrics,
   filterRecordsByDateRange,
   validateDashboardToken,
+  type FitnessAdCostRecord,
   type FitnessEventMetricRecord,
   type FitnessLeadMetricRecord,
 } from "../../../../lib/fitness/dashboard-metrics";
@@ -62,6 +64,10 @@ const copy = {
     offerTracking: "Tracking de ofertas",
     offerViews: "offer_views",
     offerClicks: "offer_clicks",
+    unitEconomics: "Unit economics",
+    adCost: "ad_cost",
+    cpl: "CPL",
+    costPer1000Emails: "cost_per_1000_emails",
   },
   en: {
     title: "NexTool Fit Dashboard",
@@ -105,6 +111,10 @@ const copy = {
     offerTracking: "Offer tracking",
     offerViews: "offer_views",
     offerClicks: "offer_clicks",
+    unitEconomics: "Unit economics",
+    adCost: "ad_cost",
+    cpl: "CPL",
+    costPer1000Emails: "cost_per_1000_emails",
   },
 };
 
@@ -154,6 +164,11 @@ async function fetchLeadRecords(fromDate?: string | null, toDate?: string | null
 async function fetchEventRecords(fromDate?: string | null, toDate?: string | null, lang?: string | null): Promise<FitnessEventMetricRecord[]> {
   const table = process.env.SUPABASE_FITNESS_EVENTS_TABLE || "fitness_events";
   return supabaseSelect(buildDashboardMetricPath(table, "event_name,visitor_id,lang,source,path,metadata,created_at", 10000, fromDate, toDate, lang));
+}
+
+async function fetchAdCostRecords(fromDate?: string | null, toDate?: string | null, lang?: string | null): Promise<FitnessAdCostRecord[]> {
+  const table = process.env.SUPABASE_FITNESS_AD_COSTS_TABLE || "fitness_ad_costs";
+  return supabaseSelect(buildDashboardMetricPath(table, "spend_date,lang,calculator,ad_platform,utm_campaign,utm_term,clicks,cost,currency,created_at", 10000, fromDate, toDate, lang));
 }
 
 const quickRanges = [
@@ -389,6 +404,51 @@ function CalculatorList({ title, items }: { title: string; items: Array<{ calcul
   );
 }
 
+
+function formatMoney(value: number, currency = "USD") {
+  return new Intl.NumberFormat("en-US", { style: "currency", currency }).format(value || 0);
+}
+
+function UnitEconomicsList({ title, visualItems, adCosts, labels }: { title: string; visualItems: CalculatorVisualItem[]; adCosts: Array<{ calculator: string; cost: number; clicks: number; currency: string }>; labels: typeof copy.pt }) {
+  const rows = visualItems.map((item) => {
+    const cost = adCosts.find((record) => record.calculator === item.id || record.calculator === item.label)?.cost || 0;
+    const currency = adCosts.find((record) => record.calculator === item.id || record.calculator === item.label)?.currency || "USD";
+    const cpl = item.capturedEmails > 0 ? cost / item.capturedEmails : 0;
+    const costPer1000Emails = item.capturedEmails > 0 ? cpl * 1000 : 0;
+    return { ...item, cost, currency, cpl, costPer1000Emails };
+  }).sort((a, b) => b.cost - a.cost || b.capturedEmails - a.capturedEmails);
+
+  return (
+    <section className="rounded-3xl border border-zinc-800 bg-zinc-900 p-5 md:col-span-3">
+      <h2 className="text-xl font-black text-white">{title}</h2>
+      <div className="mt-4 overflow-x-auto">
+        <table className="w-full min-w-[860px] border-separate border-spacing-y-2 text-center text-sm">
+          <thead className="text-xs uppercase tracking-wide text-zinc-500">
+            <tr>
+              <th className="px-4 py-2">Calculadora</th>
+              <th className="px-4 py-2">{labels.adCost}</th>
+              <th className="px-4 py-2">emails</th>
+              <th className="px-4 py-2">{labels.cpl}</th>
+              <th className="px-4 py-2">{labels.costPer1000Emails}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((row) => (
+              <tr key={row.id} className="bg-zinc-950 text-zinc-200">
+                <td className="rounded-l-2xl px-4 py-3 font-bold text-emerald-300">{row.label}</td>
+                <td className="px-4 py-3 font-black text-white">{formatMoney(row.cost, row.currency)}</td>
+                <td className="px-4 py-3 font-black text-white">{row.capturedEmails}</td>
+                <td className="px-4 py-3 font-black text-white">{formatMoney(row.cpl, row.currency)}</td>
+                <td className="rounded-r-2xl px-4 py-3 font-black text-white">{formatMoney(row.costPer1000Emails, row.currency)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  );
+}
+
 function AffiliateOfferList({ title, items, labels }: { title: string; items: Array<{ offerId: string; calculator: string; productCategory: string; placement: string; views: number; clicks: number }>; labels: typeof copy.pt }) {
   return (
     <section className="rounded-3xl border border-zinc-800 bg-zinc-900 p-5 md:col-span-3">
@@ -450,11 +510,12 @@ export default async function FitnessDashboardPage({ params, searchParams }: Das
     notFound();
   }
 
-  const [leadRecords, eventRecords] = await Promise.all([fetchLeadRecords(fromDate, toDate, lang), fetchEventRecords(fromDate, toDate, lang)]);
+  const [leadRecords, eventRecords, adCostRecords] = await Promise.all([fetchLeadRecords(fromDate, toDate, lang), fetchEventRecords(fromDate, toDate, lang), fetchAdCostRecords(fromDate, toDate, lang)]);
   const filteredLeads = filterRecordsByDateRange(leadRecords, fromDate, toDate).filter((record) => record.lang === lang);
   const filteredEvents = filterRecordsByDateRange(eventRecords, fromDate, toDate).filter((record) => record.lang === lang);
   const metrics = aggregateFitnessLeadMetrics(filteredLeads);
   const eventMetrics = aggregateFitnessEventMetrics(filteredEvents);
+  const adCostMetrics = aggregateFitnessAdCostMetrics(adCostRecords.filter((record) => record.lang === lang));
   const visualItems = calculatorFunnelLayout
     .map((calculator) => {
       const stats = eventMetrics.byCalculator.find((item) => item.calculator === calculator.id);
@@ -545,6 +606,7 @@ export default async function FitnessDashboardPage({ params, searchParams }: Das
 
         <div className="mt-6 grid gap-4 md:grid-cols-3">
           <CalculatorList title={labels.byCalculator} items={eventMetrics.byCalculator} />
+          <UnitEconomicsList title={labels.unitEconomics} visualItems={visualItems} adCosts={adCostMetrics.byCalculator} labels={labels} />
           <AffiliateOfferList title={labels.affiliateFunnelTitle} items={eventMetrics.byOffer} labels={labels} />
         </div>
       </div>

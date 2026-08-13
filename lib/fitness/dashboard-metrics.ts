@@ -15,6 +15,19 @@ export type FitnessEventMetricRecord = {
   created_at?: string | null;
 };
 
+export type FitnessAdCostRecord = {
+  spend_date?: string | null;
+  lang?: string | null;
+  calculator?: string | null;
+  ad_platform?: string | null;
+  utm_campaign?: string | null;
+  utm_term?: string | null;
+  clicks?: number | string | null;
+  cost?: number | string | null;
+  currency?: string | null;
+  created_at?: string | null;
+};
+
 export type SanitizedFitnessEventRecord = {
   event_name: string;
   visitor_id: string;
@@ -59,6 +72,13 @@ export type AffiliateOfferCount = {
   placement: string;
   views: number;
   clicks: number;
+};
+
+export type FitnessAdCostMetrics = {
+  totalCost: number;
+  totalClicks: number;
+  byCalculator: Array<{ calculator: string; cost: number; clicks: number; currency: string }>;
+  byCampaign: Array<{ campaign: string; cost: number; clicks: number; currency: string }>;
 };
 
 export type FitnessLeadMetrics = {
@@ -391,5 +411,45 @@ export function aggregateFitnessEventMetrics(
     affiliateFunnel: affiliateFunnelOrder.map((event) => ({ event, count: uniqueEventMap.get(event)?.size || 0 })),
     byCalculator: Array.from(calculatorMap.values()).sort((a, b) => b.events - a.events),
     byOffer: Array.from(offerMap.values()).sort((a, b) => b.clicks - a.clicks || b.views - a.views),
+  };
+}
+
+
+function parseCostNumber(value: unknown) {
+  const parsed = typeof value === "number" ? value : Number(String(value || "0").replace(",", "."));
+  return Number.isFinite(parsed) && parsed >= 0 ? parsed : 0;
+}
+
+export function aggregateFitnessAdCostMetrics(costs: FitnessAdCostRecord[]): FitnessAdCostMetrics {
+  const calculatorMap = new Map<string, { calculator: string; cost: number; clicks: number; currency: string }>();
+  const campaignMap = new Map<string, { campaign: string; cost: number; clicks: number; currency: string }>();
+  let totalCost = 0;
+  let totalClicks = 0;
+
+  for (const record of costs) {
+    const calculator = cleanText(record.calculator || "unknown", "unknown");
+    const campaign = cleanText(record.utm_campaign || "unknown_campaign", "unknown_campaign");
+    const currency = cleanText(record.currency || "USD", "USD").toUpperCase();
+    const cost = parseCostNumber(record.cost);
+    const clicks = Math.max(0, Math.round(parseCostNumber(record.clicks)));
+    totalCost += cost;
+    totalClicks += clicks;
+
+    const calcCurrent = calculatorMap.get(calculator) || { calculator, cost: 0, clicks: 0, currency };
+    calcCurrent.cost += cost;
+    calcCurrent.clicks += clicks;
+    calculatorMap.set(calculator, calcCurrent);
+
+    const campaignCurrent = campaignMap.get(campaign) || { campaign, cost: 0, clicks: 0, currency };
+    campaignCurrent.cost += cost;
+    campaignCurrent.clicks += clicks;
+    campaignMap.set(campaign, campaignCurrent);
+  }
+
+  return {
+    totalCost,
+    totalClicks,
+    byCalculator: Array.from(calculatorMap.values()).sort((a, b) => b.cost - a.cost),
+    byCampaign: Array.from(campaignMap.values()).sort((a, b) => b.cost - a.cost),
   };
 }

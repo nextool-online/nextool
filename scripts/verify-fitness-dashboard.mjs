@@ -4,6 +4,7 @@ import {
   aggregateFitnessEventMetrics,
   aggregateFitnessLeadMetrics,
   filterRecordsByDateRange,
+  aggregateFitnessAdCostMetrics,
   sanitizeFitnessEventPayload,
   validateDashboardToken,
 } from "../lib/fitness/dashboard-metrics.ts";
@@ -26,6 +27,15 @@ assert.equal(metrics.bySource[0].count, 2);
 assert.equal(metrics.byLang.find((item) => item.lang === "pt")?.count, 3);
 assert.equal(metrics.byDay[0].day, "2026-08-11");
 assert.equal(metrics.byDay[0].count, 2);
+
+const adCostMetrics = aggregateFitnessAdCostMetrics([
+  { spend_date: "2026-08-11", lang: "pt", calculator: "protein-calculator", ad_platform: "google", utm_campaign: "fit_pt_protein_longtail", utm_term: "calcular proteina diaria", clicks: 80, cost: "40.00", currency: "USD" },
+  { spend_date: "2026-08-11", lang: "pt", calculator: "macro-calculator", ad_platform: "google", utm_campaign: "fit_pt_macro_longtail", clicks: 20, cost: 30, currency: "USD" },
+]);
+assert.equal(adCostMetrics.totalCost, 70);
+assert.equal(adCostMetrics.totalClicks, 100);
+assert.equal(adCostMetrics.byCalculator[0].calculator, "protein-calculator");
+assert.equal(adCostMetrics.byCampaign[0].campaign, "fit_pt_protein_longtail");
 
 const events = [
   { event_name: "fitness_page_view", visitor_id: "v1", source: "direct_fitness", lang: "pt", created_at: "2026-08-11T10:00:00Z" },
@@ -154,6 +164,9 @@ assert.match(dashboardPage, /affiliate_offer_click/);
 assert.match(dashboardPage, /affiliateFunnel/);
 assert.match(dashboardPage, /byOffer/);
 assert.match(dashboardPage, /AffiliateOfferList/);
+assert.match(dashboardPage, /UnitEconomicsList/);
+assert.match(dashboardPage, /cost_per_1000_emails/);
+assert.match(metricsRoute, /adCostMetrics/);
 assert.match(eventRoute, /sanitizeFitnessEventPayload/);
 assert.match(journey, /fitness_page_view/);
 assert.match(journey, /api\/fitness\/event/);
@@ -177,3 +190,7 @@ assert.match(envExample, /FITNESS_DASHBOARD_TOKEN/);
 assert.match(eventsSql, /create table if not exists public\.fitness_events/);
 
 console.log("Fitness dashboard verification passed");
+
+const adCostsSql = fs.readFileSync(new URL("../supabase/fitness_ad_costs.sql", import.meta.url), "utf8");
+assert.match(adCostsSql, /create table if not exists public\.fitness_ad_costs/);
+assert.match(adCostsSql, /utm_campaign/);

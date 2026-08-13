@@ -1,10 +1,12 @@
 import { NextResponse } from "next/server";
 
 import {
+  aggregateFitnessAdCostMetrics,
   aggregateFitnessEventMetrics,
   aggregateFitnessLeadMetrics,
   filterRecordsByDateRange,
   validateDashboardToken,
+  type FitnessAdCostRecord,
   type FitnessEventMetricRecord,
   type FitnessLeadMetricRecord,
 } from "../../../../lib/fitness/dashboard-metrics";
@@ -64,6 +66,15 @@ async function fetchEventMetricRecords(fromDate?: string | null, toDate?: string
   }
 }
 
+async function fetchAdCostMetricRecords(fromDate?: string | null, toDate?: string | null, lang?: string | null): Promise<FitnessAdCostRecord[]> {
+  const table = process.env.SUPABASE_FITNESS_AD_COSTS_TABLE || "fitness_ad_costs";
+  try {
+    return await supabaseSelect(buildMetricPath(table, "spend_date,lang,calculator,ad_platform,utm_campaign,utm_term,clicks,cost,currency,created_at", 10000, fromDate, toDate, lang));
+  } catch {
+    return [];
+  }
+}
+
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const token = url.searchParams.get("token");
@@ -76,9 +87,10 @@ export async function GET(request: Request) {
   }
 
   try {
-    const [leadRecords, eventRecords] = await Promise.all([
+    const [leadRecords, eventRecords, adCostRecords] = await Promise.all([
       fetchLeadMetricRecords(fromDate, toDate, lang),
       fetchEventMetricRecords(fromDate, toDate, lang),
+      fetchAdCostMetricRecords(fromDate, toDate, lang),
     ]);
 
     return NextResponse.json({
@@ -86,6 +98,7 @@ export async function GET(request: Request) {
       range: { from: fromDate, to: toDate, lang },
       metrics: aggregateFitnessLeadMetrics(filterRecordsByDateRange(leadRecords, fromDate, toDate)),
       eventMetrics: aggregateFitnessEventMetrics(filterRecordsByDateRange(eventRecords, fromDate, toDate)),
+      adCostMetrics: aggregateFitnessAdCostMetrics(adCostRecords),
     });
   } catch (error) {
     return NextResponse.json({
