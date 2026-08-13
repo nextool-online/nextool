@@ -1,0 +1,7 @@
+lang,calculator,campaign,intent,final_path,default_utm_content,daily_budget,currency
+pt,protein-calculator,fit_pt_protein_longtail,longtail,/pt/tools/calculadora-de-proteina,ad_a,5,USD
+pt,macro-calculator,fit_pt_macros_longtail,longtail,/pt/tools/calculadora-de-macros,ad_a,5,USD
+pt,calorie-calculator,fit_pt_calories_longtail,longtail,/pt/tools/calculadora-calorias,ad_a,5,USD
+en,protein-calculator,fit_en_protein_longtail,longtail,/en/tools/protein-calculator,ad_a,5,USD
+en,macro-calculator,fit_en_macros_longtail,longtail,/en/tools/macro-calculator,ad_a,5,USD
+en,calorie-calculator,fit_en_calories_longtail,longtail,/en/tools/calorie-calculator,ad_a,5,USD
