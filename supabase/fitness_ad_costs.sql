@@ -18,3 +18,8 @@ create index if not exists fitness_ad_costs_campaign_idx on public.fitness_ad_co
 create index if not exists fitness_ad_costs_lang_idx on public.fitness_ad_costs (lang);
 
 alter table public.fitness_ad_costs enable row level security;
+
+
+alter table public.fitness_ad_costs
+  add constraint fitness_ad_costs_unique_import_key
+  unique (spend_date, lang, calculator, ad_platform, utm_campaign, utm_term);
