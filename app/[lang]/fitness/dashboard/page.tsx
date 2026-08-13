@@ -3,11 +3,13 @@ import { notFound } from "next/navigation";
 
 import {
   aggregateFitnessAdCostMetrics,
+  aggregateFitnessAffiliateRevenueMetrics,
   aggregateFitnessEventMetrics,
   aggregateFitnessLeadMetrics,
   filterRecordsByDateRange,
   validateDashboardToken,
   type FitnessAdCostRecord,
+  type FitnessAffiliateRevenueRecord,
   type FitnessEventMetricRecord,
   type FitnessLeadMetricRecord,
 } from "../../../../lib/fitness/dashboard-metrics";
@@ -68,6 +70,9 @@ const copy = {
     adCost: "ad_cost",
     cpl: "CPL",
     costPer1000Emails: "cost_per_1000_emails",
+    commission: "commission",
+    profit: "profit",
+    commissionPer1000Emails: "commission_per_1000_emails",
   },
   en: {
     title: "NexTool Fit Dashboard",
@@ -115,6 +120,9 @@ const copy = {
     adCost: "ad_cost",
     cpl: "CPL",
     costPer1000Emails: "cost_per_1000_emails",
+    commission: "commission",
+    profit: "profit",
+    commissionPer1000Emails: "commission_per_1000_emails",
   },
 };
 
@@ -164,6 +172,11 @@ async function fetchLeadRecords(fromDate?: string | null, toDate?: string | null
 async function fetchEventRecords(fromDate?: string | null, toDate?: string | null, lang?: string | null): Promise<FitnessEventMetricRecord[]> {
   const table = process.env.SUPABASE_FITNESS_EVENTS_TABLE || "fitness_events";
   return supabaseSelect(buildDashboardMetricPath(table, "event_name,visitor_id,lang,source,path,metadata,created_at", 10000, fromDate, toDate, lang));
+}
+
+async function fetchAffiliateRevenueRecords(fromDate?: string | null, toDate?: string | null, lang?: string | null): Promise<FitnessAffiliateRevenueRecord[]> {
+  const table = process.env.SUPABASE_FITNESS_AFFILIATE_REVENUE_TABLE || "fitness_affiliate_revenue";
+  return supabaseSelect(buildDashboardMetricPath(table, "revenue_date,lang,calculator,affiliate_platform,offer_id,product_category,utm_campaign,utm_term,clicks,conversions,commission,currency,status,created_at", 10000, fromDate, toDate, lang));
 }
 
 async function fetchAdCostRecords(fromDate?: string | null, toDate?: string | null, lang?: string | null): Promise<FitnessAdCostRecord[]> {
@@ -409,13 +422,18 @@ function formatMoney(value: number, currency = "USD") {
   return new Intl.NumberFormat("en-US", { style: "currency", currency }).format(value || 0);
 }
 
-function UnitEconomicsList({ title, visualItems, adCosts, labels }: { title: string; visualItems: CalculatorVisualItem[]; adCosts: Array<{ calculator: string; cost: number; clicks: number; currency: string }>; labels: typeof copy.pt }) {
+function UnitEconomicsList({ title, visualItems, adCosts, revenues, labels }: { title: string; visualItems: CalculatorVisualItem[]; adCosts: Array<{ calculator: string; cost: number; clicks: number; currency: string }>; revenues: Array<{ calculator: string; commission: number; clicks: number; conversions: number; currency: string }>; labels: typeof copy.pt }) {
   const rows = visualItems.map((item) => {
     const cost = adCosts.find((record) => record.calculator === item.id || record.calculator === item.label)?.cost || 0;
     const currency = adCosts.find((record) => record.calculator === item.id || record.calculator === item.label)?.currency || "USD";
+    const revenueRecord = revenues.find((record) => record.calculator === item.id || record.calculator === item.label);
+    const commission = revenueRecord?.commission || 0;
+    const revenueCurrency = revenueRecord?.currency || currency;
     const cpl = item.capturedEmails > 0 ? cost / item.capturedEmails : 0;
     const costPer1000Emails = item.capturedEmails > 0 ? cpl * 1000 : 0;
-    return { ...item, cost, currency, cpl, costPer1000Emails };
+    const commissionPer1000Emails = item.capturedEmails > 0 ? (commission / item.capturedEmails) * 1000 : 0;
+    const profit = commission - cost;
+    return { ...item, cost, currency: revenueCurrency || currency, cpl, costPer1000Emails, commission, commissionPer1000Emails, profit };
   }).sort((a, b) => b.cost - a.cost || b.capturedEmails - a.capturedEmails);
 
   return (
@@ -430,6 +448,9 @@ function UnitEconomicsList({ title, visualItems, adCosts, labels }: { title: str
               <th className="px-4 py-2">emails</th>
               <th className="px-4 py-2">{labels.cpl}</th>
               <th className="px-4 py-2">{labels.costPer1000Emails}</th>
+              <th className="px-4 py-2">{labels.commission}</th>
+              <th className="px-4 py-2">{labels.commissionPer1000Emails}</th>
+              <th className="px-4 py-2">{labels.profit}</th>
             </tr>
           </thead>
           <tbody>
@@ -439,7 +460,10 @@ function UnitEconomicsList({ title, visualItems, adCosts, labels }: { title: str
                 <td className="px-4 py-3 font-black text-white">{formatMoney(row.cost, row.currency)}</td>
                 <td className="px-4 py-3 font-black text-white">{row.capturedEmails}</td>
                 <td className="px-4 py-3 font-black text-white">{formatMoney(row.cpl, row.currency)}</td>
-                <td className="rounded-r-2xl px-4 py-3 font-black text-white">{formatMoney(row.costPer1000Emails, row.currency)}</td>
+                <td className="px-4 py-3 font-black text-white">{formatMoney(row.costPer1000Emails, row.currency)}</td>
+                <td className="px-4 py-3 font-black text-white">{formatMoney(row.commission, row.currency)}</td>
+                <td className="px-4 py-3 font-black text-white">{formatMoney(row.commissionPer1000Emails, row.currency)}</td>
+                <td className={`rounded-r-2xl px-4 py-3 font-black ${row.profit >= 0 ? "text-emerald-300" : "text-rose-300"}`}>{formatMoney(row.profit, row.currency)}</td>
               </tr>
             ))}
           </tbody>
@@ -510,12 +534,13 @@ export default async function FitnessDashboardPage({ params, searchParams }: Das
     notFound();
   }
 
-  const [leadRecords, eventRecords, adCostRecords] = await Promise.all([fetchLeadRecords(fromDate, toDate, lang), fetchEventRecords(fromDate, toDate, lang), fetchAdCostRecords(fromDate, toDate, lang)]);
+  const [leadRecords, eventRecords, adCostRecords, affiliateRevenueRecords] = await Promise.all([fetchLeadRecords(fromDate, toDate, lang), fetchEventRecords(fromDate, toDate, lang), fetchAdCostRecords(fromDate, toDate, lang), fetchAffiliateRevenueRecords(fromDate, toDate, lang)]);
   const filteredLeads = filterRecordsByDateRange(leadRecords, fromDate, toDate).filter((record) => record.lang === lang);
   const filteredEvents = filterRecordsByDateRange(eventRecords, fromDate, toDate).filter((record) => record.lang === lang);
   const metrics = aggregateFitnessLeadMetrics(filteredLeads);
   const eventMetrics = aggregateFitnessEventMetrics(filteredEvents);
   const adCostMetrics = aggregateFitnessAdCostMetrics(adCostRecords.filter((record) => record.lang === lang));
+  const affiliateRevenueMetrics = aggregateFitnessAffiliateRevenueMetrics(affiliateRevenueRecords.filter((record) => record.lang === lang));
   const visualItems = calculatorFunnelLayout
     .map((calculator) => {
       const stats = eventMetrics.byCalculator.find((item) => item.calculator === calculator.id);
@@ -606,7 +631,7 @@ export default async function FitnessDashboardPage({ params, searchParams }: Das
 
         <div className="mt-6 grid gap-4 md:grid-cols-3">
           <CalculatorList title={labels.byCalculator} items={eventMetrics.byCalculator} />
-          <UnitEconomicsList title={labels.unitEconomics} visualItems={visualItems} adCosts={adCostMetrics.byCalculator} labels={labels} />
+          <UnitEconomicsList title={labels.unitEconomics} visualItems={visualItems} adCosts={adCostMetrics.byCalculator} revenues={affiliateRevenueMetrics.byCalculator} labels={labels} />
           <AffiliateOfferList title={labels.affiliateFunnelTitle} items={eventMetrics.byOffer} labels={labels} />
         </div>
       </div>

@@ -5,6 +5,7 @@ import {
   aggregateFitnessLeadMetrics,
   filterRecordsByDateRange,
   aggregateFitnessAdCostMetrics,
+  aggregateFitnessAffiliateRevenueMetrics,
   sanitizeFitnessEventPayload,
   validateDashboardToken,
 } from "../lib/fitness/dashboard-metrics.ts";
@@ -36,6 +37,15 @@ assert.equal(adCostMetrics.totalCost, 70);
 assert.equal(adCostMetrics.totalClicks, 100);
 assert.equal(adCostMetrics.byCalculator[0].calculator, "protein-calculator");
 assert.equal(adCostMetrics.byCampaign[0].campaign, "fit_pt_protein_longtail");
+
+const affiliateRevenueMetrics = aggregateFitnessAffiliateRevenueMetrics([
+  { revenue_date: "2026-08-11", lang: "pt", calculator: "protein-calculator", affiliate_platform: "amazon", offer_id: "protein-contextual-offer", product_category: "protein", utm_campaign: "fit_pt_protein_longtail", utm_term: "calcular proteina diaria", clicks: 12, conversions: 1, commission: "8.50", currency: "USD", status: "estimated" },
+  { revenue_date: "2026-08-11", lang: "pt", calculator: "macro-calculator", affiliate_platform: "hotmart", offer_id: "macro-contextual-offer", product_category: "nutrition_plan", utm_campaign: "fit_pt_macro_longtail", clicks: 8, conversions: 1, commission: 24, currency: "USD", status: "estimated" },
+]);
+assert.equal(affiliateRevenueMetrics.totalCommission, 32.5);
+assert.equal(affiliateRevenueMetrics.totalClicks, 20);
+assert.equal(affiliateRevenueMetrics.totalConversions, 2);
+assert.equal(affiliateRevenueMetrics.byOffer[0].offerId, "macro-contextual-offer");
 
 const events = [
   { event_name: "fitness_page_view", visitor_id: "v1", source: "direct_fitness", lang: "pt", created_at: "2026-08-11T10:00:00Z" },
@@ -166,7 +176,10 @@ assert.match(dashboardPage, /byOffer/);
 assert.match(dashboardPage, /AffiliateOfferList/);
 assert.match(dashboardPage, /UnitEconomicsList/);
 assert.match(dashboardPage, /cost_per_1000_emails/);
+assert.match(dashboardPage, /commission_per_1000_emails/);
+assert.match(dashboardPage, /affiliateRevenueMetrics/);
 assert.match(metricsRoute, /adCostMetrics/);
+assert.match(metricsRoute, /affiliateRevenueMetrics/);
 assert.match(eventRoute, /sanitizeFitnessEventPayload/);
 assert.match(journey, /fitness_page_view/);
 assert.match(journey, /api\/fitness\/event/);

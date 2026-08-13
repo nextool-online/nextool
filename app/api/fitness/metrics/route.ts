@@ -2,11 +2,13 @@ import { NextResponse } from "next/server";
 
 import {
   aggregateFitnessAdCostMetrics,
+  aggregateFitnessAffiliateRevenueMetrics,
   aggregateFitnessEventMetrics,
   aggregateFitnessLeadMetrics,
   filterRecordsByDateRange,
   validateDashboardToken,
   type FitnessAdCostRecord,
+  type FitnessAffiliateRevenueRecord,
   type FitnessEventMetricRecord,
   type FitnessLeadMetricRecord,
 } from "../../../../lib/fitness/dashboard-metrics";
@@ -66,6 +68,15 @@ async function fetchEventMetricRecords(fromDate?: string | null, toDate?: string
   }
 }
 
+async function fetchAffiliateRevenueMetricRecords(fromDate?: string | null, toDate?: string | null, lang?: string | null): Promise<FitnessAffiliateRevenueRecord[]> {
+  const table = process.env.SUPABASE_FITNESS_AFFILIATE_REVENUE_TABLE || "fitness_affiliate_revenue";
+  try {
+    return await supabaseSelect(buildMetricPath(table, "revenue_date,lang,calculator,affiliate_platform,offer_id,product_category,utm_campaign,utm_term,clicks,conversions,commission,currency,status,created_at", 10000, fromDate, toDate, lang));
+  } catch {
+    return [];
+  }
+}
+
 async function fetchAdCostMetricRecords(fromDate?: string | null, toDate?: string | null, lang?: string | null): Promise<FitnessAdCostRecord[]> {
   const table = process.env.SUPABASE_FITNESS_AD_COSTS_TABLE || "fitness_ad_costs";
   try {
@@ -87,10 +98,11 @@ export async function GET(request: Request) {
   }
 
   try {
-    const [leadRecords, eventRecords, adCostRecords] = await Promise.all([
+    const [leadRecords, eventRecords, adCostRecords, affiliateRevenueRecords] = await Promise.all([
       fetchLeadMetricRecords(fromDate, toDate, lang),
       fetchEventMetricRecords(fromDate, toDate, lang),
       fetchAdCostMetricRecords(fromDate, toDate, lang),
+      fetchAffiliateRevenueMetricRecords(fromDate, toDate, lang),
     ]);
 
     return NextResponse.json({
@@ -99,6 +111,7 @@ export async function GET(request: Request) {
       metrics: aggregateFitnessLeadMetrics(filterRecordsByDateRange(leadRecords, fromDate, toDate)),
       eventMetrics: aggregateFitnessEventMetrics(filterRecordsByDateRange(eventRecords, fromDate, toDate)),
       adCostMetrics: aggregateFitnessAdCostMetrics(adCostRecords),
+      affiliateRevenueMetrics: aggregateFitnessAffiliateRevenueMetrics(affiliateRevenueRecords),
     });
   } catch (error) {
     return NextResponse.json({

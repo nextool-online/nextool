@@ -15,6 +15,23 @@ export type FitnessEventMetricRecord = {
   created_at?: string | null;
 };
 
+export type FitnessAffiliateRevenueRecord = {
+  revenue_date?: string | null;
+  lang?: string | null;
+  calculator?: string | null;
+  affiliate_platform?: string | null;
+  offer_id?: string | null;
+  product_category?: string | null;
+  utm_campaign?: string | null;
+  utm_term?: string | null;
+  clicks?: number | string | null;
+  conversions?: number | string | null;
+  commission?: number | string | null;
+  currency?: string | null;
+  status?: string | null;
+  created_at?: string | null;
+};
+
 export type FitnessAdCostRecord = {
   spend_date?: string | null;
   lang?: string | null;
@@ -72,6 +89,14 @@ export type AffiliateOfferCount = {
   placement: string;
   views: number;
   clicks: number;
+};
+
+export type FitnessAffiliateRevenueMetrics = {
+  totalCommission: number;
+  totalClicks: number;
+  totalConversions: number;
+  byCalculator: Array<{ calculator: string; commission: number; clicks: number; conversions: number; currency: string }>;
+  byOffer: Array<{ offerId: string; calculator: string; productCategory: string; commission: number; clicks: number; conversions: number; currency: string }>;
 };
 
 export type FitnessAdCostMetrics = {
@@ -451,5 +476,47 @@ export function aggregateFitnessAdCostMetrics(costs: FitnessAdCostRecord[]): Fit
     totalClicks,
     byCalculator: Array.from(calculatorMap.values()).sort((a, b) => b.cost - a.cost),
     byCampaign: Array.from(campaignMap.values()).sort((a, b) => b.cost - a.cost),
+  };
+}
+
+
+export function aggregateFitnessAffiliateRevenueMetrics(revenues: FitnessAffiliateRevenueRecord[]): FitnessAffiliateRevenueMetrics {
+  const calculatorMap = new Map<string, { calculator: string; commission: number; clicks: number; conversions: number; currency: string }>();
+  const offerMap = new Map<string, { offerId: string; calculator: string; productCategory: string; commission: number; clicks: number; conversions: number; currency: string }>();
+  let totalCommission = 0;
+  let totalClicks = 0;
+  let totalConversions = 0;
+
+  for (const record of revenues) {
+    const calculator = cleanText(record.calculator || "unknown", "unknown");
+    const offerId = cleanText(record.offer_id || "unknown_offer", "unknown_offer");
+    const productCategory = cleanText(record.product_category || "unknown", "unknown");
+    const currency = cleanText(record.currency || "USD", "USD").toUpperCase();
+    const commission = parseCostNumber(record.commission);
+    const clicks = Math.max(0, Math.round(parseCostNumber(record.clicks)));
+    const conversions = Math.max(0, Math.round(parseCostNumber(record.conversions)));
+    totalCommission += commission;
+    totalClicks += clicks;
+    totalConversions += conversions;
+
+    const calcCurrent = calculatorMap.get(calculator) || { calculator, commission: 0, clicks: 0, conversions: 0, currency };
+    calcCurrent.commission += commission;
+    calcCurrent.clicks += clicks;
+    calcCurrent.conversions += conversions;
+    calculatorMap.set(calculator, calcCurrent);
+
+    const offerCurrent = offerMap.get(offerId) || { offerId, calculator, productCategory, commission: 0, clicks: 0, conversions: 0, currency };
+    offerCurrent.commission += commission;
+    offerCurrent.clicks += clicks;
+    offerCurrent.conversions += conversions;
+    offerMap.set(offerId, offerCurrent);
+  }
+
+  return {
+    totalCommission,
+    totalClicks,
+    totalConversions,
+    byCalculator: Array.from(calculatorMap.values()).sort((a, b) => b.commission - a.commission),
+    byOffer: Array.from(offerMap.values()).sort((a, b) => b.commission - a.commission),
   };
 }
