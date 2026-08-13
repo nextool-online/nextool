@@ -90,6 +90,10 @@ assert.doesNotMatch(fitnessFooterSource, /English|Português|lang === "pt" \? "e
 assert.match(fitnessJourneySource, /\/api\/fitness\/lead/);
 assert.match(fitnessJourneySource, /fitness_metrics_generated/);
 assert.match(fitnessJourneySource, /email_submitted/);
+assert.match(fitnessJourneySource, /emailStatus === "success"/);
+assert.match(fitnessJourneySource, /Promoções|Promotions/);
+assert.match(fitnessJourneySource, /spam/i);
+assert.match(fitnessJourneySource, /Ver opções práticas|See practical options/);
 assert.match(fitnessJourneySource, /id="fitness-email"/);
 assert.match(fitnessJourneySource, /affiliate_offer_view/);
 assert.match(fitnessJourneySource, /affiliate_offer_click/);

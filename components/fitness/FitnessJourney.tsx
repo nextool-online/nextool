@@ -681,42 +681,61 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
               </div>
 
               <form id="fitness-email" onSubmit={submitEmail} className="rounded-3xl border border-emerald-200 bg-gradient-to-br from-emerald-50 to-white p-5 shadow-lg shadow-emerald-900/10">
-                <p className="text-xs font-black uppercase tracking-[0.22em] text-emerald-700">{lang === "pt" ? "Próximo passo" : "Next step"}</p>
-                <p className="mt-2 text-2xl font-black tracking-tight text-zinc-950">{content.emailTitle}</p>
-                <p className="mt-2 text-sm leading-6 text-zinc-600">{content.emailDescription}</p>
-                <input className="hidden" tabIndex={-1} autoComplete="off" value={honeypot} onChange={(event) => setHoneypot(event.target.value)} aria-hidden="true" />
-                <div className="mt-4 flex flex-col gap-3 sm:flex-row">
-                  <input className="min-w-0 flex-1 rounded-full border border-emerald-200 bg-white px-5 py-3 text-base font-semibold outline-none focus:border-emerald-500" type="email" value={email} onFocus={() => trackFitnessEvent("email_field_focused", { source: source || "direct_fitness", lang })} onChange={(event) => setEmail(event.target.value)} placeholder={content.emailPlaceholder} required />
-                  <button type="submit" className="rounded-full bg-emerald-400 px-5 py-3 text-sm font-black text-zinc-950 transition hover:bg-emerald-300 disabled:cursor-not-allowed disabled:opacity-60" disabled={emailStatus === "sending"}>
-                    {emailStatus === "sending" ? (lang === "pt" ? "Enviando..." : "Sending...") : content.emailButton}
-                  </button>
-                </div>
-                <label className="mt-4 flex items-start gap-3 text-xs font-semibold leading-5 text-zinc-600">
-                  <input type="checkbox" className="mt-1 h-4 w-4 rounded border-emerald-300 text-emerald-500" checked={consent} onChange={(event) => setConsent(event.target.checked)} required />
-                  <span>{content.emailConsent}</span>
-                </label>
-                {emailMessage && (
-                  <p className={`mt-4 rounded-2xl px-4 py-3 text-sm font-bold leading-6 ${emailStatus === "error" ? "bg-rose-50 text-rose-700" : "bg-white text-emerald-700"}`}>
-                    {emailMessage}
-                  </p>
-                )}
-                {emailStatus === "success" && (
-                  <div className="mt-4 rounded-3xl border border-emerald-200 bg-white p-4 shadow-sm">
-                    <p className="text-xs font-black uppercase tracking-[0.2em] text-emerald-700">{lang === "pt" ? "Solução relacionada" : "Related solution"}</p>
-                    <h3 className="mt-2 text-xl font-black text-zinc-950">{lang === "pt" ? "Bater proteína todo dia com menos atrito" : "Hit daily protein with less friction"}</h3>
-                    <p className="mt-2 text-sm leading-6 text-zinc-600">
-                      {lang === "pt"
-                        ? "Se sua meta de proteína parece alta no dia a dia, o próximo passo é escolher fontes práticas — comida primeiro, complemento quando fizer sentido."
-                        : "If your protein target feels high in daily life, the next step is choosing practical sources — food first, supplements when they make sense."}
-                    </p>
-                    <Link
-                      href={`/${lang}/fitness/offers/protein`}
-                      onClick={() => trackAffiliateEvent("affiliate_offer_click", lang, proteinOffer.source, proteinOffer)}
-                      className="mt-4 inline-flex rounded-full bg-zinc-950 px-5 py-3 text-sm font-black text-white transition hover:bg-zinc-800"
-                    >
-                      {lang === "pt" ? "Ver opções práticas" : "See practical options"}
-                    </Link>
+                {emailStatus === "success" ? (
+                  <div className="rounded-[1.7rem] bg-white p-1">
+                    <div className="rounded-[1.5rem] border border-emerald-200 bg-emerald-50 p-5">
+                      <p className="text-xs font-black uppercase tracking-[0.22em] text-emerald-700">{lang === "pt" ? "Email enviado" : "Email sent"}</p>
+                      <h3 className="mt-2 text-2xl font-black tracking-tight text-zinc-950">{lang === "pt" ? "Suas métricas foram enviadas" : "Your metrics were sent"}</h3>
+                      <p className="mt-2 text-sm leading-6 text-zinc-700">
+                        {lang === "pt"
+                          ? "Abra seu Gmail e confira a aba Principal. Se não aparecer, procure também em Promoções e Spam."
+                          : "Open Gmail and check your Primary inbox. If it is not there, also check Promotions and Spam."}
+                      </p>
+                      <div className="mt-4 grid gap-2 text-sm font-bold text-zinc-700 sm:grid-cols-3">
+                        <span className="rounded-2xl bg-white px-4 py-3">1. {lang === "pt" ? "Principal" : "Primary"}</span>
+                        <span className="rounded-2xl bg-white px-4 py-3">2. {lang === "pt" ? "Promoções" : "Promotions"}</span>
+                        <span className="rounded-2xl bg-white px-4 py-3">3. Spam</span>
+                      </div>
+                    </div>
+                    <div className="mt-4 rounded-3xl border border-emerald-200 bg-white p-4 shadow-sm">
+                      <p className="text-xs font-black uppercase tracking-[0.2em] text-emerald-700">{lang === "pt" ? "Enquanto isso" : "Meanwhile"}</p>
+                      <h3 className="mt-2 text-xl font-black text-zinc-950">{lang === "pt" ? "Bater proteína todo dia com menos atrito" : "Hit daily protein with less friction"}</h3>
+                      <p className="mt-2 text-sm leading-6 text-zinc-600">
+                        {lang === "pt"
+                          ? "Se sua meta de proteína parece alta no dia a dia, veja opções práticas para transformar a métrica em rotina."
+                          : "If your protein target feels high in daily life, see practical options to turn the metric into routine."}
+                      </p>
+                      <Link
+                        href={`/${lang}/fitness/offers/protein`}
+                        onClick={() => trackAffiliateEvent("affiliate_offer_click", lang, proteinOffer.source, proteinOffer)}
+                        className="mt-4 inline-flex rounded-full bg-zinc-950 px-5 py-3 text-sm font-black text-white transition hover:bg-zinc-800"
+                      >
+                        {lang === "pt" ? "Ver opções práticas" : "See practical options"}
+                      </Link>
+                    </div>
                   </div>
+                ) : (
+                  <>
+                    <p className="text-xs font-black uppercase tracking-[0.22em] text-emerald-700">{lang === "pt" ? "Próximo passo" : "Next step"}</p>
+                    <p className="mt-2 text-2xl font-black tracking-tight text-zinc-950">{content.emailTitle}</p>
+                    <p className="mt-2 text-sm leading-6 text-zinc-600">{content.emailDescription}</p>
+                    <input className="hidden" tabIndex={-1} autoComplete="off" value={honeypot} onChange={(event) => setHoneypot(event.target.value)} aria-hidden="true" />
+                    <div className="mt-4 flex flex-col gap-3 sm:flex-row">
+                      <input className="min-w-0 flex-1 rounded-full border border-emerald-200 bg-white px-5 py-3 text-base font-semibold outline-none focus:border-emerald-500" type="email" value={email} onFocus={() => trackFitnessEvent("email_field_focused", { source: source || "direct_fitness", lang })} onChange={(event) => setEmail(event.target.value)} placeholder={content.emailPlaceholder} required />
+                      <button type="submit" className="rounded-full bg-emerald-400 px-5 py-3 text-sm font-black text-zinc-950 transition hover:bg-emerald-300 disabled:cursor-not-allowed disabled:opacity-60" disabled={emailStatus === "sending"}>
+                        {emailStatus === "sending" ? (lang === "pt" ? "Enviando..." : "Sending...") : content.emailButton}
+                      </button>
+                    </div>
+                    <label className="mt-4 flex items-start gap-3 text-xs font-semibold leading-5 text-zinc-600">
+                      <input type="checkbox" className="mt-1 h-4 w-4 rounded border-emerald-300 text-emerald-500" checked={consent} onChange={(event) => setConsent(event.target.checked)} required />
+                      <span>{content.emailConsent}</span>
+                    </label>
+                    {emailMessage && (
+                      <p className={`mt-4 rounded-2xl px-4 py-3 text-sm font-bold leading-6 ${emailStatus === "error" ? "bg-rose-50 text-rose-700" : "bg-white text-emerald-700"}`}>
+                        {emailMessage}
+                      </p>
+                    )}
+                  </>
                 )}
               </form>
 
