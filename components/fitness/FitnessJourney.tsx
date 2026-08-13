@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 
 import { getLocaleProfile } from "../../data/localeProfiles";
 import { getFitnessContent } from "../../data/fitness";
+import { trackAffiliateEvent } from "./AffiliateLandingAnalytics";
 import { formatDecimal, formatNumber } from "../../utils/formatters";
 import {
   calculateBmi,
@@ -74,6 +75,13 @@ const statusValueStyles: Record<MetricStatusId, string> = {
   "out-of-range": "text-rose-700",
   low: "text-sky-700",
   neutral: "text-zinc-950",
+};
+
+const proteinOffer = {
+  offer_id: "protein-contextual-offer",
+  product_category: "protein",
+  placement: "post_capture",
+  source: "protein-calculator",
 };
 
 const statusBarPositions: Record<MetricStatusId, number> = {
@@ -490,6 +498,9 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
       setEmailStatus(previewMode ? "preview" : "success");
       setEmailMessage(previewMode ? String(content.emailPreviewSuccess) : String(content.emailSuccess));
       trackFitnessEvent(previewMode ? "email_preview_success" : "email_sent_success", { source: source || "direct_fitness", lang });
+      if (!previewMode) {
+        trackAffiliateEvent("affiliate_offer_view", lang, proteinOffer.source, proteinOffer);
+      }
     } catch {
       setEmailStatus("error");
       setEmailMessage(String(content.emailError));
@@ -688,6 +699,24 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
                   <p className={`mt-4 rounded-2xl px-4 py-3 text-sm font-bold leading-6 ${emailStatus === "error" ? "bg-rose-50 text-rose-700" : "bg-white text-emerald-700"}`}>
                     {emailMessage}
                   </p>
+                )}
+                {emailStatus === "success" && (
+                  <div className="mt-4 rounded-3xl border border-emerald-200 bg-white p-4 shadow-sm">
+                    <p className="text-xs font-black uppercase tracking-[0.2em] text-emerald-700">{lang === "pt" ? "Solução relacionada" : "Related solution"}</p>
+                    <h3 className="mt-2 text-xl font-black text-zinc-950">{lang === "pt" ? "Bater proteína todo dia com menos atrito" : "Hit daily protein with less friction"}</h3>
+                    <p className="mt-2 text-sm leading-6 text-zinc-600">
+                      {lang === "pt"
+                        ? "Se sua meta de proteína parece alta no dia a dia, o próximo passo é escolher fontes práticas — comida primeiro, complemento quando fizer sentido."
+                        : "If your protein target feels high in daily life, the next step is choosing practical sources — food first, supplements when they make sense."}
+                    </p>
+                    <Link
+                      href={`/${lang}/fitness/offers/protein`}
+                      onClick={() => trackAffiliateEvent("affiliate_offer_click", lang, proteinOffer.source, proteinOffer)}
+                      className="mt-4 inline-flex rounded-full bg-zinc-950 px-5 py-3 text-sm font-black text-white transition hover:bg-zinc-800"
+                    >
+                      {lang === "pt" ? "Ver opções práticas" : "See practical options"}
+                    </Link>
+                  </div>
                 )}
               </form>
 

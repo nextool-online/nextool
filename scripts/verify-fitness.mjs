@@ -75,6 +75,8 @@ const fitnessJourneySource = fs.readFileSync(new URL("../components/fitness/Fitn
 const waterSource = fs.readFileSync(new URL("../tools/water-intake-calculator/component.tsx", import.meta.url), "utf8");
 const fitnessLayoutSource = fs.readFileSync(new URL("../components/layout/ToolPageLayout.tsx", import.meta.url), "utf8");
 const fitnessFooterSource = fs.readFileSync(new URL("../components/fitness/FitnessFooter.tsx", import.meta.url), "utf8");
+const proteinOfferPageSource = fs.readFileSync(new URL("../components/fitness/ProteinOfferLanding.tsx", import.meta.url), "utf8");
+const affiliateAnalyticsSource = fs.readFileSync(new URL("../components/fitness/AffiliateLandingAnalytics.tsx", import.meta.url), "utf8");
 
 assert.match(fitnessJourneySource, /calculadora-de-tmb/);
 assert.doesNotMatch(fitnessJourneySource, /calculadora-tmb/);
@@ -89,8 +91,15 @@ assert.match(fitnessJourneySource, /\/api\/fitness\/lead/);
 assert.match(fitnessJourneySource, /fitness_metrics_generated/);
 assert.match(fitnessJourneySource, /email_submitted/);
 assert.match(fitnessJourneySource, /id="fitness-email"/);
+assert.match(fitnessJourneySource, /affiliate_offer_view/);
+assert.match(fitnessJourneySource, /affiliate_offer_click/);
+assert.match(fitnessJourneySource, /proteinOffer/);
+assert.match(fitnessJourneySource, /\/fitness\/offers\/protein/);
 assert.doesNotMatch(fitnessJourneySource, /Salvar progresso neste dispositivo|Save progress on this device|disabled>\s*\{content\.emailButton\}/);
 assert.match(fitnessFooterSource, /#fitness-email/);
+assert.match(proteinOfferPageSource, /protein-contextual-offer/);
+assert.match(affiliateAnalyticsSource, /affiliate_landing_view/);
+assert.match(proteinOfferPageSource, /affiliate_landing_cta_click/);
 assert.doesNotMatch(fitnessFooterSource, /#fitness-save/);
 
 assert.equal(getBmiMetricStatus("normal").id, "good");
