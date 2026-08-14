@@ -537,7 +537,7 @@ export default function FitnessJourney({ lang, visualVariant = "default" }: Fitn
           </div>
         </div>
 
-        <div id="fitness-form" className={isSoftHealth ? "rounded-[2rem] border border-sky-100 bg-white/95 p-4 text-slate-950 shadow-2xl shadow-sky-100/70 md:p-6" : "rounded-[2rem] border border-white/10 bg-white p-4 text-zinc-950 shadow-2xl md:p-6"}>
+        <div id="fitness-form" className={isSoftHealth ? "rounded-[2rem] border border-sky-300 bg-white/95 p-4 text-slate-950 shadow-[0_24px_70px_rgba(14,116,144,0.22)] ring-1 ring-sky-100 md:p-6" : "rounded-[2rem] border border-white/10 bg-white p-4 text-zinc-950 shadow-2xl md:p-6"}>
           <p className="text-sm font-black uppercase tracking-wide text-emerald-600">
             {content.formTitle}
           </p>
@@ -767,10 +767,10 @@ export default function FitnessJourney({ lang, visualVariant = "default" }: Fitn
               ["06", content.healthyRange, content.relatedSteps.idealWeight, `/${lang}/tools/${lang === "pt" ? "calculadora-peso-ideal" : "ideal-weight-calculator"}`],
               ["07", content.macros, content.relatedSteps.macros, `/${lang}/tools/${lang === "pt" ? "calculadora-de-macros" : "macro-calculator"}`],
             ].map(([step, label, helper, href]) => (
-              <Link key={href} href={href} className="group rounded-3xl border border-zinc-200 bg-zinc-50 p-5 transition hover:-translate-y-0.5 hover:border-emerald-300 hover:bg-emerald-50 md:min-h-32">
-                <div className="flex items-center gap-3">
+              <Link key={href} href={`${href}${isSoftHealth ? "?variant=soft-health" : ""}`} className="group rounded-3xl border border-sky-200 bg-white p-5 shadow-sm shadow-sky-100/70 transition hover:-translate-y-0.5 hover:border-sky-400 hover:bg-sky-50 hover:shadow-xl hover:shadow-sky-100 md:min-h-32">
+                <div className="flex min-w-0 items-center gap-3">
                   <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-emerald-400 text-sm font-black text-zinc-950 shadow-sm shadow-emerald-900/20 md:h-8 md:w-8 md:text-xs">{step}</span>
-                  <p className="text-2xl font-black leading-tight md:text-lg">{label}</p>
+                  <p className="min-w-0 break-words text-xl font-black leading-tight text-zinc-950 md:text-base lg:text-sm xl:text-base">{label}</p>
                 </div>
                 <p className="mt-4 text-lg leading-7 text-zinc-600 md:text-sm md:leading-6">{helper}</p>
               </Link>
