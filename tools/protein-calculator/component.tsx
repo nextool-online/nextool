@@ -97,6 +97,9 @@ export default function ProteinCalculatorTool({ lang, ui }: ToolComponentProps) 
                     {formatNumber(result.minGrams, lang, { maximumFractionDigits: 0 })}–{formatNumber(result.maxGrams, lang, { maximumFractionDigits: 0 })}
                   </p>
                   <p className="mt-1 text-sm font-bold text-slate-500">{gramUnit}</p>
+                  <p data-role="result-explanation" className="mx-auto mt-3 max-w-sm text-sm font-semibold leading-6 text-slate-700">
+                    {getText(toolUi.resultHelper, lang)}
+                  </p>
                 </div>
                 <div className="flex justify-center rounded-2xl bg-emerald-50 p-4">
                   <span className="self-center rounded-full bg-emerald-100 px-4 py-2 text-sm font-black uppercase text-emerald-700">

@@ -285,7 +285,7 @@ export const calorieCalculatorContent = {
     },
 
     resultTitle: {
-      en: "Your daily maintenance",
+      en: "Your daily calories",
     },
 
     status: {
@@ -305,7 +305,7 @@ export const calorieCalculatorContent = {
     },
 
     resultHelper: {
-      en: "This is a maintenance estimate. To change weight, the next step is adjusting goals, protein, water and progress tracking.",
+      en: "This number estimates how many calories you would burn in a day with your current routine. To lose fat, stay below it; to gain muscle, go slightly above it. Use it as a starting point, not a perfect rule."
     },
 
     openFitness: {

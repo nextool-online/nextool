@@ -285,7 +285,7 @@ export const calorieCalculatorContent = {
     },
 
     resultTitle: {
-      pt: "Sua manutenção diária",
+      pt: "Suas calorias diárias",
     },
 
     status: {
@@ -305,7 +305,7 @@ export const calorieCalculatorContent = {
     },
 
     resultHelper: {
-      pt: "Esta é uma estimativa de manutenção. Para mudar peso, o próximo passo é ajustar meta, proteína, água e acompanhar progresso.",
+      pt: "Este número estima quantas calorias você gastaria no dia com sua rotina atual. Para perder gordura, fique abaixo dele; para ganhar massa, fique um pouco acima. Use como ponto de partida, não como regra perfeita."
     },
 
     openFitness: {

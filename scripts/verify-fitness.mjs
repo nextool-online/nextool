@@ -156,6 +156,12 @@ assert.doesNotMatch(toolPageSource, /searchParams|soft-health|visualVariant/);
 assert.doesNotMatch(fitnessPageSource, /searchParams|soft-health|visualVariant|bg-zinc-950/);
 assert.doesNotMatch(proteinCalculatorSource, /visualVariant|soft-health|variant=soft/);
 assert.match(proteinCalculatorSource, /ToolBox variant="fitness"/);
+assert.match(fs.readFileSync(new URL("../tools/calorie-calculator/component.tsx", import.meta.url), "utf8"), /resultHelper, lang/);
+assert.match(fs.readFileSync(new URL("../tools/calorie-calculator/component.tsx", import.meta.url), "utf8"), /result-explanation/);
+assert.match(fs.readFileSync(new URL("../tools/protein-calculator/component.tsx", import.meta.url), "utf8"), /result-explanation/);
+assert.match(toolPageSource, /rounded-3xl border border-sky-200 bg-white p-5 shadow-sm shadow-sky-100\/70/);
+assert.match(toolPageSource, /grid h-10 w-10 shrink-0 place-items-center rounded-full bg-emerald-400/);
+
 const fitnessCalculatorFiles = [
   "../tools/bmi-calculator/component.tsx",
   "../tools/bmr-calculator/component.tsx",

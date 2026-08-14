@@ -342,15 +342,35 @@ export default async function ToolPage({ params }: ToolPageProps) {
             {getText(dictionary.relatedTools, lang)}
           </h2>
 
-          <div className="mt-5 grid gap-6 md:grid-cols-2">
-            {relatedTools.map((relatedTool) => (
-              <ToolCard
-                key={relatedTool.id}
-                title={getText(relatedTool.title, lang)}
-                description={getText(relatedTool.description, lang)}
-                href={`/${lang}/tools/${getText(relatedTool.slug, lang)}`}
-                category={categoryName}
-              />
+          <div className={isFitnessLandingTool ? "mt-5 grid gap-4 md:grid-cols-2" : "mt-5 grid gap-6 md:grid-cols-2"}>
+            {relatedTools.map((relatedTool, index) => (
+              isFitnessLandingTool ? (
+                <a
+                  key={relatedTool.id}
+                  href={`/${lang}/tools/${getText(relatedTool.slug, lang)}`}
+                  className="group rounded-3xl border border-sky-200 bg-white p-5 shadow-sm shadow-sky-100/70 transition hover:-translate-y-0.5 hover:border-sky-400 hover:bg-sky-50 hover:shadow-xl hover:shadow-sky-100"
+                >
+                  <div className="flex min-w-0 items-center gap-3">
+                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-emerald-400 text-sm font-black text-zinc-950 shadow-sm shadow-emerald-900/20">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <h3 className="min-w-0 break-words text-xl font-black leading-tight text-zinc-950">
+                      {getText(relatedTool.title, lang)}
+                    </h3>
+                  </div>
+                  <p className="mt-4 text-sm font-semibold leading-6 text-slate-700">
+                    {getText(relatedTool.description, lang)}
+                  </p>
+                </a>
+              ) : (
+                <ToolCard
+                  key={relatedTool.id}
+                  title={getText(relatedTool.title, lang)}
+                  description={getText(relatedTool.description, lang)}
+                  href={`/${lang}/tools/${getText(relatedTool.slug, lang)}`}
+                  category={categoryName}
+                />
+              )
             ))}
           </div>
         </section>

@@ -37,7 +37,7 @@ export const proteinCalculatorContent = {
     status: { pt: "Estimativa diária" },
     minTarget: { pt: "Mínimo prático" },
     maxTarget: { pt: "Faixa superior" },
-    resultHelper: { pt: "Use esta faixa como ponto de partida. O número ideal depende de treino, rotina, calorias, saúde e preferência alimentar." },
+    resultHelper: { pt: "Esta faixa estima quanta proteína consumir por dia para apoiar saciedade, recuperação e massa muscular. Comece pelo mínimo prático e ajuste conforme rotina, treino, calorias e preferência alimentar." },
     openFitness: { pt: "Gerar meu perfil fitness completo" },
     ctaEyebrow: { pt: "Próximo passo" },
     ctaTitle: { pt: "Descubra também:" },

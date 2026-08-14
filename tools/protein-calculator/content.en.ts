@@ -37,7 +37,7 @@ export const proteinCalculatorContent = {
     status: { en: "Daily estimate" },
     minTarget: { en: "Practical minimum" },
     maxTarget: { en: "Upper range" },
-    resultHelper: { en: "Use this range as a starting point. The ideal number depends on training, routine, calories, health and food preferences." },
+    resultHelper: { en: "This range estimates how much protein to eat per day to support satiety, recovery and muscle mass. Start with the practical minimum and adjust based on routine, training, calories and food preferences." },
     openFitness: { en: "Generate my full fitness profile" },
     ctaEyebrow: { en: "Next step" },
     ctaTitle: { en: "Also discover:" },
