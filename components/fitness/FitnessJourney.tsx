@@ -583,16 +583,14 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
               <div className="flex flex-wrap items-end justify-between gap-4">
                 <div>
                   <p className="text-sm font-bold text-slate-500">{content.resultsTitle}</p>
-                  <div className="mt-1 flex flex-wrap items-end gap-x-4 gap-y-2">
+                  <div className="mt-1 flex flex-wrap items-baseline gap-x-4 gap-y-2">
                     <p className="text-6xl font-black tracking-tight text-slate-950">{formatDecimal(result.bmi, lang)}</p>
-                    <div className="pb-1">
-                      <p className="text-6xl font-black leading-none tracking-tight text-slate-950">
-                        {lang === "pt" ? <span>IMC</span> : <span>BMI</span>}
-                      </p>
-                      <p className="mt-2 max-w-sm text-sm font-semibold leading-5 text-slate-600">
-                        {lang === "pt" ? "Este é seu Índice de Massa Corporal." : "This is your Body Mass Index."}
-                      </p>
-                    </div>
+                    <p className="text-6xl font-black leading-none tracking-tight text-slate-950">
+                      {lang === "pt" ? <span>IMC</span> : <span>BMI</span>}
+                    </p>
+                    <p className="basis-full text-sm font-semibold leading-5 text-slate-600 md:basis-auto">
+                      {lang === "pt" ? "Este é seu Índice de Massa Corporal." : "This is your Body Mass Index."}
+                    </p>
                   </div>
                 </div>
                 <p className={`rounded-full px-4 py-2 text-sm font-black ${statusChipStyles[result.statuses.bmi.id]}`}>
