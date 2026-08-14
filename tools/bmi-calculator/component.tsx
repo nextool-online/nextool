@@ -429,7 +429,7 @@ export default function BmiCalculatorTool({
                           ["🥩", "Daily protein"],
                         ]
                     ).map(([icon, item]) => (
-                      <div key={item} className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-sky-100 bg-white p-4 text-center shadow-sm">
+                      <div key={item} className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-sky-200 bg-white p-4 text-center shadow-lg shadow-sky-100/80 ring-1 ring-sky-50">
                         <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-sky-50 text-xl" aria-hidden="true">{icon}</span>
                         <p className="text-base font-black leading-tight text-slate-800 md:text-sm lg:text-base">{item}</p>
                       </div>
@@ -440,7 +440,7 @@ export default function BmiCalculatorTool({
                     {lang === "pt" ? "Gerar meu perfil fitness completo" : "Generate my full fitness profile"}
                   </Link>
 
-                  <p className="max-w-2xl text-sm leading-6 text-zinc-300">
+                  <p className="max-w-2xl text-sm leading-6 text-slate-600">
                     {lang === "pt"
                       ? "Complete seu painel fitness com as outras métricas que ajudam a transformar um número isolado em uma visão prática."
                       : "Complete your fitness dashboard with the other metrics that turn one isolated number into a practical view."}

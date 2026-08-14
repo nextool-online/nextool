@@ -103,7 +103,7 @@ export default function MacroCalculatorTool({ lang, ui }: ToolComponentProps) {
                 <h3 className="mt-2 text-2xl font-black tracking-tight md:text-3xl">{getText(toolUi.ctaTitle, lang)}</h3>
                 <div className="mt-5 grid gap-3 sm:grid-cols-4">
                   {[["📏", getText(toolUi.bmi, lang)], ["🥩", getText(toolUi.protein, lang)], ["💧", getText(toolUi.water, lang)], ["⚖️", getText(toolUi.idealWeight, lang)]].map(([icon, item]) => (
-                    <div key={item} className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-sky-100 bg-white p-4 text-center shadow-sm">
+                    <div key={item} className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-sky-200 bg-white p-4 text-center shadow-lg shadow-sky-100/80 ring-1 ring-sky-50">
                       <span className="text-3xl leading-none" aria-hidden="true">{icon}</span>
                       <span className="text-base font-black leading-tight text-slate-800 md:text-lg">{item}</span>
                     </div>
@@ -112,7 +112,7 @@ export default function MacroCalculatorTool({ lang, ui }: ToolComponentProps) {
                 <Link href={fitnessHref} className="mt-6 inline-flex items-center justify-center rounded-full bg-emerald-400 px-6 py-3 text-sm font-black uppercase tracking-wide text-zinc-950 transition hover:bg-emerald-300">
                   {getText(toolUi.openFitness, lang)}
                 </Link>
-                <p className="mx-auto mt-4 max-w-2xl text-sm font-medium leading-6 text-zinc-300 md:text-base">{getText(toolUi.ctaDescription, lang)}</p>
+                <p className="mx-auto mt-4 max-w-2xl text-sm font-medium leading-6 text-slate-600 md:text-base">{getText(toolUi.ctaDescription, lang)}</p>
               </div>
 
               <p className="text-center text-xs leading-5 text-zinc-500 md:text-sm">{getText(toolUi.disclaimer, lang)}</p>
