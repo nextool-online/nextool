@@ -25,8 +25,9 @@ function getProteinMarker(maxGrams: number) {
   return Math.max(8, Math.min(94, ((maxGrams - 60) / 160) * 100));
 }
 
-export default function ProteinCalculatorTool({ lang, ui }: ToolComponentProps) {
+export default function ProteinCalculatorTool({ lang, ui, visualVariant = "default" }: ToolComponentProps) {
   const toolUi = ui!;
+  const isSoftHealth = visualVariant === "soft-health";
   const usesImperial = getLocaleProfile(lang).measurementSystem === "imperial";
   const [weight, setWeight] = useState("");
   const [goal, setGoal] = useState<FitnessGoal>("gain");
@@ -52,15 +53,16 @@ export default function ProteinCalculatorTool({ lang, ui }: ToolComponentProps) 
     params.set("goal", goal);
     params.set("from", "protein");
     const query = params.toString();
+    if (visualVariant === "soft-health") params.set("variant", "soft-health");
     return `/${lang}/fitness${query ? `?${query}` : ""}`;
   }, [goal, lang, weight]);
 
-  const inputClass = "block w-full rounded-xl border border-zinc-300 bg-white p-3 text-center text-lg font-semibold text-zinc-950 outline-none transition placeholder:text-zinc-400 focus:border-zinc-900 md:p-4";
+  const inputClass = isSoftHealth ? "block w-full rounded-2xl border border-sky-200 bg-white p-3 text-center text-lg font-semibold text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-sky-500 md:p-4" : "block w-full rounded-xl border border-zinc-300 bg-white p-3 text-center text-lg font-semibold text-zinc-950 outline-none transition placeholder:text-zinc-400 focus:border-zinc-900 md:p-4";
   const selectClass = "text-lg font-semibold text-zinc-950";
   const gramUnit = lang === "pt" ? "g/dia" : "g/day";
 
   return (
-    <ToolBox>
+    <ToolBox className={isSoftHealth ? "border-sky-100 bg-white/90 shadow-2xl shadow-sky-100/70" : undefined}>
       <ToolSection title={getText(toolUi.heading, lang)} description={getText(toolUi.helper, lang)}>
         <div className="space-y-6">
           <div className="grid gap-3 md:grid-cols-2">
@@ -89,16 +91,16 @@ export default function ProteinCalculatorTool({ lang, ui }: ToolComponentProps) 
           </div>
 
           {result && (
-            <div className="space-y-5 rounded-3xl border border-emerald-200 bg-gradient-to-br from-white to-emerald-50 p-4 shadow-sm md:p-6">
-              <div className="grid gap-4 rounded-3xl bg-zinc-950 p-5 text-center text-white sm:grid-cols-2 sm:items-center">
-                <div className="rounded-2xl bg-white/5 p-4">
+            <div className={isSoftHealth ? "space-y-5 rounded-3xl border border-sky-100 bg-gradient-to-br from-white to-sky-50 p-4 shadow-sm md:p-6" : "space-y-5 rounded-3xl border border-emerald-200 bg-gradient-to-br from-white to-emerald-50 p-4 shadow-sm md:p-6"}>
+              <div className={isSoftHealth ? "grid gap-4 rounded-3xl border border-sky-100 bg-white p-5 text-center text-slate-950 shadow-sm sm:grid-cols-2 sm:items-center" : "grid gap-4 rounded-3xl bg-zinc-950 p-5 text-center text-white sm:grid-cols-2 sm:items-center"}>
+                <div className={isSoftHealth ? "rounded-2xl bg-sky-50 p-4" : "rounded-2xl bg-white/5 p-4"}>
                   <p className="text-sm font-bold text-zinc-400">{getText(toolUi.resultTitle, lang)}</p>
                   <p className="mt-1 text-5xl font-black tracking-tight">
                     {formatNumber(result.minGrams, lang, { maximumFractionDigits: 0 })}–{formatNumber(result.maxGrams, lang, { maximumFractionDigits: 0 })}
                   </p>
-                  <p className="mt-1 text-sm font-bold text-zinc-400">{gramUnit}</p>
+                  <p className={isSoftHealth ? "mt-1 text-sm font-bold text-slate-500" : "mt-1 text-sm font-bold text-zinc-400"}>{gramUnit}</p>
                 </div>
-                <div className="flex justify-center rounded-2xl bg-white/5 p-4">
+                <div className={isSoftHealth ? "flex justify-center rounded-2xl bg-emerald-50 p-4" : "flex justify-center rounded-2xl bg-white/5 p-4"}>
                   <span className="self-center rounded-full bg-emerald-100 px-4 py-2 text-sm font-black uppercase text-emerald-700">
                     {getText(toolUi.status, lang)}
                   </span>
@@ -136,8 +138,8 @@ export default function ProteinCalculatorTool({ lang, ui }: ToolComponentProps) 
                 {getText(toolUi.resultHelper, lang)}
               </p>
 
-              <div className="rounded-3xl bg-zinc-950 p-5 text-center text-white shadow-xl shadow-zinc-900/20 md:p-6">
-                <p className="text-xs font-black uppercase tracking-[0.24em] text-emerald-300">{getText(toolUi.ctaEyebrow, lang)}</p>
+              <div className={isSoftHealth ? "rounded-3xl border border-sky-100 bg-gradient-to-br from-sky-50 to-emerald-50 p-5 text-center text-slate-950 shadow-xl shadow-sky-100/70 md:p-6" : "rounded-3xl bg-zinc-950 p-5 text-center text-white shadow-xl shadow-zinc-900/20 md:p-6"}>
+                <p className={isSoftHealth ? "text-xs font-black uppercase tracking-[0.24em] text-sky-600" : "text-xs font-black uppercase tracking-[0.24em] text-emerald-300"}>{getText(toolUi.ctaEyebrow, lang)}</p>
                 <h3 className="mt-2 text-2xl font-black tracking-tight md:text-3xl">{getText(toolUi.ctaTitle, lang)}</h3>
                 <div className="mt-5 grid gap-3 sm:grid-cols-4">
                   {[
@@ -146,16 +148,16 @@ export default function ProteinCalculatorTool({ lang, ui }: ToolComponentProps) 
                     ["💧", getText(toolUi.water, lang)],
                     ["⚖️", getText(toolUi.idealWeight, lang)],
                   ].map(([icon, item]) => (
-                    <div key={item} className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-white/10 bg-white/10 p-4 text-center shadow-lg shadow-black/10">
+                    <div key={item} className={isSoftHealth ? "flex flex-col items-center justify-center gap-3 rounded-2xl border border-sky-100 bg-white p-4 text-center shadow-sm" : "flex flex-col items-center justify-center gap-3 rounded-2xl border border-white/10 bg-white/10 p-4 text-center shadow-lg shadow-black/10"}>
                       <span className="text-3xl leading-none" aria-hidden="true">{icon}</span>
-                      <span className="text-base font-black leading-tight text-white md:text-lg">{item}</span>
+                      <span className={isSoftHealth ? "text-base font-black leading-tight text-slate-800 md:text-lg" : "text-base font-black leading-tight text-white md:text-lg"}>{item}</span>
                     </div>
                   ))}
                 </div>
-                <Link href={fitnessHref} className="mt-6 inline-flex items-center justify-center rounded-full bg-emerald-400 px-6 py-3 text-sm font-black uppercase tracking-wide text-zinc-950 transition hover:bg-emerald-300">
+                <Link href={fitnessHref} className={isSoftHealth ? "mt-6 inline-flex items-center justify-center rounded-full bg-sky-500 px-6 py-3 text-sm font-black uppercase tracking-wide text-white transition hover:bg-sky-400" : "mt-6 inline-flex items-center justify-center rounded-full bg-emerald-400 px-6 py-3 text-sm font-black uppercase tracking-wide text-zinc-950 transition hover:bg-emerald-300"}>
                   {getText(toolUi.openFitness, lang)}
                 </Link>
-                <p className="mx-auto mt-4 max-w-2xl text-sm font-medium leading-6 text-zinc-300 md:text-base">
+                <p className={isSoftHealth ? "mx-auto mt-4 max-w-2xl text-sm font-medium leading-6 text-slate-600 md:text-base" : "mx-auto mt-4 max-w-2xl text-sm font-medium leading-6 text-zinc-300 md:text-base"}>
                   {getText(toolUi.ctaDescription, lang)}
                 </p>
               </div>

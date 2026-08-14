@@ -18,6 +18,9 @@ type ToolPageProps = {
     lang: LanguageCode;
     slug: string;
   }>;
+  searchParams?: Promise<{
+    variant?: string;
+  }>;
 };
 
 const baseUrl = "https://www.nextool.online";
@@ -110,7 +113,7 @@ export async function generateMetadata({ params }: ToolPageProps) {
   };
 }
 
-export default async function ToolPage({ params }: ToolPageProps) {
+export default async function ToolPage({ params, searchParams }: ToolPageProps) {
   const { lang, slug } = await params;
 
   const tool = tools.find(
@@ -133,6 +136,8 @@ export default async function ToolPage({ params }: ToolPageProps) {
   const categoryName = category ? getText(category.name, lang) : tool.category;
   const relatedTools = getRelatedTools(tool, lang);
   const isFitnessLandingTool = fitnessLandingToolIds.has(tool.id);
+  const query = searchParams ? await searchParams : {};
+  const visualVariant = query.variant === "soft-health" ? "soft-health" : "default";
 
   const languageUrls = Object.fromEntries(
     getAvailableLanguages(tool).map((language) => [
@@ -225,7 +230,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
       description={toolDescription}
       lang={lang}
       languageUrls={languageUrls}
-      variant={isFitnessLandingTool ? "fitness" : "default"}
+      variant={isFitnessLandingTool ? (visualVariant === "soft-health" ? "fitness-soft-health" : "fitness") : "default"}
     >
       <script
         type="application/ld+json"
@@ -266,9 +271,10 @@ export default async function ToolPage({ params }: ToolPageProps) {
       <Calculator
         lang={lang}
         ui={tool.ui}
+        visualVariant={visualVariant}
       />
 
-      <div className={isFitnessLandingTool ? "mt-10 rounded-[2rem] bg-white p-5 text-zinc-950 shadow-2xl md:p-8" : ""}>
+      <div className={isFitnessLandingTool ? (visualVariant === "soft-health" ? "mt-10 rounded-[2rem] border border-sky-100 bg-white/90 p-5 text-slate-950 shadow-2xl shadow-sky-100/70 md:p-8" : "mt-10 rounded-[2rem] bg-white p-5 text-zinc-950 shadow-2xl md:p-8") : ""}>
       {tool.formula && (
        <section className={isFitnessLandingTool ? "mt-10 rounded-3xl border border-zinc-200 bg-zinc-50 p-6 shadow-xl shadow-zinc-300/60" : "mt-10 rounded-2xl border border-zinc-200 bg-zinc-50 p-6"}>
         <h2 className="text-2xl font-bold text-zinc-950">

@@ -37,6 +37,7 @@ import type { LanguageCode } from "../../data/languages";
 
 type FitnessJourneyProps = {
   lang: LanguageCode;
+  visualVariant?: "default" | "soft-health";
 };
 
 const categoryLabels = {
@@ -191,8 +192,9 @@ function metricCard({
   );
 }
 
-export default function FitnessJourney({ lang }: FitnessJourneyProps) {
+export default function FitnessJourney({ lang, visualVariant = "default" }: FitnessJourneyProps) {
   const router = useRouter();
+  const isSoftHealth = visualVariant === "soft-health";
   const content = getFitnessContent(lang);
   const usesImperial = getLocaleProfile(lang).measurementSystem === "imperial";
   const weightInputRef = useRef<HTMLInputElement>(null);
@@ -502,8 +504,8 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
       trackFitnessEvent(previewMode ? "email_preview_success" : "email_sent_success", { source: source || "direct_fitness", lang });
       if (!previewMode) {
         trackAffiliateEvent("affiliate_offer_view", lang, proteinOffer.source, proteinOffer);
-        const visualVariant = new URLSearchParams(window.location.search).get("variant") === "soft" ? "&variant=soft" : "";
-        router.push(`/${lang}/fitness/email-sent?source=${encodeURIComponent(source || "direct_fitness")}${visualVariant}`);
+        const visualQuery = new URLSearchParams(window.location.search).get("variant") === "soft-health" ? "&variant=soft-health" : "";
+        router.push(`/${lang}/fitness/email-sent?source=${encodeURIComponent(source || "direct_fitness")}${visualQuery}`);
       }
     } catch {
       setEmailStatus("error");
@@ -513,29 +515,29 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
   };
 
   return (
-    <div className="bg-zinc-950 text-white">
+    <div className={isSoftHealth ? "bg-gradient-to-br from-sky-50 via-white to-emerald-50 text-slate-950" : "bg-zinc-950 text-white"}>
       <section className="mx-auto grid max-w-7xl items-start gap-8 px-4 py-8 sm:px-6 md:py-10 lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:py-12">
         <div className="flex flex-col justify-start lg:pt-6">
-          <p className="mb-5 inline-flex w-fit rounded-full border border-emerald-400/30 bg-emerald-400/10 px-4 py-2 text-sm font-bold text-emerald-200">
+          <p className={isSoftHealth ? "mb-5 inline-flex w-fit rounded-full border border-sky-200 bg-white px-4 py-2 text-sm font-bold text-sky-700 shadow-sm" : "mb-5 inline-flex w-fit rounded-full border border-emerald-400/30 bg-emerald-400/10 px-4 py-2 text-sm font-bold text-emerald-200"}>
             {content.eyebrow}
           </p>
           <h1 className="max-w-3xl text-4xl font-black tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
             {content.title}
           </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-zinc-300 md:text-xl">
+          <p className={isSoftHealth ? "mt-6 max-w-2xl text-lg leading-8 text-slate-600 md:text-xl" : "mt-6 max-w-2xl text-lg leading-8 text-zinc-300 md:text-xl"}>
             {content.description}
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <button type="button" onClick={startWithOwnData} className="rounded-full bg-emerald-400 px-6 py-3 text-sm font-black text-zinc-950 transition hover:bg-emerald-300">
+            <button type="button" onClick={startWithOwnData} className={isSoftHealth ? "rounded-full bg-sky-500 px-6 py-3 text-sm font-black text-white transition hover:bg-sky-400" : "rounded-full bg-emerald-400 px-6 py-3 text-sm font-black text-zinc-950 transition hover:bg-emerald-300"}>
               {content.cta}
             </button>
-            <a href="#fitness-next" className="hidden rounded-full border border-white/15 px-6 py-3 text-sm font-bold text-white transition hover:bg-white/10 sm:inline-flex">
+            <a href="#fitness-next" className={isSoftHealth ? "hidden rounded-full border border-sky-200 bg-white px-6 py-3 text-sm font-bold text-sky-700 transition hover:bg-sky-50 sm:inline-flex" : "hidden rounded-full border border-white/15 px-6 py-3 text-sm font-bold text-white transition hover:bg-white/10 sm:inline-flex"}>
               {content.secondaryCta}
             </a>
           </div>
         </div>
 
-        <div id="fitness-form" className="rounded-[2rem] border border-white/10 bg-white p-4 text-zinc-950 shadow-2xl md:p-6">
+        <div id="fitness-form" className={isSoftHealth ? "rounded-[2rem] border border-sky-100 bg-white/95 p-4 text-slate-950 shadow-2xl shadow-sky-100/70 md:p-6" : "rounded-[2rem] border border-white/10 bg-white p-4 text-zinc-950 shadow-2xl md:p-6"}>
           <p className="text-sm font-black uppercase tracking-wide text-emerald-600">
             {content.formTitle}
           </p>
@@ -749,7 +751,7 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
         </div>
       </section>
 
-      <section id="fitness-next" className="border-t border-white/10 bg-white px-4 py-12 text-zinc-950 sm:px-6 lg:px-8">
+      <section id="fitness-next" className={isSoftHealth ? "border-t border-sky-100 bg-white/80 px-4 py-12 text-slate-950 sm:px-6 lg:px-8" : "border-t border-white/10 bg-white px-4 py-12 text-zinc-950 sm:px-6 lg:px-8"}>
         <div className="mx-auto max-w-7xl">
           <div className="max-w-2xl">
             <h2 className="text-4xl font-black tracking-tight md:text-3xl">{content.relatedTitle}</h2>

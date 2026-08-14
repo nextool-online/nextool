@@ -14,7 +14,7 @@ type ToolPageLayoutProps = {
   description: string;
   lang?: LanguageCode;
   languageUrls?: Partial<Record<LanguageCode, string>>;
-  variant?: "default" | "fitness";
+  variant?: "default" | "fitness" | "fitness-soft-health";
   children: React.ReactNode;
 };
 
@@ -26,21 +26,22 @@ export default function ToolPageLayout({
   variant = "default",
   children,
 }: ToolPageLayoutProps) {
-  if (variant === "fitness") {
+  if (variant === "fitness" || variant === "fitness-soft-health") {
+    const isSoftHealth = variant === "fitness-soft-health";
     return (
-      <main className="min-h-screen bg-zinc-950 text-white">
+      <main className={isSoftHealth ? "min-h-screen bg-gradient-to-br from-sky-50 via-white to-emerald-50 text-slate-950" : "min-h-screen bg-zinc-950 text-white"}>
         <FitnessHeader lang={lang} />
 
         <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 md:py-12 lg:px-8">
           <div className="mb-6 grid gap-6 lg:grid-cols-[1fr_auto] lg:items-end">
             <div>
-              <p className="mb-4 inline-flex w-fit rounded-full border border-emerald-400/30 bg-emerald-400/10 px-4 py-2 text-sm font-bold text-emerald-200">
+              <p className={isSoftHealth ? "mb-4 inline-flex w-fit rounded-full border border-sky-200 bg-white px-4 py-2 text-sm font-bold text-sky-700 shadow-sm" : "mb-4 inline-flex w-fit rounded-full border border-emerald-400/30 bg-emerald-400/10 px-4 py-2 text-sm font-bold text-emerald-200"}>
                 NexTool Fit
               </p>
               <h1 className="max-w-4xl text-4xl font-black tracking-tight sm:text-5xl md:text-6xl">
                 {title}
               </h1>
-              <p className="mt-4 max-w-3xl text-base leading-7 text-zinc-300 md:text-xl md:leading-8">
+              <p className={isSoftHealth ? "mt-4 max-w-3xl text-base leading-7 text-slate-600 md:text-xl md:leading-8" : "mt-4 max-w-3xl text-base leading-7 text-zinc-300 md:text-xl md:leading-8"}>
                 {description}
               </p>
             </div>
