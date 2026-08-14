@@ -52,10 +52,10 @@ export default function ProteinCalculatorTool({ lang, ui, visualVariant = "defau
     if (weight) params.set("weight", weight);
     params.set("goal", goal);
     params.set("from", "protein");
-    const query = params.toString();
     if (visualVariant === "soft-health") params.set("variant", "soft-health");
+    const query = params.toString();
     return `/${lang}/fitness${query ? `?${query}` : ""}`;
-  }, [goal, lang, weight]);
+  }, [goal, lang, visualVariant, weight]);
 
   const inputClass = isSoftHealth ? "block w-full rounded-2xl border border-sky-200 bg-white p-3 text-center text-lg font-semibold text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-sky-500 md:p-4" : "block w-full rounded-xl border border-zinc-300 bg-white p-3 text-center text-lg font-semibold text-zinc-950 outline-none transition placeholder:text-zinc-400 focus:border-zinc-900 md:p-4";
   const selectClass = "text-lg font-semibold text-zinc-950";
