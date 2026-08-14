@@ -37,7 +37,6 @@ import type { LanguageCode } from "../../data/languages";
 
 type FitnessJourneyProps = {
   lang: LanguageCode;
-  visualVariant?: "default" | "soft-health";
 };
 
 const categoryLabels = {
@@ -192,9 +191,9 @@ function metricCard({
   );
 }
 
-export default function FitnessJourney({ lang, visualVariant = "default" }: FitnessJourneyProps) {
+export default function FitnessJourney({ lang }: FitnessJourneyProps) {
   const router = useRouter();
-  const isSoftHealth = visualVariant === "soft-health";
+  const isSoftHealth = true;
   const content = getFitnessContent(lang);
   const usesImperial = getLocaleProfile(lang).measurementSystem === "imperial";
   const weightInputRef = useRef<HTMLInputElement>(null);
@@ -354,25 +353,6 @@ export default function FitnessJourney({ lang, visualVariant = "default" }: Fitn
   const sourceMessages = content.sourceMessages as Record<string, string>;
   const sourceMessage = source ? sourceMessages[source] || sourceMessages.default : "";
 
-  const startWithOwnData = () => {
-    trackFitnessEvent("fitness_profile_started", { source: source || "direct_fitness", lang });
-    setWeight("");
-    setHeightCm("");
-    setHeightFt("");
-    setHeightIn("");
-    setAge("");
-    setKnownCalories("");
-    setSource("");
-    setEmailStatus("idle");
-    setEmailMessage("");
-    resultTrackedRef.current = false;
-
-    window.requestAnimationFrame(() => {
-      weightInputRef.current?.focus();
-      weightInputRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
-    });
-  };
-
   const getVisitorId = () => {
     if (typeof window === "undefined") return "";
     if (visitorIdRef.current) return visitorIdRef.current;
@@ -504,8 +484,7 @@ export default function FitnessJourney({ lang, visualVariant = "default" }: Fitn
       trackFitnessEvent(previewMode ? "email_preview_success" : "email_sent_success", { source: source || "direct_fitness", lang });
       if (!previewMode) {
         trackAffiliateEvent("affiliate_offer_view", lang, proteinOffer.source, proteinOffer);
-        const visualQuery = new URLSearchParams(window.location.search).get("variant") === "soft-health" ? "&variant=soft-health" : "";
-        router.push(`/${lang}/fitness/email-sent?source=${encodeURIComponent(source || "direct_fitness")}${visualQuery}`);
+        router.push(`/${lang}/fitness/email-sent?source=${encodeURIComponent(source || "direct_fitness")}`);
       }
     } catch {
       setEmailStatus("error");
@@ -527,14 +506,6 @@ export default function FitnessJourney({ lang, visualVariant = "default" }: Fitn
           <p className={isSoftHealth ? "mt-6 max-w-2xl text-lg leading-8 text-slate-600 md:text-xl" : "mt-6 max-w-2xl text-lg leading-8 text-zinc-300 md:text-xl"}>
             {content.description}
           </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <button type="button" onClick={startWithOwnData} className={isSoftHealth ? "rounded-full bg-sky-500 px-6 py-3 text-sm font-black text-white transition hover:bg-sky-400" : "rounded-full bg-emerald-400 px-6 py-3 text-sm font-black text-zinc-950 transition hover:bg-emerald-300"}>
-              {content.cta}
-            </button>
-            <a href="#fitness-next" className={isSoftHealth ? "hidden rounded-full border border-sky-200 bg-white px-6 py-3 text-sm font-bold text-sky-700 transition hover:bg-sky-50 sm:inline-flex" : "hidden rounded-full border border-white/15 px-6 py-3 text-sm font-bold text-white transition hover:bg-white/10 sm:inline-flex"}>
-              {content.secondaryCta}
-            </a>
-          </div>
         </div>
 
         <div id="fitness-form" className={isSoftHealth ? "rounded-[2rem] border border-sky-300 bg-white/95 p-4 text-slate-950 shadow-[0_24px_70px_rgba(14,116,144,0.22)] ring-1 ring-sky-100 md:p-6" : "rounded-[2rem] border border-white/10 bg-white p-4 text-zinc-950 shadow-2xl md:p-6"}>
@@ -602,154 +573,157 @@ export default function FitnessJourney({ lang, visualVariant = "default" }: Fitn
               </select>
             </label>
           </div>
-
-          {result && (
-            <div className="mt-6 space-y-5">
-              <div className="rounded-3xl bg-zinc-950 p-5 text-white">
-                <div className="flex flex-wrap items-end justify-between gap-4">
-                  <div>
-                    <p className="text-sm font-bold text-zinc-400">{content.resultsTitle}</p>
-                    <p className="mt-1 text-5xl font-black">{formatDecimal(result.bmi, lang)}</p>
-                  </div>
-                  <p className={`rounded-full px-4 py-2 text-sm font-black ${statusChipStyles[result.statuses.bmi.id]}`}>
-                    {categoryLabels[lang][result.category.id]}
-                  </p>
-                </div>
-
-                <div className="mt-6 space-y-3">
-                  <div className="relative pt-5">
-                    <div className="absolute top-0 h-5 w-1 rounded-full bg-white" style={{ left: `${result.marker}%` }} />
-                    <div className="flex h-4 overflow-hidden rounded-full">
-                      <div className="w-1/4 bg-sky-400" />
-                      <div className="w-1/4 bg-emerald-400" />
-                      <div className="w-1/4 bg-amber-400" />
-                      <div className="w-1/4 bg-rose-500" />
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-2 gap-x-3 gap-y-2 text-[0.68rem] font-bold uppercase tracking-wide text-zinc-300 sm:grid-cols-4">
-                    <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-sky-400" />{content.bmiLegend.underweight}</span>
-                    <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-emerald-400" />{content.bmiLegend.normal}</span>
-                    <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-amber-400" />{content.bmiLegend.overweight}</span>
-                    <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-rose-500" />{content.bmiLegend.obesity}</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="grid gap-4 md:grid-cols-2">
-                {metricCard({
-                  label: content.healthyRange,
-                  value: healthyRangeValue,
-                  helper: content.metricHelpers.healthyRange,
-                  status: result.statuses.healthyRange.id,
-                  statusLabel: content.statusLabels[result.statuses.healthyRange.id],
-                  minMarkerPosition: 28,
-                  maxMarkerPosition: 72,
-                  weightMarkerPosition: getWeightRangeMarkerPosition(result.normalized.weightKg, result.range.minKg, result.range.maxKg),
-                  currentLabel: lang === "pt" ? "Peso" : "Weight",
-                  rangeMinLabel: "Min",
-                  rangeMaxLabel: "Max",
-                })}
-                {metricCard({
-                  label: content.water,
-                  value: waterValue,
-                  helper: content.metricHelpers.water,
-                  status: result.statuses.water.id,
-                  statusLabel: content.statusLabels[result.statuses.water.id],
-                })}
-                {metricCard({
-                  label: content.goalCalories,
-                  value: `${formatNumber(result.goalCalories, lang, { maximumFractionDigits: 0 })} kcal`,
-                  helper: content.metricHelpers.goalCalories,
-                  status: result.statuses.goalCalories.id,
-                  statusLabel: content.statusLabels[result.statuses.goalCalories.id],
-                })}
-                {metricCard({
-                  label: content.protein,
-                  value: `${formatNumber(result.protein.minGrams, lang, { maximumFractionDigits: 0 })}–${formatNumber(result.protein.maxGrams, lang, { maximumFractionDigits: 0 })} g`,
-                  helper: content.metricHelpers.protein,
-                  status: result.statuses.protein.id,
-                  statusLabel: content.statusLabels[result.statuses.protein.id],
-                })}
-                {metricCard({
-                  label: content.maintenance,
-                  value: `${formatNumber(result.maintenance, lang, { maximumFractionDigits: 0 })} kcal`,
-                  helper: content.metricHelpers.maintenance,
-                  status: result.statuses.maintenance.id,
-                  statusLabel: content.statusLabels[result.statuses.maintenance.id],
-                })}
-                {metricCard({
-                  label: content.bmr,
-                  value: `${formatNumber(result.bmr, lang, { maximumFractionDigits: 0 })} kcal`,
-                  helper: content.metricHelpers.bmr,
-                  status: result.statuses.bmr.id,
-                  statusLabel: content.statusLabels[result.statuses.bmr.id],
-                })}
-              </div>
-
-              <form id="fitness-email" onSubmit={submitEmail} className="rounded-3xl border border-emerald-200 bg-gradient-to-br from-emerald-50 to-white p-5 shadow-lg shadow-emerald-900/10">
-                {emailStatus === "success" ? (
-                  <div className="rounded-[1.7rem] bg-white p-1">
-                    <div className="rounded-[1.5rem] border border-emerald-200 bg-emerald-50 p-5">
-                      <p className="text-xs font-black uppercase tracking-[0.22em] text-emerald-700">{lang === "pt" ? "Email enviado" : "Email sent"}</p>
-                      <h3 className="mt-2 text-2xl font-black tracking-tight text-zinc-950">{lang === "pt" ? "Suas métricas foram enviadas" : "Your metrics were sent"}</h3>
-                      <p className="mt-2 text-sm leading-6 text-zinc-700">
-                        {lang === "pt"
-                          ? "Abra seu Gmail e confira a aba Principal. Se não aparecer, procure também em Promoções e Spam."
-                          : "Open Gmail and check your Primary inbox. If it is not there, also check Promotions and Spam."}
-                      </p>
-                      <div className="mt-4 grid gap-2 text-sm font-bold text-zinc-700 sm:grid-cols-3">
-                        <span className="rounded-2xl bg-white px-4 py-3">1. {lang === "pt" ? "Principal" : "Primary"}</span>
-                        <span className="rounded-2xl bg-white px-4 py-3">2. {lang === "pt" ? "Promoções" : "Promotions"}</span>
-                        <span className="rounded-2xl bg-white px-4 py-3">3. Spam</span>
-                      </div>
-                    </div>
-                    <div className="mt-4 rounded-3xl border border-emerald-200 bg-white p-4 shadow-sm">
-                      <p className="text-xs font-black uppercase tracking-[0.2em] text-emerald-700">{lang === "pt" ? "Enquanto isso" : "Meanwhile"}</p>
-                      <h3 className="mt-2 text-xl font-black text-zinc-950">{lang === "pt" ? "Bater proteína todo dia com menos atrito" : "Hit daily protein with less friction"}</h3>
-                      <p className="mt-2 text-sm leading-6 text-zinc-600">
-                        {lang === "pt"
-                          ? "Se sua meta de proteína parece alta no dia a dia, veja opções práticas para transformar a métrica em rotina."
-                          : "If your protein target feels high in daily life, see practical options to turn the metric into routine."}
-                      </p>
-                      <Link
-                        href={`/${lang}/fitness/offers/protein`}
-                        onClick={() => trackAffiliateEvent("affiliate_offer_click", lang, proteinOffer.source, proteinOffer)}
-                        className="mt-4 inline-flex rounded-full bg-zinc-950 px-5 py-3 text-sm font-black text-white transition hover:bg-zinc-800"
-                      >
-                        {lang === "pt" ? "Ver opções práticas" : "See practical options"}
-                      </Link>
-                    </div>
-                  </div>
-                ) : (
-                  <>
-                    <p className="text-xs font-black uppercase tracking-[0.22em] text-emerald-700">{lang === "pt" ? "Próximo passo" : "Next step"}</p>
-                    <p className="mt-2 text-2xl font-black tracking-tight text-zinc-950">{content.emailTitle}</p>
-                    <p className="mt-2 text-sm leading-6 text-zinc-600">{content.emailDescription}</p>
-                    <input className="hidden" tabIndex={-1} autoComplete="off" value={honeypot} onChange={(event) => setHoneypot(event.target.value)} aria-hidden="true" />
-                    <div className="mt-4 flex flex-col gap-3 sm:flex-row">
-                      <input className="min-w-0 flex-1 rounded-full border border-emerald-200 bg-white px-5 py-3 text-base font-semibold outline-none focus:border-emerald-500" type="email" value={email} onFocus={() => trackFitnessEvent("email_field_focused", { source: source || "direct_fitness", lang })} onChange={(event) => setEmail(event.target.value)} placeholder={content.emailPlaceholder} required />
-                      <button type="submit" className="rounded-full bg-emerald-400 px-5 py-3 text-sm font-black text-zinc-950 transition hover:bg-emerald-300 disabled:cursor-not-allowed disabled:opacity-60" disabled={emailStatus === "sending"}>
-                        {emailStatus === "sending" ? (lang === "pt" ? "Enviando..." : "Sending...") : content.emailButton}
-                      </button>
-                    </div>
-                    <label className="mt-4 flex items-start gap-3 text-xs font-semibold leading-5 text-zinc-600">
-                      <input type="checkbox" className="mt-1 h-4 w-4 rounded border-emerald-300 text-emerald-500" checked={consent} onChange={(event) => setConsent(event.target.checked)} required />
-                      <span>{content.emailConsent}</span>
-                    </label>
-                    {emailMessage && (
-                      <p className={`mt-4 rounded-2xl px-4 py-3 text-sm font-bold leading-6 ${emailStatus === "error" ? "bg-rose-50 text-rose-700" : "bg-white text-emerald-700"}`}>
-                        {emailMessage}
-                      </p>
-                    )}
-                  </>
-                )}
-              </form>
-
-              <p className="text-xs leading-5 text-zinc-500">{content.disclaimer}</p>
-            </div>
-          )}
         </div>
       </section>
+
+      {result && (
+        <section id="fitness-results" className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
+          <div className="rounded-[2rem] border border-sky-200 bg-white/95 p-4 text-slate-950 shadow-[0_24px_70px_rgba(14,116,144,0.16)] md:p-6">
+            <div className="rounded-3xl border border-sky-100 bg-gradient-to-br from-sky-50 to-white p-5">
+              <div className="flex flex-wrap items-end justify-between gap-4">
+                <div>
+                  <p className="text-sm font-bold text-slate-500">{content.resultsTitle}</p>
+                  <p className="mt-1 text-6xl font-black tracking-tight text-slate-950">{formatDecimal(result.bmi, lang)}</p>
+                </div>
+                <p className={`rounded-full px-4 py-2 text-sm font-black ${statusChipStyles[result.statuses.bmi.id]}`}>
+                  {categoryLabels[lang][result.category.id]}
+                </p>
+              </div>
+
+              <div className="mt-6 space-y-3">
+                <div className="relative pt-5">
+                  <div className="absolute top-0 h-5 w-1 rounded-full bg-slate-900" style={{ left: `${result.marker}%` }} />
+                  <div className="flex h-4 overflow-hidden rounded-full">
+                    <div className="w-1/4 bg-sky-400" />
+                    <div className="w-1/4 bg-emerald-400" />
+                    <div className="w-1/4 bg-amber-400" />
+                    <div className="w-1/4 bg-rose-500" />
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-x-3 gap-y-2 text-[0.68rem] font-bold uppercase tracking-wide text-slate-500 sm:grid-cols-4">
+                  <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-sky-400" />{content.bmiLegend.underweight}</span>
+                  <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-emerald-400" />{content.bmiLegend.normal}</span>
+                  <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-amber-400" />{content.bmiLegend.overweight}</span>
+                  <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-rose-500" />{content.bmiLegend.obesity}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-5 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {metricCard({
+                label: content.healthyRange,
+                value: healthyRangeValue,
+                helper: content.metricHelpers.healthyRange,
+                status: result.statuses.healthyRange.id,
+                statusLabel: content.statusLabels[result.statuses.healthyRange.id],
+                minMarkerPosition: 28,
+                maxMarkerPosition: 72,
+                weightMarkerPosition: getWeightRangeMarkerPosition(result.normalized.weightKg, result.range.minKg, result.range.maxKg),
+                currentLabel: lang === "pt" ? "Peso" : "Weight",
+                rangeMinLabel: "Min",
+                rangeMaxLabel: "Max",
+              })}
+              {metricCard({
+                label: content.water,
+                value: waterValue,
+                helper: content.metricHelpers.water,
+                status: result.statuses.water.id,
+                statusLabel: content.statusLabels[result.statuses.water.id],
+              })}
+              {metricCard({
+                label: content.goalCalories,
+                value: `${formatNumber(result.goalCalories, lang, { maximumFractionDigits: 0 })} kcal`,
+                helper: content.metricHelpers.goalCalories,
+                status: result.statuses.goalCalories.id,
+                statusLabel: content.statusLabels[result.statuses.goalCalories.id],
+              })}
+              {metricCard({
+                label: content.protein,
+                value: `${formatNumber(result.protein.minGrams, lang, { maximumFractionDigits: 0 })}–${formatNumber(result.protein.maxGrams, lang, { maximumFractionDigits: 0 })} g`,
+                helper: content.metricHelpers.protein,
+                status: result.statuses.protein.id,
+                statusLabel: content.statusLabels[result.statuses.protein.id],
+              })}
+              {metricCard({
+                label: content.maintenance,
+                value: `${formatNumber(result.maintenance, lang, { maximumFractionDigits: 0 })} kcal`,
+                helper: content.metricHelpers.maintenance,
+                status: result.statuses.maintenance.id,
+                statusLabel: content.statusLabels[result.statuses.maintenance.id],
+              })}
+              {metricCard({
+                label: content.bmr,
+                value: `${formatNumber(result.bmr, lang, { maximumFractionDigits: 0 })} kcal`,
+                helper: content.metricHelpers.bmr,
+                status: result.statuses.bmr.id,
+                statusLabel: content.statusLabels[result.statuses.bmr.id],
+              })}
+            </div>
+
+            <form id="fitness-email" onSubmit={submitEmail} className="mt-5 rounded-3xl border border-emerald-200 bg-gradient-to-br from-emerald-50 to-white p-5 shadow-lg shadow-emerald-900/10">
+              {emailStatus === "success" ? (
+                <div className="rounded-[1.7rem] bg-white p-1">
+                  <div className="rounded-[1.5rem] border border-emerald-200 bg-emerald-50 p-5">
+                    <p className="text-xs font-black uppercase tracking-[0.22em] text-emerald-700">{lang === "pt" ? "Email enviado" : "Email sent"}</p>
+                    <h3 className="mt-2 text-2xl font-black tracking-tight text-zinc-950">{lang === "pt" ? "Suas métricas foram enviadas" : "Your metrics were sent"}</h3>
+                    <p className="mt-2 text-sm leading-6 text-zinc-700">
+                      {lang === "pt"
+                        ? "Abra seu Gmail e confira a aba Principal. Se não aparecer, procure também em Promoções e Spam."
+                        : "Open Gmail and check your Primary inbox. If it is not there, also check Promotions and Spam."}
+                    </p>
+                    <div className="mt-4 grid gap-2 text-sm font-bold text-zinc-700 sm:grid-cols-3">
+                      <span className="rounded-2xl bg-white px-4 py-3">1. {lang === "pt" ? "Principal" : "Primary"}</span>
+                      <span className="rounded-2xl bg-white px-4 py-3">2. {lang === "pt" ? "Promoções" : "Promotions"}</span>
+                      <span className="rounded-2xl bg-white px-4 py-3">3. Spam</span>
+                    </div>
+                  </div>
+                  <div className="mt-4 rounded-3xl border border-emerald-200 bg-white p-4 shadow-sm">
+                    <p className="text-xs font-black uppercase tracking-[0.2em] text-emerald-700">{lang === "pt" ? "Enquanto isso" : "Meanwhile"}</p>
+                    <h3 className="mt-2 text-xl font-black text-zinc-950">{lang === "pt" ? "Bater proteína todo dia com menos atrito" : "Hit daily protein with less friction"}</h3>
+                    <p className="mt-2 text-sm leading-6 text-zinc-600">
+                      {lang === "pt"
+                        ? "Se sua meta de proteína parece alta no dia a dia, veja opções práticas para transformar a métrica em rotina."
+                        : "If your protein target feels high in daily life, see practical options to turn the metric into routine."}
+                    </p>
+                    <Link
+                      href={`/${lang}/fitness/offers/protein`}
+                      onClick={() => trackAffiliateEvent("affiliate_offer_click", lang, proteinOffer.source, proteinOffer)}
+                      className="mt-4 inline-flex rounded-full bg-sky-500 px-5 py-3 text-sm font-black text-white transition hover:bg-sky-400"
+                    >
+                      {lang === "pt" ? "Ver opções práticas" : "See practical options"}
+                    </Link>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <p className="text-xs font-black uppercase tracking-[0.22em] text-emerald-700">{lang === "pt" ? "Próximo passo" : "Next step"}</p>
+                  <p className="mt-2 text-2xl font-black tracking-tight text-zinc-950">{content.emailTitle}</p>
+                  <p className="mt-2 text-sm leading-6 text-zinc-600">{content.emailDescription}</p>
+                  <input className="hidden" tabIndex={-1} autoComplete="off" value={honeypot} onChange={(event) => setHoneypot(event.target.value)} aria-hidden="true" />
+                  <div className="mt-4 flex flex-col gap-3 sm:flex-row">
+                    <input className="min-w-0 flex-1 rounded-full border border-emerald-200 bg-white px-5 py-3 text-base font-semibold outline-none focus:border-emerald-500" type="email" value={email} onFocus={() => trackFitnessEvent("email_field_focused", { source: source || "direct_fitness", lang })} onChange={(event) => setEmail(event.target.value)} placeholder={content.emailPlaceholder} required />
+                    <button type="submit" className="rounded-full bg-emerald-400 px-5 py-3 text-sm font-black text-zinc-950 transition hover:bg-emerald-300 disabled:cursor-not-allowed disabled:opacity-60" disabled={emailStatus === "sending"}>
+                      {emailStatus === "sending" ? (lang === "pt" ? "Enviando..." : "Sending...") : content.emailButton}
+                    </button>
+                  </div>
+                  <label className="mt-4 flex items-start gap-3 text-xs font-semibold leading-5 text-zinc-600">
+                    <input type="checkbox" className="mt-1 h-4 w-4 rounded border-emerald-300 text-emerald-500" checked={consent} onChange={(event) => setConsent(event.target.checked)} required />
+                    <span>{content.emailConsent}</span>
+                  </label>
+                  {emailMessage && (
+                    <p className={`mt-4 rounded-2xl px-4 py-3 text-sm font-bold leading-6 ${emailStatus === "error" ? "bg-rose-50 text-rose-700" : "bg-white text-emerald-700"}`}>
+                      {emailMessage}
+                    </p>
+                  )}
+                </>
+              )}
+            </form>
+
+            <p className="mt-5 text-xs leading-5 text-zinc-500">{content.disclaimer}</p>
+          </div>
+        </section>
+      )}
+
 
       <section id="fitness-next" className={isSoftHealth ? "border-t border-sky-100 bg-white/80 px-4 py-12 text-slate-950 sm:px-6 lg:px-8" : "border-t border-white/10 bg-white px-4 py-12 text-zinc-950 sm:px-6 lg:px-8"}>
         <div className="mx-auto max-w-7xl">
@@ -767,7 +741,7 @@ export default function FitnessJourney({ lang, visualVariant = "default" }: Fitn
               ["06", content.healthyRange, content.relatedSteps.idealWeight, `/${lang}/tools/${lang === "pt" ? "calculadora-peso-ideal" : "ideal-weight-calculator"}`],
               ["07", content.macros, content.relatedSteps.macros, `/${lang}/tools/${lang === "pt" ? "calculadora-de-macros" : "macro-calculator"}`],
             ].map(([step, label, helper, href]) => (
-              <Link key={href} href={`${href}${isSoftHealth ? "?variant=soft-health" : ""}`} className="group rounded-3xl border border-sky-200 bg-white p-5 shadow-sm shadow-sky-100/70 transition hover:-translate-y-0.5 hover:border-sky-400 hover:bg-sky-50 hover:shadow-xl hover:shadow-sky-100 md:min-h-32">
+              <Link key={href} href={href} className="group rounded-3xl border border-sky-200 bg-white p-5 shadow-sm shadow-sky-100/70 transition hover:-translate-y-0.5 hover:border-sky-400 hover:bg-sky-50 hover:shadow-xl hover:shadow-sky-100 md:min-h-32">
                 <div className="flex min-w-0 items-center gap-3">
                   <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-emerald-400 text-sm font-black text-zinc-950 shadow-sm shadow-emerald-900/20 md:h-8 md:w-8 md:text-xs">{step}</span>
                   <p className="min-w-0 break-words text-xl font-black leading-tight text-zinc-950 md:text-base lg:text-sm xl:text-base">{label}</p>

@@ -12,12 +12,11 @@ const proteinOffer = {
   source: "protein-calculator",
 };
 
-export function FitnessEmailSentPage({ lang, variant = "dark" }: { lang: LanguageCode; variant?: "dark" | "soft" }) {
-  const isSoft = variant === "soft";
+export function FitnessEmailSentPage({ lang }: { lang: LanguageCode }) {
   return (
-    <main className={isSoft ? "min-h-screen bg-gradient-to-br from-sky-50 via-white to-emerald-50 px-4 py-10 text-zinc-950" : "min-h-screen bg-zinc-950 px-4 py-10 text-white"}>
-      <section className={isSoft ? "mx-auto max-w-3xl rounded-[2rem] border border-sky-100 bg-white/90 p-5 text-zinc-950 shadow-2xl shadow-sky-100/70 md:p-8" : "mx-auto max-w-3xl rounded-[2rem] border border-emerald-400/20 bg-white p-5 text-zinc-950 shadow-2xl shadow-emerald-950/20 md:p-8"}>
-        <div className={isSoft ? "rounded-[1.7rem] border border-sky-100 bg-sky-50 p-5 md:p-7" : "rounded-[1.7rem] border border-emerald-200 bg-emerald-50 p-5 md:p-7"}>
+    <main className="min-h-screen bg-gradient-to-br from-sky-50 via-white to-emerald-50 px-4 py-10 text-zinc-950">
+      <section className="mx-auto max-w-3xl rounded-[2rem] border border-sky-100 bg-white/90 p-5 text-zinc-950 shadow-2xl shadow-sky-100/70 md:p-8">
+        <div className="rounded-[1.7rem] border border-sky-100 bg-sky-50 p-5 md:p-7">
           <p className="text-xs font-black uppercase tracking-[0.22em] text-emerald-700">{lang === "pt" ? "Email enviado" : "Email sent"}</p>
           <h1 className="mt-2 text-3xl font-black tracking-tight md:text-5xl">{lang === "pt" ? "Suas métricas foram enviadas" : "Your metrics were sent"}</h1>
           <p className="mt-4 text-base font-semibold leading-7 text-zinc-700">
@@ -37,10 +36,10 @@ export function FitnessEmailSentPage({ lang, variant = "dark" }: { lang: Languag
           </p>
         </div>
 
-        <div className={isSoft ? "mt-5 rounded-[1.7rem] border border-emerald-100 bg-gradient-to-br from-white to-emerald-50 p-5 text-zinc-950 shadow-sm md:p-7" : "mt-5 rounded-[1.7rem] border border-zinc-200 bg-zinc-950 p-5 text-white md:p-7"}>
-          <p className="text-xs font-black uppercase tracking-[0.22em] text-emerald-300">{lang === "pt" ? "Enquanto isso" : "Meanwhile"}</p>
+        <div className="mt-5 rounded-[1.7rem] border border-emerald-100 bg-gradient-to-br from-white to-emerald-50 p-5 text-zinc-950 shadow-sm md:p-7">
+          <p className="text-xs font-black uppercase tracking-[0.22em] text-emerald-700">{lang === "pt" ? "Enquanto isso" : "Meanwhile"}</p>
           <h2 className="mt-2 text-2xl font-black tracking-tight md:text-4xl">{lang === "pt" ? "Bater proteína todo dia com menos atrito" : "Hit daily protein with less friction"}</h2>
-          <p className={isSoft ? "mt-4 text-sm font-semibold leading-7 text-zinc-600" : "mt-4 text-sm font-semibold leading-7 text-zinc-300"}>
+          <p className="mt-4 text-sm font-semibold leading-7 text-zinc-600">
             {lang === "pt"
               ? "Se sua meta de proteína parece alta, veja opções práticas para transformar a métrica em rotina. Comida primeiro; complemento só quando fizer sentido."
               : "If your protein target feels high, see practical options to turn the metric into routine. Food first; supplements only when they make sense."}
@@ -48,7 +47,7 @@ export function FitnessEmailSentPage({ lang, variant = "dark" }: { lang: Languag
           <Link
             href={`/${lang}/fitness/offers/protein`}
             onClick={() => trackAffiliateEvent("affiliate_offer_click", lang, proteinOffer.source, proteinOffer)}
-            className={isSoft ? "mt-5 inline-flex rounded-full bg-sky-500 px-6 py-3 text-sm font-black text-white transition hover:bg-sky-400" : "mt-5 inline-flex rounded-full bg-emerald-400 px-6 py-3 text-sm font-black text-zinc-950 transition hover:bg-emerald-300"}
+            className="mt-5 inline-flex rounded-full bg-sky-500 px-6 py-3 text-sm font-black text-white transition hover:bg-sky-400"
           >
             {lang === "pt" ? "Ver opções práticas" : "See practical options"}
           </Link>

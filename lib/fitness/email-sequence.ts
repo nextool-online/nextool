@@ -66,7 +66,7 @@ export function buildFitnessEmailHash(email: string) {
 }
 
 function emailUrl(lang: FitnessLeadLang, path: string, campaign: string, content: string) {
-  return `https://www.nextool.online/${lang}${path}?utm_source=email&utm_medium=sequence&utm_campaign=${campaign}&utm_content=${content}&variant=soft`;
+  return `https://www.nextool.online/${lang}${path}?utm_source=email&utm_medium=sequence&utm_campaign=${campaign}&utm_content=${content}`;
 }
 
 function button(href: string, label: string) {

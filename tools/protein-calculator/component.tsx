@@ -25,9 +25,9 @@ function getProteinMarker(maxGrams: number) {
   return Math.max(8, Math.min(94, ((maxGrams - 60) / 160) * 100));
 }
 
-export default function ProteinCalculatorTool({ lang, ui, visualVariant = "default" }: ToolComponentProps) {
+export default function ProteinCalculatorTool({ lang, ui }: ToolComponentProps) {
   const toolUi = ui!;
-  const isSoftHealth = visualVariant === "soft-health";
+  const isSoftHealth = true;
   const usesImperial = getLocaleProfile(lang).measurementSystem === "imperial";
   const [weight, setWeight] = useState("");
   const [goal, setGoal] = useState<FitnessGoal>("gain");
@@ -52,10 +52,9 @@ export default function ProteinCalculatorTool({ lang, ui, visualVariant = "defau
     if (weight) params.set("weight", weight);
     params.set("goal", goal);
     params.set("from", "protein");
-    if (visualVariant === "soft-health") params.set("variant", "soft-health");
     const query = params.toString();
     return `/${lang}/fitness${query ? `?${query}` : ""}`;
-  }, [goal, lang, visualVariant, weight]);
+  }, [goal, lang, weight]);
 
   const inputClass = isSoftHealth ? "block w-full rounded-2xl border border-sky-200 bg-white p-3 text-center text-lg font-semibold text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-sky-500 md:p-4" : "block w-full rounded-xl border border-zinc-300 bg-white p-3 text-center text-lg font-semibold text-zinc-950 outline-none transition placeholder:text-zinc-400 focus:border-zinc-900 md:p-4";
   const selectClass = "text-lg font-semibold text-zinc-950";

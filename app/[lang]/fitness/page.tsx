@@ -11,9 +11,6 @@ type FitnessPageProps = {
   params: Promise<{
     lang: LanguageCode;
   }>;
-  searchParams?: Promise<{
-    variant?: string;
-  }>;
 };
 
 const baseUrl = "https://www.nextool.online";
@@ -48,12 +45,10 @@ export async function generateMetadata({ params }: FitnessPageProps) {
   };
 }
 
-export default async function FitnessPage({ params, searchParams }: FitnessPageProps) {
+export default async function FitnessPage({ params }: FitnessPageProps) {
   const { lang } = await params;
   const content = getFitnessContent(lang);
   const pageUrl = `${baseUrl}/${lang}/fitness`;
-  const query = searchParams ? await searchParams : {};
-  const visualVariant = query.variant === "soft-health" ? "soft-health" : "default";
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -64,7 +59,7 @@ export default async function FitnessPage({ params, searchParams }: FitnessPageP
   };
 
   return (
-    <main className={visualVariant === "soft-health" ? "min-h-screen bg-gradient-to-br from-sky-50 via-white to-emerald-50" : "min-h-screen bg-zinc-950"}>
+    <main className="min-h-screen bg-gradient-to-br from-sky-50 via-white to-emerald-50">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -73,7 +68,7 @@ export default async function FitnessPage({ params, searchParams }: FitnessPageP
       />
 
       <FitnessHeader lang={lang} />
-      <FitnessJourney lang={lang} visualVariant={visualVariant} />
+      <FitnessJourney lang={lang} />
       <FitnessFooter lang={lang} />
     </main>
   );

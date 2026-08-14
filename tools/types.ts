@@ -28,7 +28,6 @@ export type ToolUi = Record<string, Translation>;
 export type ToolComponentProps = {
   lang: LanguageCode;
   ui?: ToolUi;
-  visualVariant?: "default" | "soft-health";
 };
 
 export type ToolDefinition = {
