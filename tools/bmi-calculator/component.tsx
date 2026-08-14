@@ -319,12 +319,12 @@ export default function BmiCalculatorTool({
 
           {result && (
             <div className="space-y-5 rounded-3xl border border-zinc-200 bg-gradient-to-br from-white to-zinc-50 p-4 shadow-sm md:p-6">
-              <div className="grid gap-4 rounded-3xl bg-zinc-950 p-5 text-center text-white sm:grid-cols-2 sm:items-center">
-                <div className="rounded-2xl bg-white/5 p-4">
-                  <p className="text-sm font-bold text-zinc-400">{getText(toolUi.heading, lang)}</p>
+              <div className="grid gap-4 rounded-3xl border border-sky-100 bg-white p-5 text-center text-slate-950 shadow-sm sm:grid-cols-2 sm:items-center">
+                <div className="rounded-2xl bg-sky-50 p-4">
+                  <p className="text-sm font-bold text-slate-500">{getText(toolUi.heading, lang)}</p>
                   <p className="mt-1 text-5xl font-black tracking-tight">{formatDecimal(result.bmi, lang)}</p>
                 </div>
-                <div className="flex justify-center rounded-2xl bg-white/5 p-4">
+                <div className="flex justify-center rounded-2xl bg-sky-50 p-4">
                   <span className={`self-center rounded-full px-4 py-2 text-sm font-black uppercase ${statusChipStyles[result.statuses.bmi.id]}`}>
                     {categoryLabels[result.category.id]}
                   </span>
@@ -405,9 +405,9 @@ export default function BmiCalculatorTool({
                 })}
               </div>
 
-              <div className="overflow-hidden rounded-3xl border border-emerald-200 bg-zinc-950 text-white shadow-2xl shadow-emerald-900/20">
+              <div className="overflow-hidden rounded-3xl border border-sky-200 bg-gradient-to-br from-sky-50 to-emerald-50 text-slate-950 shadow-2xl shadow-sky-100/70">
                 <div className="mx-auto flex max-w-4xl flex-col items-center gap-5 p-5 text-center md:p-6">
-                  <p className="text-xs font-black uppercase tracking-[0.24em] text-emerald-300">
+                  <p className="text-xs font-black uppercase tracking-[0.24em] text-sky-600">
                     {lang === "pt" ? "Próximo passo" : "Next step"}
                   </p>
                   <h3 className="text-2xl font-black tracking-tight md:text-3xl">
@@ -429,9 +429,9 @@ export default function BmiCalculatorTool({
                           ["🥩", "Daily protein"],
                         ]
                     ).map(([icon, item]) => (
-                      <div key={item} className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-white/10 bg-white/10 p-4 text-center shadow-lg shadow-black/10">
-                        <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-white/10 text-xl" aria-hidden="true">{icon}</span>
-                        <p className="text-base font-black leading-tight text-white md:text-sm lg:text-base">{item}</p>
+                      <div key={item} className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-sky-100 bg-white p-4 text-center shadow-sm">
+                        <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-sky-50 text-xl" aria-hidden="true">{icon}</span>
+                        <p className="text-base font-black leading-tight text-slate-800 md:text-sm lg:text-base">{item}</p>
                       </div>
                     ))}
                   </div>

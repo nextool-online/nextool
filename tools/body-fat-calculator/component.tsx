@@ -117,15 +117,15 @@ export default function BodyFatCalculatorTool({ lang, ui }: ToolComponentProps) 
 
           {result && (
             <div className="space-y-5 rounded-3xl border border-rose-200 bg-gradient-to-br from-white to-rose-50 p-4 shadow-sm md:p-6">
-              <div className="grid gap-4 rounded-3xl bg-zinc-950 p-5 text-center text-white sm:grid-cols-2 sm:items-center">
-                <div className="rounded-2xl bg-white/5 p-4">
-                  <p className="text-sm font-bold text-zinc-400">{getText(toolUi.resultTitle, lang)}</p>
+              <div className="grid gap-4 rounded-3xl border border-sky-100 bg-white p-5 text-center text-slate-950 shadow-sm sm:grid-cols-2 sm:items-center">
+                <div className="rounded-2xl bg-sky-50 p-4">
+                  <p className="text-sm font-bold text-slate-500">{getText(toolUi.resultTitle, lang)}</p>
                   <p className="mt-1 text-5xl font-black tracking-tight">
                     {formatNumber(result.bodyFat, lang, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}%
                   </p>
-                  <p className="mt-1 text-sm font-bold text-zinc-400">{getText(toolUi.bodyFat, lang)}</p>
+                  <p className="mt-1 text-sm font-bold text-slate-500">{getText(toolUi.bodyFat, lang)}</p>
                 </div>
-                <div className="flex justify-center rounded-2xl bg-white/5 p-4">
+                <div className="flex justify-center rounded-2xl bg-sky-50 p-4">
                   <span className="self-center rounded-full bg-rose-100 px-4 py-2 text-sm font-black uppercase text-rose-700">
                     {getText(toolUi.status, lang)}
                   </span>
@@ -153,14 +153,14 @@ export default function BodyFatCalculatorTool({ lang, ui }: ToolComponentProps) 
 
               <p className="rounded-2xl bg-white p-4 text-center text-sm font-medium leading-6 text-zinc-700 shadow-sm md:text-base">{getText(toolUi.resultHelper, lang)}</p>
 
-              <div className="rounded-3xl bg-zinc-950 p-5 text-center text-white shadow-xl shadow-zinc-900/20 md:p-6">
-                <p className="text-xs font-black uppercase tracking-[0.24em] text-emerald-300">{getText(toolUi.ctaEyebrow, lang)}</p>
+              <div className="rounded-3xl border border-sky-100 bg-gradient-to-br from-sky-50 to-emerald-50 p-5 text-center text-slate-950 shadow-xl shadow-sky-100/70 md:p-6">
+                <p className="text-xs font-black uppercase tracking-[0.24em] text-sky-600">{getText(toolUi.ctaEyebrow, lang)}</p>
                 <h3 className="mt-2 text-2xl font-black tracking-tight md:text-3xl">{getText(toolUi.ctaTitle, lang)}</h3>
                 <div className="mt-5 grid gap-3 sm:grid-cols-4">
                   {[["📏", getText(toolUi.bmi, lang)], ["🔥", getText(toolUi.calories, lang)], ["🥩", getText(toolUi.protein, lang)], ["⚖️", getText(toolUi.idealWeight, lang)]].map(([icon, item]) => (
-                    <div key={item} className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-white/10 bg-white/10 p-4 text-center shadow-lg shadow-black/10">
+                    <div key={item} className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-sky-100 bg-white p-4 text-center shadow-sm">
                       <span className="text-3xl leading-none" aria-hidden="true">{icon}</span>
-                      <span className="text-base font-black leading-tight text-white md:text-lg">{item}</span>
+                      <span className="text-base font-black leading-tight text-slate-800 md:text-lg">{item}</span>
                     </div>
                   ))}
                 </div>

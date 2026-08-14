@@ -152,6 +152,26 @@ assert.doesNotMatch(toolPageSource, /searchParams|soft-health|visualVariant/);
 assert.doesNotMatch(fitnessPageSource, /searchParams|soft-health|visualVariant|bg-zinc-950/);
 assert.doesNotMatch(proteinCalculatorSource, /visualVariant|soft-health|variant=soft/);
 assert.match(proteinCalculatorSource, /ToolBox variant="fitness"/);
+const fitnessCalculatorFiles = [
+  "../tools/bmi-calculator/component.tsx",
+  "../tools/bmr-calculator/component.tsx",
+  "../tools/calorie-calculator/component.tsx",
+  "../tools/water-intake-calculator/component.tsx",
+  "../tools/protein-calculator/component.tsx",
+  "../tools/ideal-weight-calculator/component.tsx",
+  "../tools/body-fat-calculator/component.tsx",
+  "../tools/macro-calculator/component.tsx",
+];
+for (const file of fitnessCalculatorFiles) {
+  const source = fs.readFileSync(new URL(file, import.meta.url), "utf8");
+  assert.doesNotMatch(source, /rounded-3xl bg-zinc-950|overflow-hidden rounded-3xl[^\n]+bg-zinc-950|bg-white\/5|border-white\/10 bg-white\/10/);
+}
+assert.doesNotMatch(fs.readFileSync(new URL("../tools/calorie-calculator/component.tsx", import.meta.url), "utf8"), /activityMultipliers|}\s*·\s*\{/);
+assert.match(fs.readFileSync(new URL("../tools/water-intake-calculator/component.tsx", import.meta.url), "utf8"), /activityOptions|select/);
+assert.match(fs.readFileSync(new URL("../tools/water-intake-calculator/component.tsx", import.meta.url), "utf8"), /Dia comum sem treino|Treino leve|Training day/);
+assert.match(fs.readFileSync(new URL("../tools/bmr-calculator/component.tsx", import.meta.url), "utf8"), /resultHelper[\s\S]*formatNumber\(result\.bmr/);
+assert.doesNotMatch(fs.readFileSync(new URL("../tools/bmr-calculator/component.tsx", import.meta.url), "utf8"), /resultTitle[\s\S]{0,180}formatNumber\(result\.bmr/);
+
 assert.match(toolPageLayoutSource, /bg-clip-text[^"]*text-transparent/);
 assert.match(toolPageLayoutSource, /from-sky-700 via-emerald-600/);
 assert.match(fs.readFileSync(new URL("../components/ui/ToolBox.tsx", import.meta.url), "utf8"), /variant\?: "default" \| "fitness"/);

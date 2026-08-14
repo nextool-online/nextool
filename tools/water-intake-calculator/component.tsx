@@ -82,6 +82,25 @@ const copy = {
   },
 };
 
+const activityOptions = {
+  en: [
+    { value: "0", label: "Typical day, no workout" },
+    { value: "15", label: "Light activity — 15 min/day" },
+    { value: "30", label: "Moderate activity — 30 min/day" },
+    { value: "45", label: "Training day — 45 min/day" },
+    { value: "60", label: "Long workout — 60 min/day" },
+    { value: "90", label: "Intense day — 90+ min/day" },
+  ],
+  pt: [
+    { value: "0", label: "Dia comum sem treino" },
+    { value: "15", label: "Atividade leve — 15 min/dia" },
+    { value: "30", label: "Atividade moderada — 30 min/dia" },
+    { value: "45", label: "Treino no dia — 45 min/dia" },
+    { value: "60", label: "Treino longo — 60 min/dia" },
+    { value: "90", label: "Dia intenso — 90+ min/dia" },
+  ],
+};
+
 function parseUserNumber(value: string) {
   return Number(value.replace(",", "."));
 }
@@ -191,29 +210,36 @@ export default function WaterIntakeCalculatorTool({
               />
             </label>
 
-            <label className="block">
-              <input
-                type="text"
-                inputMode="decimal"
+            <label className="block space-y-2">
+              <select
                 value={activityMinutes}
                 onChange={(event) => setActivityMinutes(event.target.value)}
-                onInput={(event) => setActivityMinutes(event.currentTarget.value)}
-                placeholder={content.activityLabel}
-                className="block w-full rounded-xl border border-zinc-300 bg-white p-3 text-center text-lg font-semibold text-zinc-950 outline-none transition placeholder:text-zinc-400 focus:border-zinc-900 md:p-4 md:text-lg"
-              />
+                aria-label={content.activityLabel}
+                className="block w-full rounded-xl border border-sky-200 bg-white p-3 text-center text-lg font-semibold text-slate-950 outline-none transition focus:border-sky-500 md:p-4 md:text-lg"
+              >
+                <option value="">{content.activityLabel}</option>
+                {activityOptions[lang].map((option) => (
+                  <option key={option.value} value={option.value}>{option.label}</option>
+                ))}
+              </select>
+              <p className="px-1 text-xs font-semibold leading-5 text-slate-500">
+                {lang === "pt"
+                  ? "Escolha a opção mais próxima do seu dia. Se não treinou, use dia comum sem treino."
+                  : "Choose the closest option for your day. If you did not train, use the typical day option."}
+              </p>
             </label>
           </div>
 
           {result && (
             <div className="space-y-5 rounded-3xl border border-sky-200 bg-gradient-to-br from-white to-sky-50 p-4 shadow-sm md:p-6">
-              <div className="grid gap-4 rounded-3xl bg-zinc-950 p-5 text-center text-white sm:grid-cols-2 sm:items-center">
-                <div className="rounded-2xl bg-white/5 p-4">
-                  <p className="text-sm font-bold text-zinc-400">{content.resultTitle}</p>
+              <div className="grid gap-4 rounded-3xl border border-sky-100 bg-white p-5 text-center text-slate-950 shadow-sm sm:grid-cols-2 sm:items-center">
+                <div className="rounded-2xl bg-sky-50 p-4">
+                  <p className="text-sm font-bold text-slate-500">{content.resultTitle}</p>
                   <p className="mt-1 text-5xl font-black tracking-tight">
                     {formatNumber(result.waterLiters, lang, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} L
                   </p>
                 </div>
-                <div className="flex justify-center rounded-2xl bg-white/5 p-4">
+                <div className="flex justify-center rounded-2xl bg-sky-50 p-4">
                   <span className="self-center rounded-full bg-sky-100 px-4 py-2 text-sm font-black uppercase text-sky-700">
                     {content.status}
                   </span>
@@ -256,7 +282,7 @@ export default function WaterIntakeCalculatorTool({
                 <p className="mt-3 text-xs leading-5 text-zinc-500">{content.disclaimer}</p>
               </div>
 
-              <div id="fitness-save" className="overflow-hidden rounded-3xl border border-sky-200 bg-zinc-950 text-white shadow-2xl shadow-sky-900/20">
+              <div id="fitness-save" className="overflow-hidden rounded-3xl border border-sky-200 bg-gradient-to-br from-sky-50 to-emerald-50 text-slate-950 shadow-2xl shadow-sky-100/70">
                 <div className="mx-auto flex max-w-4xl flex-col items-center gap-5 p-5 text-center md:p-6">
                   <p className="text-xs font-black uppercase tracking-[0.24em] text-sky-300">
                     {lang === "pt" ? "Próximo passo" : "Next step"}
@@ -280,9 +306,9 @@ export default function WaterIntakeCalculatorTool({
                           ["🥩", "Daily protein"],
                         ]
                     ).map(([icon, item]) => (
-                      <div key={item} className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-white/10 bg-white/10 p-4 text-center shadow-lg shadow-black/10">
-                        <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-white/10 text-xl" aria-hidden="true">{icon}</span>
-                        <p className="text-base font-black leading-tight text-white md:text-sm lg:text-base">{item}</p>
+                      <div key={item} className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-sky-100 bg-white p-4 text-center shadow-sm">
+                        <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-sky-50 text-xl" aria-hidden="true">{icon}</span>
+                        <p className="text-base font-black leading-tight text-slate-800 md:text-sm lg:text-base">{item}</p>
                       </div>
                     ))}
                   </div>
@@ -291,7 +317,7 @@ export default function WaterIntakeCalculatorTool({
                     <Link href={fitnessHref} className="rounded-full bg-sky-300 px-5 py-3 text-sm font-black text-zinc-950 shadow-lg shadow-sky-950/30 transition hover:bg-sky-200">
                       {lang === "pt" ? "Gerar meu perfil fitness completo" : "Generate my full fitness profile"}
                     </Link>
-                    <button type="button" onClick={saveSnapshot} className="rounded-full border border-white/20 px-5 py-3 text-sm font-black text-white transition hover:border-white/60">
+                    <button type="button" onClick={saveSnapshot} className="rounded-full border border-sky-200 bg-white px-5 py-3 text-sm font-black text-sky-700 transition hover:border-sky-400 hover:bg-sky-50">
                       {saved ? content.saved : content.saveButton}
                     </button>
                   </div>
