@@ -612,7 +612,7 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
                   <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-sky-400" />{content.bmiLegend.underweight}</span>
                   <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-emerald-400" />{content.bmiLegend.normal}</span>
                   <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-amber-400" />{content.bmiLegend.overweight}</span>
-                  <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-rose-500" />{content.bmiLegend.obesity}</span>
+                  <span className="flex items-center justify-end gap-1.5"><span className="h-2 w-2 rounded-full bg-rose-500" />{content.bmiLegend.obesity}</span>
                 </div>
               </div>
             </div>
