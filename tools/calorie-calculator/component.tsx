@@ -109,7 +109,7 @@ export default function CalorieCalculatorTool({ lang, ui }: ToolComponentProps) 
   const calorieUnit = lang === "pt" ? "kcal/dia" : "kcal/day";
 
   return (
-    <ToolBox>
+    <ToolBox variant="fitness">
       <ToolSection title={getText(toolUi.heading, lang)} description={getText(toolUi.helper, lang)}>
         <div className="space-y-6">
           <div className="grid gap-3 md:grid-cols-2">

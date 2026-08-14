@@ -98,7 +98,7 @@ export default function BmrCalculatorTool({
   const selectClass = "text-lg font-semibold text-zinc-950";
 
   return (
-    <ToolBox>
+    <ToolBox variant="fitness">
       <ToolSection
         title={getText(toolUi.heading, lang)}
         description={getText(toolUi.helper, lang)}

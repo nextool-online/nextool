@@ -261,7 +261,7 @@ export default function BmiCalculatorTool({
   }, [heightCm, heightFt, heightIn, lang, usesImperial, weight]);
 
   return (
-    <ToolBox>
+    <ToolBox variant="fitness">
       <ToolSection
         title={getText(toolUi.heading, lang)}
         description={getText(toolUi.helper, lang)}

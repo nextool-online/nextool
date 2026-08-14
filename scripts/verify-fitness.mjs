@@ -151,4 +151,20 @@ assert.doesNotMatch(toolPageLayoutSource, /fitness-soft-health|bg-zinc-950 text-
 assert.doesNotMatch(toolPageSource, /searchParams|soft-health|visualVariant/);
 assert.doesNotMatch(fitnessPageSource, /searchParams|soft-health|visualVariant|bg-zinc-950/);
 assert.doesNotMatch(proteinCalculatorSource, /visualVariant|soft-health|variant=soft/);
-assert.match(proteinCalculatorSource, /bg-sky-50/);
+assert.match(proteinCalculatorSource, /ToolBox variant="fitness"/);
+assert.match(toolPageLayoutSource, /bg-clip-text[^"]*text-transparent/);
+assert.match(toolPageLayoutSource, /from-sky-700 via-emerald-600/);
+assert.match(fs.readFileSync(new URL("../components/ui/ToolBox.tsx", import.meta.url), "utf8"), /variant\?: "default" \| "fitness"/);
+assert.match(fs.readFileSync(new URL("../components/ui/ToolBox.tsx", import.meta.url), "utf8"), /shadow-\[0_24px_70px_rgba/);
+for (const file of [
+  "../tools/bmi-calculator/component.tsx",
+  "../tools/bmr-calculator/component.tsx",
+  "../tools/calorie-calculator/component.tsx",
+  "../tools/water-intake-calculator/component.tsx",
+  "../tools/protein-calculator/component.tsx",
+  "../tools/ideal-weight-calculator/component.tsx",
+  "../tools/body-fat-calculator/component.tsx",
+  "../tools/macro-calculator/component.tsx",
+]) {
+  assert.match(fs.readFileSync(new URL(file, import.meta.url), "utf8"), /ToolBox variant="fitness"/);
+}

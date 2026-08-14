@@ -90,7 +90,7 @@ export default function BodyFatCalculatorTool({ lang, ui }: ToolComponentProps) 
   const selectClass = "text-lg font-semibold text-zinc-950";
 
   return (
-    <ToolBox>
+    <ToolBox variant="fitness">
       <ToolSection title={getText(toolUi.heading, lang)} description={getText(toolUi.helper, lang)}>
         <div className="space-y-6">
           <div className="grid gap-3 md:grid-cols-2">

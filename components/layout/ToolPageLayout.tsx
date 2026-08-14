@@ -37,7 +37,7 @@ export default function ToolPageLayout({
               <p className="mb-4 inline-flex w-fit rounded-full border border-sky-200 bg-white px-4 py-2 text-sm font-bold text-sky-700 shadow-sm">
                 NexTool Fit
               </p>
-              <h1 className="max-w-4xl text-4xl font-black tracking-tight sm:text-5xl md:text-6xl">
+              <h1 className="max-w-4xl bg-gradient-to-r from-sky-700 via-emerald-600 to-slate-950 bg-clip-text text-4xl font-black tracking-tight text-transparent sm:text-5xl md:text-6xl">
                 {title}
               </h1>
               <p className="mt-4 max-w-3xl text-base leading-7 text-slate-600 md:text-xl md:leading-8">

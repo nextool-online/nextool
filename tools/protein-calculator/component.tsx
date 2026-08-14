@@ -61,7 +61,7 @@ export default function ProteinCalculatorTool({ lang, ui }: ToolComponentProps) 
   const gramUnit = lang === "pt" ? "g/dia" : "g/day";
 
   return (
-    <ToolBox className={isSoftHealth ? "border-sky-100 bg-white/90 shadow-2xl shadow-sky-100/70" : undefined}>
+    <ToolBox variant="fitness">
       <ToolSection title={getText(toolUi.heading, lang)} description={getText(toolUi.helper, lang)}>
         <div className="space-y-6">
           <div className="grid gap-3 md:grid-cols-2">

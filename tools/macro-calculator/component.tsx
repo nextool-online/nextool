@@ -54,7 +54,7 @@ export default function MacroCalculatorTool({ lang, ui }: ToolComponentProps) {
   const inputClass = "block w-full rounded-xl border border-zinc-300 bg-white p-3 text-center text-lg font-semibold text-zinc-950 outline-none transition placeholder:text-zinc-400 focus:border-zinc-900 md:p-4";
 
   return (
-    <ToolBox>
+    <ToolBox variant="fitness">
       <ToolSection title={getText(toolUi.heading, lang)} description={getText(toolUi.helper, lang)}>
         <div className="space-y-6">
           <div className="grid gap-3 md:grid-cols-3">

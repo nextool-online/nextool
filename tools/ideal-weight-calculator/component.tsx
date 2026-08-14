@@ -63,7 +63,7 @@ export default function IdealWeightCalculatorTool({ lang, ui }: ToolComponentPro
   const unit = usesImperial ? "lb" : "kg";
 
   return (
-    <ToolBox>
+    <ToolBox variant="fitness">
       <ToolSection title={getText(toolUi.heading, lang)} description={getText(toolUi.helper, lang)}>
         <div className="space-y-6">
           <div className="grid gap-3 md:grid-cols-2">
