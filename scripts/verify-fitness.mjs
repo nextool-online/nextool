@@ -175,7 +175,12 @@ assert.match(fs.readFileSync(new URL("../tools/water-intake-calculator/component
 assert.match(fs.readFileSync(new URL("../tools/water-intake-calculator/component.tsx", import.meta.url), "utf8"), /Dia comum sem treino|Treino leve|Training day/);
 assert.doesNotMatch(fs.readFileSync(new URL("../tools/bmi-calculator/component.tsx", import.meta.url), "utf8"), /text-zinc-300/);
 assert.match(fs.readFileSync(new URL("../tools/bmi-calculator/component.tsx", import.meta.url), "utf8"), /shadow-lg shadow-sky-100\/80/);
-assert.match(fs.readFileSync(new URL("../tools/bmi-calculator/component.tsx", import.meta.url), "utf8"), /text-slate-600/);
+assert.match(fs.readFileSync(new URL("../tools/bmi-calculator/component.tsx", import.meta.url), "utf8"), /text-slate-700/);
+for (const file of fitnessCalculatorFiles) {
+  const source = fs.readFileSync(new URL(file, import.meta.url), "utf8");
+  assert.match(source, /text-slate-700|text-slate-800/);
+}
+
 assert.match(fs.readFileSync(new URL("../tools/bmr-calculator/component.tsx", import.meta.url), "utf8"), /resultHelper[\s\S]*formatNumber\(result\.bmr/);
 assert.doesNotMatch(fs.readFileSync(new URL("../tools/bmr-calculator/component.tsx", import.meta.url), "utf8"), /resultTitle[\s\S]{0,180}formatNumber\(result\.bmr/);
 

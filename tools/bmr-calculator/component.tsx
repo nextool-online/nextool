@@ -237,7 +237,7 @@ export default function BmrCalculatorTool({
                 >
                   {getText(toolUi.openFitness, lang)}
                 </Link>
-                <p className="mx-auto mt-4 max-w-2xl text-sm font-medium leading-6 text-slate-600 md:text-base">
+                <p className="mx-auto mt-4 max-w-2xl text-sm font-semibold leading-6 text-slate-700 md:text-base">
                   {getText(toolUi.ctaDescription, lang)}
                 </p>
               </div>

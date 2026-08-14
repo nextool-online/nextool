@@ -155,7 +155,7 @@ export default function ProteinCalculatorTool({ lang, ui }: ToolComponentProps) 
                 <Link href={fitnessHref} className="mt-6 inline-flex items-center justify-center rounded-full bg-sky-500 px-6 py-3 text-sm font-black uppercase tracking-wide text-white transition hover:bg-sky-400">
                   {getText(toolUi.openFitness, lang)}
                 </Link>
-                <p className="mx-auto mt-4 max-w-2xl text-sm font-medium leading-6 text-slate-600 md:text-base">
+                <p className="mx-auto mt-4 max-w-2xl text-sm font-semibold leading-6 text-slate-700 md:text-base">
                   {getText(toolUi.ctaDescription, lang)}
                 </p>
               </div>

@@ -278,7 +278,7 @@ export default function WaterIntakeCalculatorTool({
 
               <div className="rounded-2xl border border-zinc-200 bg-white p-4">
                 <p className="font-semibold text-zinc-950">{content.summary}</p>
-                <p className="mt-2 text-sm leading-6 text-zinc-600">{content.helper}</p>
+                <p className="mt-2 text-sm font-semibold leading-6 text-slate-700">{content.helper}</p>
                 <p className="mt-3 text-xs leading-5 text-zinc-500">{content.disclaimer}</p>
               </div>
 
@@ -322,7 +322,7 @@ export default function WaterIntakeCalculatorTool({
                     </button>
                   </div>
 
-                  <p className="max-w-2xl text-sm leading-6 text-slate-600">
+                  <p className="max-w-2xl text-sm font-semibold leading-6 text-slate-700">
                     {lang === "pt"
                       ? "Você já sabe sua meta de água. Complete o painel com as métricas que conectam hidratação, energia e objetivo."
                       : "You already know your water target. Complete the dashboard with the metrics that connect hydration, energy and your goal."}

@@ -369,7 +369,7 @@ export default function BmiCalculatorTool({
               <div className="rounded-2xl border border-zinc-200 bg-white p-4">
                 <p className="font-semibold text-zinc-950">{summary}</p>
 
-                <p className="mt-2 text-sm leading-6 text-zinc-600">
+                <p className="mt-2 text-sm font-semibold leading-6 text-slate-700">
                   {deltaSummary}
                 </p>
 
@@ -440,7 +440,7 @@ export default function BmiCalculatorTool({
                     {lang === "pt" ? "Gerar meu perfil fitness completo" : "Generate my full fitness profile"}
                   </Link>
 
-                  <p className="max-w-2xl text-sm leading-6 text-slate-600">
+                  <p className="max-w-2xl text-sm font-semibold leading-6 text-slate-700">
                     {lang === "pt"
                       ? "Complete seu painel fitness com as outras métricas que ajudam a transformar um número isolado em uma visão prática."
                       : "Complete your fitness dashboard with the other metrics that turn one isolated number into a practical view."}

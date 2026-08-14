@@ -167,7 +167,7 @@ export default function BodyFatCalculatorTool({ lang, ui }: ToolComponentProps) 
                 <Link href={fitnessHref} className="mt-6 inline-flex items-center justify-center rounded-full bg-emerald-400 px-6 py-3 text-sm font-black uppercase tracking-wide text-zinc-950 transition hover:bg-emerald-300">
                   {getText(toolUi.openFitness, lang)}
                 </Link>
-                <p className="mx-auto mt-4 max-w-2xl text-sm font-medium leading-6 text-slate-600 md:text-base">{getText(toolUi.ctaDescription, lang)}</p>
+                <p className="mx-auto mt-4 max-w-2xl text-sm font-semibold leading-6 text-slate-700 md:text-base">{getText(toolUi.ctaDescription, lang)}</p>
               </div>
 
               <p className="text-center text-xs leading-5 text-zinc-500 md:text-sm">{getText(toolUi.disclaimer, lang)}</p>
