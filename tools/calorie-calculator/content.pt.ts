@@ -305,7 +305,7 @@ export const calorieCalculatorContent = {
     },
 
     resultHelper: {
-      pt: "Este número estima quantas calorias você gastaria no dia com sua rotina atual. Para perder gordura, fique abaixo dele; para ganhar massa, fique um pouco acima. Use como ponto de partida, não como regra perfeita."
+      pt: "Este número estima quantas calorias você gastaria no dia com sua rotina atual. Use como ponto de partida, não como regra perfeita."
     },
 
     openFitness: {

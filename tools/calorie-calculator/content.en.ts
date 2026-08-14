@@ -305,7 +305,7 @@ export const calorieCalculatorContent = {
     },
 
     resultHelper: {
-      en: "This number estimates how many calories you would burn in a day with your current routine. To lose fat, stay below it; to gain muscle, go slightly above it. Use it as a starting point, not a perfect rule."
+      en: "This number estimates how many calories you would burn in a day with your current routine. Use it as a starting point, not a perfect rule."
     },
 
     openFitness: {
