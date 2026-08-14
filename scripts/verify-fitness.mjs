@@ -80,8 +80,13 @@ const waterSource = fs.readFileSync(new URL("../tools/water-intake-calculator/co
 const fitnessLayoutSource = fs.readFileSync(new URL("../components/layout/ToolPageLayout.tsx", import.meta.url), "utf8");
 const fitnessFooterSource = fs.readFileSync(new URL("../components/fitness/FitnessFooter.tsx", import.meta.url), "utf8");
 const proteinOfferPageSource = fs.readFileSync(new URL("../components/fitness/ProteinOfferLanding.tsx", import.meta.url), "utf8");
+const rootLayoutSource = fs.readFileSync(new URL("../app/layout.tsx", import.meta.url), "utf8");
+
 const affiliateAnalyticsSource = fs.readFileSync(new URL("../components/fitness/AffiliateLandingAnalytics.tsx", import.meta.url), "utf8");
 
+assert.match(rootLayoutSource, /impact-site-verification/);
+assert.match(rootLayoutSource, /32d66cb1-6fdd-4441-87b4-679d8bd6f9be/);
+assert.doesNotMatch(rootLayoutSource, /impact\.com.*script|<script[^>]+impact/i);
 assert.match(fitnessJourneySource, /calculadora-de-tmb/);
 assert.doesNotMatch(fitnessJourneySource, /calculadora-tmb/);
 assert.match(fitnessJourneySource, /calculadora-calorias/);

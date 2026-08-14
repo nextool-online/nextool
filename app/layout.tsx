@@ -68,6 +68,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <meta name="impact-site-verification" {...{ value: "32d66cb1-6fdd-4441-87b4-679d8bd6f9be" }} />
+      </head>
       <body>{children}</body>
 
       <GoogleAnalytics gaId="G-EJX36KEV94" />
