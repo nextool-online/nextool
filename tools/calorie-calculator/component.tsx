@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 
 import ToolBox from "../../components/ui/ToolBox";
+import { MediterraneanNextStepPromo } from "../../components/fitness/MediterraneanNextStepPromo";
 import ToolSection from "../../components/toolkit/ToolSection";
 import ToolSelect from "../../components/toolkit/ToolSelect";
 
@@ -239,6 +240,8 @@ export default function CalorieCalculatorTool({ lang, ui }: ToolComponentProps) 
                   {getText(toolUi.ctaDescription, lang)}
                 </p>
               </div>
+
+              <MediterraneanNextStepPromo lang={lang} placement="calorie_calculator_post_result" source="calorie-calculator" />
 
               <p className="text-center text-xs leading-5 text-zinc-500 md:text-sm">{getText(toolUi.disclaimer, lang)}</p>
             </div>

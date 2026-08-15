@@ -125,10 +125,12 @@ assert.match(mediterraneanPageSource, /affiliate disclosure|affiliate links/i);
 assert.match(mediterraneanPageSource, /Based on your eating habits and lifestyle/);
 assert.match(mediterraneanPageSource, /affiliate_landing_cta_click/);
 assert.match(mediterraneanPageSource, /extclid/);
-assert.match(fitnessJourneySource, /Based on your numbers and your goals/);
-assert.match(fitnessJourneySource, /next-steps\/mediterranean-meal-plan/);
-assert.match(emailSentPageSource, /Mediterranean-style/);
-assert.match(emailSentPageSource, /next-steps\/mediterranean-meal-plan/);
+const mediterraneanPromoSource = fs.readFileSync(new URL("../components/fitness/MediterraneanNextStepPromo.tsx", import.meta.url), "utf8");
+assert.match(mediterraneanPromoSource, /Based on your numbers and your goals/);
+assert.match(mediterraneanPromoSource, /next-steps\/mediterranean-meal-plan/);
+assert.match(mediterraneanPromoSource, /Optional accelerator/);
+assert.match(fitnessJourneySource, /MediterraneanNextStepPromo/);
+assert.match(emailSentPageSource, /MediterraneanNextStepPromo/);
 assert.doesNotMatch(fitnessFooterSource, /#fitness-save/);
 
 assert.equal(getBmiMetricStatus("normal").id, "good");

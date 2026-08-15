@@ -82,6 +82,12 @@ function offerBlock(lang: FitnessLeadLang, offerId: string, label?: string) {
   return `<div style="margin-top:24px;padding:20px;border-radius:22px;background:#ecfdf5;border:1px solid #a7f3d0"><p style="margin:0 0 10px;font-size:12px;font-weight:800;color:#047857;text-transform:uppercase">${offerId}</p><p style="margin:0 0 14px;color:#0f172a;font-weight:800">${lang === "pt" ? "Próximo passo" : "Next step"}</p><p style="margin:0 0 14px;line-height:1.6;color:#334155">${lang === "pt" ? "Compare opções práticas com calma. Comida primeiro; complemento apenas quando reduzir atrito." : "Compare practical options calmly. Food first; supplements only when they reduce friction."}</p>${button(href, label || (lang === "pt" ? "Ver opções práticas" : "See practical options"))}</div>`;
 }
 
+
+function mediterraneanOfferBlock(content: string) {
+  const href = emailUrl("en", "/fitness/next-steps/mediterranean-meal-plan", "mediterranean_en_default_v1", content);
+  return `<div style="margin-top:24px;padding:20px;border-radius:22px;background:#ecfdf5;border:1px solid #a7f3d0"><p style="margin:0 0 10px;font-size:12px;font-weight:800;color:#047857;text-transform:uppercase">Optional accelerator</p><p style="margin:0 0 12px;color:#0f172a;font-weight:900;font-size:18px">Based on your numbers and your goals</p><p style="margin:0 0 14px;line-height:1.6;color:#334155">With the right support, your calorie target can become a meal routine faster than trying to figure it out alone. See a Mediterranean-style path designed to make the next step easier.</p>${button(href, "See the Mediterranean-style path")}</div>`;
+}
+
 function shell(lang: FitnessLeadLang, title: string, body: string) {
   const disclaimer = lang === "pt"
     ? "Estimativas gerais. Não substituem orientação médica ou nutricional."
@@ -146,18 +152,18 @@ export function buildFitnessEmailSequence(payload: Pick<FitnessLeadPayload, "lan
     {
       stepId: "protein_en_02_simple_offer",
       delayDays: 1,
-      subject: "Does your protein target feel high?",
-      preview: "A simple plan to turn the number into routine.",
-      offerId: "protein-contextual-offer",
-      html: shell("en", "Hit protein without overthinking", `<p style="line-height:1.7">The problem is rarely knowing the number. The problem is repeating it on normal days when you are busy, unplanned or missing easy options.</p><p style="line-height:1.7">Simple protein plan: split your target across 3 or 4 moments. In each one, aim for a clear source: eggs, yogurt, chicken, fish, legumes, whey or plant protein when it makes sense.</p>${valueBlock("Simple protein plan", "A high target feels lighter when it becomes smaller blocks. 120g/day can become 30g across four moments, for example.")}${offerBlock("en", "protein-contextual-offer")}`),
+      subject: "Want to reach your goal sooner?",
+      preview: "Your numbers are useful. The right structure can take you further.",
+      offerId: "mediterranean-meal-plan",
+      html: shell("en", "Numbers help. The right plan accelerates action.", `<p style="line-height:1.7">The problem is rarely knowing the number. The problem is repeating it on normal days when you are busy, unplanned or missing easy options.</p><p style="line-height:1.7">Simple protein plan: split your target across 3 or 4 moments. In each one, aim for a clear source: eggs, yogurt, chicken, fish, legumes, whey or plant protein when it makes sense.</p>${valueBlock("Simple protein plan", "A high target feels lighter when it becomes smaller blocks. 120g/day can become 30g across four moments, for example.")}${mediterraneanOfferBlock("email_02_mediterranean")}`),
     },
     {
       stepId: "protein_en_03_offer_bridge",
       delayDays: 3,
-      subject: "The mistake that keeps people from hitting protein",
-      preview: "It is not willpower. It is the environment.",
-      offerId: "protein-contextual-offer",
-      html: shell("en", "The issue is not the calculation — it is the environment", `<p style="line-height:1.7">When the routine has no ready options, the target becomes mental effort. You know what you should do, but decide at the last minute — and the easiest option wins.</p><p style="line-height:1.7">The solution is building a helpful environment: better groceries, simple portions and an emergency option for busy days. That reduces friction without relying on motivation.</p>${valueBlock("Practical suggestion", "Keep two main food sources and one convenience option. Then you do not need to improvise every day.")}${offerBlock("en", "protein-contextual-offer", "Open practical options guide")}`),
+      subject: "Numbers alone do not create momentum",
+      preview: "With the right support, the next step gets easier.",
+      offerId: "mediterranean-meal-plan",
+      html: shell("en", "The calculation is done — now make it easier to act", `<p style="line-height:1.7">When the routine has no ready options, the target becomes mental effort. You know what you should do, but decide at the last minute — and the easiest option wins.</p><p style="line-height:1.7">The solution is building a helpful environment: better groceries, simple portions and an emergency option for busy days. That reduces friction without relying on motivation.</p>${valueBlock("Practical suggestion", "Keep two main food sources and one convenience option. Then you do not need to improvise every day.")}${mediterraneanOfferBlock("email_03_mediterranean")}`),
     },
     {
       stepId: "protein_en_04_calories_macros",
@@ -171,8 +177,8 @@ export function buildFitnessEmailSequence(payload: Pick<FitnessLeadPayload, "lan
       delayDays: 7,
       subject: "Recheck your protein target this week",
       preview: "A fresh calculation helps adjust your routine.",
-      offerId: "protein-contextual-offer",
-      html: shell("en", "Recheck your number with a week of context", `<p style="line-height:1.7">After a few days, you understand where the target is hardest: breakfast, lunch, dinner or snacks. That learning matters more than getting everything right on day one.</p><p style="line-height:1.7">Recalculate, compare with your real routine and adjust one thing at a time. If convenience is the issue, review practical options that reduce friction.</p>${valueBlock("Recheck and adjust", "The goal is building a system you can repeat. A useful metric turns into a simple decision.")}${button(emailUrl("en", "/tools/protein-calculator", "protein_en_default_v1", "email_05_recheck"), "Recheck protein calculator")}${offerBlock("en", "protein-contextual-offer")}`),
+      offerId: "mediterranean-meal-plan",
+      html: shell("en", "Recheck your number with a week of context", `<p style="line-height:1.7">After a few days, you understand where the target is hardest: breakfast, lunch, dinner or snacks. That learning matters more than getting everything right on day one.</p><p style="line-height:1.7">Recalculate, compare with your real routine and adjust one thing at a time. If convenience is the issue, review practical options that reduce friction.</p>${valueBlock("Recheck and adjust", "The goal is building a system you can repeat. A useful metric turns into a simple decision.")}${button(emailUrl("en", "/tools/protein-calculator", "protein_en_default_v1", "email_05_recheck"), "Recheck protein calculator")}${mediterraneanOfferBlock("email_05_mediterranean")}`),
     },
   ];
 

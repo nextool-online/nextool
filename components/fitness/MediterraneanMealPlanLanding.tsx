@@ -49,26 +49,23 @@ export function MediterraneanMealPlanLanding({ lang }: { lang: LanguageCode }) {
   return (
     <main className="min-h-screen bg-gradient-to-br from-sky-50 via-white to-emerald-50 px-4 py-10 text-slate-950" data-testid="mediterranean-meal-plan">
       <AffiliateLandingAnalytics lang={lang} source="fitness-next-steps" metadata={metadata} />
-      <section className="mx-auto max-w-5xl rounded-[2rem] border border-sky-100 bg-white/95 p-5 shadow-2xl shadow-sky-100/70 md:p-10">
+      <section className="mx-auto max-w-3xl rounded-[2rem] border border-sky-100 bg-white/95 p-5 shadow-2xl shadow-sky-100/70 md:p-8">
         <p className="text-sm font-black uppercase tracking-[0.22em] text-emerald-700">NexTool Fit next step</p>
-        <h1 className="mt-4 max-w-4xl text-4xl font-black leading-tight tracking-tight md:text-6xl">
-          Based on your numbers and your goals, turn your calorie target into simple meals.
+        <h1 className="mt-4 text-4xl font-black leading-tight tracking-tight md:text-6xl">
+          Reach your goal sooner than it feels today.
         </h1>
-        <p className="mt-5 max-w-3xl text-lg font-semibold leading-8 text-slate-700">
-          Your calculator result is useful, but the real progress starts when that number becomes a repeatable eating routine. A Mediterranean-style plan can be a practical way to organize meals around familiar foods, variety and consistency.
+        <p className="mt-5 text-lg font-semibold leading-8 text-slate-700">
+          Based on your eating habits and lifestyle, the right meal structure can help you go further than numbers alone. A Mediterranean-style plan is a practical next step for turning your calorie target into simple meals.
         </p>
 
-        <div className="mt-8 rounded-[1.7rem] border border-emerald-100 bg-gradient-to-br from-emerald-50 to-sky-50 p-5 md:p-7">
-          <h2 className="text-3xl font-black tracking-tight text-slate-950">Based on your eating habits and lifestyle</h2>
-          <p className="mt-3 text-base font-semibold leading-7 text-slate-700">
-            The next step is not another number. It is seeing whether a structured meal plan can make your calorie and macro targets easier to follow.
-          </p>
-          <div className="mt-5 grid gap-3 md:grid-cols-2">
+        <div className="mt-7 rounded-[1.7rem] border border-emerald-100 bg-gradient-to-br from-emerald-50 to-sky-50 p-5 md:p-7">
+          <h2 className="text-2xl font-black tracking-tight text-slate-950">What this can help with</h2>
+          <div className="mt-5 grid gap-3">
             {[
-              "Personalized meal ideas around your routine",
-              "Alternatives if certain foods do not fit",
-              "Weekly meal preparation structure",
-              "A simple bridge from numbers to daily decisions",
+              "Personalized meals around your routine",
+              "Simple alternatives when life gets busy",
+              "Weekly structure so you stop guessing",
+              "A clearer path from calculator result to action",
             ].map((item) => (
               <div key={item} className="flex items-start gap-3 rounded-2xl border border-sky-100 bg-white p-4 font-bold leading-6 text-slate-800 shadow-sm">
                 <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-emerald-500 text-xs text-white">✓</span>
@@ -78,26 +75,11 @@ export function MediterraneanMealPlanLanding({ lang }: { lang: LanguageCode }) {
           </div>
         </div>
 
-        <div className="mt-8 grid gap-4 md:grid-cols-3">
-          <div className="rounded-3xl border border-sky-100 bg-white p-5 shadow-lg shadow-sky-100/70">
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-sky-600">Good fit if</p>
-            <p className="mt-3 text-sm font-semibold leading-6 text-slate-700">You want meal structure after calculating calories, macros, BMI or ideal weight.</p>
-          </div>
-          <div className="rounded-3xl border border-emerald-100 bg-white p-5 shadow-lg shadow-sky-100/70">
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-emerald-700">Keep realistic</p>
-            <p className="mt-3 text-sm font-semibold leading-6 text-slate-700">No plan replaces consistency, sleep, movement or professional guidance when needed.</p>
-          </div>
-          <div className="rounded-3xl border border-amber-100 bg-white p-5 shadow-lg shadow-sky-100/70">
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-amber-700">External partner</p>
-            <p className="mt-3 text-sm font-semibold leading-6 text-slate-700">The quiz opens on the Mediterranean Diet Plan website, which handles its own checkout and support.</p>
-          </div>
-        </div>
-
-        <div className="mt-8 rounded-[1.7rem] border border-sky-100 bg-sky-50 p-5 md:p-7">
+        <div className="mt-7 rounded-[1.7rem] border border-sky-100 bg-sky-50 p-5 md:p-7">
           <p className="text-sm font-black uppercase tracking-[0.22em] text-sky-700">Personalized plan ready</p>
-          <h2 className="mt-2 text-2xl font-black tracking-tight md:text-4xl">See if a Mediterranean-style plan fits your routine</h2>
-          <p className="mt-3 max-w-3xl text-sm font-semibold leading-7 text-slate-700">
-            Answer the partner quiz to see a personalized meal-plan path. This is optional and separate from your NexTool Fit metrics.
+          <h2 className="mt-2 text-2xl font-black tracking-tight md:text-4xl">Continue to the short quiz</h2>
+          <p className="mt-3 text-sm font-semibold leading-7 text-slate-700">
+            The quiz opens on the Mediterranean Diet Plan website. It is optional, external, and separate from your NexTool Fit metrics.
           </p>
           <a
             href={hoplink}
@@ -108,7 +90,7 @@ export function MediterraneanMealPlanLanding({ lang }: { lang: LanguageCode }) {
             Continue to the personalized quiz
           </a>
           <p className="mt-4 text-xs font-semibold leading-5 text-slate-500">
-            Affiliate disclosure: this page may contain affiliate links. If you choose to buy through them, NexTool may earn a commission at no extra cost to you.
+            Affiliate disclosure: this page may contain affiliate links. If you choose to buy through them, NexTool may earn a commission at no extra cost to you. General wellness information only; no result is guaranteed.
           </p>
         </div>
       </section>

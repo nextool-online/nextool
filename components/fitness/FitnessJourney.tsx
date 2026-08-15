@@ -7,6 +7,7 @@ import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { getLocaleProfile } from "../../data/localeProfiles";
 import { getFitnessContent } from "../../data/fitness";
 import { trackAffiliateEvent } from "./AffiliateLandingAnalytics";
+import { MediterraneanNextStepPromo } from "./MediterraneanNextStepPromo";
 import { formatDecimal, formatNumber } from "../../utils/formatters";
 import {
   calculateBmi,
@@ -685,22 +686,18 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
                       <span className="rounded-2xl bg-white px-4 py-3">3. Spam</span>
                     </div>
                   </div>
-                  <div className="mt-4 rounded-3xl border border-emerald-200 bg-white p-4 shadow-sm">
-                    <p className="text-xs font-black uppercase tracking-[0.2em] text-emerald-700">{lang === "pt" ? "Enquanto isso" : "Meanwhile"}</p>
-                    <h3 className="mt-2 text-xl font-black text-zinc-950">{lang === "pt" ? "Bater proteína todo dia com menos atrito" : "Hit daily protein with less friction"}</h3>
-                    <p className="mt-2 text-sm leading-6 text-zinc-600">
-                      {lang === "pt"
-                        ? "Se sua meta de proteína parece alta no dia a dia, veja opções práticas para transformar a métrica em rotina."
-                        : "If your protein target feels high in daily life, see practical options to turn the metric into routine."}
-                    </p>
-                    <Link
-                      href={`/${lang}/fitness/offers/protein`}
-                      onClick={() => trackAffiliateEvent("affiliate_offer_click", lang, proteinOffer.source, proteinOffer)}
-                      className="mt-4 inline-flex rounded-full bg-sky-500 px-5 py-3 text-sm font-black text-white transition hover:bg-sky-400"
-                    >
-                      {lang === "pt" ? "Ver opções práticas" : "See practical options"}
-                    </Link>
-                  </div>
+                  {lang === "pt" ? (
+                    <div className="mt-4 rounded-3xl border border-emerald-200 bg-white p-4 shadow-sm">
+                      <p className="text-xs font-black uppercase tracking-[0.2em] text-emerald-700">Enquanto isso</p>
+                      <h3 className="mt-2 text-xl font-black text-zinc-950">Bater proteína todo dia com menos atrito</h3>
+                      <p className="mt-2 text-sm leading-6 text-zinc-600">Se sua meta de proteína parece alta no dia a dia, veja opções práticas para transformar a métrica em rotina.</p>
+                      <Link href={`/${lang}/fitness/offers/protein`} onClick={() => trackAffiliateEvent("affiliate_offer_click", lang, proteinOffer.source, proteinOffer)} className="mt-4 inline-flex rounded-full bg-sky-500 px-5 py-3 text-sm font-black text-white transition hover:bg-sky-400">Ver opções práticas</Link>
+                    </div>
+                  ) : (
+                    <div className="mt-4">
+                      <MediterraneanNextStepPromo lang={lang} placement="email_success_inline" source={source || "direct_fitness"} compact />
+                    </div>
+                  )}
                 </div>
               ) : (
                 <>
@@ -727,22 +724,7 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
               )}
             </form>
 
-            {lang === "en" && (
-              <div className="mt-5 rounded-3xl border border-sky-200 bg-gradient-to-br from-white to-sky-50 p-5 shadow-lg shadow-sky-100/70">
-                <p className="text-xs font-black uppercase tracking-[0.2em] text-sky-700">Optional next step</p>
-                <h3 className="mt-2 text-2xl font-black tracking-tight text-slate-950">Based on your numbers and your goals</h3>
-                <p className="mt-2 text-sm font-semibold leading-6 text-slate-700">
-                  A Mediterranean-style plan may help turn your calorie and macro targets into simple meals, without making the calculator feel like a sales page.
-                </p>
-                <Link
-                  href="/en/fitness/next-steps/mediterranean-meal-plan?utm_source=nextool&utm_medium=fitness_flow&utm_campaign=mediterranean_meal_plan&utm_content=post_result_below_email"
-                  onClick={() => trackAffiliateEvent("affiliate_offer_click", lang, "fitness-next-steps", { offer_id: "mediterranean-meal-plan", product_category: "meal_plan", affiliate_platform: "clickbank", placement: "post_result_below_email", source: source || "direct_fitness" })}
-                  className="mt-4 inline-flex rounded-full bg-sky-500 px-5 py-3 text-sm font-black text-white transition hover:bg-sky-400"
-                >
-                  See the Mediterranean-style next step
-                </Link>
-              </div>
-            )}
+{lang === "en" && <div className="mt-5"><MediterraneanNextStepPromo lang={lang} placement="post_result_below_email" source={source || "direct_fitness"} /></div>}
 
             <p className="mt-5 text-xs leading-5 text-zinc-500">{content.disclaimer}</p>
           </div>

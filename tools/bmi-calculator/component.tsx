@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 
 import ToolBox from "../../components/ui/ToolBox";
+import { MediterraneanNextStepPromo } from "../../components/fitness/MediterraneanNextStepPromo";
 import ToolInput from "../../components/toolkit/ToolInput";
 import ToolSection from "../../components/toolkit/ToolSection";
 
@@ -447,6 +448,8 @@ export default function BmiCalculatorTool({
                   </p>
                 </div>
               </div>
+
+              <MediterraneanNextStepPromo lang={lang} placement="bmi_calculator_post_result" source="bmi-calculator" />
             </div>
           )}
         </div>
