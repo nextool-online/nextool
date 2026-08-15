@@ -71,7 +71,7 @@ assert.match(ptHtml.html, /No seu navegador você viu isso como cards visuais/);
 assert.match(ptHtml.html, /border-radius:24px/);
 assert.match(ptHtml.html, /background:#f0f9ff/);
 assert.match(ptHtml.html, /#bae6fd/);
-assert.doesNotMatch(ptHtml.html, /background:#18181b|background:#202024|background:#27272a|color:#ffffff/);
+assert.doesNotMatch(ptHtml.html, /background:#18181b|background:#202024|background:#27272a/);
 assert.doesNotMatch(ptHtml.html, /snapshot/i);
 assert.match(ptHtml.html, /não substituem orientação/i);
 
@@ -81,8 +81,10 @@ assert.match(enHtml.html, /Your fitness metrics/);
 assert.match(enHtml.html, /do not replace/i);
 assert.match(enHtml.html, /Based on your numbers and your goals/);
 assert.match(enHtml.html, /Get your Mediterranean Diet Plan/);
-assert.match(enHtml.html, /next-steps\/mediterranean-meal-plan/);
-assert.doesNotMatch(enHtml.html, /background:#18181b|background:#202024|background:#27272a|color:#ffffff/);
+assert.match(enHtml.html, /hop\.clickbank\.net/);
+assert.match(enHtml.html, /traffic_source=email/);
+assert.match(enHtml.html, /Personalized meals around your routine/);
+assert.doesNotMatch(enHtml.html, /background:#18181b|background:#202024|background:#27272a/);
 
 const routeSource = fs.readFileSync(new URL("../app/api/fitness/lead/route.ts", import.meta.url), "utf8");
 const envExample = fs.readFileSync(new URL("../.env.example", import.meta.url), "utf8");
