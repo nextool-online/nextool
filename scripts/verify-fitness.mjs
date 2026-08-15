@@ -80,6 +80,9 @@ const waterSource = fs.readFileSync(new URL("../tools/water-intake-calculator/co
 const fitnessLayoutSource = fs.readFileSync(new URL("../components/layout/ToolPageLayout.tsx", import.meta.url), "utf8");
 const fitnessFooterSource = fs.readFileSync(new URL("../components/fitness/FitnessFooter.tsx", import.meta.url), "utf8");
 const proteinOfferPageSource = fs.readFileSync(new URL("../components/fitness/ProteinOfferLanding.tsx", import.meta.url), "utf8");
+const emailSentPageSource = fs.readFileSync(new URL("../components/fitness/FitnessEmailSentPage.tsx", import.meta.url), "utf8");
+const mediterraneanPageSource = fs.readFileSync(new URL("../components/fitness/MediterraneanMealPlanLanding.tsx", import.meta.url), "utf8");
+const mediterraneanRouteSource = fs.readFileSync(new URL("../app/[lang]/fitness/next-steps/mediterranean-meal-plan/page.tsx", import.meta.url), "utf8");
 const rootLayoutSource = fs.readFileSync(new URL("../app/layout.tsx", import.meta.url), "utf8");
 
 const affiliateAnalyticsSource = fs.readFileSync(new URL("../components/fitness/AffiliateLandingAnalytics.tsx", import.meta.url), "utf8");
@@ -115,6 +118,17 @@ assert.match(fitnessFooterSource, /#fitness-email/);
 assert.match(proteinOfferPageSource, /protein-contextual-offer/);
 assert.match(affiliateAnalyticsSource, /affiliate_landing_view/);
 assert.match(proteinOfferPageSource, /affiliate_landing_cta_click/);
+assert.match(mediterraneanRouteSource, /MediterraneanMealPlanLanding/);
+assert.match(mediterraneanPageSource, /mediterranean-meal-plan/);
+assert.match(mediterraneanPageSource, /c11c2bxvw2sjyq86y9b2eycy01\.hop\.clickbank\.net/);
+assert.match(mediterraneanPageSource, /affiliate disclosure|affiliate links/i);
+assert.match(mediterraneanPageSource, /Based on your eating habits and lifestyle/);
+assert.match(mediterraneanPageSource, /affiliate_landing_cta_click/);
+assert.match(mediterraneanPageSource, /extclid/);
+assert.match(fitnessJourneySource, /Based on your numbers and your goals/);
+assert.match(fitnessJourneySource, /next-steps\/mediterranean-meal-plan/);
+assert.match(emailSentPageSource, /Mediterranean-style/);
+assert.match(emailSentPageSource, /next-steps\/mediterranean-meal-plan/);
 assert.doesNotMatch(fitnessFooterSource, /#fitness-save/);
 
 assert.equal(getBmiMetricStatus("normal").id, "good");
@@ -134,7 +148,6 @@ assert.equal(getTargetMetricStatus().id, "neutral");
 
 console.log("Fitness journey verification passed");
 
-const emailSentPageSource = fs.readFileSync(new URL("../components/fitness/FitnessEmailSentPage.tsx", import.meta.url), "utf8");
 assert.match(emailSentPageSource, /Email enviado/);
 assert.match(emailSentPageSource, /Promoções/);
 assert.match(emailSentPageSource, /Spam/);

@@ -727,6 +727,23 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
               )}
             </form>
 
+            {lang === "en" && (
+              <div className="mt-5 rounded-3xl border border-sky-200 bg-gradient-to-br from-white to-sky-50 p-5 shadow-lg shadow-sky-100/70">
+                <p className="text-xs font-black uppercase tracking-[0.2em] text-sky-700">Optional next step</p>
+                <h3 className="mt-2 text-2xl font-black tracking-tight text-slate-950">Based on your numbers and your goals</h3>
+                <p className="mt-2 text-sm font-semibold leading-6 text-slate-700">
+                  A Mediterranean-style plan may help turn your calorie and macro targets into simple meals, without making the calculator feel like a sales page.
+                </p>
+                <Link
+                  href="/en/fitness/next-steps/mediterranean-meal-plan?utm_source=nextool&utm_medium=fitness_flow&utm_campaign=mediterranean_meal_plan&utm_content=post_result_below_email"
+                  onClick={() => trackAffiliateEvent("affiliate_offer_click", lang, "fitness-next-steps", { offer_id: "mediterranean-meal-plan", product_category: "meal_plan", affiliate_platform: "clickbank", placement: "post_result_below_email", source: source || "direct_fitness" })}
+                  className="mt-4 inline-flex rounded-full bg-sky-500 px-5 py-3 text-sm font-black text-white transition hover:bg-sky-400"
+                >
+                  See the Mediterranean-style next step
+                </Link>
+              </div>
+            )}
+
             <p className="mt-5 text-xs leading-5 text-zinc-500">{content.disclaimer}</p>
           </div>
         </section>

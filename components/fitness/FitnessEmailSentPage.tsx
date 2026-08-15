@@ -38,18 +38,20 @@ export function FitnessEmailSentPage({ lang }: { lang: LanguageCode }) {
 
         <div className="mt-5 rounded-[1.7rem] border border-emerald-100 bg-gradient-to-br from-white to-emerald-50 p-5 text-zinc-950 shadow-sm md:p-7">
           <p className="text-xs font-black uppercase tracking-[0.22em] text-emerald-700">{lang === "pt" ? "Enquanto isso" : "Meanwhile"}</p>
-          <h2 className="mt-2 text-2xl font-black tracking-tight md:text-4xl">{lang === "pt" ? "Bater proteína todo dia com menos atrito" : "Hit daily protein with less friction"}</h2>
+          <h2 className="mt-2 text-2xl font-black tracking-tight md:text-4xl">
+            {lang === "pt" ? "Bater proteína todo dia com menos atrito" : "Based on your numbers and your goals"}
+          </h2>
           <p className="mt-4 text-sm font-semibold leading-7 text-zinc-600">
             {lang === "pt"
               ? "Se sua meta de proteína parece alta, veja opções práticas para transformar a métrica em rotina. Comida primeiro; complemento só quando fizer sentido."
-              : "If your protein target feels high, see practical options to turn the metric into routine. Food first; supplements only when they make sense."}
+              : "A Mediterranean-style next step may help turn your calorie target into simple meals before you make any purchase decision."}
           </p>
           <Link
-            href={`/${lang}/fitness/offers/protein`}
-            onClick={() => trackAffiliateEvent("affiliate_offer_click", lang, proteinOffer.source, proteinOffer)}
+            href={lang === "pt" ? `/${lang}/fitness/offers/protein` : "/en/fitness/next-steps/mediterranean-meal-plan?utm_source=nextool&utm_medium=fitness_flow&utm_campaign=mediterranean_meal_plan&utm_content=email_sent"}
+            onClick={() => trackAffiliateEvent("affiliate_offer_click", lang, lang === "pt" ? proteinOffer.source : "fitness-next-steps", lang === "pt" ? proteinOffer : { offer_id: "mediterranean-meal-plan", product_category: "meal_plan", affiliate_platform: "clickbank", placement: "email_sent_confirmation_page", source: "fitness-email-sent" })}
             className="mt-5 inline-flex rounded-full bg-sky-500 px-6 py-3 text-sm font-black text-white transition hover:bg-sky-400"
           >
-            {lang === "pt" ? "Ver opções práticas" : "See practical options"}
+            {lang === "pt" ? "Ver opções práticas" : "See the Mediterranean-style next step"}
           </Link>
         </div>
       </section>
