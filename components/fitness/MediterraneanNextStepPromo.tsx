@@ -36,7 +36,7 @@ export function MediterraneanNextStepPromo({ lang, placement, source, compact = 
       <Link
         href={href}
         onClick={() => trackAffiliateEvent("affiliate_offer_click", lang, "fitness-next-steps", metadata)}
-        className="mt-4 inline-flex rounded-full bg-emerald-500 px-5 py-3 text-sm font-black text-white shadow-md shadow-emerald-900/10 transition hover:bg-emerald-400"
+        className="mt-4 inline-flex w-full items-center justify-center rounded-full bg-emerald-400 px-6 py-4 text-center text-sm font-black uppercase leading-snug tracking-wide text-zinc-950 shadow-lg shadow-emerald-900/20 transition hover:bg-emerald-300 sm:w-auto"
       >
         See the Mediterranean-style path
       </Link>
