@@ -85,7 +85,7 @@ export function MediterraneanMealPlanLanding({ lang }: { lang: LanguageCode }) {
             href={hoplink}
             rel="nofollow sponsored noopener noreferrer"
             onClick={() => trackAffiliateEvent("affiliate_landing_cta_click", lang, "fitness-next-steps", metadata)}
-            className="mt-5 inline-flex rounded-full bg-emerald-500 px-7 py-4 text-sm font-black uppercase tracking-wide text-white shadow-lg shadow-emerald-900/20 transition hover:bg-emerald-400"
+            className="mt-5 inline-flex w-full items-center justify-center rounded-full bg-emerald-400 px-7 py-4 text-center text-sm font-black uppercase leading-snug tracking-wide text-zinc-950 shadow-lg shadow-emerald-900/20 transition hover:bg-emerald-300 sm:w-auto"
           >
             Get your Mediterranean Diet Plan
           </a>
