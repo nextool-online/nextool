@@ -86,6 +86,7 @@ const mediterraneanRouteSource = fs.readFileSync(new URL("../app/[lang]/fitness/
 const rootLayoutSource = fs.readFileSync(new URL("../app/layout.tsx", import.meta.url), "utf8");
 
 const affiliateAnalyticsSource = fs.readFileSync(new URL("../components/fitness/AffiliateLandingAnalytics.tsx", import.meta.url), "utf8");
+const fitnessToolAnalyticsSource = fs.readFileSync(new URL("../components/fitness/FitnessToolAnalytics.tsx", import.meta.url), "utf8");
 
 assert.match(rootLayoutSource, /impact-site-verification/);
 assert.match(rootLayoutSource, /32d66cb1-6fdd-4441-87b4-679d8bd6f9be/);
@@ -117,6 +118,11 @@ assert.doesNotMatch(fitnessJourneySource, /Salvar progresso neste dispositivo|Sa
 assert.match(fitnessFooterSource, /#fitness-email/);
 assert.match(proteinOfferPageSource, /protein-contextual-offer/);
 assert.match(affiliateAnalyticsSource, /affiliate_landing_view/);
+assert.match(affiliateAnalyticsSource, /nextool_fitness_attribution/);
+assert.match(fitnessJourneySource, /nextool_fitness_attribution/);
+assert.match(fitnessToolAnalyticsSource, /nextool_fitness_attribution/);
+assert.match(fitnessToolAnalyticsSource, /utm_device/);
+assert.match(fitnessJourneySource, /utm_matchtype/);
 assert.match(proteinOfferPageSource, /affiliate_landing_cta_click/);
 assert.match(mediterraneanRouteSource, /MediterraneanMealPlanLanding/);
 assert.match(mediterraneanPageSource, /mediterranean-meal-plan/);

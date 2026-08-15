@@ -373,13 +373,26 @@ export default function FitnessJourney({ lang }: FitnessJourneyProps) {
 
   const getAttribution = () => {
     if (typeof window === "undefined") return {};
+    const storageKey = "nextool_fitness_attribution";
     const params = new URLSearchParams(window.location.search);
-    const attributionKeys = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "gclid", "fbclid"];
-    return Object.fromEntries(
+    const attributionKeys = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "utm_device", "utm_matchtype", "gclid", "fbclid"];
+    const current = Object.fromEntries(
       attributionKeys
         .map((key) => [key, params.get(key)?.slice(0, 120) || ""])
         .filter(([, value]) => value)
     );
+    let stored: Record<string, string> = {};
+    try {
+      stored = JSON.parse(window.localStorage.getItem(storageKey) || "{}") as Record<string, string>;
+    } catch {
+      stored = {};
+    }
+    const shouldPersistCurrent = current.utm_source && current.utm_source !== "nextool";
+    const attribution = shouldPersistCurrent ? { ...stored, ...current } : { ...current, ...stored };
+    if (Object.keys(attribution).length > 0) {
+      window.localStorage.setItem(storageKey, JSON.stringify(attribution));
+    }
+    return attribution;
   };
 
   const trackFitnessEvent = (eventName: string, detail: Record<string, string | boolean | number> = {}) => {

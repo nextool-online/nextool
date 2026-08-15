@@ -215,7 +215,7 @@ export function buildFitnessEmailHtml(payload: FitnessLeadPayload) {
     })
     .join("");
 
-  const offerUrl = "https://c11c2bxvw2sjyq86y9b2eycy01.hop.clickbank.net/?traffic_source=email&traffic_type=sequence&tid=email01metrics";
+  const offerUrl = "https://www.nextool.online/api/fitness/email-click?offer=mediterranean-meal-plan&lang=en&source=calories&sequence=fitness_en_default_v1&step=protein_en_01_metrics_delivery&tid=email01metrics";
   const affiliateButton = `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;border-collapse:separate;border-spacing:0;margin:16px 0 0;"><tr><td align="center" bgcolor="#34d399" style="background:#34d399;border-radius:999px;"><a href="${offerUrl}" style="display:block;padding:16px 18px;color:#0f172a !important;text-decoration:none;font-family:Arial,sans-serif;font-weight:900;font-size:16px;line-height:1.35;text-transform:uppercase;letter-spacing:.04em;">Get your Mediterranean Diet Plan</a></td></tr></table>`;
   const offerBlock = isPt
     ? ""

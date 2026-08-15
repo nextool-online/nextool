@@ -55,6 +55,10 @@ const schemaSql = fs.readFileSync(new URL("../supabase/fitness_email_events.sql"
 assert.match(routeSource, /buildFitnessEmailSequenceEvents/);
 assert.match(routeSource, /saveEmailEvents/);
 assert.match(metricsRoute, /emailSequenceMetrics/);
+const emailClickRoute = fs.readFileSync(new URL("../app/api/fitness/email-click/route.ts", import.meta.url), "utf8");
+assert.match(emailClickRoute, /fitness_email_events/);
+assert.match(emailClickRoute, /email_offer_clicked/);
+assert.match(emailClickRoute, /NextResponse\.redirect/);
 assert.match(dashboardPage, /EmailSequenceList/);
 assert.match(dashboardPage, /email_offer_clicked/);
 assert.match(schemaSql, /create table if not exists public\.fitness_email_events/);
