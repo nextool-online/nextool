@@ -53,7 +53,7 @@ export async function GET(request: Request) {
     ? buildMediterraneanTarget(tid)
     : buildMediterraneanTarget(tid);
 
-  void saveEmailClickEvent({
+  await saveEmailClickEvent({
     event_name: "email_offer_clicked",
     email_hash: null,
     lang,
