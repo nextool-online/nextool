@@ -140,6 +140,7 @@ for (const file of [
   "../tools/bmi-calculator/component.tsx",
   "../tools/bmr-calculator/component.tsx",
   "../tools/calorie-calculator/component.tsx",
+  "../tools/calorie-deficit-calculator/component.tsx",
   "../tools/water-intake-calculator/component.tsx",
   "../tools/protein-calculator/component.tsx",
   "../tools/ideal-weight-calculator/component.tsx",
@@ -198,6 +199,8 @@ assert.doesNotMatch(proteinCalculatorSource, /visualVariant|soft-health|variant=
 assert.match(proteinCalculatorSource, /ToolBox variant="fitness"/);
 assert.match(fs.readFileSync(new URL("../tools/calorie-calculator/component.tsx", import.meta.url), "utf8"), /resultHelper, lang/);
 assert.match(fs.readFileSync(new URL("../tools/calorie-calculator/component.tsx", import.meta.url), "utf8"), /result-explanation/);
+assert.match(fs.readFileSync(new URL("../tools/calorie-deficit-calculator/component.tsx", import.meta.url), "utf8"), /calorie_deficit_calculator_post_result/);
+assert.match(fs.readFileSync(new URL("../tools/calorie-deficit-calculator/content.en.ts", import.meta.url), "utf8"), /Calorie Deficit Calculator/);
 assert.match(fs.readFileSync(new URL("../tools/protein-calculator/component.tsx", import.meta.url), "utf8"), /result-explanation/);
 assert.match(toolPageSource, /rounded-3xl border border-sky-200 bg-white p-5 shadow-sm shadow-sky-100\/70/);
 assert.match(toolPageSource, /grid h-10 w-10 shrink-0 place-items-center rounded-full bg-emerald-400/);
@@ -206,6 +209,7 @@ const fitnessCalculatorFiles = [
   "../tools/bmi-calculator/component.tsx",
   "../tools/bmr-calculator/component.tsx",
   "../tools/calorie-calculator/component.tsx",
+  "../tools/calorie-deficit-calculator/component.tsx",
   "../tools/water-intake-calculator/component.tsx",
   "../tools/protein-calculator/component.tsx",
   "../tools/ideal-weight-calculator/component.tsx",
@@ -217,6 +221,7 @@ for (const file of fitnessCalculatorFiles) {
   assert.doesNotMatch(source, /rounded-3xl bg-zinc-950|overflow-hidden rounded-3xl[^\n]+bg-zinc-950|bg-white\/5|border-white\/10 bg-white\/10/);
 }
 assert.doesNotMatch(fs.readFileSync(new URL("../tools/calorie-calculator/component.tsx", import.meta.url), "utf8"), /activityMultipliers|}\s*·\s*\{/);
+assert.doesNotMatch(fs.readFileSync(new URL("../tools/calorie-deficit-calculator/component.tsx", import.meta.url), "utf8"), /activityMultipliers|}\s*·\s*\{/);
 assert.match(fs.readFileSync(new URL("../tools/water-intake-calculator/component.tsx", import.meta.url), "utf8"), /activityOptions|select/);
 assert.match(fs.readFileSync(new URL("../tools/water-intake-calculator/component.tsx", import.meta.url), "utf8"), /Dia comum sem treino|Treino leve|Training day/);
 assert.doesNotMatch(fs.readFileSync(new URL("../tools/bmi-calculator/component.tsx", import.meta.url), "utf8"), /text-zinc-300/);
@@ -238,6 +243,7 @@ for (const file of [
   "../tools/bmi-calculator/component.tsx",
   "../tools/bmr-calculator/component.tsx",
   "../tools/calorie-calculator/component.tsx",
+  "../tools/calorie-deficit-calculator/component.tsx",
   "../tools/water-intake-calculator/component.tsx",
   "../tools/protein-calculator/component.tsx",
   "../tools/ideal-weight-calculator/component.tsx",

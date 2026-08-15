@@ -20,6 +20,7 @@ import { investmentCalculatorTool } from "./investment-calculator";
 import { retirementCalculatorTool } from "./retirement-calculator";
 import { breakEvenCalculatorTool } from "./break-even-calculator";
 import { calorieCalculatorTool } from "./calorie-calculator";
+import { calorieDeficitCalculatorTool } from "./calorie-deficit-calculator";
 import { bmrCalculatorTool } from "./bmr-calculator";
 import { waterIntakeCalculatorTool } from "./water-intake-calculator";
 import { bodyFatCalculatorTool } from "./body-fat-calculator";
@@ -50,6 +51,7 @@ export const tools = [
   retirementCalculatorTool,
   breakEvenCalculatorTool,
   calorieCalculatorTool,
+  calorieDeficitCalculatorTool,
   bmrCalculatorTool,
   waterIntakeCalculatorTool,
   proteinCalculatorTool,

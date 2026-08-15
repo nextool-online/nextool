@@ -1,0 +1,255 @@
+"use client";
+
+import Link from "next/link";
+import { useMemo, useState } from "react";
+
+import ToolBox from "../../components/ui/ToolBox";
+import { MediterraneanNextStepPromo } from "../../components/fitness/MediterraneanNextStepPromo";
+import ToolSection from "../../components/toolkit/ToolSection";
+import ToolSelect from "../../components/toolkit/ToolSelect";
+
+import { getText } from "../../data/i18n";
+import { getLocaleProfile } from "../../data/localeProfiles";
+import {
+  calculateBmr,
+  calculateGoalCalories,
+  calculateMaintenanceCalories,
+  type ActivityLevel,
+  type Sex,
+} from "../health/fitness";
+
+import type { ToolComponentProps } from "../types";
+
+const activityLevels: ActivityLevel[] = ["sedentary", "light", "moderate", "very", "extra"];
+
+function parseUserNumber(value: string) {
+  return Number(value.replace(",", "."));
+}
+
+function formatNumber(value: number, lang: "en" | "pt", options?: Intl.NumberFormatOptions) {
+  return new Intl.NumberFormat(lang === "pt" ? "pt-BR" : "en-US", options).format(value);
+}
+
+function getCalorieMarker(calories: number) {
+  return Math.max(8, Math.min(94, ((calories - 1500) / 2200) * 100));
+}
+
+export default function CalorieDeficitCalculatorTool({ lang, ui }: ToolComponentProps) {
+  const toolUi = ui!;
+  const usesImperial = getLocaleProfile(lang).measurementSystem === "imperial";
+
+  const [gender, setGender] = useState<Sex>("male");
+  const [age, setAge] = useState("");
+  const [weight, setWeight] = useState("");
+  const [heightCm, setHeightCm] = useState("");
+  const [heightFt, setHeightFt] = useState("");
+  const [heightIn, setHeightIn] = useState("");
+  const [activityLevel, setActivityLevel] = useState<ActivityLevel>("moderate");
+
+  const result = useMemo(() => {
+    const ageValue = parseUserNumber(age);
+    const weightValue = parseUserNumber(weight);
+
+    if (!ageValue || !weightValue) return null;
+
+    const input = usesImperial
+      ? {
+          system: "imperial" as const,
+          weightLb: weightValue,
+          heightFt: parseUserNumber(heightFt),
+          heightIn: parseUserNumber(heightIn),
+        }
+      : {
+          system: "metric" as const,
+          weightKg: weightValue,
+          heightCm: parseUserNumber(heightCm),
+        };
+
+    const hasValidHeight = usesImperial
+      ? input.system === "imperial" && (input.heightFt > 0 || input.heightIn > 0)
+      : input.system === "metric" && input.heightCm > 0;
+
+    if (!hasValidHeight) return null;
+
+    const bmr = calculateBmr({ input, age: ageValue, sex: gender });
+    const maintenance = calculateMaintenanceCalories(bmr, activityLevel);
+    const lose = calculateGoalCalories(maintenance, "lose");
+    const gain = calculateGoalCalories(maintenance, "gain");
+    const deficit = Math.max(0, maintenance - lose);
+
+    return {
+      bmr,
+      maintenance,
+      lose,
+      gain,
+      deficit,
+      marker: getCalorieMarker(lose),
+    };
+  }, [activityLevel, age, gender, heightCm, heightFt, heightIn, usesImperial, weight]);
+
+  const fitnessHref = useMemo(() => {
+    const params = new URLSearchParams();
+    if (weight) params.set("weight", weight);
+    if (age) params.set("age", age);
+    if (gender) params.set("sex", gender);
+    params.set("activity", activityLevel);
+
+    if (usesImperial) {
+      if (heightFt) params.set("heightFt", heightFt);
+      if (heightIn) params.set("heightIn", heightIn);
+    } else if (heightCm) {
+      params.set("heightCm", heightCm);
+    }
+
+    params.set("from", "calories");
+    const query = params.toString();
+    return `/${lang}/fitness${query ? `?${query}` : ""}`;
+  }, [activityLevel, age, gender, heightCm, heightFt, heightIn, lang, usesImperial, weight]);
+
+  const inputClass = "block w-full rounded-xl border border-zinc-300 bg-white p-3 text-center text-lg font-semibold text-zinc-950 outline-none transition placeholder:text-zinc-400 focus:border-zinc-900 md:p-4";
+  const selectClass = "text-lg font-semibold text-zinc-950";
+  const calorieUnit = lang === "pt" ? "kcal/dia" : "kcal/day";
+
+  return (
+    <ToolBox variant="fitness">
+      <ToolSection title={getText(toolUi.heading, lang)} description={getText(toolUi.helper, lang)}>
+        <div className="space-y-6">
+          <div className="grid gap-3 md:grid-cols-2">
+            <ToolSelect
+              value={gender}
+              aria-label={getText(toolUi.gender, lang)}
+              onChange={(event) => setGender(event.target.value as Sex)}
+              className={selectClass}
+            >
+              <option value="male">{getText(toolUi.male, lang)}</option>
+              <option value="female">{getText(toolUi.female, lang)}</option>
+            </ToolSelect>
+
+            <label className="block">
+              <input type="text" inputMode="decimal" value={age} onChange={(event) => setAge(event.target.value)} onInput={(event) => setAge(event.currentTarget.value)} placeholder={getText(toolUi.age, lang)} className={inputClass} />
+            </label>
+
+            <label className="block">
+              <input type="text" inputMode="decimal" value={weight} onChange={(event) => setWeight(event.target.value)} onInput={(event) => setWeight(event.currentTarget.value)} placeholder={getText(toolUi.weight, lang)} className={inputClass} />
+            </label>
+
+            {usesImperial ? (
+              <div className="grid grid-cols-2 gap-3">
+                <label className="block">
+                  <input type="text" inputMode="decimal" value={heightFt} onChange={(event) => setHeightFt(event.target.value)} onInput={(event) => setHeightFt(event.currentTarget.value)} placeholder={getText(toolUi.heightFt, lang)} className={inputClass} />
+                </label>
+                <label className="block">
+                  <input type="text" inputMode="decimal" value={heightIn} onChange={(event) => setHeightIn(event.target.value)} onInput={(event) => setHeightIn(event.currentTarget.value)} placeholder={getText(toolUi.heightIn, lang)} className={inputClass} />
+                </label>
+              </div>
+            ) : (
+              <label className="block">
+                <input type="text" inputMode="decimal" value={heightCm} onChange={(event) => setHeightCm(event.target.value)} onInput={(event) => setHeightCm(event.currentTarget.value)} placeholder={getText(toolUi.height, lang)} className={inputClass} />
+              </label>
+            )}
+
+            <ToolSelect
+              value={activityLevel}
+              aria-label={getText(toolUi.activityLevel, lang)}
+              onChange={(event) => setActivityLevel(event.target.value as ActivityLevel)}
+              className={`md:col-span-2 ${selectClass}`}
+            >
+              {activityLevels.map((level) => (
+                <option key={level} value={level}>
+                  {getText(toolUi[level], lang)}
+                </option>
+              ))}
+            </ToolSelect>
+          </div>
+
+          {result && (
+            <div className="space-y-5 rounded-3xl border border-amber-200 bg-gradient-to-br from-white to-amber-50 p-4 shadow-sm md:p-6">
+              <div className="grid gap-4 rounded-3xl border border-sky-100 bg-white p-5 text-center text-slate-950 shadow-sm sm:grid-cols-2 sm:items-center">
+                <div className="rounded-2xl bg-sky-50 p-4">
+                  <p className="text-sm font-bold text-slate-500">{getText(toolUi.resultTitle, lang)}</p>
+                  <p className="mt-1 text-5xl font-black tracking-tight">
+                    {formatNumber(result.lose, lang, { maximumFractionDigits: 0 })}
+                  </p>
+                  <p className="mt-1 text-sm font-bold text-slate-500">{lang === "pt" ? "kcal/dia" : "kcal/day"}</p>
+                  <p data-role="result-explanation" className="mx-auto mt-3 max-w-sm text-sm font-semibold leading-6 text-slate-700">
+                    {getText(toolUi.resultHelper, lang)}
+                  </p>
+                </div>
+                <div className="flex justify-center rounded-2xl bg-sky-50 p-4">
+                  <span className="self-center rounded-full bg-amber-100 px-4 py-2 text-sm font-black uppercase text-amber-700">
+                    {getText(toolUi.status, lang)}
+                  </span>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <div className="relative pt-6">
+                  <div className="absolute top-0 h-5 w-1 -translate-x-1/2 rounded-full bg-amber-700" style={{ left: `${result.marker}%` }} />
+                  <div className="h-4 rounded-full bg-gradient-to-r from-emerald-300 via-amber-400 to-rose-500 ring-1 ring-amber-100" />
+                </div>
+                <div className="grid grid-cols-3 text-center text-[10px] font-bold uppercase tracking-wide text-zinc-500 md:text-xs">
+                  <span>1500</span>
+                  <span>2600</span>
+                  <span>3700+</span>
+                </div>
+              </div>
+
+              <div className="grid gap-4 md:grid-cols-3">
+                <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-center">
+                  <p className="text-xs font-black uppercase tracking-wide text-zinc-500">{getText(toolUi.loseTarget, lang)}</p>
+                  <p className="mt-2 text-2xl font-black text-emerald-700">
+                    {formatNumber(result.lose, lang, { maximumFractionDigits: 0 })} <span className="text-sm font-black text-emerald-700/70">{calorieUnit}</span>
+                  </p>
+                </div>
+                <div className="rounded-2xl border border-amber-200 bg-white p-4 text-center">
+                  <p className="text-xs font-black uppercase tracking-wide text-zinc-500">{getText(toolUi.maintainTarget, lang)}</p>
+                  <p className="mt-2 text-2xl font-black text-zinc-950">
+                    {formatNumber(result.maintenance, lang, { maximumFractionDigits: 0 })} <span className="text-sm font-black text-zinc-500">{calorieUnit}</span>
+                  </p>
+                </div>
+                <div className="rounded-2xl border border-sky-200 bg-sky-50 p-4 text-center">
+                  <p className="text-xs font-black uppercase tracking-wide text-zinc-500">{getText(toolUi.gainTarget, lang)}</p>
+                  <p className="mt-2 text-2xl font-black text-sky-700">
+                    {formatNumber(result.deficit, lang, { maximumFractionDigits: 0 })} <span className="text-sm font-black text-sky-700/70">{calorieUnit}</span>
+                  </p>
+                </div>
+              </div>
+
+              <p className="rounded-2xl bg-white p-4 text-center text-sm font-medium leading-6 text-zinc-700 shadow-sm md:text-base">
+                {getText(toolUi.resultHelper, lang)}
+              </p>
+
+              <div className="rounded-3xl border border-sky-100 bg-gradient-to-br from-sky-50 to-emerald-50 p-5 text-center text-slate-950 shadow-xl shadow-sky-100/70 md:p-6">
+                <p className="text-xs font-black uppercase tracking-[0.24em] text-sky-600">{getText(toolUi.ctaEyebrow, lang)}</p>
+                <h3 className="mt-2 text-2xl font-black tracking-tight md:text-3xl">{getText(toolUi.ctaTitle, lang)}</h3>
+                <div className="mt-5 grid gap-3 sm:grid-cols-4">
+                  {[
+                    ["⚙️", getText(toolUi.metabolism, lang)],
+                    ["💧", getText(toolUi.water, lang)],
+                    ["🥩", getText(toolUi.protein, lang)],
+                    ["⚖️", getText(toolUi.idealWeight, lang)],
+                  ].map(([icon, item]) => (
+                    <div key={item} className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-sky-200 bg-white p-4 text-center shadow-lg shadow-sky-100/80 ring-1 ring-sky-50">
+                      <span className="text-3xl leading-none" aria-hidden="true">{icon}</span>
+                      <span className="text-base font-black leading-tight text-slate-800 md:text-lg">{item}</span>
+                    </div>
+                  ))}
+                </div>
+                <Link href={fitnessHref} className="mt-6 inline-flex items-center justify-center rounded-full bg-emerald-400 px-6 py-3 text-sm font-black uppercase tracking-wide text-zinc-950 transition hover:bg-emerald-300">
+                  {getText(toolUi.openFitness, lang)}
+                </Link>
+                <p className="mx-auto mt-4 max-w-2xl text-sm font-semibold leading-6 text-slate-700 md:text-base">
+                  {getText(toolUi.ctaDescription, lang)}
+                </p>
+              </div>
+
+              <MediterraneanNextStepPromo lang={lang} placement="calorie_deficit_calculator_post_result" source="calorie-deficit-calculator" />
+
+              <p className="text-center text-xs leading-5 text-zinc-500 md:text-sm">{getText(toolUi.disclaimer, lang)}</p>
+            </div>
+          )}
+        </div>
+      </ToolSection>
+    </ToolBox>
+  );
+}
