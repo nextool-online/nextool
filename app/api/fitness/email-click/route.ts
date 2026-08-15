@@ -1,3 +1,5 @@
+import { createHash } from "node:crypto";
+
 import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
@@ -19,6 +21,10 @@ function buildMediterraneanTarget(tid: string) {
   url.searchParams.set("traffic_type", "sequence");
   url.searchParams.set("tid", tid || "email_sequence");
   return url.toString();
+}
+
+function buildAnonymousClickHash(value: string) {
+  return createHash("sha256").update(value).digest("hex");
 }
 
 async function saveEmailClickEvent(record: Record<string, unknown>) {
@@ -55,7 +61,7 @@ export async function GET(request: Request) {
 
   await saveEmailClickEvent({
     event_name: "email_offer_clicked",
-    email_hash: null,
+    email_hash: buildAnonymousClickHash(`${lang}:${source}:${sequenceId}:${stepId}:${tid}`),
     lang,
     source,
     sequence_id: sequenceId,

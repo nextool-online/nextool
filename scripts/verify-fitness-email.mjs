@@ -105,6 +105,7 @@ assert.match(routeSource, /https:\/\/api\.brevo\.com\/v3\/smtp\/email/);
 assert.doesNotMatch(routeSource, /RESEND_API_KEY/);
 assert.match(routeSource, /mode: configured \? "live" : "preview"/);
 assert.match(emailClickRouteSource, /email_offer_clicked/);
+assert.match(emailClickRouteSource, /createHash/);
 assert.match(emailClickRouteSource, /NextResponse\.redirect/);
 assert.match(emailClickRouteSource, /hop\.clickbank\.net/);
 assert.match(envExample, /SUPABASE_SERVICE_ROLE_KEY/);
