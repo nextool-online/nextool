@@ -87,6 +87,7 @@ const rootLayoutSource = fs.readFileSync(new URL("../app/layout.tsx", import.met
 
 const affiliateAnalyticsSource = fs.readFileSync(new URL("../components/fitness/AffiliateLandingAnalytics.tsx", import.meta.url), "utf8");
 const fitnessToolAnalyticsSource = fs.readFileSync(new URL("../components/fitness/FitnessToolAnalytics.tsx", import.meta.url), "utf8");
+const dashboardMetricsSource = fs.readFileSync(new URL("../lib/fitness/dashboard-metrics.ts", import.meta.url), "utf8");
 
 assert.match(rootLayoutSource, /impact-site-verification/);
 assert.match(rootLayoutSource, /32d66cb1-6fdd-4441-87b4-679d8bd6f9be/);
@@ -200,6 +201,7 @@ assert.match(proteinCalculatorSource, /ToolBox variant="fitness"/);
 assert.match(fs.readFileSync(new URL("../tools/calorie-calculator/component.tsx", import.meta.url), "utf8"), /resultHelper, lang/);
 assert.match(fs.readFileSync(new URL("../tools/calorie-calculator/component.tsx", import.meta.url), "utf8"), /result-explanation/);
 assert.match(fs.readFileSync(new URL("../tools/calorie-deficit-calculator/component.tsx", import.meta.url), "utf8"), /calorie_deficit_calculator_post_result/);
+assert.match(dashboardMetricsSource, /calorie-deficit-calculator/);
 assert.match(fs.readFileSync(new URL("../tools/calorie-deficit-calculator/content.en.ts", import.meta.url), "utf8"), /Calorie Deficit Calculator/);
 assert.match(fs.readFileSync(new URL("../tools/protein-calculator/component.tsx", import.meta.url), "utf8"), /result-explanation/);
 assert.match(toolPageSource, /rounded-3xl border border-sky-200 bg-white p-5 shadow-sm shadow-sky-100\/70/);
