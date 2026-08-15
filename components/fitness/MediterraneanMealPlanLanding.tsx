@@ -77,9 +77,9 @@ export function MediterraneanMealPlanLanding({ lang }: { lang: LanguageCode }) {
 
         <div className="mt-7 rounded-[1.7rem] border border-sky-100 bg-sky-50 p-5 md:p-7">
           <p className="text-sm font-black uppercase tracking-[0.22em] text-sky-700">Personalized plan ready</p>
-          <h2 className="mt-2 text-2xl font-black tracking-tight md:text-4xl">Continue to the short quiz</h2>
-          <p className="mt-3 text-sm font-semibold leading-7 text-slate-700">
-            The quiz opens on the Mediterranean Diet Plan website. It is optional, external, and separate from your NexTool Fit metrics.
+          <h2 className="mt-2 text-2xl font-black tracking-tight md:text-4xl">Get a plan built around your routine</h2>
+          <p className="mt-3 text-sm font-bold leading-7 text-slate-700">
+            Answer a few quick questions and see a Mediterranean-style plan designed to help you turn today’s numbers into easier meals, clearer choices and stronger momentum.
           </p>
           <a
             href={hoplink}
@@ -87,10 +87,10 @@ export function MediterraneanMealPlanLanding({ lang }: { lang: LanguageCode }) {
             onClick={() => trackAffiliateEvent("affiliate_landing_cta_click", lang, "fitness-next-steps", metadata)}
             className="mt-5 inline-flex rounded-full bg-emerald-500 px-7 py-4 text-sm font-black uppercase tracking-wide text-white shadow-lg shadow-emerald-900/20 transition hover:bg-emerald-400"
           >
-            Continue to the personalized quiz
+            Get your Mediterranean Diet Plan
           </a>
-          <p className="mt-4 text-xs font-semibold leading-5 text-slate-500">
-            Affiliate disclosure: this page may contain affiliate links. If you choose to buy through them, NexTool may earn a commission at no extra cost to you. General wellness information only; no result is guaranteed.
+          <p className="mt-4 text-[11px] leading-5 text-slate-400">
+            General wellness information only. This does not replace medical or nutrition advice from a qualified professional.
           </p>
         </div>
       </section>
