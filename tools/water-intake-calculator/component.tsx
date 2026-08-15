@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 
 import ToolBox from "../../components/ui/ToolBox";
+import { MediterraneanNextStepPromo } from "../../components/fitness/MediterraneanNextStepPromo";
 import ToolSection from "../../components/toolkit/ToolSection";
 
 import { getText } from "../../data/i18n";
@@ -281,6 +282,8 @@ export default function WaterIntakeCalculatorTool({
                 <p className="mt-2 text-sm font-semibold leading-6 text-slate-700">{content.helper}</p>
                 <p className="mt-3 text-xs leading-5 text-zinc-500">{content.disclaimer}</p>
               </div>
+
+              <MediterraneanNextStepPromo lang={lang} placement="water_calculator_post_result" source="water-intake-calculator" />
 
               <div id="fitness-save" className="overflow-hidden rounded-3xl border border-sky-200 bg-gradient-to-br from-sky-50 to-emerald-50 text-slate-950 shadow-2xl shadow-sky-100/70">
                 <div className="mx-auto flex max-w-4xl flex-col items-center gap-5 p-5 text-center md:p-6">

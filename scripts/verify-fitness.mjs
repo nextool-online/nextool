@@ -130,6 +130,19 @@ const mediterraneanPromoSource = fs.readFileSync(new URL("../components/fitness/
 assert.match(mediterraneanPromoSource, /Based on your numbers and your goals/);
 assert.match(mediterraneanPromoSource, /next-steps\/mediterranean-meal-plan/);
 assert.match(mediterraneanPromoSource, /Optional accelerator/);
+for (const file of [
+  "../tools/bmi-calculator/component.tsx",
+  "../tools/bmr-calculator/component.tsx",
+  "../tools/calorie-calculator/component.tsx",
+  "../tools/water-intake-calculator/component.tsx",
+  "../tools/protein-calculator/component.tsx",
+  "../tools/ideal-weight-calculator/component.tsx",
+  "../tools/body-fat-calculator/component.tsx",
+  "../tools/macro-calculator/component.tsx",
+]) {
+  const source = fs.readFileSync(new URL(file, import.meta.url), "utf8");
+  assert.match(source, /MediterraneanNextStepPromo/);
+}
 assert.match(fitnessJourneySource, /MediterraneanNextStepPromo/);
 assert.match(emailSentPageSource, /MediterraneanNextStepPromo/);
 assert.doesNotMatch(fitnessFooterSource, /#fitness-save/);

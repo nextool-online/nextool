@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 
 import ToolBox from "../../components/ui/ToolBox";
+import { MediterraneanNextStepPromo } from "../../components/fitness/MediterraneanNextStepPromo";
 import ToolSection from "../../components/toolkit/ToolSection";
 import ToolSelect from "../../components/toolkit/ToolSelect";
 
@@ -241,6 +242,8 @@ export default function BmrCalculatorTool({
                   {getText(toolUi.ctaDescription, lang)}
                 </p>
               </div>
+
+              <MediterraneanNextStepPromo lang={lang} placement="bmr_calculator_post_result" source="bmr-calculator" />
 
               <p className="text-center text-xs leading-5 text-zinc-500 md:text-sm">
                 {getText(toolUi.disclaimer, lang)}
