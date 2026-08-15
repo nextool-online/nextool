@@ -84,6 +84,8 @@ assert.match(enHtml.html, /Get your Mediterranean Diet Plan/);
 assert.match(enHtml.html, /hop\.clickbank\.net/);
 assert.match(enHtml.html, /traffic_source=email/);
 assert.match(enHtml.html, /Personalized meals around your routine/);
+assert.match(enHtml.html, /Get your plan moving faster/);
+assert.doesNotMatch(enHtml.html, /Update my metrics|Update my metrics/i);
 assert.doesNotMatch(enHtml.html, /background:#18181b|background:#202024|background:#27272a/);
 
 const routeSource = fs.readFileSync(new URL("../app/api/fitness/lead/route.ts", import.meta.url), "utf8");
