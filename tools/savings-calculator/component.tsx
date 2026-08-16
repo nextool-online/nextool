@@ -2,203 +2,56 @@
 
 import { useMemo, useState } from "react";
 
+import MoneyMetricGrid from "../../components/money/MoneyMetricGrid";
+import MoneyResultCard from "../../components/money/MoneyResultCard";
+import MoneyToolCallout from "../../components/money/MoneyToolCallout";
 import ToolBox from "../../components/ui/ToolBox";
-import ToolSection from "../../components/toolkit/ToolSection";
 import ToolInput from "../../components/toolkit/ToolInput";
-import ToolResult from "../../components/toolkit/ToolResult";
+import ToolSection from "../../components/toolkit/ToolSection";
 
 import { getText } from "../../data/i18n";
 
 import type { ToolComponentProps } from "../types";
 
-function formatMoney(value: number) {
-  return value.toFixed(2);
+function parseUserNumber(value: string) {
+  return Number(value.replace(",", "."));
 }
 
-export default function SavingsCalculatorTool({
-  lang,
-  ui,
-}: ToolComponentProps) {
-  const toolUi = ui!;
+function formatCurrency(value: number, lang: "en" | "pt") {
+  return new Intl.NumberFormat(lang === "pt" ? "pt-BR" : "en-US", {
+    style: "currency",
+    currency: lang === "pt" ? "BRL" : "USD",
+    maximumFractionDigits: 2,
+  }).format(value);
+}
 
-  const [initialDeposit, setinitialDeposit] = useState("");
-  const [monthlySavings, setmonthlySavings] = useState("");
-  const [interestRate, setInterestRate] = useState("");
-  const [years, setYears] = useState("");
 
-  const results = useMemo(() => {
-    const initialDepositValue = Number(initialDeposit);
-    const monthlySavingsValue = Number(monthlySavings);
-    const interestRateValue = Number(interestRate);
-    const yearsValue = Number(years);
+function formatPercent(value: number, lang: "en" | "pt") {
+  return new Intl.NumberFormat(lang === "pt" ? "pt-BR" : "en-US", {
+    style: "percent",
+    maximumFractionDigits: 2,
+  }).format(value / 100);
+}
 
-    if (
-      !initialDeposit ||
-      !monthlySavings ||
-      !interestRate ||
-      !years
-    ) {
-      return {
-        futureValue: "",
-        totalDeposited: "",
-        interestEarned: "",
-      };
-    }
-
-    const monthlyRate =
-      interestRateValue / 100 / 12;
-
-    const months =
-      yearsValue * 12;
-
-    let balance =
-      initialDepositValue;
-
-    for (let i = 0; i < months; i += 1) {
-      balance =
-        balance * (1 + monthlyRate);
-
-      balance += monthlySavingsValue;
-    }
-
-    const totalDeposited =
-      initialDepositValue +
-      monthlySavingsValue * months;
-
-    const interestEarned =
-      balance - totalDeposited;
-
-    return {
-      futureValue:
-        formatMoney(balance),
-
-      totalDeposited:
-        formatMoney(totalDeposited),
-
-      interestEarned:
-        formatMoney(interestEarned),
-    };
-  }, [
-    initialDeposit,
-    monthlySavings,
-    interestRate,
-    years,
-  ]);
-
+function MoneyInput({ value, setValue, placeholder }: { value: string; setValue: (value: string) => void; placeholder: string }) {
   return (
-    <ToolBox>
-      <ToolSection
-        title={getText(
-          toolUi.heading,
-          lang
-        )}
-        description={getText(
-          toolUi.helper,
-          lang
-        )}
-      >
-        <div className="grid gap-4 md:grid-cols-2">
-          <ToolInput
-            type="number"
-            value={initialDeposit}
-            onChange={(event) =>
-              setinitialDeposit(
-                event.target.value
-              )
-            }
-            placeholder={getText(
-              toolUi.initialDeposit,
-              lang
-            )}
-          />
-
-          <ToolInput
-            type="number"
-            value={monthlySavings}
-            onChange={(event) =>
-              setmonthlySavings(
-                event.target.value
-              )
-            }
-            placeholder={getText(
-              toolUi.monthlySavings,
-              lang
-            )}
-          />
-
-          <ToolInput
-            type="number"
-            value={interestRate}
-            onChange={(event) =>
-              setInterestRate(
-                event.target.value
-              )
-            }
-            placeholder={getText(
-              toolUi.interestRate,
-              lang
-            )}
-          />
-
-          <ToolInput
-            type="number"
-            value={years}
-            onChange={(event) =>
-              setYears(
-                event.target.value
-              )
-            }
-            placeholder={getText(
-              toolUi.years,
-              lang
-            )}
-          />
-        </div>
-
-        <div className="mt-6 grid gap-4 md:grid-cols-3">
-          <div>
-            <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
-              {getText(
-                toolUi.futureValue,
-                lang
-              )}
-            </p>
-
-            <ToolResult
-              value={results.futureValue}
-              placeholder="0.00"
-            />
-          </div>
-
-          <div>
-            <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
-              {getText(
-                toolUi.totalDeposited,
-                lang
-              )}
-            </p>
-
-            <ToolResult
-              value={results.totalDeposited}
-              placeholder="0.00"
-            />
-          </div>
-
-          <div>
-            <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
-              {getText(
-                toolUi.interestEarned,
-                lang
-              )}
-            </p>
-
-            <ToolResult
-              value={results.interestEarned}
-              placeholder="0.00"
-            />
-          </div>
-        </div>
-      </ToolSection>
-    </ToolBox>
+    <ToolInput
+      type="text"
+      inputMode="decimal"
+      value={value}
+      onChange={(event) => setValue(event.target.value)}
+      onInput={(event) => setValue(event.currentTarget.value)}
+      placeholder={placeholder}
+    />
   );
+}
+
+const shellClass = "rounded-[2rem] border border-emerald-200 bg-white/95 p-4 text-slate-950 shadow-[0_24px_70px_rgba(6,78,59,0.16)] ring-1 ring-emerald-100 md:p-8";
+
+export default function SavingsCalculatorTool({ lang, ui }: ToolComponentProps) {
+  const toolUi = ui!;
+  const [initialDeposit, setInitialDeposit] = useState(""); const [monthlySavings, setMonthlySavings] = useState(""); const [interestRate, setInterestRate] = useState(""); const [years, setYears] = useState("");
+  const result = useMemo(() => { const initial = parseUserNumber(initialDeposit); const monthly = parseUserNumber(monthlySavings); const rate = parseUserNumber(interestRate); const yearsValue = parseUserNumber(years); if (!initialDeposit || !monthlySavings || !interestRate || !years || yearsValue <= 0) return null; const monthlyRate = rate / 100 / 12; const months = yearsValue * 12; let balance = initial; for (let i = 0; i < months; i += 1) balance = balance * (1 + monthlyRate) + monthly; const totalDeposited = initial + monthly * months; const interestEarned = balance - totalDeposited; return { futureValue: balance, totalDeposited, interestEarned }; }, [initialDeposit, monthlySavings, interestRate, years]);
+  const helper = result ? (lang === "pt" ? `Esta é a estimativa de economia acumulada em ${years} anos.` : `This is the estimated savings balance after ${years} years.`) : (lang === "pt" ? "Informe depósito inicial, economia mensal, taxa e prazo." : "Enter starting deposit, monthly savings, rate and time horizon.");
+  return <ToolBox className={shellClass}><ToolSection title={getText(toolUi.heading, lang)} description={getText(toolUi.helper, lang)}><div className="space-y-6"><div className="grid gap-3 md:grid-cols-4"><MoneyInput value={initialDeposit} setValue={setInitialDeposit} placeholder={getText(toolUi.initialDeposit, lang)} /><MoneyInput value={monthlySavings} setValue={setMonthlySavings} placeholder={getText(toolUi.monthlySavings, lang)} /><MoneyInput value={interestRate} setValue={setInterestRate} placeholder={getText(toolUi.interestRate, lang)} /><MoneyInput value={years} setValue={setYears} placeholder={getText(toolUi.years, lang)} /></div><MoneyResultCard label={getText(toolUi.futureValue, lang)} value={result ? formatCurrency(result.futureValue, lang) : "—"} helper={helper} />{result && <MoneyMetricGrid metrics={[{ label: getText(toolUi.totalDeposited, lang), value: formatCurrency(result.totalDeposited, lang) }, { label: getText(toolUi.interestEarned, lang), value: formatCurrency(result.interestEarned, lang) }, { label: lang === "pt" ? "Juros sobre depósitos" : "Interest on deposits", value: formatPercent(result.totalDeposited ? (result.interestEarned / result.totalDeposited) * 100 : 0, lang) }]} />}<MoneyToolCallout lang={lang} /></div></ToolSection></ToolBox>;
 }

@@ -356,12 +356,12 @@ export default async function ToolPage({ params }: ToolPageProps) {
       )}
 
       {relatedTools.length > 0 && (
-        <section className="mt-12">
+        <section id={isMoneyLandingTool ? "money-related" : undefined} className="mt-12">
           <h2 className="text-2xl font-bold text-zinc-950">
             {getText(dictionary.relatedTools, lang)}
           </h2>
 
-          <div className={isFitnessLandingTool ? "mt-5 grid gap-4 md:grid-cols-2" : "mt-5 grid gap-6 md:grid-cols-2"}>
+          <div className={isFitnessLandingTool || isMoneyLandingTool ? "mt-5 grid gap-4 md:grid-cols-2" : "mt-5 grid gap-6 md:grid-cols-2"}>
             {relatedTools.map((relatedTool, index) => (
               isFitnessLandingTool ? (
                 <a
@@ -374,6 +374,24 @@ export default async function ToolPage({ params }: ToolPageProps) {
                       {String(index + 1).padStart(2, "0")}
                     </span>
                     <h3 className="min-w-0 break-words text-xl font-black leading-tight text-zinc-950">
+                      {getText(relatedTool.title, lang)}
+                    </h3>
+                  </div>
+                  <p className="mt-4 text-sm font-semibold leading-6 text-slate-700">
+                    {getText(relatedTool.description, lang)}
+                  </p>
+                </a>
+              ) : isMoneyLandingTool ? (
+                <a
+                  key={relatedTool.id}
+                  href={`/${lang}/tools/${getText(relatedTool.slug, lang)}`}
+                  className="group rounded-3xl border border-emerald-200 bg-white p-5 shadow-sm shadow-emerald-950/5 transition hover:-translate-y-0.5 hover:border-emerald-400 hover:bg-emerald-50 hover:shadow-xl hover:shadow-emerald-950/10"
+                >
+                  <div className="flex min-w-0 items-center gap-3">
+                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-slate-950 text-sm font-black text-white shadow-sm shadow-slate-900/20">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <h3 className="min-w-0 break-words text-xl font-black leading-tight text-slate-950">
                       {getText(relatedTool.title, lang)}
                     </h3>
                   </div>

@@ -39,12 +39,29 @@ assert.match(moneyHubSource, /roi-calculator/);
 assert.match(moneyHubSource, /compound-interest-calculator/);
 assert.match(moneyHubSource, /alternates/);
 
-const loanSource = fs.readFileSync(new URL("../tools/loan-calculator/component.tsx", import.meta.url), "utf8");
-assert.match(loanSource, /MoneyResultCard/);
-assert.match(loanSource, /MoneyMetricGrid/);
-assert.match(loanSource, /type="text"/);
-assert.match(loanSource, /inputMode="decimal"/);
-assert.match(loanSource, /parseUserNumber/);
-assert.doesNotMatch(loanSource, /type="number"/);
+const moneyToolIds = [
+  "loan-calculator",
+  "mortgage-calculator",
+  "compound-interest-calculator",
+  "savings-calculator",
+  "investment-calculator",
+  "retirement-calculator",
+  "roi-calculator",
+  "inflation-calculator",
+  "break-even-calculator",
+  "percentage-calculator",
+];
+
+for (const toolId of moneyToolIds) {
+  const source = fs.readFileSync(new URL(`../tools/${toolId}/component.tsx`, import.meta.url), "utf8");
+  assert.match(source, /MoneyResultCard/, `${toolId} should use MoneyResultCard`);
+  assert.match(source, /MoneyMetricGrid/, `${toolId} should use MoneyMetricGrid`);
+  assert.match(source, /MoneyToolCallout/, `${toolId} should use MoneyToolCallout`);
+  assert.match(source, /type="text"/, `${toolId} should use mobile-safe text inputs`);
+  assert.match(source, /inputMode="decimal"/, `${toolId} should use decimal inputMode`);
+  assert.match(source, /parseUserNumber/, `${toolId} should parse comma and dot decimals`);
+  assert.doesNotMatch(source, /type="number"/, `${toolId} should not use type=number`);
+  assert.doesNotMatch(source, /ToolResult/, `${toolId} should not use the old generic ToolResult output`);
+}
 
 console.log("Money Tool Page 2.0 verification passed");
