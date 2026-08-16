@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 
+import MoneyContextualNextSteps from "../../components/money/MoneyContextualNextSteps";
 import MoneyMetricGrid from "../../components/money/MoneyMetricGrid";
 import MoneyResultCard from "../../components/money/MoneyResultCard";
 import MoneyToolCallout from "../../components/money/MoneyToolCallout";
@@ -129,6 +130,31 @@ export default function LoanCalculatorTool({ lang, ui }: ToolComponentProps) {
                   label: lang === "pt" ? "Juros / principal" : "Interest / principal",
                   value: formatPercent(result.interestShare, lang),
                   helper: lang === "pt" ? "Ajuda a comparar o peso dos juros." : "Helps compare the weight of interest.",
+                },
+              ]}
+            />
+          )}
+
+          {result && (
+            <MoneyContextualNextSteps
+              lang={lang}
+              title={lang === "pt" ? "Use esta parcela para comparar o próximo cenário" : "Use this payment to compare the next scenario"}
+              description={lang === "pt" ? "Depois de ver a parcela, o próximo passo é testar prazo, financiamento imobiliário ou perda de poder de compra." : "After seeing the payment, the next step is to test term, home financing or purchasing-power impact."}
+              steps={[
+                {
+                  label: lang === "pt" ? "Comparar financiamento" : "Compare mortgage",
+                  href: lang === "pt" ? "/tools/calculadora-financiamento-imobiliario" : "/tools/mortgage-calculator",
+                  helper: lang === "pt" ? "Quando existe entrada, imóvel e prazo longo." : "When down payment, property price and long terms matter.",
+                },
+                {
+                  label: lang === "pt" ? "Testar inflação" : "Check inflation",
+                  href: lang === "pt" ? "/tools/calculadora-inflacao" : "/tools/inflation-calculator",
+                  helper: lang === "pt" ? "Veja se o custo futuro muda a decisão." : "See whether future costs change the decision.",
+                },
+                {
+                  label: lang === "pt" ? "Voltar ao Money" : "Open Money hub",
+                  href: "/money",
+                  helper: lang === "pt" ? "Escolha outra decisão financeira por intenção." : "Choose another financial decision by intent.",
                 },
               ]}
             />

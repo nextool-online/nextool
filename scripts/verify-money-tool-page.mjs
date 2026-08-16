@@ -8,6 +8,7 @@ const requiredFiles = [
   "components/money/MoneyFooter.tsx",
   "components/money/MoneyResultCard.tsx",
   "components/money/MoneyMetricGrid.tsx",
+  "components/money/MoneyContextualNextSteps.tsx",
   "components/money/MoneySeoContent.tsx",
   "components/money/MoneyToolAnalytics.tsx",
   "app/[lang]/money/page.tsx",
@@ -111,6 +112,11 @@ const inflationContent = fs.readFileSync(new URL("../tools/inflation-calculator/
 assert.match(inflationContent, /advancedSeo/);
 assert.match(inflationContent, /future cost of living scenario/);
 assert.match(inflationContent, /Inflation impact comparison/);
+
+for (const toolId of ["loan-calculator", "savings-calculator", "roi-calculator"]) {
+  const source = fs.readFileSync(new URL(`../tools/${toolId}/component.tsx`, import.meta.url), "utf8");
+  assert.match(source, /MoneyContextualNextSteps/, `${toolId} should render contextual next steps after a result`);
+}
 
 const moneyToolIds = [
   "loan-calculator",
