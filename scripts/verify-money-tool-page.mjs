@@ -42,6 +42,14 @@ assert.match(moneyHubSource, /loan-calculator/);
 assert.match(moneyHubSource, /roi-calculator/);
 assert.match(moneyHubSource, /compound-interest-calculator/);
 assert.match(moneyHubSource, /alternates/);
+assert.match(moneyHubSource, /Savings → Investing → Retirement/);
+assert.match(moneyHubSource, /Loans → Mortgage → Inflation/);
+assert.match(moneyHubSource, /Derived landing page opportunities/);
+
+const derivedLandingDoc = fs.readFileSync(new URL("../docs/nextool-money-derived-landing-opportunities.md", import.meta.url), "utf8");
+assert.match(derivedLandingDoc, /percentage calculator for discounts/);
+assert.match(derivedLandingDoc, /mortgage calculator with down payment/);
+assert.match(derivedLandingDoc, /retirement savings gap calculator/);
 
 const typesSource = fs.readFileSync(new URL("../tools/types.ts", import.meta.url), "utf8");
 assert.match(typesSource, /ToolAdvancedSeo/);
