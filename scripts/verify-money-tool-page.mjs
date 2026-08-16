@@ -80,6 +80,21 @@ assert.match(breakEvenContent, /advancedSeo/);
 assert.match(breakEvenContent, /new product break-even scenario/);
 assert.match(breakEvenContent, /Break-even sensitivity table/);
 
+const savingsContent = fs.readFileSync(new URL("../tools/savings-calculator/content.en.ts", import.meta.url), "utf8");
+assert.match(savingsContent, /advancedSeo/);
+assert.match(savingsContent, /emergency fund saving scenario/);
+assert.match(savingsContent, /Savings goal comparison/);
+
+const investmentContent = fs.readFileSync(new URL("../tools/investment-calculator/content.en.ts", import.meta.url), "utf8");
+assert.match(investmentContent, /advancedSeo/);
+assert.match(investmentContent, /investment growth scenario/);
+assert.match(investmentContent, /Investment assumption comparison/);
+
+const retirementContent = fs.readFileSync(new URL("../tools/retirement-calculator/content.en.ts", import.meta.url), "utf8");
+assert.match(retirementContent, /advancedSeo/);
+assert.match(retirementContent, /retirement savings gap scenario/);
+assert.match(retirementContent, /Retirement planning levers/);
+
 const moneyToolIds = [
   "loan-calculator",
   "mortgage-calculator",

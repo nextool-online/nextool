@@ -215,6 +215,54 @@ export const investmentCalculatorContent = {
     },
   },
 
+
+  advancedSeo: {
+    examples: [
+      {
+        title: { pt: "cenário de crescimento de investimento" },
+        description: { pt: "Estime como um valor inicial e aportes recorrentes podem crescer sob uma hipótese de retorno." },
+        calculation: { pt: "R$ 5.000 + R$ 300/mês a 7% por 10 anos cria uma projeção de longo prazo" },
+      },
+      {
+        title: { pt: "retorno conservador vs agressivo" },
+        description: { pt: "Compare hipóteses de retorno anual para entender potencial e incerteza." },
+        calculation: { pt: "Retornos de 4%, 7% e 10% podem gerar valores futuros muito diferentes" },
+      },
+      {
+        title: { pt: "aporte inicial vs aporte mensal" },
+        description: { pt: "Compare começar com valor maior contra formar saldo com depósitos mensais." },
+        calculation: { pt: "Tempo investido frequentemente muda mais o resultado que um aporte grande tardio" },
+      },
+    ],
+    useCases: [
+      { title: { pt: "Planejamento de meta de carteira" }, description: { pt: "Estime quanto os aportes atuais podem virar até um ano alvo." } },
+      { title: { pt: "Teste de cenários" }, description: { pt: "Rode casos conservador, base e otimista em vez de depender de uma projeção." } },
+      { title: { pt: "Decisão de aporte" }, description: { pt: "Veja como aumentar o aporte mensal muda o saldo futuro." } },
+    ],
+    comparisonTable: {
+      title: { pt: "Comparação de premissas de investimento" },
+      headers: [{ pt: "Premissa" }, { pt: "Valor maior significa" }, { pt: "Risco" }],
+      rows: [
+        [{ pt: "Retorno anual" }, { pt: "Mais crescimento projetado" }, { pt: "Retornos não são garantidos" }],
+        [{ pt: "Aporte mensal" }, { pt: "Mais principal investido" }, { pt: "Exige fluxo de caixa constante" }],
+        [{ pt: "Prazo" }, { pt: "Mais tempo de composição" }, { pt: "Janela de incerteza maior" }],
+      ],
+    },
+    commonMistakes: [
+      { title: { pt: "Usar um retorno otimista único" }, description: { pt: "Uma hipótese alta pode fazer a meta parecer mais fácil do que é." } },
+      { title: { pt: "Ignorar taxas e impostos" }, description: { pt: "Taxas de administração, impostos e custos de conta reduzem o crescimento real." } },
+      { title: { pt: "Comparar só valores nominais" }, description: { pt: "A inflação pode reduzir o poder de compra do valor futuro da carteira." } },
+    ],
+    relatedQueries: [
+      { pt: "calculadora de investimento com aportes mensais" },
+      { pt: "calculadora de crescimento de investimento" },
+      { pt: "calculadora de valor futuro de investimento" },
+      { pt: "calculadora de crescimento de carteira" },
+      { pt: "calculadora de investimento com juros compostos" },
+    ],
+    schemaType: "Calculator",
+  },
+
   ui: {
     heading: {
       pt: "Calculadora de Investimentos",

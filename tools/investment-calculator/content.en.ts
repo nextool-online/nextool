@@ -215,6 +215,54 @@ export const investmentCalculatorContent = {
   },
 },
 
+
+  advancedSeo: {
+    examples: [
+      {
+        title: { en: "investment growth scenario" },
+        description: { en: "Estimate how an initial amount and recurring contributions may grow under a return assumption." },
+        calculation: { en: "$5,000 plus $300/month at 7% for 10 years creates a long-term projection" },
+      },
+      {
+        title: { en: "conservative vs aggressive return" },
+        description: { en: "Compare different annual return assumptions to understand upside and uncertainty." },
+        calculation: { en: "4%, 7% and 10% returns can produce very different future values" },
+      },
+      {
+        title: { en: "lump sum vs monthly investing" },
+        description: { en: "Compare starting with a larger amount against building the balance through monthly deposits." },
+        calculation: { en: "Time invested often changes the result more than one late large deposit" },
+      },
+    ],
+    useCases: [
+      { title: { en: "Portfolio target planning" }, description: { en: "Estimate what current contributions may become by a target year." } },
+      { title: { en: "Scenario testing" }, description: { en: "Run conservative, base and optimistic cases instead of relying on one projection." } },
+      { title: { en: "Contribution decisions" }, description: { en: "Check how increasing a monthly contribution changes the future balance." } },
+    ],
+    comparisonTable: {
+      title: { en: "Investment assumption comparison" },
+      headers: [{ en: "Assumption" }, { en: "Higher value means" }, { en: "Risk" }],
+      rows: [
+        [{ en: "Annual return" }, { en: "More projected growth" }, { en: "Returns are not guaranteed" }],
+        [{ en: "Monthly contribution" }, { en: "More principal invested" }, { en: "Requires steady cash flow" }],
+        [{ en: "Time horizon" }, { en: "More compounding time" }, { en: "Longer uncertainty window" }],
+      ],
+    },
+    commonMistakes: [
+      { title: { en: "Using one optimistic return" }, description: { en: "A single high return assumption can make the goal look easier than it is." } },
+      { title: { en: "Ignoring fees and taxes" }, description: { en: "Management fees, taxes and account costs reduce real investment growth." } },
+      { title: { en: "Comparing nominal values only" }, description: { en: "Inflation can reduce the purchasing power of a future portfolio value." } },
+    ],
+    relatedQueries: [
+      { en: "investment calculator with monthly contributions" },
+      { en: "investment growth calculator" },
+      { en: "future investment value calculator" },
+      { en: "portfolio growth calculator" },
+      { en: "compound investment calculator" },
+    ],
+    schemaType: "Calculator",
+  },
+
   ui: {
     heading: {
       en: "Investment Calculator",

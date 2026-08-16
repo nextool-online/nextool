@@ -215,6 +215,54 @@ export const retirementCalculatorContent = {
     },
   },
 
+
+  advancedSeo: {
+    examples: [
+      {
+        title: { pt: "cenário de lacuna para aposentadoria" },
+        description: { pt: "Estime se o saldo atual e os aportes podem chegar à meta de aposentadoria." },
+        calculation: { pt: "Meta de saldo - saldo projetado = lacuna a fechar" },
+      },
+      {
+        title: { pt: "começar cedo vs começar tarde" },
+        description: { pt: "Compare como começar antes pode reduzir o aporte mensal necessário para a mesma meta." },
+        calculation: { pt: "Mais anos dão mais tempo para os juros compostos agirem" },
+      },
+      {
+        title: { pt: "planejamento de renda na aposentadoria" },
+        description: { pt: "Use o resultado como estimativa antes de decidir aumentar aportes ou mudar prazo." },
+        calculation: { pt: "Saldo projetado deve ser comparado com o gasto anual esperado" },
+      },
+    ],
+    useCases: [
+      { title: { pt: "Planejamento de aporte" }, description: { pt: "Estime se os aportes mensais precisam aumentar para fechar uma lacuna futura." } },
+      { title: { pt: "Teste de idade de aposentadoria" }, description: { pt: "Compare o que acontece se a aposentadoria começar antes ou depois." } },
+      { title: { pt: "Teste de retorno esperado" }, description: { pt: "Cheque cenários conservadores e otimistas em vez de depender de uma previsão única." } },
+    ],
+    comparisonTable: {
+      title: { pt: "Alavancas do planejamento de aposentadoria" },
+      headers: [{ pt: "Alavanca" }, { pt: "Efeito" }, { pt: "Troca" }],
+      rows: [
+        [{ pt: "Guardar mais por mês" }, { pt: "Saldo projetado maior" }, { pt: "Menos caixa disponível hoje" }],
+        [{ pt: "Aposentar mais tarde" }, { pt: "Mais anos de aporte" }, { pt: "Mais tempo trabalhando" }],
+        [{ pt: "Supor retorno maior" }, { pt: "Projeção maior" }, { pt: "Mais incerteza" }],
+      ],
+    },
+    commonMistakes: [
+      { title: { pt: "Ignorar inflação" }, description: { pt: "Um valor futuro para aposentadoria pode precisar ser muito maior para sustentar o mesmo padrão." } },
+      { title: { pt: "Usar uma única hipótese de retorno" }, description: { pt: "Planejamento de aposentadoria deve comparar vários cenários de retorno." } },
+      { title: { pt: "Esquecer o padrão de gastos" }, description: { pt: "Uma meta de saldo só ajuda se estiver ligada às despesas anuais esperadas." } },
+    ],
+    relatedQueries: [
+      { pt: "calculadora de aposentadoria" },
+      { pt: "calculadora de planejamento de aposentadoria" },
+      { pt: "quanto preciso para me aposentar calculadora" },
+      { pt: "calculadora de aporte para aposentadoria" },
+      { pt: "calculadora de lacuna de aposentadoria" },
+    ],
+    schemaType: "Calculator",
+  },
+
   ui: {
     heading: {
       pt: "Calculadora de Aposentadoria",

@@ -215,6 +215,54 @@ export const retirementCalculatorContent = {
   },
 },
 
+
+  advancedSeo: {
+    examples: [
+      {
+        title: { en: "retirement savings gap scenario" },
+        description: { en: "Estimate whether current savings and contributions are likely to reach a retirement target." },
+        calculation: { en: "Target balance - projected balance = savings gap to close" },
+      },
+      {
+        title: { en: "early start vs late start" },
+        description: { en: "Compare how starting earlier can lower the monthly contribution needed to reach the same goal." },
+        calculation: { en: "More years gives compounding more time to work" },
+      },
+      {
+        title: { en: "retirement income planning" },
+        description: { en: "Use the result as a planning estimate before choosing contribution increases or timeline changes." },
+        calculation: { en: "Projected balance should be compared with expected annual spending" },
+      },
+    ],
+    useCases: [
+      { title: { en: "Contribution planning" }, description: { en: "Estimate whether monthly contributions need to increase to close a future gap." } },
+      { title: { en: "Retirement age testing" }, description: { en: "Compare what happens if retirement starts earlier or later." } },
+      { title: { en: "Return assumption testing" }, description: { en: "Check conservative and optimistic cases instead of relying on a single forecast." } },
+    ],
+    comparisonTable: {
+      title: { en: "Retirement planning levers" },
+      headers: [{ en: "Lever" }, { en: "Effect" }, { en: "Trade-off" }],
+      rows: [
+        [{ en: "Save more monthly" }, { en: "Higher projected balance" }, { en: "Less cash available today" }],
+        [{ en: "Retire later" }, { en: "More contribution years" }, { en: "Longer working period" }],
+        [{ en: "Assume higher return" }, { en: "Higher projection" }, { en: "Higher uncertainty" }],
+      ],
+    },
+    commonMistakes: [
+      { title: { en: "Ignoring inflation" }, description: { en: "A future retirement number may need to be much larger to buy the same lifestyle." } },
+      { title: { en: "Using one return assumption" }, description: { en: "Retirement planning should compare multiple return scenarios." } },
+      { title: { en: "Forgetting spending needs" }, description: { en: "A balance target only helps if it connects to expected annual expenses." } },
+    ],
+    relatedQueries: [
+      { en: "retirement savings calculator" },
+      { en: "retirement planning calculator" },
+      { en: "how much do I need to retire calculator" },
+      { en: "retirement contribution calculator" },
+      { en: "retirement savings gap calculator" },
+    ],
+    schemaType: "Calculator",
+  },
+
   ui: {
     heading: {
       en: "Retirement Calculator",

@@ -215,6 +215,54 @@ export const savingsCalculatorContent = {
     },
   },
 
+
+  advancedSeo: {
+    examples: [
+      {
+        title: { pt: "cenário de reserva de emergência" },
+        description: { pt: "Estime quanto tempo leva para formar uma proteção para aluguel, contas e imprevistos." },
+        calculation: { pt: "Meta de R$ 6.000 / R$ 500 por mês = cerca de 12 meses antes dos juros" },
+      },
+      {
+        title: { pt: "meta para viagem ou compra" },
+        description: { pt: "Transforme uma despesa futura em uma meta mensal em vez de depender de crédito depois." },
+        calculation: { pt: "Viagem de R$ 2.400 em 12 meses = R$ 200/mês antes dos juros" },
+      },
+      {
+        title: { pt: "plano para juntar entrada" },
+        description: { pt: "Estime o valor mensal necessário para uma entrada de imóvel, carro ou negócio." },
+        calculation: { pt: "Meta de R$ 20.000 em 40 meses = cerca de R$ 500/mês" },
+      },
+    ],
+    useCases: [
+      { title: { pt: "Planejamento de hábito mensal" }, description: { pt: "Converta uma meta grande em um depósito recorrente menor que pode ser agendado." } },
+      { title: { pt: "Comparação de prazo" }, description: { pt: "Compare como o aporte mensal muda quando o prazo fica mais curto ou longo." } },
+      { title: { pt: "Economia com ajuda de juros" }, description: { pt: "Veja como os juros ajudam, sem perder de vista o aporte realista." } },
+    ],
+    comparisonTable: {
+      title: { pt: "Comparação de metas de economia" },
+      headers: [{ pt: "Tipo de meta" }, { pt: "Melhor entrada para ajustar" }, { pt: "O que revela" }],
+      rows: [
+        [{ pt: "Reserva de emergência" }, { pt: "Depósito mensal" }, { pt: "Tempo até proteção básica" }],
+        [{ pt: "Compra grande" }, { pt: "Data alvo" }, { pt: "Economia mensal necessária" }],
+        [{ pt: "Entrada" }, { pt: "Valor da meta" }, { pt: "Se o prazo é realista" }],
+      ],
+    },
+    commonMistakes: [
+      { title: { pt: "Definir meta sem prazo" }, description: { pt: "Uma meta sem data não mostra a ação mensal necessária." } },
+      { title: { pt: "Superestimar juros" }, description: { pt: "Para metas curtas, o aporte mensal costuma importar mais que o rendimento." } },
+      { title: { pt: "Ignorar despesas irregulares" }, description: { pt: "Contas anuais, reparos e custos sazonais podem interromper a economia se não forem planejados." } },
+    ],
+    relatedQueries: [
+      { pt: "calculadora de meta de economia" },
+      { pt: "calculadora de poupança mensal" },
+      { pt: "calculadora de reserva de emergência" },
+      { pt: "quanto devo guardar por mês calculadora" },
+      { pt: "calculadora para juntar entrada" },
+    ],
+    schemaType: "Calculator",
+  },
+
   ui: {
     heading: {
       pt: "Calculadora de Poupança",
