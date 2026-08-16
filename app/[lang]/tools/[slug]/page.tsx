@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Breadcrumbs from "../../../../components/ui/Breadcrumbs";
 import ToolCard from "../../../../components/ui/ToolCard";
 import ToolPageLayout from "../../../../components/layout/ToolPageLayout";
+import AdvancedSeoBlocks from "../../../../components/toolkit/AdvancedSeoBlocks";
 import FitnessToolAnalytics from "../../../../components/fitness/FitnessToolAnalytics";
 import MoneySeoContent from "../../../../components/money/MoneySeoContent";
 import MoneyToolAnalytics from "../../../../components/money/MoneyToolAnalytics";
@@ -289,6 +290,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
       </div>
 
       {isMoneyLandingTool && <MoneySeoContent lang={lang} toolId={tool.id} />}
+      <AdvancedSeoBlocks advancedSeo={tool.advancedSeo} lang={lang} />
 
       <div className={isFitnessLandingTool ? "mt-10 rounded-[2rem] border border-sky-100 bg-white/90 p-5 text-slate-950 shadow-2xl shadow-sky-100/70 md:p-8" : isMoneyLandingTool ? "mt-10 rounded-[2rem] border border-emerald-100 bg-white/90 p-5 text-slate-950 shadow-2xl shadow-emerald-950/10 md:p-8" : ""}>
       {tool.formula && (

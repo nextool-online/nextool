@@ -1,4 +1,5 @@
 import type {
+  ToolAdvancedSeo,
   ToolArticleSection,
   ToolFaqItem,
   ToolFormula,
@@ -16,6 +17,8 @@ type ToolContent = {
   };
 
   article?: ToolArticleSection[];
+
+  advancedSeo?: ToolAdvancedSeo;
 
   faq?: ToolFaqItem[];
 
@@ -40,6 +43,7 @@ export function mergeToolContent(...contents: ToolContent[]) {
     },
 
     article: [] as ToolArticleSection[],
+    advancedSeo: undefined as ToolAdvancedSeo | undefined,
     faq: [] as ToolFaqItem[],
 
     formula: undefined as ToolFormula | undefined,
@@ -97,6 +101,80 @@ export function mergeToolContent(...contents: ToolContent[]) {
           section.body
         );
       });
+    }
+
+    if (content.advancedSeo) {
+      merged.advancedSeo = {
+        ...(merged.advancedSeo || {}),
+        schemaType: content.advancedSeo.schemaType || merged.advancedSeo?.schemaType,
+        leadMagnet: content.advancedSeo.leadMagnet || merged.advancedSeo?.leadMagnet,
+      };
+
+      const mergeItems = <T extends { title: Record<string, string>; description: Record<string, string>; calculation?: Record<string, string> }>(
+        key: "examples" | "useCases" | "commonMistakes" | "steps" | "resultInsights" | "localizedUnits" | "monetizationBlocks"
+      ) => {
+        const items = content.advancedSeo?.[key] as T[] | undefined;
+        if (!items) return;
+        const current = ((merged.advancedSeo?.[key] || []) as T[]).slice();
+        items.forEach((item, index) => {
+          current[index] = {
+            ...(current[index] || {}),
+            ...item,
+            title: {
+              ...(current[index]?.title || {}),
+              ...item.title,
+            },
+            description: {
+              ...(current[index]?.description || {}),
+              ...item.description,
+            },
+            calculation: item.calculation || current[index]?.calculation
+              ? {
+                  ...(current[index]?.calculation || {}),
+                  ...(item.calculation || {}),
+                }
+              : undefined,
+          } as T;
+        });
+        (merged.advancedSeo as ToolAdvancedSeo)[key] = current as never;
+      };
+
+      mergeItems("examples");
+      mergeItems("useCases");
+      mergeItems("commonMistakes");
+      mergeItems("steps");
+      mergeItems("resultInsights");
+      mergeItems("localizedUnits");
+      mergeItems("monetizationBlocks");
+
+      if (content.advancedSeo.comparisonTable) {
+        const current = merged.advancedSeo.comparisonTable;
+        merged.advancedSeo.comparisonTable = {
+          ...current,
+          ...content.advancedSeo.comparisonTable,
+          title: {
+            ...(current?.title || {}),
+            ...content.advancedSeo.comparisonTable.title,
+          },
+          headers: content.advancedSeo.comparisonTable.headers.map((header, index) => ({
+            ...(current?.headers?.[index] || {}),
+            ...header,
+          })),
+          rows: content.advancedSeo.comparisonTable.rows.map((row, rowIndex) =>
+            row.map((cell, cellIndex) => ({
+              ...(current?.rows?.[rowIndex]?.[cellIndex] || {}),
+              ...cell,
+            }))
+          ),
+        };
+      }
+
+      if (content.advancedSeo.relatedQueries) {
+        merged.advancedSeo.relatedQueries = content.advancedSeo.relatedQueries.map((query, index) => ({
+          ...(merged.advancedSeo?.relatedQueries?.[index] || {}),
+          ...query,
+        }));
+      }
     }
 
     if (content.faq) {

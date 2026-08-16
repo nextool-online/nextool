@@ -215,6 +215,77 @@ export const percentageCalculatorContent = {
     },
   },
 
+  advancedSeo: {
+    examples: [
+      {
+        title: { pt: "Calculadora de porcentagem para descontos" },
+        description: { pt: "Use para calcular quanto um desconto remove do preço antes de comprar." },
+        calculation: { pt: "20% de R$ 150 = R$ 30 de desconto" },
+      },
+      {
+        title: { pt: "Calculadora de porcentagem para notas" },
+        description: { pt: "Use para transformar respostas corretas em uma nota percentual em provas, exercícios ou simulados." },
+        calculation: { pt: "18 acertos de 20 = 90%" },
+      },
+      {
+        title: { pt: "Calculadora de porcentagem para impostos e gorjetas" },
+        description: { pt: "Use para estimar imposto, taxa de serviço ou gorjeta antes do valor final." },
+        calculation: { pt: "15% de R$ 80 = R$ 12 de gorjeta" },
+      },
+    ],
+    useCases: [
+      {
+        title: { pt: "Margens de negócio" },
+        description: { pt: "Estime margem, impacto de taxas ou porcentagem da receita antes de comparar ROI ou ponto de equilíbrio." },
+      },
+      {
+        title: { pt: "Compras e descontos" },
+        description: { pt: "Calcule rapidamente desconto, cupom e imposto a partir do preço original." },
+      },
+      {
+        title: { pt: "Checagem de variação percentual" },
+        description: { pt: "Use a conta de porcentagem como primeiro passo antes de comparar aumentos, quedas ou diferenças." },
+      },
+    ],
+    comparisonTable: {
+      title: { pt: "Intenções comuns de porcentagem" },
+      headers: [
+        { pt: "Intenção" },
+        { pt: "Pergunta" },
+        { pt: "Exemplo" },
+      ],
+      rows: [
+        [{ pt: "Desconto" }, { pt: "Quanto é 25% de desconto?" }, { pt: "25% de R$ 200 = R$ 50" }],
+        [{ pt: "Notas" }, { pt: "Qual foi minha nota em porcentagem?" }, { pt: "45 / 50 = 90%" }],
+        [{ pt: "Impostos ou gorjetas" }, { pt: "Quanto devo acrescentar?" }, { pt: "8% de R$ 120 = R$ 9,60" }],
+        [{ pt: "Negócios" }, { pt: "Quanto vale essa taxa ou margem?" }, { pt: "3% de R$ 10.000 = R$ 300" }],
+      ],
+    },
+    commonMistakes: [
+      {
+        title: { pt: "Confundir porcentagem de um valor com variação percentual" },
+        description: { pt: "20% de 100 é 20, mas mudar de 100 para 120 é aumento de 20%. São perguntas relacionadas, mas diferentes." },
+      },
+      {
+        title: { pt: "Esquecer o preço final" },
+        description: { pt: "O valor do desconto não é o preço final. Subtraia o desconto do preço original." },
+      },
+      {
+        title: { pt: "Arredondar cedo demais" },
+        description: { pt: "Em impostos, gorjetas e margens, arredondar antes do último passo pode mudar levemente o resultado." },
+      },
+    ],
+    relatedQueries: [
+      { pt: "calculadora de porcentagem para descontos" },
+      { pt: "calculadora de porcentagem para notas" },
+      { pt: "calculadora de porcentagem para impostos" },
+      { pt: "calculadora de porcentagem para gorjetas" },
+      { pt: "calculadora de porcentagem para margem de negócio" },
+      { pt: "calculadora de variação percentual" },
+    ],
+    schemaType: "Calculator",
+  },
+
   ui: {
     heading: {
       pt: "Calculadora de Porcentagem",

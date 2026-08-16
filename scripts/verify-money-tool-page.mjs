@@ -30,6 +30,8 @@ const toolPageSource = fs.readFileSync(new URL("../app/[lang]/tools/[slug]/page.
 assert.match(toolPageSource, /moneyLandingToolIds/);
 assert.match(toolPageSource, /MoneyToolAnalytics/);
 assert.match(toolPageSource, /MoneySeoContent/);
+assert.match(toolPageSource, /AdvancedSeoBlocks/);
+assert.match(toolPageSource, /advancedSeo/);
 assert.match(toolPageSource, /loan-calculator/);
 assert.match(toolPageSource, /roi-calculator/);
 assert.match(toolPageSource, /percentage-calculator/);
@@ -40,6 +42,18 @@ assert.match(moneyHubSource, /loan-calculator/);
 assert.match(moneyHubSource, /roi-calculator/);
 assert.match(moneyHubSource, /compound-interest-calculator/);
 assert.match(moneyHubSource, /alternates/);
+
+const typesSource = fs.readFileSync(new URL("../tools/types.ts", import.meta.url), "utf8");
+assert.match(typesSource, /ToolAdvancedSeo/);
+assert.match(typesSource, /examples\?/);
+assert.match(typesSource, /useCases\?/);
+assert.match(typesSource, /comparisonTable\?/);
+assert.match(typesSource, /relatedQueries\?/);
+
+const percentageContent = fs.readFileSync(new URL("../tools/percentage-calculator/content.en.ts", import.meta.url), "utf8");
+assert.match(percentageContent, /advancedSeo/);
+assert.match(percentageContent, /Percentage calculator for discounts/);
+assert.match(percentageContent, /Percentage calculator for grades/);
 
 const moneyToolIds = [
   "loan-calculator",

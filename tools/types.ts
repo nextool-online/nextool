@@ -23,6 +23,37 @@ export type ToolFormula = {
   explanation?: Translation;
 };
 
+export type ToolAdvancedSeoItem = {
+  title: Translation;
+  description: Translation;
+};
+
+export type ToolAdvancedSeoExample = {
+  title: Translation;
+  description: Translation;
+  calculation?: Translation;
+};
+
+export type ToolComparisonTable = {
+  title: Translation;
+  headers: Translation[];
+  rows: Translation[][];
+};
+
+export type ToolAdvancedSeo = {
+  examples?: ToolAdvancedSeoExample[];
+  useCases?: ToolAdvancedSeoItem[];
+  commonMistakes?: ToolAdvancedSeoItem[];
+  comparisonTable?: ToolComparisonTable;
+  steps?: ToolAdvancedSeoItem[];
+  resultInsights?: ToolAdvancedSeoItem[];
+  relatedQueries?: Translation[];
+  localizedUnits?: ToolAdvancedSeoItem[];
+  monetizationBlocks?: ToolAdvancedSeoItem[];
+  leadMagnet?: ToolAdvancedSeoItem;
+  schemaType?: string;
+};
+
 export type ToolUi = Record<string, Translation>;
 
 export type ToolComponentProps = {
@@ -58,6 +89,8 @@ export type ToolDefinition = {
   seo: ToolSeo;
 
   article: ToolArticleSection[];
+
+  advancedSeo?: ToolAdvancedSeo;
 
   faq?: ToolFaqItem[];
 
