@@ -1,106 +1,99 @@
 # NexTool Fit Google Ads Launch Pack
 
-## Goal
+## Active launch decision
 
-Launch small long-tail tests only after tracking, email capture, ad costs and affiliate economics are measurable.
-
-## Initial calculators
+Start with one narrow EN/Tier 1 Search campaign around calorie deficit intent.
 
 ```text
-protein-calculator
-macro-calculator
-calorie-calculator
+Campaign: fit_en_calorie_deficit_mediterranean_t1
+Landing page: /en/tools/calorie-deficit-calculator
+Match type: phrase only
+Budget: $10/day × 5 days = $50 raw data
+Second tranche: +$50 only after search-term and unit-economics review
+Device: mobile only for the first test
+Language: English
+Geo: US + Tier 1 English-speaking countries
+Offer path: calculator → fitness profile/email → Mediterranean next step → affiliate
 ```
 
-## Campaigns
-
-Source file:
+## Source files
 
 ```text
 data/fitness-ads/campaigns.csv
-```
-
-Campaign pattern:
-
-```text
-fit_{lang}_{calculator}_{intent}
-```
-
-Initial campaigns:
-
-```text
-fit_pt_protein_longtail
-fit_pt_macros_longtail
-fit_pt_calories_longtail
-fit_en_protein_longtail
-fit_en_macros_longtail
-fit_en_calories_longtail
-```
-
-## Keyword clusters
-
-Source file:
-
-```text
 data/fitness-ads/keyword-clusters.csv
-```
-
-Start with phrase match long-tail keywords. Avoid broad match until the funnel has real conversion data.
-
-## Final URL generation
-
-Run:
-
-```bash
-node scripts/generate-fitness-ad-urls.mjs
-```
-
-Output:
-
-```text
 data/fitness-ads/generated-final-urls.csv
+data/fitness-ads/responsive-search-ads.csv
+data/fitness-ads/negative-keywords-initial.txt
 ```
 
-Each final URL includes:
+## Campaign settings
 
 ```text
-utm_source=google
-utm_medium=cpc
-utm_campaign
-utm_term
-utm_content
+Objective: website traffic or leads; avoid max-conversion automation until data exists
+Network: Google Search only
+Search partners: off for the first $50
+Display Network: off
+Bidding: manual CPC or Maximize Clicks with tight CPC cap if available
+Daily budget: $10
+Location option: presence only, not interest
+Ad rotation: do not over-optimize too early
 ```
 
-## Budget discipline
-
-Initial budget suggestion:
+## Phrase keywords
 
 ```text
-US$5/day per campaign max
+"calorie deficit calculator"
+"calorie deficit calculator for weight loss"
+"how many calories should i eat to lose weight"
 ```
 
-Do not scale until each calculator has enough data to estimate:
+## Final URL
 
 ```text
-cost_per_1000_emails
-commission_per_1000_emails
-profit_per_1000_emails
+https://www.nextool.online/en/tools/calorie-deficit-calculator?utm_source=google&utm_medium=cpc&utm_campaign=fit_en_calorie_deficit_mediterranean_t1&utm_term={keyword}&utm_content=ad01&utm_device={device}&utm_matchtype={matchtype}
 ```
 
-## Cut/scale rules
+## Ad copy set A
 
-Cut or pause if:
+Headlines:
 
 ```text
-email capture is weak after meaningful clicks
-cost_per_1000_emails is far above likely commission_per_1000_emails
-search terms are too broad or low-intent
+Calorie Deficit Calculator
+Find Your Calorie Target
+Weight Loss Calorie Estimate
+Free Calorie Deficit Tool
+Calculate Calories to Lose Weight
+Your Daily Deficit Target
+Simple Fitness Numbers
+Plan Your Next Step
+NexTool Fit
 ```
 
-Keep testing if:
+Descriptions:
 
 ```text
-email capture is positive
-affiliate clicks appear
-cost_per_1000_emails is near breakeven or improving
+Estimate a practical daily calorie target for gradual weight loss. Free, fast and simple.
+Calculate maintenance calories and a moderate deficit target, then turn your numbers into a clearer next step.
+Use your body, activity and goal to estimate calories for weight loss. General wellness estimate only.
 ```
+
+## Initial negative keywords
+
+Use `data/fitness-ads/negative-keywords-initial.txt` as the initial shared negative list. Review search terms after the first $20–$30 spend, then again after $50.
+
+## First review after $50
+
+Keep/pause based on:
+
+```text
+CPC by keyword
+calculator_view → calculator_result_shown rate
+calculator_result_shown → email_submitted rate
+email_sent_success count
+affiliate_landing_cta_click count
+email_offer_clicked count
+search terms requiring negatives
+CPL and cost per 1,000 emails
+```
+
+Do not scale on clicks alone. The second $50 goes only to the keyword/search-term group with the clearest lead/affiliate-click signal.

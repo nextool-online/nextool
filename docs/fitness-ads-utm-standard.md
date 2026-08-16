@@ -1,26 +1,15 @@
 # NexTool Fit Ads & UTM Standard
 
-## Goal
+## Active paid test
 
-Keep every paid test attributable by calculator, language, campaign, keyword/ad group and offer so the dashboard can calculate cost per lead and cost per 1,000 emails.
-
-## Campaign naming
-
-Use one campaign per language + calculator + intent bucket:
+The current Google Ads MVP is one EN/Tier 1 mobile-first campaign for the highest-fit intent:
 
 ```text
-fit_{lang}_{calculator}_{intent}
-```
-
-Examples:
-
-```text
-fit_pt_protein_longtail
-fit_pt_macros_longtail
-fit_pt_calories_longtail
-fit_en_protein_longtail
-fit_en_macros_longtail
-fit_en_calories_longtail
+Campaign: fit_en_calorie_deficit_mediterranean_t1
+Calculator: calorie-deficit-calculator
+Landing path: /en/tools/calorie-deficit-calculator
+Offer: Mediterranean Diet Plan next-step funnel
+Budget: $10/day for 5 days, then +$50 only after search-term/refinement review
 ```
 
 ## Calculator slugs
@@ -28,9 +17,10 @@ fit_en_calories_longtail
 Use these exact calculator values when importing ad cost:
 
 ```text
+calorie-deficit-calculator
+calorie-calculator
 protein-calculator
 macro-calculator
-calorie-calculator
 bmi-calculator
 bmr-calculator
 water-intake-calculator
@@ -38,36 +28,38 @@ ideal-weight-calculator
 body-fat-calculator
 ```
 
-## URL parameters
+## Campaign naming
 
-Every ad final URL must include:
+```text
+fit_{lang}_{calculator_or_intent}_{offer_or_market}
+```
+
+Current campaign:
+
+```text
+fit_en_calorie_deficit_mediterranean_t1
+```
+
+## Required final URL parameters
+
+Every paid URL must include:
 
 ```text
 utm_source=google
 utm_medium=cpc
-utm_campaign=fit_{lang}_{calculator}_{intent}
-utm_term={keyword_or_ad_group_slug}
-utm_content={ad_variant}
+utm_campaign=fit_en_calorie_deficit_mediterranean_t1
+utm_term={keyword}
+utm_content=ad01
+utm_device={device}
+utm_matchtype={matchtype}
 ```
 
-Optional but useful:
+Google should auto-tag with `gclid` where possible.
+
+## Current final URL
 
 ```text
-gclid={auto captured by Google when enabled}
-```
-
-## Example final URLs
-
-PT protein:
-
-```text
-https://www.nextool.online/pt/tools/calculadora-de-proteina?utm_source=google&utm_medium=cpc&utm_campaign=fit_pt_protein_longtail&utm_term=calcular_proteina_diaria&utm_content=ad_a
-```
-
-EN macros:
-
-```text
-https://www.nextool.online/en/tools/macro-calculator?utm_source=google&utm_medium=cpc&utm_campaign=fit_en_macros_longtail&utm_term=macro_calculator_weight_loss&utm_content=ad_a
+https://www.nextool.online/en/tools/calorie-deficit-calculator?utm_source=google&utm_medium=cpc&utm_campaign=fit_en_calorie_deficit_mediterranean_t1&utm_term={keyword}&utm_content=ad01&utm_device={device}&utm_matchtype={matchtype}
 ```
 
 ## Import CSV schema
@@ -84,4 +76,4 @@ Unique business key:
 spend_date + lang + calculator + ad_platform + utm_campaign + utm_term
 ```
 
-Do not import the same cost rows repeatedly until the unique constraint migration has been applied in Supabase.
+For Google Ads exports, map Search keyword/search term data to `utm_term` consistently. Keep `{keyword}` in the live URL for event tracking; use exported keyword/search-term values for cost imports.

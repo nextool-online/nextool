@@ -42,14 +42,19 @@ function csvEscape(value) {
   return /[",\n]/.test(text) ? `"${text.replaceAll('"', '""')}"` : text;
 }
 
-function buildFinalUrl(campaign, keyword) {
+function buildFinalUrl(campaign) {
   const url = new URL(campaign.final_path, domain);
   url.searchParams.set("utm_source", "google");
   url.searchParams.set("utm_medium", "cpc");
   url.searchParams.set("utm_campaign", campaign.campaign);
-  url.searchParams.set("utm_term", keyword.utm_term);
+  url.searchParams.set("utm_term", "{keyword}");
   url.searchParams.set("utm_content", campaign.default_utm_content || "ad_a");
-  return url.toString();
+  url.searchParams.set("utm_device", "{device}");
+  url.searchParams.set("utm_matchtype", "{matchtype}");
+  return url.toString()
+    .replaceAll("%7Bkeyword%7D", "{keyword}")
+    .replaceAll("%7Bdevice%7D", "{device}")
+    .replaceAll("%7Bmatchtype%7D", "{matchtype}");
 }
 
 export function generateFitnessAdUrls({ campaignPath = "data/fitness-ads/campaigns.csv", keywordPath = "data/fitness-ads/keyword-clusters.csv" } = {}) {
@@ -71,7 +76,7 @@ export function generateFitnessAdUrls({ campaignPath = "data/fitness-ads/campaig
       keyword: keyword.keyword,
       match_type: keyword.match_type,
       utm_term: keyword.utm_term,
-      final_url: buildFinalUrl(campaign, keyword),
+      final_url: buildFinalUrl(campaign),
     };
   });
 }
