@@ -215,6 +215,54 @@ export const roiCalculatorContent = {
     },
   },
 
+
+  advancedSeo: {
+    examples: [
+      {
+        title: { pt: "cenário de ROI de campanha de marketing" },
+        description: { pt: "Compare receita/lucro da campanha contra o investimento em mídia antes de escalar." },
+        calculation: { pt: "R$ 3.000 de lucro sobre R$ 10.000 investidos = 30% de ROI" },
+      },
+      {
+        title: { pt: "ROI de projeto de software" },
+        description: { pt: "Estime se tempo economizado, receita gerada ou custo reduzido compensam a implementação." },
+        calculation: { pt: "R$ 50.000 de economia anual - R$ 20.000 de custo = R$ 30.000 de ganho líquido" },
+      },
+      {
+        title: { pt: "ROI de equipamento para pequeno negócio" },
+        description: { pt: "Compare custo do equipamento com aumento de produção, economia de mão de obra ou lucro adicional." },
+        calculation: { pt: "R$ 12.000 de ganho sobre R$ 8.000 investidos = 50% de ROI" },
+      },
+    ],
+    useCases: [
+      { title: { pt: "Escala de campanha" }, description: { pt: "Veja se uma campanha tem retorno suficiente antes de aumentar orçamento." } },
+      { title: { pt: "Priorização de projetos" }, description: { pt: "Compare projetos com custos diferentes usando uma métrica comum de retorno." } },
+      { title: { pt: "Comparação de canal ou oferta" }, description: { pt: "Compare ROI por canal de tráfego, linha de produto ou investimento operacional." } },
+    ],
+    comparisonTable: {
+      title: { pt: "Tabela de interpretação de ROI" },
+      headers: [{ pt: "Resultado do ROI" }, { pt: "Significado" }, { pt: "Próxima pergunta" }],
+      rows: [
+        [{ pt: "ROI negativo" }, { pt: "Prejuízo sobre o valor investido" }, { pt: "Dá para reduzir custo ou aumentar receita?" }],
+        [{ pt: "ROI positivo baixo" }, { pt: "Há retorno, mas talvez não compense o risco" }, { pt: "O payback é rápido o suficiente?" }],
+        [{ pt: "ROI alto" }, { pt: "Retorno forte sobre o investimento" }, { pt: "Dá para escalar sem derrubar o ROI?" }],
+      ],
+    },
+    commonMistakes: [
+      { title: { pt: "Ignorar tempo" }, description: { pt: "ROI de 30% em um mês não é igual a 30% em cinco anos." } },
+      { title: { pt: "Deixar custos ocultos fora" }, description: { pt: "Mão de obra, ferramentas, impostos, reembolsos e overhead podem mudar o ROI." } },
+      { title: { pt: "Confundir receita com lucro" }, description: { pt: "ROI normalmente deve usar ganho líquido, não faturamento bruto." } },
+    ],
+    relatedQueries: [
+      { pt: "calculadora de ROI de marketing" },
+      { pt: "calculadora de retorno sobre investimento" },
+      { pt: "calculadora de ROI para negócios" },
+      { pt: "calculadora de ROI de campanha" },
+      { pt: "calculadora fórmula ROI" },
+    ],
+    schemaType: "Calculator",
+  },
+
   ui: {
     heading: {
       pt: "Calculadora de ROI",

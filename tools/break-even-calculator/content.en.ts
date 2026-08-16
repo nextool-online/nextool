@@ -215,6 +215,54 @@ export const breakEvenCalculatorContent = {
   },
 },
 
+
+  advancedSeo: {
+    examples: [
+      {
+        title: { en: "new product break-even scenario" },
+        description: { en: "Estimate how many units you need to sell before a new product starts covering fixed costs." },
+        calculation: { en: "$5,000 fixed cost / $25 contribution margin = 200 units" },
+      },
+      {
+        title: { en: "pricing sensitivity scenario" },
+        description: { en: "Test how a small price increase or cost decrease changes the number of units needed to break even." },
+        calculation: { en: "Higher margin lowers required volume" },
+      },
+      {
+        title: { en: "service business break-even" },
+        description: { en: "Use break-even volume to see how many clients, hours or projects cover monthly fixed costs." },
+        calculation: { en: "$3,000 fixed cost / $300 margin per client = 10 clients" },
+      },
+    ],
+    useCases: [
+      { title: { en: "Pricing a new offer" }, description: { en: "Check whether the price gives enough margin to reach break-even at realistic volume." } },
+      { title: { en: "Launch planning" }, description: { en: "Estimate minimum sales needed before spending on inventory, ads or tools." } },
+      { title: { en: "Cost reduction decisions" }, description: { en: "See whether reducing variable cost materially lowers the break-even point." } },
+    ],
+    comparisonTable: {
+      title: { en: "Break-even sensitivity table" },
+      headers: [{ en: "Change" }, { en: "Effect on break-even" }, { en: "Risk" }],
+      rows: [
+        [{ en: "Higher fixed cost" }, { en: "More units needed" }, { en: "Harder to reach early" }],
+        [{ en: "Higher price" }, { en: "Fewer units needed" }, { en: "Demand may fall" }],
+        [{ en: "Lower variable cost" }, { en: "Fewer units needed" }, { en: "Quality or supply may change" }],
+      ],
+    },
+    commonMistakes: [
+      { title: { en: "Using revenue instead of contribution margin" }, description: { en: "Break-even depends on revenue after variable cost, not just selling price." } },
+      { title: { en: "Leaving fixed costs out" }, description: { en: "Software, rent, payroll, tools and ad retainers can change the break-even point." } },
+      { title: { en: "Assuming every unit sells" }, description: { en: "Refunds, discounts and unsold inventory can raise the real break-even volume." } },
+    ],
+    relatedQueries: [
+      { en: "break even point calculator" },
+      { en: "break even sales calculator" },
+      { en: "break even units calculator" },
+      { en: "business break even calculator" },
+      { en: "pricing break even calculator" },
+    ],
+    schemaType: "Calculator",
+  },
+
   ui: {
     heading: {
       en: "Break Even Calculator",

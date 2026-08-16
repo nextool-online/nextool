@@ -215,6 +215,54 @@ export const compoundInterestCalculatorContent = {
     },
   },
 
+
+  advancedSeo: {
+    examples: [
+      {
+        title: { pt: "cenário de poupança com juros compostos" },
+        description: { pt: "Estime como guardar dinheiro e reinvestir rendimentos pode mudar o saldo no longo prazo." },
+        calculation: { pt: "R$ 10.000 a 6% por 10 anos vira cerca de R$ 17.908 antes de impostos e taxas" },
+      },
+      {
+        title: { pt: "cenário com aporte mensal" },
+        description: { pt: "Compare um depósito único com o hábito de adicionar dinheiro todos os meses." },
+        calculation: { pt: "R$ 200/mês investidos por anos podem pesar mais que um aporte inicial isolado" },
+      },
+      {
+        title: { pt: "estimativa para aposentadoria" },
+        description: { pt: "Teste como prazo e retorno esperado afetam uma meta de aposentadoria ou investimento." },
+        calculation: { pt: "Mais anos geralmente importam mais que um pequeno aumento no saldo inicial" },
+      },
+    ],
+    useCases: [
+      { title: { pt: "Planejamento de meta financeira" }, description: { pt: "Estime se o ritmo atual de economia pode atingir uma meta futura." } },
+      { title: { pt: "Comparação de cenários de investimento" }, description: { pt: "Compare hipóteses conservadoras, moderadas e otimistas de retorno anual." } },
+      { title: { pt: "Decisão de prazo" }, description: { pt: "Veja por que começar antes pode reduzir o valor necessário de aporte depois." } },
+    ],
+    comparisonTable: {
+      title: { pt: "Comparação de frequência de composição" },
+      headers: [{ pt: "Entrada" }, { pt: "Efeito" }, { pt: "Atenção" }],
+      rows: [
+        [{ pt: "Retorno maior" }, { pt: "Crescimento mais rápido" }, { pt: "Geralmente vem com mais risco" }],
+        [{ pt: "Prazo maior" }, { pt: "Mais períodos de composição" }, { pt: "Hipóteses ficam menos certas" }],
+        [{ pt: "Composição mais frequente" }, { pt: "Crescimento um pouco maior" }, { pt: "Costuma importar menos que taxa e prazo" }],
+      ],
+    },
+    commonMistakes: [
+      { title: { pt: "Tratar o resultado como garantia" }, description: { pt: "Retornos variam. O resultado de juros compostos é um cenário, não promessa." } },
+      { title: { pt: "Ignorar inflação" }, description: { pt: "Um saldo futuro maior pode comprar menos do que parece se a inflação for alta." } },
+      { title: { pt: "Esquecer impostos e taxas" }, description: { pt: "Impostos, taxas de fundos e custos de conta podem reduzir o crescimento real." } },
+    ],
+    relatedQueries: [
+      { pt: "calculadora de juros compostos com aportes mensais" },
+      { pt: "calculadora de rendimento com juros compostos" },
+      { pt: "calculadora de crescimento de investimento" },
+      { pt: "calculadora de juros compostos por ano" },
+      { pt: "calculadora de valor futuro" },
+    ],
+    schemaType: "Calculator",
+  },
+
   ui: {
     heading: {
       pt: "Calculadora de Juros Compostos",

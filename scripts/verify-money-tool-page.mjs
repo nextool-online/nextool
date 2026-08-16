@@ -65,6 +65,21 @@ assert.match(mortgageContent, /advancedSeo/);
 assert.match(mortgageContent, /down payment scenario/);
 assert.match(mortgageContent, /Mortgage term comparison/);
 
+const compoundContent = fs.readFileSync(new URL("../tools/compound-interest-calculator/content.en.ts", import.meta.url), "utf8");
+assert.match(compoundContent, /advancedSeo/);
+assert.match(compoundContent, /compound interest saving scenario/);
+assert.match(compoundContent, /Compounding frequency comparison/);
+
+const roiContent = fs.readFileSync(new URL("../tools/roi-calculator/content.en.ts", import.meta.url), "utf8");
+assert.match(roiContent, /advancedSeo/);
+assert.match(roiContent, /marketing campaign ROI scenario/);
+assert.match(roiContent, /ROI interpretation table/);
+
+const breakEvenContent = fs.readFileSync(new URL("../tools/break-even-calculator/content.en.ts", import.meta.url), "utf8");
+assert.match(breakEvenContent, /advancedSeo/);
+assert.match(breakEvenContent, /new product break-even scenario/);
+assert.match(breakEvenContent, /Break-even sensitivity table/);
+
 const moneyToolIds = [
   "loan-calculator",
   "mortgage-calculator",

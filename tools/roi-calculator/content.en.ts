@@ -215,6 +215,54 @@ export const roiCalculatorContent = {
   },
 },
 
+
+  advancedSeo: {
+    examples: [
+      {
+        title: { en: "marketing campaign ROI scenario" },
+        description: { en: "Compare campaign revenue against ad spend to see whether the return justifies scaling." },
+        calculation: { en: "$3,000 profit on $10,000 invested = 30% ROI" },
+      },
+      {
+        title: { en: "software project ROI" },
+        description: { en: "Estimate whether time saved, revenue gained or costs reduced are worth the implementation cost." },
+        calculation: { en: "$50,000 annual savings - $20,000 cost = $30,000 net gain" },
+      },
+      {
+        title: { en: "small business equipment ROI" },
+        description: { en: "Use ROI to compare equipment cost against added output, labor savings or profit improvement." },
+        calculation: { en: "$12,000 gain from $8,000 equipment = 50% ROI" },
+      },
+    ],
+    useCases: [
+      { title: { en: "Campaign scaling" }, description: { en: "Check whether a campaign has enough return before increasing budget." } },
+      { title: { en: "Project prioritization" }, description: { en: "Compare projects with different costs using a common return metric." } },
+      { title: { en: "Offer or channel comparison" }, description: { en: "Compare ROI by traffic channel, product line or operational investment." } },
+    ],
+    comparisonTable: {
+      title: { en: "ROI interpretation table" },
+      headers: [{ en: "ROI result" }, { en: "Meaning" }, { en: "Next question" }],
+      rows: [
+        [{ en: "Negative ROI" }, { en: "Loss versus amount invested" }, { en: "Can cost fall or revenue rise?" }],
+        [{ en: "Low positive ROI" }, { en: "Return exists but may not justify risk" }, { en: "Is payback fast enough?" }],
+        [{ en: "High ROI" }, { en: "Strong return on invested amount" }, { en: "Can it scale without ROI dropping?" }],
+      ],
+    },
+    commonMistakes: [
+      { title: { en: "Ignoring time" }, description: { en: "A 30% ROI in one month is not the same as 30% ROI over five years." } },
+      { title: { en: "Leaving out hidden costs" }, description: { en: "Labor, tools, taxes, refunds and overhead can materially change ROI." } },
+      { title: { en: "Confusing revenue with profit" }, description: { en: "ROI should usually use net gain, not top-line revenue." } },
+    ],
+    relatedQueries: [
+      { en: "marketing ROI calculator" },
+      { en: "return on investment calculator" },
+      { en: "business ROI calculator" },
+      { en: "campaign ROI calculator" },
+      { en: "ROI formula calculator" },
+    ],
+    schemaType: "Calculator",
+  },
+
   ui: {
     heading: {
       en: "ROI Calculator",

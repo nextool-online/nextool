@@ -215,6 +215,54 @@ export const breakEvenCalculatorContent = {
     },
   },
 
+
+  advancedSeo: {
+    examples: [
+      {
+        title: { pt: "cenário de ponto de equilíbrio para novo produto" },
+        description: { pt: "Estime quantas unidades precisam ser vendidas antes de cobrir os custos fixos." },
+        calculation: { pt: "R$ 5.000 de custo fixo / R$ 25 de margem = 200 unidades" },
+      },
+      {
+        title: { pt: "cenário de sensibilidade de preço" },
+        description: { pt: "Teste como aumento de preço ou redução de custo muda o volume necessário para empatar." },
+        calculation: { pt: "Margem maior reduz o volume necessário" },
+      },
+      {
+        title: { pt: "ponto de equilíbrio para serviços" },
+        description: { pt: "Veja quantos clientes, horas ou projetos cobrem os custos fixos mensais." },
+        calculation: { pt: "R$ 3.000 de custo fixo / R$ 300 de margem por cliente = 10 clientes" },
+      },
+    ],
+    useCases: [
+      { title: { pt: "Precificar uma nova oferta" }, description: { pt: "Veja se o preço gera margem suficiente para empatar com volume realista." } },
+      { title: { pt: "Planejamento de lançamento" }, description: { pt: "Estime vendas mínimas antes de gastar com estoque, anúncios ou ferramentas." } },
+      { title: { pt: "Decisão de reduzir custos" }, description: { pt: "Veja se reduzir custo variável diminui bastante o ponto de equilíbrio." } },
+    ],
+    comparisonTable: {
+      title: { pt: "Tabela de sensibilidade do ponto de equilíbrio" },
+      headers: [{ pt: "Mudança" }, { pt: "Efeito no ponto de equilíbrio" }, { pt: "Risco" }],
+      rows: [
+        [{ pt: "Custo fixo maior" }, { pt: "Mais unidades necessárias" }, { pt: "Mais difícil empatar no início" }],
+        [{ pt: "Preço maior" }, { pt: "Menos unidades necessárias" }, { pt: "Demanda pode cair" }],
+        [{ pt: "Custo variável menor" }, { pt: "Menos unidades necessárias" }, { pt: "Qualidade ou fornecimento pode mudar" }],
+      ],
+    },
+    commonMistakes: [
+      { title: { pt: "Usar receita em vez de margem de contribuição" }, description: { pt: "O ponto de equilíbrio depende da receita depois do custo variável, não só do preço." } },
+      { title: { pt: "Deixar custos fixos fora" }, description: { pt: "Software, aluguel, folha, ferramentas e contratos de mídia mudam o ponto de equilíbrio." } },
+      { title: { pt: "Assumir que tudo será vendido" }, description: { pt: "Reembolsos, descontos e estoque parado podem aumentar o volume real necessário." } },
+    ],
+    relatedQueries: [
+      { pt: "calculadora de ponto de equilíbrio" },
+      { pt: "calculadora de vendas para empatar" },
+      { pt: "calculadora de unidades para ponto de equilíbrio" },
+      { pt: "calculadora de break even para negócios" },
+      { pt: "calculadora de preço para ponto de equilíbrio" },
+    ],
+    schemaType: "Calculator",
+  },
+
   ui: {
     heading: {
       pt: "Calculadora de Ponto de Equilíbrio",

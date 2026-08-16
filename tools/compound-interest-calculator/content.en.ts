@@ -215,6 +215,54 @@ export const compoundInterestCalculatorContent = {
     },
    },
 
+
+  advancedSeo: {
+    examples: [
+      {
+        title: { en: "compound interest saving scenario" },
+        description: { en: "Estimate how regular saving plus reinvested interest can change a long-term balance." },
+        calculation: { en: "$10,000 at 6% for 10 years grows to about $17,908 before taxes and fees" },
+      },
+      {
+        title: { en: "monthly contribution scenario" },
+        description: { en: "Use compound interest to compare a one-time deposit with a habit of adding money every month." },
+        calculation: { en: "$200/month invested for years can matter more than a single starting deposit" },
+      },
+      {
+        title: { en: "retirement growth estimate" },
+        description: { en: "Test how time horizon and return assumptions affect a retirement or investment target." },
+        calculation: { en: "More years usually matter more than a small increase in starting balance" },
+      },
+    ],
+    useCases: [
+      { title: { en: "Savings goal planning" }, description: { en: "Estimate whether your current savings pace can reach a target by a future date." } },
+      { title: { en: "Investment scenario comparison" }, description: { en: "Compare conservative, moderate and optimistic annual return assumptions." } },
+      { title: { en: "Time horizon decisions" }, description: { en: "See why starting earlier can reduce the amount you need to contribute later." } },
+    ],
+    comparisonTable: {
+      title: { en: "Compounding frequency comparison" },
+      headers: [{ en: "Input" }, { en: "Effect" }, { en: "What to watch" }],
+      rows: [
+        [{ en: "Higher return" }, { en: "Faster growth" }, { en: "Usually comes with higher risk" }],
+        [{ en: "Longer time" }, { en: "More compounding periods" }, { en: "Assumptions become less certain" }],
+        [{ en: "More frequent compounding" }, { en: "Slightly higher growth" }, { en: "Often less important than rate and time" }],
+      ],
+    },
+    commonMistakes: [
+      { title: { en: "Treating the result as guaranteed" }, description: { en: "Investment returns vary. A compound interest result is a scenario, not a promise." } },
+      { title: { en: "Ignoring inflation" }, description: { en: "A larger future balance may buy less than expected if inflation is high." } },
+      { title: { en: "Forgetting taxes and fees" }, description: { en: "Taxes, fund fees and account costs can reduce actual growth." } },
+    ],
+    relatedQueries: [
+      { en: "compound interest calculator with monthly contributions" },
+      { en: "compound interest savings calculator" },
+      { en: "investment growth calculator" },
+      { en: "compound interest calculator by year" },
+      { en: "future value calculator" },
+    ],
+    schemaType: "Calculator",
+  },
+
   ui: {
     heading: {
       en: "Compound Interest Calculator",
