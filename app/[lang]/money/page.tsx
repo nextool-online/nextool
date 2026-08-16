@@ -151,6 +151,95 @@ const derivedLandingOpportunities = {
   },
 };
 
+const intentDecisionCards = {
+  en: {
+    eyebrow: "Choose by intent",
+    title: "What are you trying to decide?",
+    description: "Start with the question in your head. NexTool Money will send you to the calculator that gives the fastest first answer.",
+    cards: [
+      {
+        question: "Can I afford this loan?",
+        answer: "Estimate monthly payment, total interest and repayment pressure before comparing offers.",
+        toolId: "loan-calculator",
+        cta: "Calculate loan payment",
+      },
+      {
+        question: "Am I ready to buy a home?",
+        answer: "Compare home price, down payment, mortgage term and long-term interest cost.",
+        toolId: "mortgage-calculator",
+        cta: "Estimate mortgage cost",
+      },
+      {
+        question: "How much should I save each month?",
+        answer: "Turn a future goal into a monthly saving habit and deadline you can act on.",
+        toolId: "savings-calculator",
+        cta: "Plan savings goal",
+      },
+      {
+        question: "Will my money grow enough?",
+        answer: "Compare contributions, return assumptions and time before moving to retirement planning.",
+        toolId: "investment-calculator",
+        cta: "Project investment growth",
+      },
+      {
+        question: "Is this campaign or project worth it?",
+        answer: "Measure profit against cost, then continue to break-even if the numbers are close.",
+        toolId: "roi-calculator",
+        cta: "Calculate ROI",
+      },
+      {
+        question: "How many sales before profit?",
+        answer: "Find the minimum sales volume needed to cover fixed and variable costs.",
+        toolId: "break-even-calculator",
+        cta: "Find break-even point",
+      },
+    ],
+  },
+  pt: {
+    eyebrow: "Escolha por intenção",
+    title: "O que você está tentando decidir?",
+    description: "Comece pela pergunta que está na sua cabeça. O NexTool Money leva você para a calculadora que entrega a primeira resposta mais rápida.",
+    cards: [
+      {
+        question: "Consigo pagar este empréstimo?",
+        answer: "Estime parcela mensal, juros totais e pressão no orçamento antes de comparar ofertas.",
+        toolId: "loan-calculator",
+        cta: "Calcular parcela",
+      },
+      {
+        question: "Estou pronto para comprar um imóvel?",
+        answer: "Compare preço do imóvel, entrada, prazo de financiamento e custo de juros no longo prazo.",
+        toolId: "mortgage-calculator",
+        cta: "Estimar financiamento",
+      },
+      {
+        question: "Quanto devo guardar por mês?",
+        answer: "Transforme uma meta futura em um hábito mensal e um prazo de ação.",
+        toolId: "savings-calculator",
+        cta: "Planejar meta",
+      },
+      {
+        question: "Meu dinheiro vai crescer o suficiente?",
+        answer: "Compare aportes, hipóteses de retorno e prazo antes de avançar para aposentadoria.",
+        toolId: "investment-calculator",
+        cta: "Projetar investimento",
+      },
+      {
+        question: "Esta campanha ou projeto vale a pena?",
+        answer: "Meça lucro contra custo e avance para ponto de equilíbrio se os números estiverem apertados.",
+        toolId: "roi-calculator",
+        cta: "Calcular ROI",
+      },
+      {
+        question: "Quantas vendas até dar lucro?",
+        answer: "Encontre o volume mínimo de vendas necessário para cobrir custos fixos e variáveis.",
+        toolId: "break-even-calculator",
+        cta: "Encontrar ponto de equilíbrio",
+      },
+    ],
+  },
+};
+
 type MoneyPageProps = {
   params: Promise<{
     lang: LanguageCode;
@@ -237,6 +326,43 @@ export default async function MoneyPage({ params }: MoneyPageProps) {
             </p>
           </div>
         </div>
+
+        <section className="mt-14 rounded-[2rem] border border-emerald-100 bg-white/90 p-5 shadow-2xl shadow-emerald-950/10 md:p-8" id="money-intents">
+          <div className="max-w-3xl">
+            <p className="text-xs font-black uppercase tracking-[0.24em] text-emerald-700">
+              {intentDecisionCards[lang].eyebrow}
+            </p>
+            <h2 className="mt-3 text-3xl font-black tracking-tight text-slate-950 md:text-4xl">
+              {intentDecisionCards[lang].title}
+            </h2>
+            <p className="mt-4 text-base font-semibold leading-8 text-slate-700">
+              {intentDecisionCards[lang].description}
+            </p>
+          </div>
+
+          <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {intentDecisionCards[lang].cards.map((card, index) => (
+              <Link
+                key={card.question}
+                href={toolHref(lang, card.toolId)}
+                className="group rounded-[1.75rem] border border-slate-200 bg-slate-50 p-5 transition hover:-translate-y-0.5 hover:border-emerald-300 hover:bg-emerald-50 hover:shadow-xl hover:shadow-emerald-950/10"
+              >
+                <span className="inline-grid h-9 w-9 place-items-center rounded-full bg-slate-950 text-xs font-black text-white">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <h3 className="mt-4 text-xl font-black leading-tight text-slate-950">
+                  {card.question}
+                </h3>
+                <p className="mt-3 text-sm font-semibold leading-7 text-slate-700">
+                  {card.answer}
+                </p>
+                <span className="mt-5 inline-flex text-sm font-black text-emerald-700 group-hover:text-emerald-800">
+                  {card.cta} →
+                </span>
+              </Link>
+            ))}
+          </div>
+        </section>
 
         <section className="mt-14" id="money-related">
           <h2 className="text-3xl font-black tracking-tight text-slate-950">

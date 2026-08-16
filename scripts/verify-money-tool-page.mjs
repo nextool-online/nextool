@@ -45,6 +45,10 @@ assert.match(moneyHubSource, /alternates/);
 assert.match(moneyHubSource, /Savings → Investing → Retirement/);
 assert.match(moneyHubSource, /Loans → Mortgage → Inflation/);
 assert.match(moneyHubSource, /Derived landing page opportunities/);
+assert.match(moneyHubSource, /What are you trying to decide/);
+assert.match(moneyHubSource, /Can I afford this loan/);
+assert.match(moneyHubSource, /How much should I save each month/);
+assert.match(moneyHubSource, /Is this campaign or project worth it/);
 
 const derivedLandingDoc = fs.readFileSync(new URL("../docs/nextool-money-derived-landing-opportunities.md", import.meta.url), "utf8");
 assert.match(derivedLandingDoc, /percentage calculator for discounts/);
