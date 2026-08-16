@@ -215,6 +215,54 @@ export const inflationCalculatorContent = {
   },
 },
 
+
+  advancedSeo: {
+    examples: [
+      {
+        title: { en: "future cost of living scenario" },
+        description: { en: "Estimate how much a monthly expense or lifestyle cost may need to rise to keep the same purchasing power." },
+        calculation: { en: "$3,000/month with 3% inflation for 10 years ≈ $4,032/month" },
+      },
+      {
+        title: { en: "price increase planning" },
+        description: { en: "Use inflation to test whether a future purchase, tuition cost or rent target may be higher than today's price." },
+        calculation: { en: "$20,000 today at 4% inflation for 5 years ≈ $24,333" },
+      },
+      {
+        title: { en: "savings purchasing power check" },
+        description: { en: "Compare future prices against your savings or investment projection to see if nominal growth is enough." },
+        calculation: { en: "A balance can grow while purchasing power still falls if inflation is higher" },
+      },
+    ],
+    useCases: [
+      { title: { en: "Long-term budget planning" }, description: { en: "Estimate how everyday costs may change before setting a savings or retirement target." } },
+      { title: { en: "Future price estimate" }, description: { en: "Translate today's price into a future estimate using an assumed annual inflation rate." } },
+      { title: { en: "Purchasing power stress test" }, description: { en: "Check whether a future amount of money may buy less than expected." } },
+    ],
+    comparisonTable: {
+      title: { en: "Inflation impact comparison" },
+      headers: [{ en: "Question" }, { en: "Calculator input" }, { en: "Decision insight" }],
+      rows: [
+        [{ en: "What will this cost later?" }, { en: "Current price + inflation + years" }, { en: "Future price estimate" }],
+        [{ en: "Is my savings target enough?" }, { en: "Future cost compared with saved amount" }, { en: "Potential purchasing power gap" }],
+        [{ en: "How much value is money losing?" }, { en: "Inflation rate over time" }, { en: "Real value pressure" }],
+      ],
+    },
+    commonMistakes: [
+      { title: { en: "Assuming inflation is the same every year" }, description: { en: "Inflation changes over time. Use scenarios instead of treating one rate as certain." } },
+      { title: { en: "Confusing inflation with investment return" }, description: { en: "Inflation raises prices; investment return grows money. The real result depends on both." } },
+      { title: { en: "Ignoring personal inflation" }, description: { en: "Your own costs may rise faster or slower than the headline inflation rate." } },
+    ],
+    relatedQueries: [
+      { en: "inflation calculator future value" },
+      { en: "cost of living inflation calculator" },
+      { en: "purchasing power calculator" },
+      { en: "future price calculator inflation" },
+      { en: "inflation adjusted savings calculator" },
+    ],
+    schemaType: "Calculator",
+  },
+
   ui: {
     heading: {
       en: "Inflation Calculator",

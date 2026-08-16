@@ -103,6 +103,11 @@ assert.match(retirementContent, /advancedSeo/);
 assert.match(retirementContent, /retirement savings gap scenario/);
 assert.match(retirementContent, /Retirement planning levers/);
 
+const inflationContent = fs.readFileSync(new URL("../tools/inflation-calculator/content.en.ts", import.meta.url), "utf8");
+assert.match(inflationContent, /advancedSeo/);
+assert.match(inflationContent, /future cost of living scenario/);
+assert.match(inflationContent, /Inflation impact comparison/);
+
 const moneyToolIds = [
   "loan-calculator",
   "mortgage-calculator",

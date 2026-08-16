@@ -215,6 +215,54 @@ export const inflationCalculatorContent = {
     },
   },
 
+
+  advancedSeo: {
+    examples: [
+      {
+        title: { pt: "cenário de custo de vida futuro" },
+        description: { pt: "Estime quanto uma despesa mensal ou padrão de vida pode precisar subir para manter o mesmo poder de compra." },
+        calculation: { pt: "R$ 3.000/mês com inflação de 3% por 10 anos ≈ R$ 4.032/mês" },
+      },
+      {
+        title: { pt: "planejamento de aumento de preço" },
+        description: { pt: "Use inflação para testar se uma compra futura, mensalidade ou aluguel pode custar mais que hoje." },
+        calculation: { pt: "R$ 20.000 hoje a 4% por 5 anos ≈ R$ 24.333" },
+      },
+      {
+        title: { pt: "checagem de poder de compra da poupança" },
+        description: { pt: "Compare preços futuros com sua projeção de economia ou investimento para ver se o crescimento nominal basta." },
+        calculation: { pt: "Um saldo pode crescer e ainda perder poder de compra se a inflação for maior" },
+      },
+    ],
+    useCases: [
+      { title: { pt: "Planejamento de orçamento de longo prazo" }, description: { pt: "Estime como custos do dia a dia podem mudar antes de definir meta de poupança ou aposentadoria." } },
+      { title: { pt: "Estimativa de preço futuro" }, description: { pt: "Transforme o preço de hoje em estimativa futura usando uma taxa anual de inflação." } },
+      { title: { pt: "Teste de poder de compra" }, description: { pt: "Veja se um valor futuro pode comprar menos do que parece." } },
+    ],
+    comparisonTable: {
+      title: { pt: "Comparação de impacto da inflação" },
+      headers: [{ pt: "Pergunta" }, { pt: "Entrada da calculadora" }, { pt: "Leitura para decisão" }],
+      rows: [
+        [{ pt: "Quanto isso custará depois?" }, { pt: "Preço atual + inflação + anos" }, { pt: "Estimativa de preço futuro" }],
+        [{ pt: "Minha meta de economia basta?" }, { pt: "Custo futuro comparado ao saldo" }, { pt: "Possível lacuna de poder de compra" }],
+        [{ pt: "Quanto valor o dinheiro perde?" }, { pt: "Inflação ao longo do tempo" }, { pt: "Pressão sobre valor real" }],
+      ],
+    },
+    commonMistakes: [
+      { title: { pt: "Assumir inflação igual todos os anos" }, description: { pt: "A inflação muda com o tempo. Use cenários em vez de tratar uma taxa como certa." } },
+      { title: { pt: "Confundir inflação com retorno de investimento" }, description: { pt: "Inflação aumenta preços; retorno faz o dinheiro crescer. O resultado real depende dos dois." } },
+      { title: { pt: "Ignorar inflação pessoal" }, description: { pt: "Seus próprios custos podem subir mais ou menos que o índice oficial." } },
+    ],
+    relatedQueries: [
+      { pt: "calculadora de inflação valor futuro" },
+      { pt: "calculadora de custo de vida com inflação" },
+      { pt: "calculadora de poder de compra" },
+      { pt: "calculadora de preço futuro pela inflação" },
+      { pt: "calculadora de poupança corrigida pela inflação" },
+    ],
+    schemaType: "Calculator",
+  },
+
   ui: {
     heading: {
       pt: "Calculadora de Inflação",
