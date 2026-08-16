@@ -8,6 +8,7 @@ const requiredFiles = [
   "components/money/MoneyFooter.tsx",
   "components/money/MoneyResultCard.tsx",
   "components/money/MoneyMetricGrid.tsx",
+  "components/money/MoneySeoContent.tsx",
   "components/money/MoneyToolAnalytics.tsx",
   "app/[lang]/money/page.tsx",
 ];
@@ -28,6 +29,7 @@ assert.match(layoutSource, /MoneyFooter/);
 const toolPageSource = fs.readFileSync(new URL("../app/[lang]/tools/[slug]/page.tsx", import.meta.url), "utf8");
 assert.match(toolPageSource, /moneyLandingToolIds/);
 assert.match(toolPageSource, /MoneyToolAnalytics/);
+assert.match(toolPageSource, /MoneySeoContent/);
 assert.match(toolPageSource, /loan-calculator/);
 assert.match(toolPageSource, /roi-calculator/);
 assert.match(toolPageSource, /percentage-calculator/);

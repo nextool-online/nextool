@@ -23,24 +23,32 @@ const moneyToolIds = [
 const copy = {
   en: {
     title: "NexTool Money",
-    description: "Simple financial calculators for payments, interest, ROI, savings and practical money decisions.",
+    description: "Free financial calculators for loan payments, mortgage costs, compound interest, savings goals, ROI, inflation and break-even decisions.",
     eyebrow: "Financial calculators",
     hero: "Make money decisions easier to compare.",
     subhero: "Estimate payments, interest, savings and returns with fast calculators that explain the result in plain language.",
     cta: "Start with a loan estimate",
     sections: ["Borrowing", "Investing", "Business decisions"],
     featured: "Featured money tools",
+    guideTitle: "A practical financial calculator hub, not just a tool list",
+    guideBody: "NexTool Money groups the most common personal finance and business calculators into one decision flow. Start with the number you need now, then move to the next related calculator to compare payment pressure, total interest, future value, ROI or break-even volume.",
+    useCasesTitle: "Use NexTool Money to compare",
+    useCases: ["loan payment versus total interest", "mortgage down payment versus monthly pressure", "savings contributions versus future balance", "investment gains versus total contributions", "campaign cost versus ROI and break-even point"],
     note: "Educational estimates only. Always compare real terms, fees and professional advice before making financial decisions.",
   },
   pt: {
     title: "NexTool Money",
-    description: "Calculadoras financeiras simples para parcelas, juros, ROI, economia e decisões práticas de dinheiro.",
+    description: "Calculadoras financeiras grátis para parcelas, financiamento, juros compostos, poupança, ROI, inflação e ponto de equilíbrio.",
     eyebrow: "Calculadoras financeiras",
     hero: "Compare decisões de dinheiro com mais clareza.",
     subhero: "Estime parcelas, juros, economia e retornos com calculadoras rápidas que explicam o resultado em linguagem simples.",
     cta: "Começar pelo empréstimo",
     sections: ["Crédito", "Investimentos", "Decisões de negócio"],
     featured: "Ferramentas financeiras em destaque",
+    guideTitle: "Um hub financeiro prático, não apenas uma lista de ferramentas",
+    guideBody: "O NexTool Money organiza as principais calculadoras de finanças pessoais e negócios em uma jornada de decisão. Comece pelo número que você precisa agora e avance para a próxima calculadora relacionada para comparar pressão mensal, juros totais, valor futuro, ROI ou ponto de equilíbrio.",
+    useCasesTitle: "Use o NexTool Money para comparar",
+    useCases: ["parcela de empréstimo versus juros totais", "entrada de imóvel versus pressão mensal", "aportes de poupança versus saldo futuro", "ganhos de investimento versus aportes totais", "custo de campanha versus ROI e ponto de equilíbrio"],
     note: "Estimativas educacionais. Compare taxas reais, custos e orientação profissional antes de tomar decisões financeiras.",
   },
 };
@@ -60,7 +68,7 @@ export async function generateMetadata({ params }: MoneyPageProps) {
   const content = copy[lang];
 
   return {
-    title: `${content.title} - Financial Calculators | NexTool`,
+    title: lang === "pt" ? "NexTool Money - Calculadoras Financeiras Grátis" : "NexTool Money - Free Financial Calculators",
     description: content.description,
     alternates: {
       canonical: `${baseUrl}/${lang}/money`,
@@ -156,6 +164,31 @@ export default async function MoneyPage({ params }: MoneyPageProps) {
                 </p>
               </Link>
             ))}
+          </div>
+        </section>
+
+        <section className="mt-14 grid gap-5 lg:grid-cols-[1fr_0.85fr]" id="money-learn">
+          <div className="rounded-[2rem] border border-emerald-100 bg-white p-6 shadow-xl shadow-emerald-950/10 md:p-8">
+            <h2 className="text-3xl font-black tracking-tight text-slate-950">
+              {content.guideTitle}
+            </h2>
+            <p className="mt-4 text-base font-semibold leading-8 text-slate-700">
+              {content.guideBody}
+            </p>
+          </div>
+
+          <div className="rounded-[2rem] border border-slate-200 bg-slate-950 p-6 text-white shadow-xl shadow-slate-950/20 md:p-8">
+            <h2 className="text-2xl font-black tracking-tight">
+              {content.useCasesTitle}
+            </h2>
+            <ul className="mt-5 space-y-3">
+              {content.useCases.map((useCase) => (
+                <li key={useCase} className="flex gap-3 text-sm font-bold leading-6 text-slate-200">
+                  <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-emerald-400" />
+                  <span>{useCase}</span>
+                </li>
+              ))}
+            </ul>
           </div>
         </section>
       </section>
