@@ -215,6 +215,54 @@ export const loanCalculatorContent = {
     },
   },
 
+
+  advancedSeo: {
+    examples: [
+      {
+        title: { pt: "cenário de parcela de empréstimo pessoal" },
+        description: { pt: "Estime como a parcela muda quando o prazo passa de curto para longo." },
+        calculation: { pt: "R$ 20.000 a 6% ao ano por 60 meses ≈ R$ 386,66/mês" },
+      },
+      {
+        title: { pt: "comparação de financiamento de veículo" },
+        description: { pt: "Compare uma parcela menor contra os juros extras ao alongar o prazo de um financiamento." },
+        calculation: { pt: "R$ 25.000 a 7% em 48 vs 72 meses muda parcela e juros totais" },
+      },
+      {
+        title: { pt: "planejamento de empréstimo para negócio" },
+        description: { pt: "Use a estimativa para ver se o fluxo de caixa mensal suporta a dívida." },
+        calculation: { pt: "O lucro mensal deve ficar confortavelmente acima da parcela estimada" },
+      },
+    ],
+    useCases: [
+      { title: { pt: "Planejamento da parcela" }, description: { pt: "Veja se o empréstimo cabe no orçamento mensal antes de comparar ofertas." } },
+      { title: { pt: "Comparação de juros" }, description: { pt: "Compare como os juros totais mudam quando prazo ou taxa mudam." } },
+      { title: { pt: "Triagem de ofertas" }, description: { pt: "Use propostas de bancos como entrada e compare a estimativa total de pagamento." } },
+    ],
+    comparisonTable: {
+      title: { pt: "Comparação de prazo do empréstimo" },
+      headers: [{ pt: "Cenário" }, { pt: "Pressão mensal" }, { pt: "Juros totais" }],
+      rows: [
+        [{ pt: "Prazo menor" }, { pt: "Parcela mais alta" }, { pt: "Geralmente juros totais menores" }],
+        [{ pt: "Prazo maior" }, { pt: "Parcela mais baixa" }, { pt: "Geralmente juros totais maiores" }],
+        [{ pt: "Taxa menor" }, { pt: "Parcela menor no mesmo prazo" }, { pt: "Custo de crédito menor" }],
+      ],
+    },
+    commonMistakes: [
+      { title: { pt: "Comparar só a parcela" }, description: { pt: "Uma parcela menor pode esconder juros totais muito maiores quando o prazo é longo." } },
+      { title: { pt: "Ignorar tarifas" }, description: { pt: "Tarifas, seguros e impostos podem mudar o custo efetivo e o valor final." } },
+      { title: { pt: "Usar período errado da taxa" }, description: { pt: "A calculadora espera taxa anual, não taxa mensal." } },
+    ],
+    relatedQueries: [
+      { pt: "calculadora de parcela de empréstimo" },
+      { pt: "calculadora de empréstimo pessoal" },
+      { pt: "calculadora de financiamento de veículo" },
+      { pt: "calculadora de juros de empréstimo" },
+      { pt: "comparador de prazo de empréstimo" },
+    ],
+    schemaType: "Calculator",
+  },
+
   ui: {
     heading: {
       pt: "Calculadora de Empréstimo",

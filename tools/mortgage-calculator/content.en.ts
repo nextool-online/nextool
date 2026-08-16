@@ -215,6 +215,54 @@ export const mortgageCalculatorContent = {
   },
 },
 
+
+  advancedSeo: {
+    examples: [
+      {
+        title: { en: "down payment scenario" },
+        description: { en: "Compare how a larger down payment lowers the loan balance and can reduce the monthly mortgage payment." },
+        calculation: { en: "$300,000 home - $60,000 down = $240,000 financed" },
+      },
+      {
+        title: { en: "30-year mortgage estimate" },
+        description: { en: "Use a 30-year term to estimate lower monthly pressure and understand the trade-off in total interest." },
+        calculation: { en: "$240,000 at 6.5% for 30 years ≈ $1,516.96/month" },
+      },
+      {
+        title: { en: "15-year vs 30-year comparison" },
+        description: { en: "A shorter mortgage term can reduce total interest but may require a much larger monthly payment." },
+        calculation: { en: "Same loan, shorter term = higher payment but faster payoff" },
+      },
+    ],
+    useCases: [
+      { title: { en: "Home affordability check" }, description: { en: "Estimate whether the payment range feels realistic before looking at more expensive homes." } },
+      { title: { en: "Down payment planning" }, description: { en: "Test how additional down payment changes the financed balance and estimated payment." } },
+      { title: { en: "Rate sensitivity" }, description: { en: "Compare the same home price under different interest rate assumptions." } },
+    ],
+    comparisonTable: {
+      title: { en: "Mortgage term comparison" },
+      headers: [{ en: "Choice" }, { en: "Monthly payment" }, { en: "Long-term effect" }],
+      rows: [
+        [{ en: "Larger down payment" }, { en: "Usually lower" }, { en: "Less debt and less interest" }],
+        [{ en: "Longer term" }, { en: "Usually lower" }, { en: "More total interest" }],
+        [{ en: "Shorter term" }, { en: "Usually higher" }, { en: "Less total interest" }],
+      ],
+    },
+    commonMistakes: [
+      { title: { en: "Ignoring taxes and insurance" }, description: { en: "The mortgage payment estimate may not include property tax, insurance, HOA fees or closing costs." } },
+      { title: { en: "Buying at the approval limit" }, description: { en: "A lender approval amount is not the same as a comfortable monthly budget." } },
+      { title: { en: "Comparing only home price" }, description: { en: "Rate, down payment and term can change monthly pressure more than the sticker price suggests." } },
+    ],
+    relatedQueries: [
+      { en: "mortgage calculator monthly payment" },
+      { en: "mortgage calculator with down payment" },
+      { en: "30 year mortgage calculator" },
+      { en: "15 year vs 30 year mortgage calculator" },
+      { en: "home loan interest calculator" },
+    ],
+    schemaType: "Calculator",
+  },
+
   ui: {
     heading: {
       en: "Mortgage Calculator",

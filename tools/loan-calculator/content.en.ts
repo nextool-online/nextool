@@ -215,6 +215,54 @@ export const loanCalculatorContent = {
   },
 },
 
+
+  advancedSeo: {
+    examples: [
+      {
+        title: { en: "personal loan payment scenario" },
+        description: { en: "Estimate how a personal loan payment changes when the repayment term moves from short to long." },
+        calculation: { en: "$20,000 at 6% for 60 months ≈ $386.66/month" },
+      },
+      {
+        title: { en: "auto loan comparison" },
+        description: { en: "Compare a lower monthly payment against the extra interest paid when stretching a vehicle loan." },
+        calculation: { en: "$25,000 at 7% for 48 vs 72 months changes both payment pressure and total interest" },
+      },
+      {
+        title: { en: "business loan planning" },
+        description: { en: "Use the estimate to check if projected monthly cash flow can support the debt payment." },
+        calculation: { en: "Monthly profit should comfortably exceed the estimated payment" },
+      },
+    ],
+    useCases: [
+      { title: { en: "Monthly payment planning" }, description: { en: "See whether a loan fits your monthly budget before comparing offers." } },
+      { title: { en: "Interest cost comparison" }, description: { en: "Compare how much total interest changes when term or rate changes." } },
+      { title: { en: "Loan offer screening" }, description: { en: "Use lender quotes as inputs and compare the real total repayment estimate." } },
+    ],
+    comparisonTable: {
+      title: { en: "Loan term comparison" },
+      headers: [{ en: "Scenario" }, { en: "Monthly pressure" }, { en: "Total interest" }],
+      rows: [
+        [{ en: "Shorter term" }, { en: "Higher monthly payment" }, { en: "Usually lower total interest" }],
+        [{ en: "Longer term" }, { en: "Lower monthly payment" }, { en: "Usually higher total interest" }],
+        [{ en: "Lower rate" }, { en: "Lower payment at same term" }, { en: "Lower borrowing cost" }],
+      ],
+    },
+    commonMistakes: [
+      { title: { en: "Only comparing monthly payment" }, description: { en: "A lower payment can hide a much higher total interest cost if the term is longer." } },
+      { title: { en: "Ignoring fees" }, description: { en: "Origination fees, insurance and taxes may change the real APR and final cost." } },
+      { title: { en: "Using the wrong rate period" }, description: { en: "The calculator expects annual interest rate, not monthly rate." } },
+    ],
+    relatedQueries: [
+      { en: "loan calculator monthly payment" },
+      { en: "personal loan payment calculator" },
+      { en: "auto loan payment calculator" },
+      { en: "loan interest calculator" },
+      { en: "loan term comparison calculator" },
+    ],
+    schemaType: "Calculator",
+  },
+
   ui: {
     heading: {
       en: "Loan Calculator",

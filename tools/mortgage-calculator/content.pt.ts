@@ -215,6 +215,54 @@ export const mortgageCalculatorContent = {
     },
   },
 
+
+  advancedSeo: {
+    examples: [
+      {
+        title: { pt: "cenário de entrada no financiamento" },
+        description: { pt: "Compare como uma entrada maior reduz o saldo financiado e pode diminuir a parcela mensal." },
+        calculation: { pt: "Imóvel de R$ 300.000 - R$ 60.000 de entrada = R$ 240.000 financiados" },
+      },
+      {
+        title: { pt: "estimativa de financiamento em 30 anos" },
+        description: { pt: "Use um prazo longo para estimar menor pressão mensal e entender o custo em juros totais." },
+        calculation: { pt: "R$ 240.000 a 6,5% por 30 anos ≈ R$ 1.516,96/mês" },
+      },
+      {
+        title: { pt: "comparação 15 anos vs 30 anos" },
+        description: { pt: "Um prazo menor pode reduzir juros totais, mas exige parcela mensal maior." },
+        calculation: { pt: "Mesmo saldo, prazo menor = parcela maior e quitação mais rápida" },
+      },
+    ],
+    useCases: [
+      { title: { pt: "Checar quanto imóvel cabe no orçamento" }, description: { pt: "Estime se a faixa de parcela parece realista antes de buscar imóveis mais caros." } },
+      { title: { pt: "Planejamento de entrada" }, description: { pt: "Teste como uma entrada adicional altera o saldo financiado e a parcela estimada." } },
+      { title: { pt: "Sensibilidade à taxa" }, description: { pt: "Compare o mesmo preço de imóvel com diferentes hipóteses de juros." } },
+    ],
+    comparisonTable: {
+      title: { pt: "Comparação de prazo de financiamento" },
+      headers: [{ pt: "Escolha" }, { pt: "Parcela mensal" }, { pt: "Efeito de longo prazo" }],
+      rows: [
+        [{ pt: "Entrada maior" }, { pt: "Geralmente menor" }, { pt: "Menos dívida e menos juros" }],
+        [{ pt: "Prazo maior" }, { pt: "Geralmente menor" }, { pt: "Mais juros totais" }],
+        [{ pt: "Prazo menor" }, { pt: "Geralmente maior" }, { pt: "Menos juros totais" }],
+      ],
+    },
+    commonMistakes: [
+      { title: { pt: "Ignorar impostos e seguros" }, description: { pt: "A estimativa da parcela pode não incluir impostos, seguro, condomínio, taxas ou custos de fechamento." } },
+      { title: { pt: "Comprar no limite da aprovação" }, description: { pt: "O valor aprovado pelo banco não é necessariamente uma parcela confortável." } },
+      { title: { pt: "Comparar só preço do imóvel" }, description: { pt: "Taxa, entrada e prazo podem mudar a pressão mensal mais do que o preço sugere." } },
+    ],
+    relatedQueries: [
+      { pt: "calculadora de parcela de financiamento imobiliário" },
+      { pt: "calculadora de financiamento com entrada" },
+      { pt: "simulador de financiamento em 30 anos" },
+      { pt: "financiamento 15 anos vs 30 anos" },
+      { pt: "calculadora de juros de financiamento imobiliário" },
+    ],
+    schemaType: "Calculator",
+  },
+
   ui: {
     heading: {
       pt: "Calculadora de Financiamento Imobiliário",

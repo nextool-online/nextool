@@ -55,6 +55,16 @@ assert.match(percentageContent, /advancedSeo/);
 assert.match(percentageContent, /Percentage calculator for discounts/);
 assert.match(percentageContent, /Percentage calculator for grades/);
 
+const loanContent = fs.readFileSync(new URL("../tools/loan-calculator/content.en.ts", import.meta.url), "utf8");
+assert.match(loanContent, /advancedSeo/);
+assert.match(loanContent, /personal loan payment scenario/);
+assert.match(loanContent, /Loan term comparison/);
+
+const mortgageContent = fs.readFileSync(new URL("../tools/mortgage-calculator/content.en.ts", import.meta.url), "utf8");
+assert.match(mortgageContent, /advancedSeo/);
+assert.match(mortgageContent, /down payment scenario/);
+assert.match(mortgageContent, /Mortgage term comparison/);
+
 const moneyToolIds = [
   "loan-calculator",
   "mortgage-calculator",
