@@ -2,6 +2,8 @@ import Footer from "./Footer";
 import Navbar from "./Navbar";
 import FitnessFooter from "../fitness/FitnessFooter";
 import FitnessHeader from "../fitness/FitnessHeader";
+import MoneyFooter from "../money/MoneyFooter";
+import MoneyHeader from "../money/MoneyHeader";
 import LanguageSwitcher from "../ui/LanguageSwitcher";
 
 import { dictionary } from "../../data/dictionary";
@@ -14,7 +16,7 @@ type ToolPageLayoutProps = {
   description: string;
   lang?: LanguageCode;
   languageUrls?: Partial<Record<LanguageCode, string>>;
-  variant?: "default" | "fitness";
+  variant?: "default" | "fitness" | "money";
   children: React.ReactNode;
 };
 
@@ -50,6 +52,34 @@ export default function ToolPageLayout({
         </section>
 
         <FitnessFooter lang={lang} />
+      </main>
+    );
+  }
+
+  if (variant === "money") {
+    return (
+      <main className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-emerald-50 text-slate-950">
+        <MoneyHeader lang={lang} />
+
+        <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 md:py-12 lg:px-8">
+          <div className="mb-6 grid gap-6 lg:grid-cols-[1fr_auto] lg:items-end">
+            <div>
+              <p className="mb-4 inline-flex w-fit rounded-full border border-emerald-200 bg-white px-4 py-2 text-sm font-black text-emerald-700 shadow-sm">
+                NexTool Money
+              </p>
+              <h1 className="max-w-4xl text-4xl font-black tracking-tight text-slate-950 sm:text-5xl md:text-6xl">
+                {title}
+              </h1>
+              <p className="mt-4 max-w-3xl text-base font-semibold leading-7 text-slate-600 md:text-xl md:leading-8">
+                {description}
+              </p>
+            </div>
+          </div>
+
+          {children}
+        </section>
+
+        <MoneyFooter lang={lang} />
       </main>
     );
   }

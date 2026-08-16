@@ -4,6 +4,7 @@ import Breadcrumbs from "../../../../components/ui/Breadcrumbs";
 import ToolCard from "../../../../components/ui/ToolCard";
 import ToolPageLayout from "../../../../components/layout/ToolPageLayout";
 import FitnessToolAnalytics from "../../../../components/fitness/FitnessToolAnalytics";
+import MoneyToolAnalytics from "../../../../components/money/MoneyToolAnalytics";
 
 import { categories } from "../../../../data/categories";
 import { dictionary } from "../../../../data/dictionary";
@@ -31,6 +32,19 @@ const fitnessLandingToolIds = new Set([
   "ideal-weight-calculator",
   "body-fat-calculator",
   "macro-calculator",
+]);
+
+const moneyLandingToolIds = new Set([
+  "loan-calculator",
+  "mortgage-calculator",
+  "compound-interest-calculator",
+  "savings-calculator",
+  "investment-calculator",
+  "retirement-calculator",
+  "roi-calculator",
+  "inflation-calculator",
+  "break-even-calculator",
+  "percentage-calculator",
 ]);
 
 function getAvailableLanguages(tool: ToolDefinition): LanguageCode[] {
@@ -134,6 +148,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
   const categoryName = category ? getText(category.name, lang) : tool.category;
   const relatedTools = getRelatedTools(tool, lang);
   const isFitnessLandingTool = fitnessLandingToolIds.has(tool.id);
+  const isMoneyLandingTool = moneyLandingToolIds.has(tool.id);
 
   const languageUrls = Object.fromEntries(
     getAvailableLanguages(tool).map((language) => [
@@ -226,7 +241,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
       description={toolDescription}
       lang={lang}
       languageUrls={languageUrls}
-      variant={isFitnessLandingTool ? "fitness" : "default"}
+      variant={isFitnessLandingTool ? "fitness" : isMoneyLandingTool ? "money" : "default"}
     >
       <script
         type="application/ld+json"
@@ -260,18 +275,21 @@ export default async function ToolPage({ params }: ToolPageProps) {
         />
       )}
 
-      {!isFitnessLandingTool && <Breadcrumbs items={breadcrumbs} />}
+      {!isFitnessLandingTool && !isMoneyLandingTool && <Breadcrumbs items={breadcrumbs} />}
 
       {isFitnessLandingTool && <FitnessToolAnalytics lang={lang} toolId={tool.id} />}
+      {isMoneyLandingTool && <MoneyToolAnalytics lang={lang} toolId={tool.id} />}
 
+      <div id={isMoneyLandingTool ? "money-tool" : undefined}>
       <Calculator
         lang={lang}
         ui={tool.ui}
       />
+      </div>
 
-      <div className={isFitnessLandingTool ? "mt-10 rounded-[2rem] border border-sky-100 bg-white/90 p-5 text-slate-950 shadow-2xl shadow-sky-100/70 md:p-8" : ""}>
+      <div className={isFitnessLandingTool ? "mt-10 rounded-[2rem] border border-sky-100 bg-white/90 p-5 text-slate-950 shadow-2xl shadow-sky-100/70 md:p-8" : isMoneyLandingTool ? "mt-10 rounded-[2rem] border border-emerald-100 bg-white/90 p-5 text-slate-950 shadow-2xl shadow-emerald-950/10 md:p-8" : ""}>
       {tool.formula && (
-       <section className={isFitnessLandingTool ? "mt-10 rounded-3xl border border-zinc-200 bg-zinc-50 p-6 shadow-xl shadow-zinc-300/60" : "mt-10 rounded-2xl border border-zinc-200 bg-zinc-50 p-6"}>
+       <section id={isMoneyLandingTool ? "money-learn" : undefined} className={isFitnessLandingTool ? "mt-10 rounded-3xl border border-zinc-200 bg-zinc-50 p-6 shadow-xl shadow-zinc-300/60" : isMoneyLandingTool ? "mt-10 rounded-3xl border border-emerald-100 bg-emerald-50 p-6 shadow-xl shadow-emerald-950/10" : "mt-10 rounded-2xl border border-zinc-200 bg-zinc-50 p-6"}>
         <h2 className="text-2xl font-bold text-zinc-950">
           {getText(dictionary.formulaTitle, lang)}
         </h2>
