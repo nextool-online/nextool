@@ -78,6 +78,15 @@ const copy = {
     commission: "commission",
     profit: "profit",
     commissionPer1000Emails: "commission_per_1000_emails",
+    paidLanding: "Funil da landing paga",
+    paidHint: "Eventos com utm_source=google, utm_medium=cpc, gclid ou campanha Ads. O funil /fitness não conta a landing /tools/calorie-deficit-calculator.",
+    paidVisitors: "paid_visitors",
+    paidViews: "paid_calculator_views",
+    paidResults: "paid_results_shown",
+    paidCta: "paid_cta_clicks",
+    paidResultRate: "paid_result_rate",
+    paidCostNote: "Custo/cliques do Google Ads ainda precisam ser importados para unit economics.",
+    paidTerms: "paid_terms",
   },
   en: {
     title: "NexTool Fit Dashboard",
@@ -129,6 +138,15 @@ const copy = {
     commission: "commission",
     profit: "profit",
     commissionPer1000Emails: "commission_per_1000_emails",
+    paidLanding: "Paid landing funnel",
+    paidHint: "Events with utm_source=google, utm_medium=cpc, gclid or Ads campaign. The /fitness funnel does not count the /tools/calorie-deficit-calculator landing.",
+    paidVisitors: "paid_visitors",
+    paidViews: "paid_calculator_views",
+    paidResults: "paid_results_shown",
+    paidCta: "paid_cta_clicks",
+    paidResultRate: "paid_result_rate",
+    paidCostNote: "Google Ads cost/clicks still need to be imported into unit economics.",
+    paidTerms: "paid_terms",
   },
 };
 
@@ -263,6 +281,7 @@ const calculatorFunnelLayout = [
   { id: "bmi-calculator", leadSource: "bmi", short: "BMI", pt: "IMC", en: "BMI" },
   { id: "bmr-calculator", leadSource: "bmr", short: "BMR", pt: "TMB", en: "BMR" },
   { id: "calorie-calculator", leadSource: "calories", short: "CALORIES", pt: "Calorias", en: "Calories" },
+  { id: "calorie-deficit-calculator", leadSource: "calorie-deficit-calculator", short: "DEFICIT", pt: "Déficit", en: "Deficit" },
   { id: "protein-calculator", leadSource: "protein", short: "PROTEIN", pt: "Proteína", en: "Protein" },
   { id: "ideal-weight-calculator", leadSource: "ideal-weight", short: "IDEAL WEIGHT", pt: "Peso ideal", en: "Ideal weight" },
   { id: "water-intake-calculator", leadSource: "water", short: "WATER INTAKE", pt: "Água", en: "Water intake" },
@@ -275,6 +294,59 @@ function metricCount(items: Array<{ event: string; count: number }>, event: stri
 
 function sourceCount(items: Array<{ source: string; count: number }>, source: string) {
   return items.find((item) => item.source === source)?.count || 0;
+}
+
+function eventMetadataValue(record: FitnessEventMetricRecord, key: string) {
+  const value = record.metadata?.[key];
+  return typeof value === "string" ? value : value ? String(value) : "";
+}
+
+function isPaidLandingEvent(record: FitnessEventMetricRecord) {
+  const utmSource = eventMetadataValue(record, "utm_source").toLowerCase();
+  const utmMedium = eventMetadataValue(record, "utm_medium").toLowerCase();
+  const campaign = eventMetadataValue(record, "utm_campaign").toLowerCase();
+  const gclid = eventMetadataValue(record, "gclid");
+
+  return Boolean(
+    gclid ||
+    utmSource === "google" ||
+    utmMedium === "cpc" ||
+    campaign.includes("calorie_deficit") ||
+    campaign.includes("fit_en_")
+  );
+}
+
+function buildPaidLandingMetrics(events: FitnessEventMetricRecord[]) {
+  const paidEvents = events.filter(isPaidLandingEvent);
+  const visitorSet = new Set<string>();
+  const viewSet = new Set<string>();
+  const resultSet = new Set<string>();
+  const ctaSet = new Set<string>();
+  const termMap = new Map<string, number>();
+
+  for (const event of paidEvents) {
+    const visitorId = event.visitor_id || "";
+    if (visitorId) visitorSet.add(visitorId);
+    if (visitorId && event.event_name === "calculator_view") viewSet.add(visitorId);
+    if (visitorId && event.event_name === "calculator_result_shown") resultSet.add(visitorId);
+    if (visitorId && event.event_name === "calculator_cta_click") ctaSet.add(visitorId);
+
+    const term = eventMetadataValue(event, "utm_term") || eventMetadataValue(event, "gclid") || "unknown_paid";
+    termMap.set(term, (termMap.get(term) || 0) + 1);
+  }
+
+  const views = viewSet.size;
+  const results = resultSet.size;
+
+  return {
+    totalEvents: paidEvents.length,
+    uniqueVisitors: visitorSet.size,
+    views,
+    results,
+    ctaClicks: ctaSet.size,
+    resultRate: views > 0 ? results / views * 100 : 0,
+    byTerm: Array.from(termMap, ([label, count]) => ({ label, count })).sort((a, b) => b.count - a.count),
+  };
 }
 
 function formatPercent(value: number) {
@@ -515,6 +587,34 @@ function UnitEconomicsList({ title, visualItems, adCosts, revenues, labels }: { 
   );
 }
 
+function PaidLandingFunnel({ labels, paid, adCost }: { labels: typeof copy.pt; paid: ReturnType<typeof buildPaidLandingMetrics>; adCost: ReturnType<typeof aggregateFitnessAdCostMetrics> }) {
+  return (
+    <section className="mt-6 rounded-[2rem] border border-sky-500/30 bg-gradient-to-br from-sky-950/60 to-zinc-950 p-5 shadow-2xl shadow-sky-950/20" id="paid-landing-funnel">
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <p className="text-xs font-black uppercase tracking-[0.24em] text-sky-300">Google Ads</p>
+          <h2 className="mt-2 text-2xl font-black text-white">{labels.paidLanding}</h2>
+          <p className="mt-2 max-w-3xl text-sm font-medium leading-6 text-sky-100/80">{labels.paidHint}</p>
+        </div>
+        <div className="rounded-2xl border border-amber-300/30 bg-amber-300/10 px-4 py-3 text-xs font-bold leading-5 text-amber-100">
+          {adCost.totalClicks === 0 ? labels.paidCostNote : `${adCost.totalClicks} Ads clicks · ${formatMoney(adCost.totalCost, adCost.byCampaign[0]?.currency || "BRL")}`}
+        </div>
+      </div>
+      <div className="mt-5 grid gap-3 md:grid-cols-5">
+        <StatCard label={labels.paidVisitors} value={paid.uniqueVisitors} />
+        <StatCard label={labels.paidViews} value={paid.views} />
+        <StatCard label={labels.paidResults} value={paid.results} />
+        <StatCard label={labels.paidCta} value={paid.ctaClicks} />
+        <StatCard label={labels.paidResultRate} value={formatPercent(paid.resultRate)} />
+      </div>
+      <div className="mt-4 grid gap-4 md:grid-cols-2">
+        <MiniMetricList title={labels.paidTerms} items={paid.byTerm.slice(0, 8)} />
+        <MiniMetricList title="paid_events" items={[{ label: "paid_total_events", count: paid.totalEvents }, { label: "imported_ads_clicks", count: adCost.totalClicks }]} />
+      </div>
+    </section>
+  );
+}
+
 function AffiliateOfferList({ title, items, labels }: { title: string; items: Array<{ offerId: string; calculator: string; productCategory: string; placement: string; views: number; clicks: number }>; labels: typeof copy.pt }) {
   return (
     <section className="rounded-3xl border border-zinc-800 bg-zinc-900 p-5 md:col-span-3">
@@ -584,6 +684,7 @@ export default async function FitnessDashboardPage({ params, searchParams }: Das
   const adCostMetrics = aggregateFitnessAdCostMetrics(adCostRecords.filter((record) => record.lang === lang));
   const affiliateRevenueMetrics = aggregateFitnessAffiliateRevenueMetrics(affiliateRevenueRecords.filter((record) => record.lang === lang));
   const emailSequenceMetrics = aggregateFitnessEmailEventMetrics(emailEventRecords.filter((record) => record.lang === lang));
+  const paidLandingMetrics = buildPaidLandingMetrics(filteredEvents);
   const visualItems = calculatorFunnelLayout
     .map((calculator) => {
       const stats = eventMetrics.byCalculator.find((item) => item.calculator === calculator.id);
@@ -658,6 +759,7 @@ export default async function FitnessDashboardPage({ params, searchParams }: Das
         </div>
 
         <VisualFunnel title="NexTool Fit" items={visualItems} labels={labels} />
+        <PaidLandingFunnel labels={labels} paid={paidLandingMetrics} adCost={adCostMetrics} />
 
         <div className="mt-8 grid gap-4 md:grid-cols-4">
           <StatCard label={labels.unique} value={metrics.uniqueEmails} />
