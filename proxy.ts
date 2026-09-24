@@ -20,7 +20,7 @@ export function proxy(request: NextRequest) {
   if (
     pathname.startsWith("/_next") ||
     pathname.startsWith("/api") ||
-    pathname.startsWith("/l/riattiva-app-preview") ||
+    pathname.startsWith("/l/riattiva") ||
     pathname.includes(".")
   ) {
     return NextResponse.next();

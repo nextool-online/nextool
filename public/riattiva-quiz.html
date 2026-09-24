@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Effetto Replay — Quiz IT v1</title>
+  <style>
+    :root{
+      --red:#dc2626; --red2:#ef4444; --pink:#fff1f2; --pink2:#fde2e2;
+      --green:#16a34a; --green2:#dcfce7; --text:#111827; --muted:#4b5563;
+      --bg:#ffffff; --card:#ffffff;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:#f7f7f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--text);}
+    .phone{width:100%;max-width:430px;min-height:100vh;margin:0 auto;background:var(--bg);position:relative;overflow:hidden;box-shadow:0 0 0 1px #eee;}
+    .progress-wrap{position:sticky;top:0;background:#fff;padding:14px 22px 8px;z-index:5}
+    .track{height:7px;background:var(--pink2);border-radius:999px;overflow:hidden}
+    .bar{height:100%;width:0;background:var(--red);border-radius:999px;transition:width .25s ease}
+    .screen{display:none;min-height:calc(100vh - 29px);padding:54px 22px 28px;align-items:center;justify-content:center;flex-direction:column;text-align:center;}
+    .screen.active{display:flex}
+    .screen.top{justify-content:flex-start;padding-top:34px}
+    h1{font-size:28px;line-height:1.06;margin:0 0 20px;font-weight:900;letter-spacing:-.5px}
+    h2{font-size:25px;line-height:1.1;margin:0 0 22px;font-weight:900;letter-spacing:-.3px}
+    p{font-size:17px;line-height:1.35;margin:0 0 18px;color:#111;font-weight:500}
+    .red{color:var(--red);font-weight:900}.green{color:var(--green);font-weight:900}.muted{color:var(--muted)}
+    .hero-chat{width:82%;background:#f6eee9;border-radius:16px;padding:14px;margin:8px auto 18px;box-shadow:0 8px 24px rgba(0,0,0,.08);text-align:left;color:#333;font-size:13px}
+    .bubble{background:#fff;border-radius:10px;padding:9px 10px;margin:7px 0;box-shadow:0 1px 2px rgba(0,0,0,.05)}
+    .missed{font-weight:800;color:#9b1c1c}.time{float:right;color:#777;font-weight:500}
+    .btn{width:100%;border:0;border-radius:14px;padding:18px 16px;font-size:16px;font-weight:900;cursor:pointer;text-transform:uppercase;letter-spacing:.2px}
+    .btn.green{background:var(--green);color:white;box-shadow:0 10px 22px rgba(22,163,74,.22)}
+    .btn.micro{background:var(--red);color:white;margin-top:12px}
+    .answers{width:100%;display:flex;flex-direction:column;gap:12px;margin-top:4px}
+    .answer{width:100%;background:var(--pink);border:1.5px solid #f87171;border-radius:14px;min-height:61px;display:flex;align-items:center;text-align:left;padding:12px 14px;gap:12px;font-size:16px;line-height:1.18;color:#222;cursor:pointer}
+    .answer:hover,.answer.selected{background:#fee2e2;border-color:var(--red)}
+    .radio{width:27px;height:27px;border:1.7px solid var(--red2);border-radius:50%;flex:0 0 auto;display:flex;align-items:center;justify-content:center;color:var(--red);font-weight:900;background:white}
+    .answer.selected .radio::after{content:'✓';font-size:17px}
+    .bullets{width:100%;display:flex;flex-direction:column;gap:12px;margin-top:22px}.bullet{background:var(--green2);border:1px solid #86efac;border-radius:13px;padding:14px;text-align:left;color:#166534;font-size:16px;line-height:1.32}
+    .microcopy{font-size:22px;line-height:1.2;font-weight:900;margin-bottom:16px}.microbody{font-size:18px;line-height:1.4;font-weight:650;text-align:left}.microbody.center{text-align:center}
+    .small{font-size:14px;color:#555}.alert{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;font-weight:900;border-radius:8px;padding:8px 10px;font-size:13px;margin-bottom:14px}
+    .proof-card{background:#fff;border:1px solid #eee;border-radius:14px;padding:14px;box-shadow:0 8px 22px rgba(0,0,0,.06);text-align:left;margin:10px 0;width:100%}.proof-msg{background:#111827;color:#fff;border-radius:10px;padding:10px;margin:8px 0;font-size:13px;line-height:1.25}.proof-msg.greenmsg{background:#14532d}.avatar{width:54px;height:54px;border-radius:50%;background:#ddd;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-size:26px}.video{width:100%;aspect-ratio:9/12;background:linear-gradient(135deg,#2b1d20,#9f7d81);border-radius:14px;position:relative;overflow:hidden;margin-top:4px}.play{position:absolute;inset:0;margin:auto;width:148px;height:148px;border:11px solid red;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.05)}.tri{width:0;height:0;border-top:35px solid transparent;border-bottom:35px solid transparent;border-left:55px solid red;margin-left:11px}.caption{position:absolute;bottom:42%;left:0;right:0;color:white;font-size:30px;font-weight:1000;text-shadow:0 2px 8px #000}.caption span{color:red}.loading-dot{height:12px;width:12px;border-radius:50%;background:var(--red);display:inline-block;margin:0 3px;animation:pulse 1s infinite}.loading-dot:nth-child(2){animation-delay:.2s}.loading-dot:nth-child(3){animation-delay:.4s}@keyframes pulse{50%{opacity:.2;transform:translateY(-4px)}}
+    .footer-note{font-size:12px;color:#777;margin-top:14px}.hidden{display:none!important}
+  </style>
+</head>
+<body>
+  <main class="phone">
+    <div class="progress-wrap"><div class="track"><div class="bar" id="bar"></div></div></div>
+
+    <section class="screen active top" data-progress="3" id="entry">
+      <h1>⬇️ Effetto Replay: il messaggio di 3 parole che <span class="red">riaccende quello che lui sentiva per te</span> e lo fa tornare a cercarti <span class="green">entro 48 ore</span> ⬇️</h1>
+      <div class="hero-chat">
+        <div class="missed">📞 Chiamata persa <span class="time">17:29</span></div>
+        <div class="bubble">Volevo solo parlarti <span class="time">17:28</span></div>
+        <div class="bubble muted">⊘ Messaggio eliminato <span class="time">17:29</span></div>
+        <div class="missed">📞 Chiamata persa <span class="time">17:30</span></div>
+        <div class="bubble">Perdonami, mi manca quello che eravamo <span class="time">17:31</span></div>
+      </div>
+      <p>Fai il test gratuito e scopri se nel tuo caso il messaggio può ancora essere sbloccato <b>prima che lui si abitui davvero alla tua assenza.</b></p>
+      <button class="btn green" onclick="go('q1')">VOGLIO RECUPERARE IL MIO EX</button>
+      <div class="bullets">
+        <div class="bullet">✅ Oltre al messaggio, riceverai un protocollo personalizzato di riconquista.</div>
+        <div class="bullet">✅ Scoprirai l’errore che fa perdere l’ex a tantissime donne… e come evitarlo.</div>
+        <div class="bullet">✅ Conoscerai il passaggio che lo porta a cercarti di nuovo entro 48 ore.</div>
+      </div>
+    </section>
+
+    <section class="screen" data-progress="12" id="q1"><h2>Quando vi siete lasciati?</h2><div class="answers">
+      <button class="answer" onclick="answer('q1','A','q1m')"><span class="radio"></span>Meno di una settimana fa.</button>
+      <button class="answer" onclick="answer('q1','B','q1m')"><span class="radio"></span>Tra 1 e 4 settimane.</button>
+      <button class="answer" onclick="answer('q1','C','q1m')"><span class="radio"></span>Tra 1 e 3 mesi.</button>
+      <button class="answer" onclick="answer('q1','D','q1m')"><span class="radio"></span>Più di 3 mesi.</button></div></section>
+
+    <section class="screen" data-progress="18" id="q1m"><div id="q1text"></div><button class="btn micro" onclick="go('q2')">CONTINUA</button></section>
+
+    <section class="screen" data-progress="25" id="q2"><h2>Avete ancora qualche tipo di contatto oggi?</h2><div class="answers">
+      <button class="answer" onclick="answer('q2','A','q2m')"><span class="radio"></span>Sì, parliamo ogni tanto.</button>
+      <button class="answer" onclick="answer('q2','B','q2m')"><span class="radio"></span>Mi parla, ma è freddo e distante.</button>
+      <button class="answer" onclick="answer('q2','C','q2m')"><span class="radio"></span>Risponde solo per educazione.</button>
+      <button class="answer" onclick="answer('q2','D','q2m')"><span class="radio"></span>No, mi ha bloccata ovunque.</button></div></section>
+
+    <section class="screen" data-progress="31" id="q2m"><div class="microcopy">Il modo in cui lui ti risponde oggi mostra dove ti ha messa dentro di sé.</div><p class="microbody">Se è freddo, ti tiene lontana. Se risponde per educazione, ti ha messa in una zona sicura, quasi innocua. Se ti ha bloccata, ha chiuso la porta per non sentire.<br><br><b>E il problema è questo:</b> più tu arrivi con bisogno, spiegazioni o paura di perderlo, più gli confermi che allontanarsi da te è stata la scelta giusta.</p><p class="microbody"><b>Non sei tu il problema.</b> Il problema è il modo sbagliato in cui ti hanno insegnato a rincorrere un uomo quando lui si chiude.</p><button class="btn micro" onclick="go('q3')">CAPITO, VAI AVANTI</button></section>
+
+    <section class="screen" data-progress="38" id="q3"><h2>Cosa ti fa più male da quando è finita?</h2><div class="answers">
+      <button class="answer" onclick="answer('q3','A','q3m')"><span class="radio"></span>Una solitudine fortissima.</button>
+      <button class="answer" onclick="answer('q3','B','q3m')"><span class="radio"></span>Colpa e rimorso.</button>
+      <button class="answer" onclick="answer('q3','C','q3m')"><span class="radio"></span>Ansia e paura del futuro.</button>
+      <button class="answer" onclick="answer('q3','D','q3m')"><span class="radio"></span>Immaginare che lui sia già con un’altra.</button></div></section>
+
+    <section class="screen" data-progress="44" id="q3m"><div id="q3text"></div><button class="btn micro" onclick="go('q4')">CONTINUA IL TEST</button></section>
+
+    <section class="screen" data-progress="51" id="q4"><h2>Se lui si innamorasse davvero di un’altra donna, cosa succederebbe a te?</h2><div class="answers">
+      <button class="answer" onclick="answer('q4','A','q4m')"><span class="radio"></span>Mi crollerebbe il mondo addosso.</button>
+      <button class="answer" onclick="answer('q4','B','q4m')"><span class="radio"></span>Starei male, ma proverei ad andare avanti.</button>
+      <button class="answer" onclick="answer('q4','C','q4m')"><span class="radio"></span>Proverei a riconquistarlo in ogni modo.</button>
+      <button class="answer" onclick="answer('q4','D','q4m')"><span class="radio"></span>Fingerei che non mi importa, ma morirei dentro.</button></div></section>
+
+    <section class="screen" data-progress="57" id="q4m"><div class="microcopy">Il vero terrore non è solo perderlo. È vederlo diventare dolce con un’altra.</div><p class="microbody">Vederlo fare con lei quello che non fa più con te. Scriverle. Cercarla. Toccarla. Raccontarle la giornata. Ridere con lei mentre tu controlli il telefono sperando in un segnale.<br><br><b>E più tempo passa, più questa possibilità smette di essere un pensiero e diventa una porta aperta.</b></p><button class="btn micro" onclick="go('q5')">VAI AVANTI</button></section>
+
+    <section class="screen" data-progress="64" id="q5"><h2>Quanto tempo pensi ti resti prima che lui ti dimentichi del tutto?</h2><div class="answers">
+      <button class="answer" onclick="answer('q5','A','q5m')"><span class="radio"></span>Pochi giorni — sento che mi sta già sostituendo.</button>
+      <button class="answer" onclick="answer('q5','B','q5m')"><span class="radio"></span>Qualche settimana — c’è ancora tempo per agire.</button>
+      <button class="answer" onclick="answer('q5','C','q5m')"><span class="radio"></span>Qualche mese — credo che lui senta ancora qualcosa.</button>
+      <button class="answer" onclick="answer('q5','D','q5m')"><span class="radio"></span>Non lo so, ma ho paura di scoprirlo.</button></div></section>
+
+    <section class="screen" data-progress="70" id="q5m"><div id="q5text"></div><button class="btn micro" onclick="go('q6')">MOSTRAMI IL PROSSIMO PASSO</button></section>
+
+    <section class="screen" data-progress="77" id="q6"><h2>Se esistesse un video corto di 60 secondi che ti mostra il passo dopo passo esatto per farlo tornare da te nelle prossime 48 ore, ti impegneresti a guardarlo fino alla fine?</h2><div class="answers">
+      <button class="answer" onclick="answer('q6','A','q6m')"><span class="radio"></span>Sì, voglio vederlo adesso.</button>
+      <button class="answer" onclick="answer('q6','B','q6m')"><span class="radio"></span>Sì, voglio vederlo e applicarlo oggi.</button>
+      <button class="answer" onclick="answer('q6','C','q6m')"><span class="radio"></span>Sì, ma voglio capire ogni dettaglio.</button></div></section>
+
+    <section class="screen" data-progress="83" id="q6m"><div class="microcopy">Perfetto. Perché quello che stai per vedere non è il solito consiglio di sparire, aspettare o “lavorare su te stessa”.</div><p class="microbody">Il punto è molto più sporco e diretto: esiste un tipo di messaggio che non chiede, non implora e non spiega. Entra da un’altra porta. <b>Riaccende quello che lui sentiva per te e lo porta a cercarti di nuovo senza che tu debba inseguirlo.</b></p><button class="btn micro" onclick="go('q7')">VOGLIO SBLOCCARLO</button></section>
+
+    <section class="screen" data-progress="90" id="q7"><h2>Ti piacerebbe che, oltre al messaggio di 3 parole, ti mostrassi come fare in modo che lui senta la tua mancanza e torni a cercarti, anche se ora è freddo, distante o con un’altra?</h2><div class="answers">
+      <button class="answer" onclick="answer('q7','A','loading')"><span class="radio"></span>Sì, voglio che senta la mia mancanza.</button>
+      <button class="answer" onclick="answer('q7','B','loading')"><span class="radio"></span>Sì, se è diretto e pratico.</button></div></section>
+
+    <section class="screen" data-progress="96" id="loading"><h2>Stiamo calcolando il tuo profilo di riconquista...</h2><p>✅ Analizzando quanto lui è ancora collegato a te.</p><p>✅ Verificando il rischio che un’altra prenda il tuo posto.</p><p>✅ Cercando il punto esatto da riattivare nel tuo caso.</p><p><span class="loading-dot"></span><span class="loading-dot"></span><span class="loading-dot"></span></p><button class="btn micro" onclick="go('result')">VEDI IL RISULTATO</button></section>
+
+    <section class="screen top" data-progress="100" id="result"><div class="alert">ATTENZIONE: non uscire da questa pagina.</div><h2>Le tue risposte mostrano che lui <span class="red">non ti ha cancellata del tutto</span>. Ma la finestra per riattivarlo si sta chiudendo.</h2><p>Il test ha rilevato che nel tuo caso esiste ancora una leva emotiva da usare — ma se continui con messaggi sbagliati, spiegazioni o silenzi casuali, rischi di spingerlo definitivamente verso un’altra vita… o un’altra donna.</p><div class="avatar">👤</div><p><b>Ciao, sono [NOME PERSONA].</b><br>Ho analizzato migliaia di casi di rottura, blocco, silenzio, contatto freddo e ritorno di interesse.</p><div class="proof-card"><b>Il tuo scenario richiede un messaggio diverso se:</b><br><br>✅ lui ti ignora<br>✅ ti ha bloccata<br>✅ risponde freddo<br>✅ ti tratta come un’amica<br>✅ sta parlando con un’altra</div><div class="proof-msg">“Mi ha sbloccata dopo giorni di silenzio...”</div><div class="proof-msg greenmsg">“Dopo quel messaggio mi ha cercata lui.”</div><p><b>Vuoi che ti riveli adesso il messaggio di 3 parole che riaccende quello che lui sentiva per te?</b></p><button class="btn green" onclick="go('vsl')">SÌ, MOSTRAMELO ADESSO</button></section>
+
+    <section class="screen top" data-progress="100" id="vsl"><h1>Guarda il video qui sotto per <span class="red">farlo tornare da te in 48 ore</span> 👇</h1><div class="video"><div class="play"><div class="tri"></div></div><div class="caption">E SE <span>QUESTO</span></div></div><p style="margin-top:20px">Non saltare questo video. Nei prossimi minuti vedrai perché il messaggio normale che vorresti mandargli è proprio quello che lo allontana — e qual è il passaggio che lo porta a cercarti di nuovo.</p><button class="btn green" onclick="track('sales_cta_click',{step_id:'vsl'}); window.top.location.href='/l/riattiva-offerta-preview'">SBLOCCA IL MESSAGGIO DI 3 PAROLE</button><div class="footer-note">Preview interno — prossimo passo: offerta</div></section>
+  </main>
+<script>
+const state={answers:{}};
+const copy={
+ q1:{A:['Se è finita da pochi giorni, lui sente ancora qualcosa addosso.','Rabbia, orgoglio, fastidio, mancanza… tutto è ancora caldo. Ed è proprio per questo che adesso un messaggio sbagliato può chiuderlo di colpo, mentre quello giusto può riaprire una crepa prima che lui si convinca di aver fatto la scelta migliore.'],B:['Questo è il punto in cui il silenzio comincia a diventare abitudine.','All’inizio lui sente il vuoto. Poi si abitua. Poi smette di controllare il telefono aspettandosi di vederti. Se aspetti troppo o scrivi nel modo sbagliato, rischi di diventare solo “una parte del passato”.'],C:['Dopo settimane di distanza, il pericolo non è che lui ti odi. È che si abitui senza di te.','La sua routine cambia. Le sue notti cambiano. Le sue conversazioni cambiano. E piano piano il posto che era tuo può essere occupato da silenzio, orgoglio… o da un’altra donna.'],D:['Quando passa tanto tempo, non basta “farsi risentire”.','Un messaggio qualunque sembra debole, fuori tempo, quasi imbarazzante. Serve toccare il punto preciso che lui ha messo da parte: quello che provava prima di convincersi che era finita.']},
+ q3:{A:['Quella solitudine non resta solo nella testa. La senti nel corpo.','È guardare il telefono e non vedere il suo nome. È svegliarti e ricordarti di nuovo che non c’è. È fare finta di funzionare durante il giorno, mentre dentro senti quel vuoto che stringe lo stomaco.'],B:['La colpa è una gabbia sporca.','Ti fa rileggere mentalmente ogni litigio, ogni parola, ogni momento in cui potevi fare diverso. Ma se gli scrivi da quel posto — colpa, bisogno, disperazione — lui non vede amore. Vede pressione.'],C:['L’ansia ti fa sentire ogni silenzio come una risposta.','Ogni ora senza un messaggio sembra una conferma che lui si stia allontanando. E più sale quella paura, più diventa facile fare la mossa sbagliata: scrivere troppo, spiegare troppo, implorare troppo.'],D:['L’immagine di lui con un’altra è quella che brucia di più.','Lui che ride. Lui che le scrive. Lui che le dà quella presenza che prima era tua. E mentre tu resti bloccata a immaginare, qualcun’altra può iniziare a occupare lo spazio che hai lasciato scoperto.']},
+ q5:{A:['Allora la prossima mossa deve essere chirurgica.','Non puoi scrivere per sfogarti. Non puoi mandare un messaggio lungo. Non puoi sembrare quella che sta perdendo il controllo. Serve una frase breve, nel momento giusto, capace di riaprire qualcosa prima che lui si sposti davvero altrove.'],B:['Qualche settimana può sembrare poco, ma per un uomo distante è abbastanza per creare una nuova abitudine.','Prima smette di cercarti. Poi smette di aspettarti. Poi si convince che sta meglio così. Devi interrompere questo schema prima che diventi normale.'],C:['Se senti che lui prova ancora qualcosa, non lasciarlo sepolto sotto orgoglio e routine.','Il sentimento non sempre muore. A volte viene coperto. E il messaggio giusto serve proprio a farlo risalire, senza costringerlo, senza supplicarlo, senza spiegargli tutto da capo.'],D:['Non sapere è quello che consuma di più.','Perché ogni silenzio sembra una sentenza. Ogni storia che pubblica sembra un segnale. Ogni giorno senza di lui sembra una prova che stai sparendo. Ora il test sta per mostrarti quale leva può ancora essere usata.']}
+};
+function track(name, params={}){ console.log('EVENT', name, {...params, opportunity_id:'OPP-0001_efeito-replay', market:'IT', language:'it', quiz_version:'it_quiz_v1'}); }
+function setProgress(id){ const el=document.getElementById(id); document.getElementById('bar').style.width=(el.dataset.progress||0)+'%'; }
+function go(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); setProgress(id); window.scrollTo(0,0); track(id.includes('q')?'quiz_step_view':id+'_view',{step_id:id}); }
+function answer(q,a,next){ state.answers[q]=a; track('quiz_answer_selected',{question_id:q,answer_id:a}); if(q==='q1') fill('q1text',copy.q1[a]); if(q==='q3') fill('q3text',copy.q3[a]); if(q==='q5') fill('q5text',copy.q5[a]); setTimeout(()=>go(next),150); }
+function fill(id, arr){ document.getElementById(id).innerHTML=`<div class="microcopy">${arr[0]}</div><p class="microbody">${arr[1]}</p>`; }
+setProgress('entry'); track('quiz_view',{step_id:'entry'});
+</script>
+</body>
+</html>
