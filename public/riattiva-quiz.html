@@ -16,7 +16,7 @@
     .progress-wrap{position:sticky;top:0;background:#fff;padding:14px 22px 8px;z-index:5}
     .track{height:7px;background:var(--pink2);border-radius:999px;overflow:hidden}
     .bar{height:100%;width:0;background:var(--red);border-radius:999px;transition:width .25s ease}
-    .screen{display:none;min-height:calc(100vh - 29px);padding:54px 22px 28px;align-items:center;justify-content:center;flex-direction:column;text-align:center;}
+    .screen{display:none;min-height:calc(100vh - 29px);padding:54px 22px calc(112px + env(safe-area-inset-bottom));align-items:center;justify-content:center;flex-direction:column;text-align:center;}
     .screen.active{display:flex}
     .screen.top{justify-content:flex-start;padding-top:34px}
     h1{font-size:28px;line-height:1.06;margin:0 0 20px;font-weight:900;letter-spacing:-.5px}
@@ -116,7 +116,7 @@
 
     <section class="screen" data-progress="96" id="loading"><h2>Stiamo calcolando il tuo profilo di riconquista...</h2><p>✅ Analizzando quanto lui è ancora collegato a te.</p><p>✅ Verificando il rischio che un’altra prenda il tuo posto.</p><p>✅ Cercando il punto esatto da riattivare nel tuo caso.</p><p><span class="loading-dot"></span><span class="loading-dot"></span><span class="loading-dot"></span></p><button class="btn micro" onclick="go('result')">VEDI IL RISULTATO</button></section>
 
-    <section class="screen top" data-progress="100" id="result"><div class="alert">ATTENZIONE: non uscire da questa pagina.</div><h2>Le tue risposte mostrano che lui <span class="red">non ti ha cancellata del tutto</span>. Ma la finestra per riattivarlo si sta chiudendo.</h2><p>Il test ha rilevato che nel tuo caso esiste ancora una leva emotiva da usare — ma se continui con messaggi sbagliati, spiegazioni o silenzi casuali, rischi di spingerlo definitivamente verso un’altra vita… o un’altra donna.</p><div class="avatar">👤</div><p><b>Ciao, sono [NOME PERSONA].</b><br>Ho analizzato migliaia di casi di rottura, blocco, silenzio, contatto freddo e ritorno di interesse.</p><div class="proof-card"><b>Il tuo scenario richiede un messaggio diverso se:</b><br><br>✅ lui ti ignora<br>✅ ti ha bloccata<br>✅ risponde freddo<br>✅ ti tratta come un’amica<br>✅ sta parlando con un’altra</div><div class="proof-msg">“Mi ha sbloccata dopo giorni di silenzio...”</div><div class="proof-msg greenmsg">“Dopo quel messaggio mi ha cercata lui.”</div><p><b>Vuoi che ti riveli adesso il messaggio di 3 parole che riaccende quello che lui sentiva per te?</b></p><button class="btn green" onclick="go('vsl')">SÌ, MOSTRAMELO ADESSO</button></section>
+    <section class="screen top" data-progress="100" id="result"><div class="alert">ATTENZIONE: non uscire da questa pagina.</div><h2>Le tue risposte mostrano che lui <span class="red">non ti ha cancellata del tutto</span>. Ma la finestra per riattivarlo si sta chiudendo.</h2><p id="resultSummary">Il test ha rilevato che nel tuo caso esiste ancora una leva emotiva da usare — ma se continui con messaggi sbagliati, spiegazioni o silenzi casuali, rischi di spingerlo definitivamente verso un’altra vita… o un’altra donna.</p><div class="avatar">👤</div><p><b>Ciao, sono Alessandro Ricci.</b><br>Ho analizzato oltre 9.000 casi di rottura, blocco, silenzio, contatto freddo e ritorno di interesse.</p><div class="proof-card"><b>In base alle tue risposte, il tuo scenario richiede attenzione perché:</b><br><br><div id="scenarioList"></div></div><div class="proof-msg" id="proofMsg1">“Mi ha sbloccata dopo giorni di silenzio...”</div><div class="proof-msg greenmsg" id="proofMsg2">“Dopo quel messaggio mi ha cercata lui.”</div><p><b>Vuoi che ti mostri adesso il messaggio di 3 parole che riaccende quello che lui sentiva per te?</b></p><button class="btn green" onclick="go('vsl')">SÌ, MOSTRAMELO ADESSO</button></section>
 
     <section class="screen top" data-progress="100" id="vsl"><h1>Guarda il video qui sotto per <span class="red">farlo tornare da te in 48 ore</span> 👇</h1><div class="video"><div class="play"><div class="tri"></div></div><div class="caption">E SE <span>QUESTO</span></div></div><p style="margin-top:20px">Non saltare questo video. Nei prossimi minuti vedrai perché il messaggio normale che vorresti mandargli è proprio quello che lo allontana — e qual è il passaggio che lo porta a cercarti di nuovo.</p><button class="btn green" onclick="track('sales_cta_click',{step_id:'vsl'}); window.top.location.href='/l/riattiva-offerta-preview'">SBLOCCA IL MESSAGGIO DI 3 PAROLE</button><div class="footer-note">Preview interno — prossimo passo: offerta</div></section>
   </main>
@@ -129,9 +129,30 @@ const copy={
 };
 function track(name, params={}){ console.log('EVENT', name, {...params, opportunity_id:'OPP-0001_efeito-replay', market:'IT', language:'it', quiz_version:'it_quiz_v1'}); }
 function setProgress(id){ const el=document.getElementById(id); document.getElementById('bar').style.width=(el.dataset.progress||0)+'%'; }
-function go(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); setProgress(id); window.scrollTo(0,0); track(id.includes('q')?'quiz_step_view':id+'_view',{step_id:id}); }
+function go(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); if(id==='result') renderResult(); setProgress(id); window.scrollTo(0,0); track(id.includes('q')?'quiz_step_view':id+'_view',{step_id:id}); }
 function answer(q,a,next){ state.answers[q]=a; track('quiz_answer_selected',{question_id:q,answer_id:a}); if(q==='q1') fill('q1text',copy.q1[a]); if(q==='q3') fill('q3text',copy.q3[a]); if(q==='q5') fill('q5text',copy.q5[a]); setTimeout(()=>go(next),150); }
 function fill(id, arr){ document.getElementById(id).innerHTML=`<div class="microcopy">${arr[0]}</div><p class="microbody">${arr[1]}</p>`; }
+
+function renderResult(){
+  const items=[];
+  const a=state.answers;
+  if(a.q2==='D') items.push('✅ lui ha già chiuso una porta e ogni forzatura può confermare il blocco');
+  else if(a.q2==='B') items.push('✅ ti risponde ancora, ma il tono freddo mostra che si sta proteggendo');
+  else if(a.q2==='C') items.push('✅ risponde per educazione, quindi rischi di restare nella zona “innocua”');
+  else if(a.q2==='A') items.push('✅ avete ancora un filo aperto, ma un messaggio sbagliato può bruciarlo');
+  if(a.q3==='D'||a.q4==='A'||a.q4==='D') items.push('✅ la paura che un’altra prenda il tuo posto sta già guidando le tue reazioni');
+  if(a.q3==='B') items.push('✅ la colpa può farti scrivere dal bisogno invece che dal controllo');
+  if(a.q3==='C') items.push('✅ l’ansia ti fa leggere ogni silenzio come una sentenza');
+  if(a.q5==='A') items.push('✅ senti che il tempo è corto: la prossima mossa deve essere chirurgica');
+  else if(a.q5==='B') items.push('✅ sei ancora in una finestra utile, ma il silenzio può diventare abitudine');
+  else if(a.q5==='C') items.push('✅ c’è ancora qualcosa da riattivare, ma non con spiegazioni lunghe');
+  else if(a.q5==='D') items.push('✅ l’incertezza ti sta consumando e può spingerti a rincorrerlo');
+  if(items.length<4) items.push('✅ il messaggio deve sembrare leggero fuori, ma colpire forte dentro');
+  document.getElementById('scenarioList').innerHTML=items.slice(0,5).join('<br>');
+  document.getElementById('resultSummary').innerHTML='Il test ha rilevato un profilo <b>ancora riattivabile</b>, ma sensibile: se continui con la mossa sbagliata, rischi di trasformare distanza, silenzio o freddezza in una decisione definitiva.';
+  track('quiz_result_personalized',{step_id:'result',items:items.slice(0,5)});
+}
+
 setProgress('entry'); track('quiz_view',{step_id:'entry'});
 </script>
 </body>
