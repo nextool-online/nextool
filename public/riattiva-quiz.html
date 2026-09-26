@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Effetto Replay — Quiz IT v1</title>
+  <title>Riattiva — Quiz IT v1</title>
   <style>
     @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@500;650;700;800;900;1000&display=swap");
     :root{
@@ -47,7 +47,7 @@
     <div class="progress-wrap"><div class="track"><div class="bar" id="bar"></div></div></div>
 
     <section class="screen active top" data-progress="3" id="entry">
-      <h1>⬇️ Effetto Replay: il messaggio di 3 parole che <span class="red">riaccende quello che lui sentiva per te</span> e lo fa tornare a cercarti <span class="green">entro 48 ore</span> ⬇️</h1>
+      <h1>⬇️ Riattiva: Il messaggio di 3 parole che lo fa tornare a cercarti entro 48 ore. ⬇️</h1>
       <div class="hero-chat">
         <div class="missed">📞 Chiamata persa <span class="time">17:29</span></div>
         <div class="bubble">Volevo solo parlarti <span class="time">17:28</span></div>
@@ -119,7 +119,7 @@
 
     <section class="screen top" data-progress="100" id="result"><div class="alert">ATTENZIONE: non uscire da questa pagina.</div><h2>Diagnosi: lui <span class="red">non ti ha cancellata del tutto</span>, ma la prossima mossa può chiudere o riaprire la porta.</h2><p id="resultSummary">Il test ha rilevato una finestra ancora riattivabile. Ma è una finestra sensibile: se scrivi dal panico, dalla colpa o dalla paura di perderlo, rischi di trasformare distanza, silenzio o freddezza in una decisione definitiva.</p><div class="avatar">👤</div><p><b>Ciao, sono Alessandro Ricci.</b><br>Ho analizzato oltre 9.000 casi di rottura, blocco, silenzio, contatto freddo e ritorno di interesse.</p><div class="proof-card"><b id="resultDiagnosis">Il tuo scenario richiede attenzione.</b><br><br><div id="scenarioList"></div></div><div class="proof-msg" id="proofMsg1">“Mi ha sbloccata dopo giorni di silenzio...”</div><div class="proof-msg greenmsg" id="proofMsg2">“Dopo quel messaggio mi ha cercata lui.”</div><p><b>Prima di mostrarti cosa scrivere, devi capire perché il messaggio che ti verrebbe naturale mandare potrebbe produrre l’effetto opposto.</b></p><button class="btn green" onclick="go('vsl')">SÌ, MOSTRAMI IL PASSAGGIO GIUSTO</button></section>
 
-    <section class="screen top" data-progress="100" id="vsl"><div class="alert">ATTENZIONE: non chiudere questa pagina.</div><h2>Stiamo preparando il tuo profilo di riconquista mentre guardi il video.</h2><p>Le tue risposte mostrano che lui <span class="red">non ti ha cancellata del tutto</span>, ma la prossima mossa può chiudere o riaprire la porta.</p><p><b>Guarda il video qui sotto fino alla fine.</b></p><div class="video"><div class="play"><div class="tri"></div></div><div class="caption">E SE <span>QUESTO</span></div></div><div id="offerMount" class="proof-card" style="margin-top:18px;text-align:left"><b>La pagina dell’offerta apparirà qui sotto al momento del pitch.</b><br><br>Nel funnel reale, la VTurb sbloccherà automaticamente offerta, testimonianze e bottone quando il video arriva al punto esatto. La persona potrà continuare ad ascoltare e, allo stesso tempo, scorrere la pagina per vedere il Protocollo.</div><button class="btn green" onclick="revealInlineOffer()">SIMULA IL PITCH — MOSTRA L’OFFERTA</button><div class="footer-note">Preview interno — VSL + offerta sotto il video → checkout.</div></section>
+    <section class="screen top" data-progress="100" id="vsl"><h1>⬇️ Riattiva: Il messaggio di 3 parole che lo fa tornare a cercarti entro 48 ore. ⬇️</h1><div class="alert">ATTENZIONE: non chiudere questa pagina.</div><div class="video"><div class="play"><div class="tri"></div></div><div class="caption">E SE <span>QUESTO</span></div></div><p style="margin-top:20px"><b>Guarda il video qui sotto fino alla fine.</b></p><p>Le tue risposte mostrano che lui <span class="red">non ti ha cancellata del tutto</span>, ma la prossima mossa può chiudere o riaprire la porta.</p><div id="offerMount" class="proof-card" style="margin-top:18px;text-align:left"><b>La pagina dell’offerta apparirà qui sotto al momento del pitch.</b><br><br>Nel funnel reale, la VTurb sbloccherà automaticamente offerta, testimonianze e bottone quando il video arriva al punto esatto. La persona potrà continuare ad ascoltare e, allo stesso tempo, scorrere la pagina per vedere il Protocollo.</div><button class="btn green" onclick="revealInlineOffer()">SIMULA IL PITCH — MOSTRA L’OFFERTA</button><div class="footer-note">Preview interno — VSL + offerta sotto il video → checkout.</div></section>
   </main>
 <script>
 const state={answers:{}};
