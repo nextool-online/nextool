@@ -5,13 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Effetto Replay — Quiz IT v1</title>
   <style>
+    @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@500;650;700;800;900;1000&display=swap");
     :root{
       --red:#dc2626; --red2:#ef4444; --pink:#fff1f2; --pink2:#fde2e2;
       --green:#16a34a; --green2:#dcfce7; --text:#111827; --muted:#4b5563;
       --bg:#ffffff; --card:#ffffff;
     }
     *{box-sizing:border-box}
-    body{margin:0;background:#f7f7f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--text);}
+    body{margin:0;background:#f7f7f7;font-family:"Nunito",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--text);}
     .phone{width:100%;max-width:430px;min-height:100vh;margin:0 auto;background:var(--bg);position:relative;overflow:hidden;box-shadow:0 0 0 1px #eee;}
     .progress-wrap{position:sticky;top:0;background:#fff;padding:14px 22px 8px;z-index:5}
     .track{height:7px;background:var(--pink2);border-radius:999px;overflow:hidden}
@@ -19,9 +20,9 @@
     .screen{display:none;min-height:calc(100vh - 29px);padding:54px 22px calc(112px + env(safe-area-inset-bottom));align-items:center;justify-content:center;flex-direction:column;text-align:center;}
     .screen.active{display:flex}
     .screen.top{justify-content:flex-start;padding-top:34px}
-    h1{font-size:28px;line-height:1.06;margin:0 0 20px;font-weight:900;letter-spacing:-.5px}
-    h2{font-size:25px;line-height:1.1;margin:0 0 22px;font-weight:900;letter-spacing:-.3px}
-    p{font-size:17px;line-height:1.35;margin:0 0 18px;color:#111;font-weight:500}
+    h1{font-size:28px;line-height:1.08;margin:0 0 20px;font-weight:900;letter-spacing:-.35px}
+    h2{font-size:25px;line-height:1.12;margin:0 0 22px;font-weight:900;letter-spacing:-.2px}
+    p{font-size:17px;line-height:1.42;margin:0 0 18px;color:#111;font-weight:650}
     .red{color:var(--red);font-weight:900}.green{color:var(--green);font-weight:900}.muted{color:var(--muted)}
     .hero-chat{width:82%;background:#f6eee9;border-radius:16px;padding:14px;margin:8px auto 18px;box-shadow:0 8px 24px rgba(0,0,0,.08);text-align:left;color:#333;font-size:13px}
     .bubble{background:#fff;border-radius:10px;padding:9px 10px;margin:7px 0;box-shadow:0 1px 2px rgba(0,0,0,.05)}
@@ -30,12 +31,12 @@
     .btn.green{background:var(--green);color:white;box-shadow:0 10px 22px rgba(22,163,74,.22)}
     .btn.micro{background:var(--red);color:white;margin-top:12px}
     .answers{width:100%;display:flex;flex-direction:column;gap:12px;margin-top:4px}
-    .answer{width:100%;background:var(--pink);border:1.5px solid #f87171;border-radius:14px;min-height:61px;display:flex;align-items:center;text-align:left;padding:12px 14px;gap:12px;font-size:16px;line-height:1.18;color:#222;cursor:pointer}
+    .answer{width:100%;background:var(--pink);border:1.5px solid #f87171;border-radius:14px;min-height:61px;display:flex;align-items:center;text-align:left;padding:12px 14px;gap:12px;font-size:16.5px;line-height:1.24;color:#222;cursor:pointer}
     .answer:hover,.answer.selected{background:#fee2e2;border-color:var(--red)}
     .radio{width:27px;height:27px;border:1.7px solid var(--red2);border-radius:50%;flex:0 0 auto;display:flex;align-items:center;justify-content:center;color:var(--red);font-weight:900;background:white}
     .answer.selected .radio::after{content:'✓';font-size:17px}
     .bullets{width:100%;display:flex;flex-direction:column;gap:12px;margin-top:22px}.bullet{background:var(--green2);border:1px solid #86efac;border-radius:13px;padding:14px;text-align:left;color:#166534;font-size:16px;line-height:1.32}
-    .microcopy{font-size:22px;line-height:1.2;font-weight:900;margin-bottom:16px}.microbody{font-size:18px;line-height:1.4;font-weight:650;text-align:left}.microbody.center{text-align:center}
+    .microcopy{font-size:22px;line-height:1.24;font-weight:900;margin-bottom:16px}.microbody{font-size:18px;line-height:1.48;font-weight:700;text-align:left}.microbody.center{text-align:center}
     .small{font-size:14px;color:#555}.alert{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;font-weight:900;border-radius:8px;padding:8px 10px;font-size:13px;margin-bottom:14px}
     .proof-card{background:#fff;border:1px solid #eee;border-radius:14px;padding:14px;box-shadow:0 8px 22px rgba(0,0,0,.06);text-align:left;margin:10px 0;width:100%}.proof-msg{background:#111827;color:#fff;border-radius:10px;padding:10px;margin:8px 0;font-size:13px;line-height:1.25}.proof-msg.greenmsg{background:#14532d}.avatar{width:54px;height:54px;border-radius:50%;background:#ddd;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-size:26px}.video{width:100%;aspect-ratio:9/12;background:linear-gradient(135deg,#2b1d20,#9f7d81);border-radius:14px;position:relative;overflow:hidden;margin-top:4px}.play{position:absolute;inset:0;margin:auto;width:148px;height:148px;border:11px solid red;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.05)}.tri{width:0;height:0;border-top:35px solid transparent;border-bottom:35px solid transparent;border-left:55px solid red;margin-left:11px}.caption{position:absolute;bottom:42%;left:0;right:0;color:white;font-size:30px;font-weight:1000;text-shadow:0 2px 8px #000}.caption span{color:red}.loading-dot{height:12px;width:12px;border-radius:50%;background:var(--red);display:inline-block;margin:0 3px;animation:pulse 1s infinite}.loading-dot:nth-child(2){animation-delay:.2s}.loading-dot:nth-child(3){animation-delay:.4s}@keyframes pulse{50%{opacity:.2;transform:translateY(-4px)}}
     .footer-note{font-size:12px;color:#777;margin-top:14px}.hidden{display:none!important}
