@@ -21,6 +21,7 @@ export function proxy(request: NextRequest) {
     pathname.startsWith("/_next") ||
     pathname.startsWith("/api") ||
     pathname.startsWith("/l/riattiva") ||
+    pathname.startsWith("/l/nonna-pina") ||
     pathname.includes(".")
   ) {
     return NextResponse.next();
