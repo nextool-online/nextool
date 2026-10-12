@@ -1,7 +1,7 @@
 import Image from "next/image";
 import type { Metadata } from "next";
 
-const checkoutUrl = "https://pay.hotmart.com/SEU_CHECKOUT_AQUI";
+const checkoutUrl = "https://pay.hotmart.com/C107995869L?checkoutMode=10";
 
 export const metadata: Metadata = {
   title: "La Cucina Naturale di Nonna Pina — 50 ricette naturali della tradizione",
