@@ -1,6 +1,8 @@
 import Image from "next/image";
 import type { Metadata } from "next";
 
+import HotmartAttribution from "@/components/nonna-pina/HotmartAttribution";
+
 const checkoutUrl = "https://pay.hotmart.com/C107995869L?checkoutMode=10";
 
 export const metadata: Metadata = {
@@ -91,6 +93,7 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 export default function NonnaPinaSalesPage() {
   return (
     <main className="min-h-screen bg-[#fbf7ed] text-[#231f18]">
+      <HotmartAttribution />
       <div className="bg-[#bc3a2d] px-4 py-2 text-center text-sm font-black text-[#fff1d5] md:text-base">
         ⚠️ Prezzo di lancio: solo 4,99€ — offerta temporanea
       </div>
